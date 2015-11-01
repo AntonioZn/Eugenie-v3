@@ -1,25 +1,34 @@
 ﻿namespace ProjectForTestingPurposes
 {
+    using System;
     using System.Data.Entity;
+    using System.Net.Http;
 
     using Eugenie.Data;
     using Eugenie.Data.Migrations;
     using Eugenie.Data.Models;
+    using Eugenie.Server.Api;
 
-    internal class Program
+    using Microsoft.Owin.Hosting;
+
+    public class Program
     {
         private static void Main(string[] args)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EugenieDbContext, Configuration>());
+            string baseAddress = "http://localhost:10000/";
 
-            var context = new EugenieDbContext();
+            WebApp.Start<Startup>(url: baseAddress);
+            {
+                // Create HttpCient and make a request to api/values
+                HttpClient client = new HttpClient();
 
-            var product = new Product();
-            product.Name = "testtesttest";
-            product.Measure = MeasureType.кг;
+                HttpResponseMessage response = client.GetAsync(baseAddress + "api/values").Result;
 
-            context.Products.Add(product);
-            context.SaveChanges();
+                Console.WriteLine(response);
+                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            }
+
+            Console.ReadLine();
         }
     }
 }

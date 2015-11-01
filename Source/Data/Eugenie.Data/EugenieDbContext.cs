@@ -2,11 +2,14 @@
 {
     using System.Data.Entity;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     using Models;
 
-    public class EugenieDbContext : DbContext
+    public class EugenieDbContext : IdentityDbContext<User>
     {
-        public EugenieDbContext() : base("Eugenie")
+        public EugenieDbContext()
+            : base("Eugenie", false)
         {
         }
 
@@ -21,8 +24,6 @@
         public IDbSet<Waste> Waste { get; set; }
 
         public IDbSet<DailyEarning> DailyEarnings { get; set; }
-
-        public IDbSet<User> Users { get; set; }
 
         public IDbSet<MissingProduct> MissingProducts { get; set; }
 

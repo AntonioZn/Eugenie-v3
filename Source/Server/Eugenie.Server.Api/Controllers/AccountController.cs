@@ -9,6 +9,8 @@
     using System.Web;
     using System.Web.Http;
 
+    using Data.Models;
+
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
@@ -330,7 +332,7 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new User { UserName = model.Email, Email = model.Email };
 
             var result = await this.UserManager.CreateAsync(user, model.Password);
 
@@ -359,7 +361,7 @@
                 return this.InternalServerError();
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new User { UserName = model.Email, Email = model.Email };
 
             var result = await this.UserManager.CreateAsync(user);
             if (!result.Succeeded)

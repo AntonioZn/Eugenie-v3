@@ -12,6 +12,7 @@ namespace Eugenie.Server.Api
     {
         public void Configuration(IAppBuilder app)
         {
+            DatabaseConfig.Initialize();
             this.ConfigureAuth(app);
         }
     }
