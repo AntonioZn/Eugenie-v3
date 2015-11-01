@@ -1,16 +1,17 @@
 ﻿namespace Eugenie.Data
 {
     using System.Data.Entity;
-    using Eugenie.Data.Models;
+
+    using Models;
 
     public class EugenieDbContext : DbContext
     {
-        public EugenieDbContext() : base ("Eugenie")
+        public EugenieDbContext() : base("Eugenie")
         {
         }
 
         public IDbSet<Product> Products { get; set; }
-        
+
         public IDbSet<Barcode> Barcodes { get; set; }
 
         public IDbSet<ExpirationDate> ExpirationDates { get; set; }

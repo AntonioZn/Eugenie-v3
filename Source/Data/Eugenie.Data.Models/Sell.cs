@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Eugenie.Data.Models
+﻿namespace Eugenie.Data.Models
 {
     using System;
+    using System.Collections.Generic;
 
     public class Sell
     {
@@ -25,8 +24,14 @@ namespace Eugenie.Data.Models
 
         public virtual ICollection<ProductWithQuantity> Products
         {
-            get { return this.products; }
-            set { this.products = value; }
+            get
+            {
+                return this.products;
+            }
+            set
+            {
+                this.products = value;
+            }
         }
     }
 }

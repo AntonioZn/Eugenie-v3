@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Eugenie.Data;
-using Eugenie.Data.Migrations;
-using Eugenie.Data.Models;
-
-namespace ProjectForTestingPurposes
+﻿namespace ProjectForTestingPurposes
 {
-    class Program
+    using System.Data.Entity;
+
+    using Eugenie.Data;
+    using Eugenie.Data.Migrations;
+    using Eugenie.Data.Models;
+
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EugenieDbContext, Configuration>());
 

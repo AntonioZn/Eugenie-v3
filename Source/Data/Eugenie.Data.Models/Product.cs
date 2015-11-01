@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Eugenie.Data.Models
+﻿namespace Eugenie.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Product
@@ -25,7 +23,7 @@ namespace Eugenie.Data.Models
         public decimal BuyingPrice { get; set; }
 
         public decimal SellingPrice { get; set; }
-        
+
         public MeasureType Measure { get; set; }
 
         public decimal Quantity { get; set; }
@@ -34,14 +32,12 @@ namespace Eugenie.Data.Models
         {
             get
             {
-                return this.barcodes; 
-                
+                return this.barcodes;
             }
 
             set
             {
-                this.barcodes = value; 
-                
+                this.barcodes = value;
             }
         }
 
