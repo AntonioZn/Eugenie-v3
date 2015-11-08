@@ -3,12 +3,14 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Common.Constants;
+
     public class MissingProduct
     {
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(ValidationConstants.MissingProductMaxNameLength)]
         public string Name { get; set; }
 
         [Required]

@@ -2,6 +2,8 @@
 {
     using System;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Web.Http;
 
     using Data;
@@ -147,13 +149,18 @@
         [HttpPost]
         public IHttpActionResult Add(AddProductModel model)
         {
-            if (model.Measure == 0)
+            if (this.ModelState.IsValid)
             {
-                model.Measure = MeasureType.бр;
+              if (model.Measure == 0)
+              {
+                  model.Measure = MeasureType.бр;
+              }
+
+              var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
+              return this.Ok(product);
             }
 
-            var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
-            return this.Ok(product);
+            return this.BadRequest();
         }
 
         /// <summary>
@@ -171,7 +178,7 @@
 
                 if (originalProduct == null)
                 {
-                    return this.NotFound();
+                    return this.ResponseMessage(this.Request.CreateResponse(HttpStatusCode.NotFound, $"A product with Id = {model.Id} does not exist"));
                 }
 
                 var updatedProduct = this.productsService.AddBarcode(originalProduct, model.Barcode);
