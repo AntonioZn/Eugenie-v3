@@ -2,7 +2,7 @@
 
 using Microsoft.Owin;
 
-[assembly: OwinStartup(typeof (Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
 namespace Eugenie.Server.Api
 {
