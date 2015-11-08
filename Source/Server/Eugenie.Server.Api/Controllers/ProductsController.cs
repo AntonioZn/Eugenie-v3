@@ -13,18 +13,26 @@
     using Services.Data.Contracts;
 
     //[Authorize]
-    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         private readonly IProductsService productsService = new ProductsService(new EfGenericRepository<Product>(new EugenieDbContext()), new EfGenericRepository<Barcode>(new EugenieDbContext()));
-
-        [Route("count")]
+        
+        /// <summary>
+        /// Gets the count of all products so that they can be paged accordingly.
+        /// </summary>
+        /// <returns>Returns the count of all products in the store</returns>
         [HttpGet]
         public IHttpActionResult GetCount()
         {
             return this.Ok(this.productsService.Count());
         }
         
+        /// <summary>
+        /// Gets one page of products
+        /// </summary>
+        /// <param name="page">Number of the page</param>
+        /// <param name="pageSize">The size of each page</param>
+        /// <returns>Returns one page of products</returns>
         [HttpGet]
         public IHttpActionResult GetByPage(int page, int pageSize)
         {
@@ -38,6 +46,11 @@
                                                                                 }).ToList());
         }
         
+        /// <summary>
+        /// Gets a product by its Id if such exists
+        /// </summary>
+        /// <param name="id">An Id of a existing product</param>
+        /// <returns>One product</returns>
         [HttpGet]
         public IHttpActionResult GetById(int id)
         {
@@ -50,7 +63,12 @@
 
             return this.Ok(product);
         }
-
+        
+        /// <summary>
+        /// Gets a List of products that fullfil the search query and sorts them accordingly
+        /// </summary>
+        /// <param name="name">Product name</param>
+        /// <returns>Returns a list of products</returns>
         [HttpGet]
         public IHttpActionResult GetByName(string name)
         {
@@ -64,6 +82,11 @@
             return this.Ok(products);
         }
 
+        /// <summary>
+        /// Gets a product by its barcode if such exists
+        /// </summary>
+        /// <param name="barcode">Barcode of an existing product</param>
+        /// <returns>Returns a list of products</returns>
         [HttpGet]
         public IHttpActionResult GetByBarcode(string barcode)
         {
@@ -77,6 +100,11 @@
             return this.Ok(product);
         }
 
+        /// <summary>
+        /// Gets all products that have quantity lower than the one specified in the query string
+        /// </summary>
+        /// <param name="quantity">Quantity</param>
+        /// <returns>Returns a list of products with low quantity</returns>
         [HttpGet]
         public IHttpActionResult GetByQuantity(decimal quantity)
         {
@@ -90,6 +118,11 @@
             return this.Ok(products);
         }
 
+        /// <summary>
+        /// Finds and deletes a product by its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
@@ -104,6 +137,11 @@
             return this.Ok();
         }
 
+        /// <summary>
+        /// Adds a new product
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IHttpActionResult Add(ProductRequestModel model)
         {
