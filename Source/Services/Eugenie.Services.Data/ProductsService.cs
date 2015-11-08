@@ -12,10 +12,12 @@
     internal class ProductsService : IProductsService
     {
         private readonly IRepository<Product> productsRepository;
+        private readonly IRepository<Barcode> barcodesRepository;
 
-        public ProductsService(IRepository<Product> productsRepository)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository)
         {
             this.productsRepository = productsRepository;
+            this.barcodesRepository = barcodesRepository;
         }
 
         public void Delete(int id)
@@ -53,7 +55,7 @@
         // TODO: Implement
         public IQueryable<Product> FindByBarcode(string barcode)
         {
-            throw new System.NotImplementedException();
+            return this.barcodesRepository.All().Where(bar => bar.Value.Contains(barcode)).Select(x => x.Product);
         }
     }
 }
