@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Common.Constants;
+
     public class RegisterBindingModel
     {
         [Required]
@@ -10,10 +12,12 @@
 
         [Required]
         [Display(Name = "FirstName")]
+        [MaxLength(ValidationConstants.FirstNameLength)]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "LastName")]
+        [MaxLength(ValidationConstants.LastNameLength)]
         public string LastName { get; set; }
 
         [Required]

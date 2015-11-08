@@ -2,6 +2,6 @@
 {
     public class GlobalConstants
     {
-        public const int DefaultProductsPageSize = 50;
+        public const int ProductsPageSize = 50;
     }
 }

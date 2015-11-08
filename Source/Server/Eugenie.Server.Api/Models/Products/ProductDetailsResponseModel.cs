@@ -1,25 +1,22 @@
-﻿namespace Eugenie.Data.Models
+﻿namespace Eugenie.Server.Api.Models.Products
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
-    using Common.Constants;
+    using Data.Models;
 
-    public class Product
+    public class ProductDetailsResponseModel
     {
         private ICollection<Barcode> barcodes;
         private ICollection<ExpirationDate> expirationDates;
 
-        public Product()
+        public ProductDetailsResponseModel()
         {
             this.barcodes = new HashSet<Barcode>();
             this.expirationDates = new HashSet<ExpirationDate>();
         }
 
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(ValidationConstants.ProductNameMaxLength)]
+        
         public string Name { get; set; }
 
         public decimal BuyingPrice { get; set; }

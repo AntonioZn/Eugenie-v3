@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Services.Data.Contracts
 {
+    using System;
     using System.Linq;
 
     using Common.Constants;
@@ -8,16 +9,20 @@
 
     public interface IProductsService
     {
-        void Delete(int id);
+        void Delete(Product product);
 
         int Count();
 
-        IQueryable<Product> All(int page, int pageSize = GlobalConstants.DefaultProductsPageSize);
+        int Add(string name, decimal buyingPrice, decimal sellingPrice, MeasureType measure, decimal quantity, string barcode, DateTime? expirationDate);
+
+        IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize);
 
         IQueryable<Product> FindById(int id);
 
-        IQueryable<Product> FindById(string name);
+        IQueryable<Product> FindByName(string name);
 
         IQueryable<Product> FindByBarcode(string barcode);
+        
+        IQueryable<Product> FindByQuantity(decimal quantity);
     }
 }

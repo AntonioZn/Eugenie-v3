@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Common.Constants;
@@ -9,7 +11,7 @@
     using Eugenie.Data;
     using Eugenie.Data.Models;
 
-    internal class ProductsService : IProductsService
+    public class ProductsService : IProductsService
     {
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
@@ -20,9 +22,10 @@
             this.barcodesRepository = barcodesRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(Product product)
         {
-            this.productsRepository.Delete(id);
+            this.productsRepository.Delete(product);
+            this.productsRepository.SaveChanges();
         }
 
         public int Count()
@@ -30,7 +33,36 @@
             return this.productsRepository.All().Count();
         }
 
-        public IQueryable<Product> All(int page, int pageSize = GlobalConstants.DefaultProductsPageSize)
+        public int Add(string name, decimal buyingPrice = 0, decimal sellingPrice = 0, MeasureType measure = MeasureType.бр, decimal quantity = 0, string barcode = null, DateTime? expirationDate = null)
+        {
+            var product = new Product
+                          {
+                              Name = name,
+                              BuyingPrice = buyingPrice,
+                              SellingPrice = sellingPrice,
+                              Measure = measure,
+                              Quantity = quantity
+                          };
+
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                var barcodeObj = new Barcode { Value = barcode };
+                product.Barcodes.Add(barcodeObj);
+            }
+
+            if (expirationDate != null)
+            {
+                var expirationDateObj = new ExpirationDate { Date = expirationDate.Value };
+                product.ExpirationDates.Add(expirationDateObj);
+            }
+
+            this.productsRepository.Add(product);
+            this.productsRepository.SaveChanges();
+
+            return product.Id;
+        }
+
+        public IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize)
         {
             return this.productsRepository.All().OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
         }
@@ -47,15 +79,19 @@
         //         .OrderByDescending(x => nameAsArray.Any(n => x.Name.StartsWith(n)))
         //         .ToList();
         //         return result;
-        public IQueryable<Product> FindById(string name)
+        public IQueryable<Product> FindByName(string name)
         {
             return this.productsRepository.All().Where(pr => pr.Name.Contains(name));
         }
-
-        // TODO: Implement
+        
         public IQueryable<Product> FindByBarcode(string barcode)
         {
             return this.barcodesRepository.All().Where(bar => bar.Value.Contains(barcode)).Select(x => x.Product);
+        }
+
+        public IQueryable<Product> FindByQuantity(decimal quantity)
+        {
+            return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
         }
     }
 }
