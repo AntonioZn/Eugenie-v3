@@ -19,6 +19,7 @@
     using Microsoft.Owin.Security.OAuth;
 
     using Models;
+    using Models.Account;
 
     using Providers;
 

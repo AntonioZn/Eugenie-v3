@@ -6,7 +6,7 @@
 
     using Models;
 
-    public class EugenieDbContext : IdentityDbContext<User>
+    public class EugenieDbContext : IdentityDbContext<User>, IEugenieDbContext
     {
         public EugenieDbContext()
             : base("Eugenie", false)
