@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Common.Constants;
+
     using Newtonsoft.Json;
 
     public class Barcode
@@ -16,7 +18,7 @@
         public virtual Product Product { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(ValidationConstants.BarcodeMaxLength)]
         public string Value { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Server.Api.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Http;
 
@@ -13,6 +14,7 @@
     using Services.Data.Contracts;
 
     //[Authorize]
+    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         private readonly IProductsService productsService = new ProductsService(new EfGenericRepository<Product>(new EugenieDbContext()), new EfGenericRepository<Barcode>(new EugenieDbContext()));
@@ -141,17 +143,101 @@
         /// Adds a new product
         /// </summary>
         /// <param name="model"></param>
-        /// <returns></returns>
+        /// <returns>Returns the new product</returns>
         [HttpPost]
-        public IHttpActionResult Add(ProductRequestModel model)
+        public IHttpActionResult Add(AddProductModel model)
         {
             if (model.Measure == 0)
             {
                 model.Measure = MeasureType.бр;
             }
 
-            this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
-            return this.Ok();
+            var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
+            return this.Ok(product);
+        }
+
+        /// <summary>
+        /// Adds a barcode to an existing product.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Returns the updated product or error 409 if the barcode already exists in the database</returns>
+        [HttpPost]
+        [Route("addBarcode")]
+        public IHttpActionResult AddBarcode(AddBarcodeModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+                if (originalProduct == null)
+                {
+                    return this.NotFound();
+                }
+
+                var updatedProduct = this.productsService.AddBarcode(originalProduct, model.Barcode);
+                if (updatedProduct == null)
+                {
+                    return this.Conflict();
+                }
+
+                return this.Ok(updatedProduct);
+            }
+
+            return this.BadRequest();
+        }
+
+        /// <summary>
+        /// Adds and expiration date to an existing product.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Returns the updated product or error 409 if the product already has this expiration date</returns>
+        [HttpPost]
+        [Route("addExpirationDate")]
+        public IHttpActionResult AddExpirationDate(AddExpirationDateModel model)
+        {
+            if (this.ModelState.IsValid && model.Date != DateTime.MinValue)
+            {
+                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+                if (originalProduct == null)
+                {
+                    return this.NotFound();
+                }
+
+                var updatedProduct = this.productsService.AddExpirationDate(originalProduct, model.Date);
+                if (updatedProduct == null)
+                {
+                    return this.Conflict();
+                }
+
+                return this.Ok(updatedProduct);
+            }
+
+            return this.BadRequest();
+        }
+
+        /// <summary>
+        /// Sets all product properties to the new ones except quantity, which is added to the existing
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Returns the updated product</returns>
+        [HttpPut]
+        public IHttpActionResult Update(UpdateProductModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+                if (originalProduct == null)
+                {
+                    return this.NotFound();
+                }
+
+                var updatedProduct = this.productsService.Update(originalProduct, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity);
+                return this.Ok(updatedProduct);
+            }
+
+            return this.BadRequest(this.ModelState);
         }
     }
 }

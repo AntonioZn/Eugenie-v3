@@ -20,6 +20,7 @@
 
         [Required]
         [MaxLength(ValidationConstants.ProductNameMaxLength)]
+        [MinLength(ValidationConstants.ProductNameMinLength)]
         public string Name { get; set; }
 
         public decimal BuyingPrice { get; set; }

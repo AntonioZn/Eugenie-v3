@@ -219,8 +219,11 @@
     <Compile Include="Models\Account\SetPasswordBindingModel.cs" />
     <Compile Include="Models\Account\UserInfoViewModel.cs" />
     <Compile Include="Models\Account\UserLoginInfoViewModel.cs" />
+    <Compile Include="Models\Products\AddBarcodeModel.cs" />
+    <Compile Include="Models\Products\AddExpirationDateModel.cs" />
     <Compile Include="Models\Products\ProductDetailsResponseModel.cs" />
-    <Compile Include="Models\Products\ProductRequestModel.cs" />
+    <Compile Include="Models\Products\AddProductModel.cs" />
+    <Compile Include="Models\Products\UpdateProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
