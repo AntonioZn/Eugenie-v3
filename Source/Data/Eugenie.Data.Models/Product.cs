@@ -59,7 +59,7 @@
 
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            return this.Id.GetHashCode();
         }
     }
 }

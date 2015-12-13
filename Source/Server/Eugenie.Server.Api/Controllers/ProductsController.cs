@@ -15,7 +15,7 @@
 
     using Services.Data.Contracts;
 
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
@@ -159,7 +159,7 @@
               var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
               return this.Ok(product);
             }
-
+            
             return this.BadRequest();
         }
 
