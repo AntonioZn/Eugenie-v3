@@ -13,14 +13,19 @@
     public class DealsService : IDealsService
     {
         private readonly IRepository<Product> productsRepository;
-        private readonly IRepository<DailyEarning> dailyEarningsRepository;
         private readonly IRepository<User> sellersRepository;
+        private readonly IRepository<Sell> sellsRepository;
+        private readonly IRepository<Waste> wasteRepository;
+        private readonly IDailyEarningsService dailyEarningsService;
 
-        public DealsService(IRepository<Product> productsRepository, IRepository<DailyEarning> dailyEarningsRepository, IRepository<User> sellersRepository)
+        public DealsService(IRepository<Product> productsRepository, IRepository<User> sellersRepository, 
+            IRepository<Sell> sellsRepository, IRepository<Waste> wasteRepository, IDailyEarningsService dailyEarningsService)
         {
             this.productsRepository = productsRepository;
-            this.dailyEarningsRepository = dailyEarningsRepository;
             this.sellersRepository = sellersRepository;
+            this.sellsRepository = sellsRepository;
+            this.wasteRepository = wasteRepository;
+            this.dailyEarningsService = dailyEarningsService;
         }
         
         public void Sell(string sellerId, IEnumerable<IdQuantityPair> products)
@@ -51,16 +56,7 @@
             seller.Sells.Add(sell);
             this.sellersRepository.SaveChanges();
 
-            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
-            
-            if (dailyEarning == null)
-            {
-                dailyEarning = new DailyEarning();
-                this.dailyEarningsRepository.Add(dailyEarning);
-            }
-            dailyEarning.Earnings += sell.Total;
-
-            this.dailyEarningsRepository.SaveChanges();
+            this.dailyEarningsService.AddSell(sell.Total);
             this.productsRepository.SaveChanges();
         }
         
@@ -92,17 +88,48 @@
             seller.Waste.Add(waste);
             this.sellersRepository.SaveChanges();
 
-            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
-
-            if (dailyEarning == null)
-            {
-                dailyEarning = new DailyEarning();
-                this.dailyEarningsRepository.Add(dailyEarning);
-            }
-            dailyEarning.Waste += waste.Total;
-
-            this.dailyEarningsRepository.SaveChanges();
+            this.dailyEarningsService.AddWaste(waste.Total);
             this.productsRepository.SaveChanges();
+        }
+
+        public IEnumerable<Sell> GetSells(string sellerId, string start, string end)
+        {
+            var startDate = string.IsNullOrEmpty(start) ? DateTime.MinValue : DateTime.Parse(start);
+            var endDate = string.IsNullOrEmpty(end) ? DateTime.MaxValue.AddDays(-1) : DateTime.Parse(end);
+            endDate = endDate.AddDays(1);
+
+            if(string.IsNullOrEmpty(sellerId))
+            { 
+                return this.sellsRepository.All().Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0).ToList();
+            }
+
+            var seller = this.sellersRepository.GetById(sellerId);
+            if (seller == null)
+            {
+                throw new ArgumentException($"Seller with Id {sellerId} does not exist", "SellerId");
+            }
+
+            return seller.Sells.Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0);
+        }
+
+        public IEnumerable<Waste> GetWaste(string sellerId, string start, string end)
+        {
+            var startDate = string.IsNullOrEmpty(start) ? DateTime.MinValue : DateTime.Parse(start);
+            var endDate = string.IsNullOrEmpty(end) ? DateTime.MaxValue.AddDays(-1) : DateTime.Parse(end);
+            endDate = endDate.AddDays(1);
+
+            if (string.IsNullOrEmpty(sellerId))
+            {
+                return this.wasteRepository.All().Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0).ToList();
+            }
+
+            var seller = this.sellersRepository.GetById(sellerId);
+            if (seller == null)
+            {
+                throw new ArgumentException($"Seller with Id {sellerId} does not exist", "SellerId");
+            }
+
+            return seller.Waste.Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0);
         }
     }
 }

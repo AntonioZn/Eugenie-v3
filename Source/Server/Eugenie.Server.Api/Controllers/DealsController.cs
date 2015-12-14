@@ -6,6 +6,8 @@
     using Data;
     using Data.Models;
 
+    using Microsoft.AspNet.Identity;
+
     using Models.Products;
 
     using Services.Data;
@@ -15,11 +17,44 @@
     [RoutePrefix("api/deals")]
     public class DealsController : ApiController
     {
-        private static EugenieDbContext context = new EugenieDbContext();
-        private readonly IDealsService dealsService = new DealsService(new EfGenericRepository<Product>(context), new EfGenericRepository<DailyEarning>(context), new EfGenericRepository<User>(context));
+        private readonly IDealsService dealsService;
+
+        public DealsController(IDealsService dealsService)
+        {
+            this.dealsService = dealsService;
+        }
+
+        [HttpGet]
+        [Route("sells")]
+        public IHttpActionResult GetSells(string sellerId, string startDate, string endDate)
+        {
+            try
+            {
+                return this.Ok(this.dealsService.GetSells(sellerId, startDate, endDate));
+            }
+            catch (ArgumentException ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("waste")]
+        public IHttpActionResult GetWaste(string sellerId, string startDate, string endDate)
+        {
+            try
+            {
+                return this.Ok(this.dealsService.GetWaste(sellerId, startDate, endDate));
+            }
+            catch (ArgumentException ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPut]
-        [Route("sell")]
+        [Route("sells")]
         public IHttpActionResult Sell(SellProductsModel model)
         {
             if (!this.ModelState.IsValid)
@@ -29,7 +64,7 @@
 
             try
             {
-                this.dealsService.Sell(model.SellerId, model.Products);
+                this.dealsService.Sell(this.User.Identity.GetUserId(), model.Products);
             }
             catch (ArgumentException ex)
             {
@@ -50,7 +85,7 @@
 
             try
             {
-                this.dealsService.Waste(model.SellerId, model.Products);
+                this.dealsService.Waste(this.User.Identity.GetUserId(), model.Products);
             }
             catch (ArgumentException ex)
             {

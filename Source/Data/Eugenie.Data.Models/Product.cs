@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Common.Constants;
 
@@ -19,6 +20,7 @@
         public int Id { get; set; }
 
         [Required]
+        [Index("Name", IsUnique = true)]
         [MaxLength(ValidationConstants.ProductNameMaxLength)]
         [MinLength(ValidationConstants.ProductNameMinLength)]
         public string Name { get; set; }

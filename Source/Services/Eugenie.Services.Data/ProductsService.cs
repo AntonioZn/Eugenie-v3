@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Services.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Common.Constants;
@@ -11,22 +10,23 @@
 
     using Eugenie.Data;
     using Eugenie.Data.Models;
-    using Eugenie.Data.Models.DummyModels;
 
     public class ProductsService : IProductsService
     {
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
+        private readonly IDailyEarningsService dailyEarningsService;
 
-        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IDailyEarningsService dailyEarningsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
+            this.dailyEarningsService = dailyEarningsService;
         }
 
-        public void Delete(Product product)
+        public void Delete(int id)
         {
-            this.productsRepository.Delete(product);
+            this.productsRepository.Delete(id);
             this.productsRepository.SaveChanges();
         }
 
@@ -35,8 +35,14 @@
             return this.productsRepository.All().Count();
         }
 
+        //TODO: add stockprice
         public Product Add(string name, decimal buyingPrice = 0, decimal sellingPrice = 0, MeasureType measure = MeasureType.бр, decimal quantity = 0, string barcode = null, DateTime? expirationDate = null)
         {
+            if (this.productsRepository.All().FirstOrDefault(x => x.Name == name) != null)
+            {
+                throw new ArgumentException($"A product with name {name} already exists");
+            }
+
             var product = new Product
                           {
                               Name = name,
@@ -69,8 +75,20 @@
             return this.productsRepository.All().OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
         }
 
-        public Product Update(Product product, string name, decimal buyingPrice, decimal sellingPrice, MeasureType measure, decimal quantity)
+        //TODO: add stockprice
+        public Product Update(int productId, string name, decimal buyingPrice, decimal sellingPrice, MeasureType measure, decimal quantity)
         {
+            var product = this.productsRepository.GetById(productId);
+            if (product == null)
+            {
+                throw new ArgumentException($"Product with Id {productId} does not exist");
+            }
+
+            if (this.productsRepository.All().FirstOrDefault(x => x.Name == name) != null)
+            {
+                throw new ArgumentException($"A product with name {name} already exists");
+            }
+
             product.Name = ProductNameFixer.Fix(name);
             product.BuyingPrice = buyingPrice;
             product.SellingPrice = sellingPrice;
@@ -84,36 +102,48 @@
             return product;
         }
 
-        public Product AddBarcode(Product product, string barcode)
+        public Product AddBarcode(int productId, string barcode)
         {
-            if (this.barcodesRepository.All().FirstOrDefault(x => x.Value == barcode) == null)
+            var product = this.productsRepository.GetById(productId);
+            if (product == null)
             {
-                var barcodeObj = new Barcode { Value = barcode };
-                product.Barcodes.Add(barcodeObj);
-
-                this.productsRepository.Update(product);
-                this.productsRepository.SaveChanges();
-
-                return product;
+                throw new ArgumentException($"Product with Id {productId} does not exist");
             }
 
-            return null;
+            if (this.barcodesRepository.All().FirstOrDefault(x => x.Value == barcode) != null)
+            {
+                throw new ArgumentException($"Barcode {barcode} already exists");
+            }
+
+            var barcodeObj = new Barcode { Value = barcode };
+            product.Barcodes.Add(barcodeObj);
+
+            this.productsRepository.Update(product);
+            this.productsRepository.SaveChanges();
+
+            return product;
         }
 
-        public Product AddExpirationDate(Product product, DateTime expirationDate)
+        public Product AddExpirationDate(int productId, DateTime expirationDate)
         {
-            if (product.ExpirationDates.FirstOrDefault(x => x.Date == expirationDate) == null)
+            var product = this.productsRepository.GetById(productId);
+            if (product == null)
             {
-                var expirationDateObj = new ExpirationDate { Date = expirationDate };
-                product.ExpirationDates.Add(expirationDateObj);
-
-                this.productsRepository.Update(product);
-                this.productsRepository.SaveChanges();
-
-                return product;
+                throw new ArgumentException($"Product with Id {productId} does not exist");
             }
 
-            return null;
+            if (product.ExpirationDates.FirstOrDefault(x => x.Date == expirationDate) != null)
+            {
+                throw new ArgumentException("The product already contains the given expiration date");
+            }
+
+            var expirationDateObj = new ExpirationDate { Date = expirationDate };
+            product.ExpirationDates.Add(expirationDateObj);
+
+            this.productsRepository.Update(product);
+            this.productsRepository.SaveChanges();
+
+            return product;
         }
 
         public IQueryable<Product> FindById(int id)

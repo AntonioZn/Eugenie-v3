@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Common.Constants;
 
@@ -18,6 +19,7 @@
         public virtual Product Product { get; set; }
 
         [Required]
+        [Index("Value", IsUnique = true)]
         [MaxLength(ValidationConstants.BarcodeMaxLength)]
         public string Value { get; set; }
     }

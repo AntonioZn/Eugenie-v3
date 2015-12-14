@@ -9,7 +9,7 @@
 
     public interface IProductsService
     {
-        void Delete(Product product);
+        void Delete(int id);
 
         int Count();
 
@@ -17,11 +17,11 @@
 
         IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize);
 
-        Product Update(Product product, string name, decimal buyingPrice, decimal sellingPrice, MeasureType measure, decimal quantity);
+        Product Update(int productId, string name, decimal buyingPrice, decimal sellingPrice, MeasureType measure, decimal quantity);
 
-        Product AddBarcode(Product product, string barcode);
+        Product AddBarcode(int productId, string barcode);
 
-        Product AddExpirationDate(Product product, DateTime expirationDate);
+        Product AddExpirationDate(int productId, DateTime expirationDate);
 
         IQueryable<Product> FindById(int id);
 

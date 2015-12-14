@@ -2,24 +2,25 @@
 {
     using System;
     using System.Linq;
-    using System.Net;
-    using System.Net.Http;
     using System.Web.Http;
-
-    using Data;
+    
     using Data.Models;
-
-    using Eugenie.Services.Data;
 
     using Models.Products;
 
     using Services.Data.Contracts;
 
+    //TODO: fix summaries
     [Authorize]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
-        private readonly IProductsService productsService = new ProductsService(new EfGenericRepository<Product>(new EugenieDbContext()), new EfGenericRepository<Barcode>(new EugenieDbContext()));
+        private readonly IProductsService productsService;
+
+        public ProductsController(IProductsService productsService)
+        {
+            this.productsService = productsService;
+        }
         
         /// <summary>
         /// Gets the count of all products so that they can be paged accordingly.
@@ -130,14 +131,7 @@
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var product = this.productsService.FindById(id).FirstOrDefault();
-
-            if (product == null)
-            {
-                return this.NotFound();
-            }
-
-            this.productsService.Delete(product);
+            this.productsService.Delete(id);
             return this.Ok();
         }
 
@@ -159,8 +153,14 @@
                 model.Measure = MeasureType.бр;
             }
 
-            var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
-            return this.Ok(product);
+            try
+            {
+                return this.Ok(this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate));
+            }
+            catch (ArgumentException ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -177,22 +177,17 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-            if (originalProduct == null)
+            try
             {
-                return this.ResponseMessage(this.Request.CreateResponse(HttpStatusCode.NotFound, $"A product with Id = {model.Id} does not exist"));
+                return this.Ok(this.productsService.AddBarcode(model.Id, model.Barcode));
             }
-
-            var updatedProduct = this.productsService.AddBarcode(originalProduct, model.Barcode);
-            if (updatedProduct == null)
+            catch (ArgumentException ex)
             {
-                return this.Conflict();
+                return this.BadRequest(ex.Message);
             }
-
-            return this.Ok(updatedProduct);
         }
 
+        //TODO: check for default values
         /// <summary>
         /// Adds and expiration date to an existing product.
         /// </summary>
@@ -202,25 +197,19 @@
         [Route("addExpirationDate")]
         public IHttpActionResult AddExpirationDate(AddExpirationDateModel model)
         {
-            if (!this.ModelState.IsValid || model.Date == DateTime.MinValue)
+            if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
 
-            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-            if (originalProduct == null)
+            try
             {
-                return this.NotFound();
+                return this.Ok(this.productsService.AddExpirationDate(model.Id, model.Date));
             }
-
-            var updatedProduct = this.productsService.AddExpirationDate(originalProduct, model.Date);
-            if (updatedProduct == null)
+            catch (ArgumentException ex)
             {
-                return this.Conflict();
+                return this.BadRequest(ex.Message);
             }
-
-            return this.Ok(updatedProduct);
         }
 
         /// <summary>
@@ -236,15 +225,14 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-            if (originalProduct == null)
+            try
             {
-                return this.NotFound();
+                return this.Ok(this.productsService.Update(model.Id, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity));
             }
-
-            var updatedProduct = this.productsService.Update(originalProduct, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity);
-            return this.Ok(updatedProduct);
+            catch (ArgumentException ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
     }
 }
