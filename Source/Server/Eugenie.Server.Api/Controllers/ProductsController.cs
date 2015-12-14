@@ -149,18 +149,18 @@
         [HttpPost]
         public IHttpActionResult Add(AddProductModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-              if (model.Measure == 0)
-              {
-                  model.Measure = MeasureType.бр;
-              }
-
-              var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
-              return this.Ok(product);
+                return this.BadRequest(this.ModelState);
             }
-            
-            return this.BadRequest();
+
+            if (model.Measure == 0)
+            {
+                model.Measure = MeasureType.бр;
+            }
+
+            var product = this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate);
+            return this.Ok(product);
         }
 
         /// <summary>
@@ -172,25 +172,25 @@
         [Route("addBarcode")]
         public IHttpActionResult AddBarcode(AddBarcodeModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-                if (originalProduct == null)
-                {
-                    return this.ResponseMessage(this.Request.CreateResponse(HttpStatusCode.NotFound, $"A product with Id = {model.Id} does not exist"));
-                }
-
-                var updatedProduct = this.productsService.AddBarcode(originalProduct, model.Barcode);
-                if (updatedProduct == null)
-                {
-                    return this.Conflict();
-                }
-
-                return this.Ok(updatedProduct);
+                return this.BadRequest(this.ModelState);
             }
 
-            return this.BadRequest();
+            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+            if (originalProduct == null)
+            {
+                return this.ResponseMessage(this.Request.CreateResponse(HttpStatusCode.NotFound, $"A product with Id = {model.Id} does not exist"));
+            }
+
+            var updatedProduct = this.productsService.AddBarcode(originalProduct, model.Barcode);
+            if (updatedProduct == null)
+            {
+                return this.Conflict();
+            }
+
+            return this.Ok(updatedProduct);
         }
 
         /// <summary>
@@ -202,25 +202,25 @@
         [Route("addExpirationDate")]
         public IHttpActionResult AddExpirationDate(AddExpirationDateModel model)
         {
-            if (this.ModelState.IsValid && model.Date != DateTime.MinValue)
+            if (!this.ModelState.IsValid || model.Date == DateTime.MinValue)
             {
-                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-                if (originalProduct == null)
-                {
-                    return this.NotFound();
-                }
-
-                var updatedProduct = this.productsService.AddExpirationDate(originalProduct, model.Date);
-                if (updatedProduct == null)
-                {
-                    return this.Conflict();
-                }
-
-                return this.Ok(updatedProduct);
+                return this.BadRequest(this.ModelState);
             }
 
-            return this.BadRequest();
+            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+            if (originalProduct == null)
+            {
+                return this.NotFound();
+            }
+
+            var updatedProduct = this.productsService.AddExpirationDate(originalProduct, model.Date);
+            if (updatedProduct == null)
+            {
+                return this.Conflict();
+            }
+
+            return this.Ok(updatedProduct);
         }
 
         /// <summary>
@@ -231,20 +231,20 @@
         [HttpPut]
         public IHttpActionResult Update(UpdateProductModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
-
-                if (originalProduct == null)
-                {
-                    return this.NotFound();
-                }
-
-                var updatedProduct = this.productsService.Update(originalProduct, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity);
-                return this.Ok(updatedProduct);
+                return this.BadRequest(this.ModelState);
             }
 
-            return this.BadRequest(this.ModelState);
+            var originalProduct = this.productsService.FindById(model.Id).FirstOrDefault();
+
+            if (originalProduct == null)
+            {
+                return this.NotFound();
+            }
+
+            var updatedProduct = this.productsService.Update(originalProduct, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity);
+            return this.Ok(updatedProduct);
         }
     }
 }

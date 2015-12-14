@@ -4,6 +4,11 @@
 
     public class DailyEarning
     {
+        public DailyEarning()
+        {
+            this.Date = DateTime.Today;
+        }
+
         public int Id { get; set; }
 
         public decimal Earnings { get; set; }

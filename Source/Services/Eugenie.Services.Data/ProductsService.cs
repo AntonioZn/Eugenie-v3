@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Common.Constants;
@@ -10,6 +11,7 @@
 
     using Eugenie.Data;
     using Eugenie.Data.Models;
+    using Eugenie.Data.Models.DummyModels;
 
     public class ProductsService : IProductsService
     {
