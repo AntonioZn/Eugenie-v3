@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Eugenie.Clients.AdminPanel.Views.ProductInformation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="16"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="20,20,0,0">
+                <TextBox materialDesign:TextFieldAssist.Hint="Име"
+                         Margin="0 6 0 0"
+                         Height="40"
+                         Width="200"
+                         HorizontalAlignment="Left"
+                         Text="{Binding Name}" />
+                <ComboBox materialDesign:TextFieldAssist.Hint="Мярка"
+                          Margin="0 6 0 0"
+                          Height="40"
+                          Width="200"
+                          HorizontalAlignment="Left">
+                    <ComboBoxItem>БР</ComboBoxItem>
+                    <ComboBoxItem>КГ</ComboBoxItem>
+                    <ComboBoxItem>Л</ComboBoxItem>
+                </ComboBox>
+                <TextBox materialDesign:TextFieldAssist.Hint="Количество"
+                         Margin="0 8 0 0"
+                         Height="40"
+                         Width="200"
+                         HorizontalAlignment="Left"
+                         Text="{Binding Number}" />
+                <TextBox materialDesign:TextFieldAssist.Hint="Доставна цена"
+                         Margin="0 8 0 0"
+                         Height="40"
+                         Width="200"
+                         HorizontalAlignment="Left"
+                         Text="{Binding Number}" />
+                <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
+                         Margin="0 8 0 0"
+                         Height="40"
+                         Width="200"
+                         HorizontalAlignment="Left"
+                         Text="{Binding Number}" />
+            </StackPanel>
+            <ListBox Margin="20,20,0,0"
+                     IsTabStop="False">
+                <TextBlock>Plain</TextBlock>
+                <TextBlock>Old</TextBlock>
+                <TextBlock>ListBox</TextBlock>
+                <TextBlock>Full of junk</TextBlock>
+            </ListBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="20">
+            <Button IsDefault="True"
+                    IsTabStop="False"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Content="Промени">
+                <Button.CommandParameter>
+                    <System:Boolean>True</System:Boolean>
+                </Button.CommandParameter>
+            </Button>
+            <Button IsCancel="True"
+                    IsTabStop="False"
+                    Margin="8 0 0 0"
+                    Content="Назад"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <Button.CommandParameter>
+                    <System:Boolean>False</System:Boolean>
+                </Button.CommandParameter>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

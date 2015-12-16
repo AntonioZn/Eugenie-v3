@@ -13,24 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Eugenie.Clients.AdminPanel
+namespace Eugenie.Clients.AdminPanel.Views
 {
-    using MaterialDesignThemes.Wpf;
-
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ProductInformation.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProductInformation : UserControl
     {
-        public MainWindow()
+        public ProductInformation()
         {
             InitializeComponent();
-
-        }
-
-        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.MenuToggleButton.IsChecked = false;
         }
     }
 }
