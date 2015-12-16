@@ -15,24 +15,11 @@ using System.Windows.Shapes;
 
 namespace Eugenie.Clients.AdminPanel.Views
 {
-    using Data.Models;
-
-    /// <summary>
-    /// Interaction logic for ProductsPresenter.xaml
-    /// </summary>
-    public partial class ProductsEditor : UserControl
+    public partial class ProductsEditor
     {
         public ProductsEditor()
         {
-            InitializeComponent();
-
-            var products = new List<Product>();
-            for (int i = 0; i < 3000; i++)
-            {
-                products.Add(new Product {Id = i + 1, Name = "Хляб " + i, SellingPrice = i, BuyingPrice = i * 2, Quantity = i, Measure = MeasureType.бр});
-            }
-
-            this.DataGrid.ItemsSource = products;
+            this.InitializeComponent();
         }
     }
 }

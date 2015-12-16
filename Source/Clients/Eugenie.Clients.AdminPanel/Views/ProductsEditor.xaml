@@ -5,13 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="300"
-             d:DesignWidth="300">
+             d:DesignWidth="300"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="16"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
-        <DataGrid Name="DataGrid"
-                  FontSize="20"
+        <DataGrid x:Name="DataGrid"
+                  FontSize="25"
+                  ItemsSource="{Binding Products}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
-                  SelectedIndex="{Binding SelectedIndex}"
                   SelectedItem="{Binding SelectedItem}"
                   CanUserSortColumns="True"
                   IsReadOnly="True"
@@ -19,11 +27,11 @@
                   KeyboardNavigation.TabNavigation="None"
                   AlternatingRowBackground="AliceBlue"
                   AlternationCount="2"
-                  Margin="50,0,50,200">
+                  Margin="100,0,100,50">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№"
                                     Binding="{Binding Id}"
-                                    Width="0.4*">
+                                    Width="2*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="IsTabStop"
@@ -41,39 +49,9 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="М-ка"
+                <DataGridTextColumn Header="Мярка"
                                     Binding="{Binding Measure}"
-                                    Width="0.4*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="К-во"
-                                    Binding="{Binding Quantity, StringFormat={}{0:0.###}}"
-                                    Width="1*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Дост. цена"
-                                    Binding="{Binding BuyingPrice, StringFormat={}{0:0.00}}"
-                                    Width="1*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Прод. цена"
-                                    Binding="{Binding SellingPrice, StringFormat={}{0:0.00}}"
-                                    Width="1*">
+                                    Width="2*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="IsTabStop"

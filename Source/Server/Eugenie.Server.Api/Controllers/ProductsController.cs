@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading;
     using System.Web.Http;
     
     using Data.Models;
@@ -43,9 +44,8 @@
         {
             return this.Ok(this.productsService.All(page, pageSize).Select(x => new
                                                                                 {
+                                                                                    x.Id,
                                                                                     x.Name,
-                                                                                    x.SellingPrice,
-                                                                                    x.BuyingPrice,
                                                                                     x.Barcodes,
                                                                                     x.Measure
                                                                                 }).ToList());
