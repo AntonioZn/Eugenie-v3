@@ -9,6 +9,10 @@
 
     using GalaSoft.MvvmLight;
 
+    using MaterialDesignThemes.Wpf;
+
+    using Views;
+
     public class ProductsEditorViewModel : ViewModelBase
     {
         private readonly WebApiServerClient client;
@@ -59,6 +63,13 @@
             {
                 Set(() => this.SelectedItem, ref this.selectedItem, value);
             }
+        }
+
+        public void ShowProductInformationDialog()
+        {
+            var model = new ProductInformationViewModel(this.SelectedItem);
+            var dialog = new ProductInformation(model);
+            var result = DialogHost.Show(dialog, "RootDialog");
         }
 
         private async void Initialize()

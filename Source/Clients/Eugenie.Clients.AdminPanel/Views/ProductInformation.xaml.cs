@@ -15,14 +15,17 @@ using System.Windows.Shapes;
 
 namespace Eugenie.Clients.AdminPanel.Views
 {
+    using ViewModels;
+
     /// <summary>
     /// Interaction logic for ProductInformation.xaml
     /// </summary>
     public partial class ProductInformation : UserControl
     {
-        public ProductInformation()
+        public ProductInformation(ProductInformationViewModel model)
         {
             InitializeComponent();
+            this.DataContext = model;
         }
     }
 }

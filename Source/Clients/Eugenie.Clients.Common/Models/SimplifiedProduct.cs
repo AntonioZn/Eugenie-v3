@@ -9,6 +9,8 @@
 
         public string Name { get; set; }
 
+        public decimal BuyingPrice { get; set; }
+
         public MeasureType Measure { get; set; }
 
         public IEnumerable<Barcode> Barcodes { get; set; }

@@ -7,7 +7,7 @@
         xmlns:Domain="clr-namespace:Eugenie.Clients.AdminPanel.Domain"
         xmlns:Views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
+        xmlns:behaviors="clr-namespace:Eugenie.Clients.Common.Behaviors"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
         Height="350"
@@ -17,7 +17,8 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="16"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        IsTabStop="False">
+        IsTabStop="False"
+        WindowState="Maximized">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior/>
     </i:Interaction.Behaviors>

@@ -46,6 +46,7 @@
                                                                                 {
                                                                                     x.Id,
                                                                                     x.Name,
+                                                                                    x.BuyingPrice,
                                                                                     x.Barcodes,
                                                                                     x.Measure
                                                                                 }).ToList());

@@ -17,11 +17,10 @@
 
         public WebApiServerClient(Uri address, string authToken)
         {
-            this.client = new HttpClient();
-            client.BaseAddress = address;
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+            this.client = new HttpClient { BaseAddress = address };
+            this.client.DefaultRequestHeaders.Accept.Clear();
+            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         }
 
         public async Task<int> GetProductsCountAsync()
@@ -47,5 +46,7 @@
 
             throw new ArgumentException();
         }
+
+        //public async Task<>
     }
 }

@@ -6,6 +6,8 @@
     using System.Windows.Interactivity;
     using System.Windows.Media;
 
+    using AdminPanel.ViewModels;
+
     public class NavigateDataGridWithArrowsBehavior : Behavior<Window>
     {
         protected override void OnAttached()
@@ -28,13 +30,12 @@
                 var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
                 var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
                 var dataGrid = userControl.FindName("DataGrid") as DataGrid;
-                var context = dataGrid.DataContext;
 
                 if (dataGrid != null && dataGrid.Items.Count > 0)
                 {
                     if (e.Key == Key.Enter)
                     {
-                        //TODO: add window dialog
+                        (dataGrid.DataContext as ProductsEditorViewModel).ShowProductInformationDialog();
                     }
                     else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
                     {
