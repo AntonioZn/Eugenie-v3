@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Models
 {
     using System.Collections.Generic;
+
     using Data.Models;
 
     public class SimplifiedProduct

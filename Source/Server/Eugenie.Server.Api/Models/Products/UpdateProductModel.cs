@@ -22,7 +22,7 @@
         public MeasureType Measure { get; set; }
 
         /// <summary>
-        /// This quantity must be added to the existing quantity
+        ///     This quantity must be added to the existing quantity
         /// </summary>
         public decimal Quantity { get; set; }
     }

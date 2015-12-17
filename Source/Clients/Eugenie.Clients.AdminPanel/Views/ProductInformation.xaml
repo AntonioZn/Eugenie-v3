@@ -51,21 +51,21 @@
                          HorizontalAlignment="Left"
                          Text="{Binding Number}" />
             </StackPanel>-->
-                <ListBox IsTabStop="False"
-                         Margin="20,20,20,0"
-                         VerticalAlignment="Top"
+            <ListBox IsTabStop="False"
+                     Margin="20,20,20,0"
+                     VerticalAlignment="Top"
                      Height="140"
                      ItemsSource="{Binding Product.Barcodes}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Value}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Value}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-                <!--<ListBox Margin="20,20,0,0"
+            <!--<ListBox Margin="20,20,0,0"
                          IsTabStop="False"
                          ItemsSource="{Binding Product.ExpirationDates}">
                     <ListBox.ItemTemplate>

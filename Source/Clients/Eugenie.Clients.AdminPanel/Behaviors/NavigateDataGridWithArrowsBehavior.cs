@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Behaviors
+﻿namespace Eugenie.Clients.AdminPanel.Behaviors
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -6,7 +6,7 @@
     using System.Windows.Interactivity;
     using System.Windows.Media;
 
-    using AdminPanel.ViewModels;
+    using ViewModels;
 
     public class NavigateDataGridWithArrowsBehavior : Behavior<Window>
     {
@@ -35,7 +35,7 @@
                 {
                     if (e.Key == Key.Enter)
                     {
-                        (dataGrid.DataContext as ProductsEditorViewModel).ShowProductInformationDialog();
+                        (dataGrid.DataContext as ProductsEditorViewModel)?.ShowProductInformationDialog();
                     }
                     else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
                     {

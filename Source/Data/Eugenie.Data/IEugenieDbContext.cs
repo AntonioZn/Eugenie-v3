@@ -1,9 +1,9 @@
 ﻿namespace Eugenie.Data
 {
     using System.Data.Entity;
-    using Eugenie.Data.Models;
-
     using System.Data.Entity.Infrastructure;
+
+    using Models;
 
     public interface IEugenieDbContext
     {

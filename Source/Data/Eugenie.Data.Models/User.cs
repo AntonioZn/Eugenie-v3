@@ -49,7 +49,7 @@
             {
                 this.waste = value;
             }
-        } 
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager, string authenticationType)
         {

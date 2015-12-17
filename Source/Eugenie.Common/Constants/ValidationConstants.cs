@@ -13,6 +13,5 @@
         public const int BarcodeMaxLength = 20;
 
         public const int MissingProductMaxNameLength = 100;
-
     }
 }

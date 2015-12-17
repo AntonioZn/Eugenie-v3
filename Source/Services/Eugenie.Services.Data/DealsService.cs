@@ -12,14 +12,14 @@
 
     public class DealsService : IDealsService
     {
+        private readonly IDailyEarningsService dailyEarningsService;
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<User> sellersRepository;
         private readonly IRepository<Sell> sellsRepository;
         private readonly IRepository<Waste> wasteRepository;
-        private readonly IDailyEarningsService dailyEarningsService;
 
-        public DealsService(IRepository<Product> productsRepository, IRepository<User> sellersRepository, 
-            IRepository<Sell> sellsRepository, IRepository<Waste> wasteRepository, IDailyEarningsService dailyEarningsService)
+        public DealsService(IRepository<Product> productsRepository, IRepository<User> sellersRepository,
+                            IRepository<Sell> sellsRepository, IRepository<Waste> wasteRepository, IDailyEarningsService dailyEarningsService)
         {
             this.productsRepository = productsRepository;
             this.sellersRepository = sellersRepository;
@@ -27,7 +27,7 @@
             this.wasteRepository = wasteRepository;
             this.dailyEarningsService = dailyEarningsService;
         }
-        
+
         public void Sell(string sellerId, IEnumerable<IdQuantityPair> products)
         {
             var sell = new Sell();
@@ -51,7 +51,7 @@
 
                 soldProduct.Quantity -= product.Quantity;
             }
-            
+
             var seller = this.sellersRepository.GetById(sellerId);
             seller.Sells.Add(sell);
             this.sellersRepository.SaveChanges();
@@ -59,7 +59,7 @@
             this.dailyEarningsService.AddSell(sell.Total);
             this.productsRepository.SaveChanges();
         }
-        
+
         public void Waste(string sellerId, IEnumerable<IdQuantityPair> products)
         {
             var waste = new Waste();
@@ -74,10 +74,10 @@
                 }
 
                 var productWithQuantity = new ProductWithQuantity
-                {
-                    Product = wastedProduct,
-                    Quantity = product.Quantity
-                };
+                                          {
+                                              Product = wastedProduct,
+                                              Quantity = product.Quantity
+                                          };
 
                 waste.AddProduct(productWithQuantity);
 
@@ -98,8 +98,8 @@
             var endDate = string.IsNullOrEmpty(end) ? DateTime.MaxValue.AddDays(-1) : DateTime.Parse(end);
             endDate = endDate.AddDays(1);
 
-            if(string.IsNullOrEmpty(sellerId))
-            { 
+            if (string.IsNullOrEmpty(sellerId))
+            {
                 return this.sellsRepository.All().Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0).ToList();
             }
 

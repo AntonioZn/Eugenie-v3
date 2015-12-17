@@ -3,14 +3,10 @@
     using System;
     using System.Web.Http;
 
-    using Data;
-    using Data.Models;
-
     using Microsoft.AspNet.Identity;
 
     using Models.Products;
 
-    using Services.Data;
     using Services.Data.Contracts;
 
     [Authorize]
@@ -51,7 +47,6 @@
                 return this.BadRequest(ex.Message);
             }
         }
-
 
         [HttpPut]
         [Route("sells")]

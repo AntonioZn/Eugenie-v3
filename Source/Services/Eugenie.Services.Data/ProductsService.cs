@@ -13,9 +13,9 @@
 
     public class ProductsService : IProductsService
     {
-        private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
         private readonly IDailyEarningsService dailyEarningsService;
+        private readonly IRepository<Product> productsRepository;
 
         public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IDailyEarningsService dailyEarningsService)
         {
@@ -95,10 +95,10 @@
             product.Measure = measure;
 
             product.Quantity += quantity;
-            
+
             this.productsRepository.Update(product);
             this.productsRepository.SaveChanges();
-            
+
             return product;
         }
 
@@ -162,7 +162,7 @@
         {
             return this.productsRepository.All().Where(pr => pr.Name.Contains(name));
         }
-        
+
         public IQueryable<Product> FindByBarcode(string barcode)
         {
             return this.barcodesRepository.All().Where(bar => bar.Value.Contains(barcode)).Select(x => x.Product);

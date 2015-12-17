@@ -7,115 +7,150 @@
         xmlns:Domain="clr-namespace:Eugenie.Clients.AdminPanel.Domain"
         xmlns:Views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Eugenie.Clients.Common.Behaviors"
+        xmlns:behaviors="clr-namespace:Eugenie.Clients.AdminPanel.Behaviors"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
-        Height="350"
-        Width="525"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="16"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         IsTabStop="False"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
-        <behaviors:NavigateDataGridWithArrowsBehavior/>
+        <behaviors:NavigateDataGridWithArrowsBehavior />
     </i:Interaction.Behaviors>
-    <MaterialDesign:DialogHost Identifier="RootDialog"
-                               IsTabStop="False">
-        <MaterialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
+    <Grid>
+        <Grid x:Name="Overlay"
+              Panel.ZIndex="1000"
+              Visibility="{Binding LoadingVisibility}">
+            <Grid.Background>
+                <SolidColorBrush Color="Black"
+                                 Opacity=".7" />
+            </Grid.Background>
+            <MaterialDesign:Card UniformCornerRadius="100"
+                                 Padding="10"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Value="20"
+                             IsIndeterminate="True"
+                             Width="100"
+                             Height="100" />
+            </MaterialDesign:Card>
+        </Grid>
+        <MaterialDesign:DialogHost Identifier="RootDialog"
                                    IsTabStop="False">
-            <MaterialDesign:DrawerHost.LeftDrawerContent>
-                <StackPanel Orientation="Vertical">
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  IsTabStop="False"
-                                  HorizontalAlignment="Right"
-                                  Margin="16"
-                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                    <ListBox x:Name="FlyoutMenuListBox"
-                             IsTabStop="False"
-                             Margin="0,16,0,16"
-                             SelectedIndex="0"
-                             PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="Domain:MenuItem">
-                                <TextBlock Text="{Binding Name}"
-                                           Margin="60,0,32,0" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                        <Domain:MenuItem Name="Продукти">
-                            <Domain:MenuItem.Content>
-                                <Views:ProductsEditor />
-                            </Domain:MenuItem.Content>
-                        </Domain:MenuItem>
-
-                    </ListBox>
-                </StackPanel>
-            </MaterialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel>
-                <MaterialDesign:ColorZone Mode="PrimaryMid"
-                                          Padding="6"
-                                          DockPanel.Dock="Top"
-                                          IsTabStop="False">
-                    <StackPanel Orientation="Horizontal"
-                                MaterialDesign:RippleAssist.IsCentered="True">
+            <MaterialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
+                                       IsTabStop="False">
+                <MaterialDesign:DrawerHost.LeftDrawerContent>
+                    <StackPanel Orientation="Vertical">
                         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                      IsChecked="False"
                                       IsTabStop="False"
-                                      x:Name="MenuToggleButton"
-                                      Margin="10,0,0,0" />
-                        <MaterialDesign:ColorZone Mode="Standard"
-                                                  Padding="8 4 8 4"
-                                                  CornerRadius="2"
-                                                  Panel.ZIndex="1"
-                                                  Margin="16 0 0 0"
-                                                  MaterialDesign:ShadowAssist.ShadowDepth="Depth1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Label>
-                                    <Viewbox Width="16"
-                                             Height="16"
-                                             VerticalAlignment="Center"
-                                             Opacity=".56">
-                                        <Canvas Width="24"
-                                                Height="24">
-                                            <Path Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
-                                                  Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=MaterialDesign:ColorZone}, Path=Foreground}" />
-                                        </Canvas>
-                                    </Viewbox>
-                                </Label>
-                                <TextBox Grid.Column="1"
-                                         Margin="8 0 0 0"
-                                         MaterialDesign:TextFieldAssist.Hint="Търсене"
-                                         MinWidth="200"
-                                         VerticalAlignment="Center" />
-                            </Grid>
-                        </MaterialDesign:ColorZone>
-                        <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                                IsTabStop="False"
-                                Margin="8 0 0 0"
-                                Panel.ZIndex="0">
-                            <Viewbox Width="16"
-                                     Height="16">
-                                <Canvas Width="24"
-                                        Height="24">
-                                    <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z"
-                                          Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
+                                      HorizontalAlignment="Right"
+                                      Margin="16"
+                                      IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                        <ListBox x:Name="FlyoutMenuListBox"
+                                 IsTabStop="False"
+                                 Margin="0,16,0,16"
+                                 SelectedIndex="0"
+                                 PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="Domain:MenuItem">
+                                    <TextBlock Text="{Binding Name}"
+                                               Margin="60,0,32,0" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                            <Domain:MenuItem Name="Продукти">
+                                <Domain:MenuItem.Content>
+                                    <Views:ProductsEditor />
+                                </Domain:MenuItem.Content>
+                            </Domain:MenuItem>
+
+                        </ListBox>
                     </StackPanel>
-                </MaterialDesign:ColorZone>
-                <ContentControl Content="{Binding ElementName=FlyoutMenuListBox, Path=SelectedItem.Content}"
-                                IsTabStop="False" 
-                                x:Name="MainFrame"/>
-            </DockPanel>
-        </MaterialDesign:DrawerHost>
-    </MaterialDesign:DialogHost>
+                </MaterialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel>
+                    <MaterialDesign:ColorZone Mode="PrimaryMid"
+                                              Padding="6"
+                                              DockPanel.Dock="Top"
+                                              IsTabStop="False">
+                        <StackPanel Orientation="Horizontal"
+                                    MaterialDesign:RippleAssist.IsCentered="True">
+                            <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                          IsChecked="False"
+                                          IsTabStop="False"
+                                          x:Name="MenuToggleButton"
+                                          Margin="10,0,0,0" />
+                            <MaterialDesign:ColorZone Mode="Standard"
+                                                      Padding="8 4 8 4"
+                                                      CornerRadius="2"
+                                                      Panel.ZIndex="1"
+                                                      Margin="16 0 0 0"
+                                                      MaterialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label>
+                                        <Viewbox Width="16"
+                                                 Height="16"
+                                                 VerticalAlignment="Center"
+                                                 Opacity=".56">
+                                            <Canvas Width="24"
+                                                    Height="24">
+                                                <Path
+                                                    Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
+                                                    Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=MaterialDesign:ColorZone}, Path=Foreground}" />
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Label>
+                                    <TextBox Grid.Column="1"
+                                             Margin="8 0 0 0"
+                                             MaterialDesign:TextFieldAssist.Hint="Търсене"
+                                             MinWidth="200"
+                                             VerticalAlignment="Center" />
+                                </Grid>
+                            </MaterialDesign:ColorZone>
+                            <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                    IsTabStop="False"
+                                    Margin="8 0 0 0"
+                                    Panel.ZIndex="0">
+                                <Viewbox Width="16"
+                                         Height="16">
+                                    <Canvas Width="24"
+                                            Height="24">
+                                        <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z"
+                                              Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <ListBox IsTabStop="False"
+                                     VerticalAlignment="Top"
+                                     ItemsSource="{Binding Servers}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="White" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </MaterialDesign:ColorZone>
+                    <ContentControl Content="{Binding ElementName=FlyoutMenuListBox, Path=SelectedItem.Content}"
+                                    IsTabStop="False"
+                                    x:Name="MainFrame" />
+                </DockPanel>
+            </MaterialDesign:DrawerHost>
+        </MaterialDesign:DialogHost>
+    </Grid>
 </Window>

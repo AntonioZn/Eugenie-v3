@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -15,6 +16,24 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
+        <Grid x:Name="Overlay"
+              Panel.ZIndex="1000"
+              Visibility="{Binding LoadingVisibility}">
+            <Grid.Background>
+                <SolidColorBrush Color="Black"
+                                 Opacity=".7" />
+            </Grid.Background>
+            <materialDesign:Card UniformCornerRadius="100"
+                                 Padding="10"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Value="20"
+                             IsIndeterminate="True"
+                             Width="100"
+                             Height="100" />
+            </materialDesign:Card>
+        </Grid>
         <DataGrid x:Name="DataGrid"
                   FontSize="25"
                   ItemsSource="{Binding Products}"

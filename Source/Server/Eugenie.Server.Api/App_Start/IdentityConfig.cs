@@ -34,7 +34,7 @@
                                             RequireDigit = false,
                                             RequireLowercase = false,
                                             RequireUppercase = false
-            };
+                                        };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {

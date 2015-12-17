@@ -7,7 +7,7 @@
     using Microsoft.Owin.Hosting;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
@@ -16,9 +16,9 @@
 
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             var baseAddress = "http://localhost:9000/";
-            WebApp.Start<Startup>(url: baseAddress);
+            WebApp.Start<Startup>(baseAddress);
 
             SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_CONTINUOUS);
 

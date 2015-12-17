@@ -28,7 +28,7 @@
         IQueryable<Product> FindByName(string name);
 
         IQueryable<Product> FindByBarcode(string barcode);
-        
+
         IQueryable<Product> FindByQuantity(decimal quantity);
     }
 }

@@ -6,7 +6,7 @@
     using Common.Constants;
 
     using Data.Models;
-    
+
     public class AddProductModel
     {
         [Required]

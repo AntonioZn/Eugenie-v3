@@ -2,9 +2,8 @@
 {
     using System;
     using System.Linq;
-    using System.Threading;
     using System.Web.Http;
-    
+
     using Data.Models;
 
     using Models.Products;
@@ -22,9 +21,9 @@
         {
             this.productsService = productsService;
         }
-        
+
         /// <summary>
-        /// Gets the count of all products so that they can be paged accordingly.
+        ///     Gets the count of all products so that they can be paged accordingly.
         /// </summary>
         /// <returns>Returns the count of all products in the store</returns>
         [HttpGet]
@@ -32,9 +31,9 @@
         {
             return this.Ok(this.productsService.Count());
         }
-        
+
         /// <summary>
-        /// Gets one page of products
+        ///     Gets one page of products
         /// </summary>
         /// <param name="page">Number of the page</param>
         /// <param name="pageSize">The size of each page</param>
@@ -51,9 +50,9 @@
                                                                                     x.Measure
                                                                                 }).ToList());
         }
-        
+
         /// <summary>
-        /// Gets a product by its Id if such exists
+        ///     Gets a product by its Id if such exists
         /// </summary>
         /// <param name="id">An Id of a existing product</param>
         /// <returns>One product</returns>
@@ -69,9 +68,9 @@
 
             return this.Ok(product);
         }
-        
+
         /// <summary>
-        /// Gets a List of products that fullfil the search query and sorts them accordingly
+        ///     Gets a List of products that fullfil the search query and sorts them accordingly
         /// </summary>
         /// <param name="name">Product name</param>
         /// <returns>Returns a list of products</returns>
@@ -89,7 +88,7 @@
         }
 
         /// <summary>
-        /// Gets a product by its barcode if such exists
+        ///     Gets a product by its barcode if such exists
         /// </summary>
         /// <param name="barcode">Barcode of an existing product</param>
         /// <returns>Returns a list of products</returns>
@@ -107,7 +106,7 @@
         }
 
         /// <summary>
-        /// Gets all products that have quantity lower than the one specified in the query string
+        ///     Gets all products that have quantity lower than the one specified in the query string
         /// </summary>
         /// <param name="quantity">Quantity</param>
         /// <returns>Returns a list of products with low quantity</returns>
@@ -125,7 +124,7 @@
         }
 
         /// <summary>
-        /// Finds and deletes a product by its Id
+        ///     Finds and deletes a product by its Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -137,7 +136,7 @@
         }
 
         /// <summary>
-        /// Adds a new product
+        ///     Adds a new product
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Returns the new product</returns>
@@ -165,7 +164,7 @@
         }
 
         /// <summary>
-        /// Adds a barcode to an existing product.
+        ///     Adds a barcode to an existing product.
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Returns the updated product or error 409 if the barcode already exists in the database</returns>
@@ -190,7 +189,7 @@
 
         //TODO: check for default values
         /// <summary>
-        /// Adds and expiration date to an existing product.
+        ///     Adds and expiration date to an existing product.
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Returns the updated product or error 409 if the product already has this expiration date</returns>
@@ -214,7 +213,7 @@
         }
 
         /// <summary>
-        /// Sets all product properties to the new ones except quantity, which is added to the existing
+        ///     Sets all product properties to the new ones except quantity, which is added to the existing
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Returns the updated product</returns>
