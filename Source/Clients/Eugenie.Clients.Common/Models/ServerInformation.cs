@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class ServerInformation
+    public class ServerInformation : IComparable<ServerInformation>
     {
         public ServerInformation(string name, string address, string authToken)
         {
@@ -16,5 +16,12 @@
         public Uri Uri { get; set; }
 
         public string AuthToken { get; set; }
+
+        public TimeSpan Ping { get; set; }
+
+        public int CompareTo(ServerInformation other)
+        {
+            return this.Ping.CompareTo(other.Ping);
+        }
     }
 }

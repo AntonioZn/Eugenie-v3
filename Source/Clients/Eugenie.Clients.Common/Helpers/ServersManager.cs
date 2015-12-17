@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -21,7 +22,7 @@
         public ServersManager(IEnumerable<ServerInformation> servers)
         {
             this.servers = servers;
-            this.ActiveServers = new Dictionary<ServerInformation, HttpClient>();
+            this.ActiveServers = new SortedDictionary<ServerInformation, HttpClient>();
         }
 
         public IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
@@ -38,7 +39,7 @@
                 client.BaseAddress = server.Uri;
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", server.AuthToken);
 
-                var result = await this.GetProductsCountAsync(client);
+                var result = await this.GetProductsCountAsync(client, server);
                 if (result)
                 {
                     this.ActiveServers.Add(server, client);
@@ -49,11 +50,13 @@
             return this.ActiveServers;
         }
 
-        private async Task<bool> GetProductsCountAsync(HttpClient client)
+        private async Task<bool> GetProductsCountAsync(HttpClient client, ServerInformation server)
         {
             try
             {
+                var stopWatch = Stopwatch.StartNew();
                 var response = await client.GetAsync("api/products");
+                server.Ping = stopWatch.Elapsed;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

@@ -1,6 +1,13 @@
 namespace Eugenie.Data.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    using Models;
 
     public sealed class Configuration : DbMigrationsConfiguration<EugenieDbContext>
     {
@@ -12,18 +19,28 @@ namespace Eugenie.Data.Migrations
 
         protected override void Seed(EugenieDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var manager = new UserManager<User>(new UserStore<User>(new EugenieDbContext()));
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new EugenieDbContext()));
+
+            var user = new User()
+            {
+                UserName = "Eugenie",
+                FirstName = "Eugenie",
+                LastName = "Eugenie"
+            };
+
+            manager.Create(user, "Eugenie");
+
+            if (!roleManager.Roles.Any())
+            {
+                roleManager.Create(new IdentityRole { Name = "Admin" });
+                roleManager.Create(new IdentityRole { Name = "Seller" });
+            }
+
+            var adminUser = manager.FindByName("Eugenie");
+
+            manager.AddToRole(adminUser.Id, "Admin");
         }
     }
 }

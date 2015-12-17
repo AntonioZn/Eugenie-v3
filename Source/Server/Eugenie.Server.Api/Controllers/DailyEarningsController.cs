@@ -4,7 +4,7 @@
 
     using Services.Data.Contracts;
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DailyEarningsController : ApiController
     {
         private readonly IDailyEarningsService dailyEarningsService;

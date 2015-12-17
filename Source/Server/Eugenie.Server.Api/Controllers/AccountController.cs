@@ -24,7 +24,7 @@
 
     using Results;
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -41,6 +41,8 @@
             this.UserManager = userManager;
             this.AccessTokenFormat = accessTokenFormat;
         }
+
+
 
         public ApplicationUserManager UserManager
         {
@@ -323,7 +325,6 @@
         }
 
         // POST api/Account/Register
-        [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
@@ -340,6 +341,8 @@
             {
                 return this.GetErrorResult(result);
             }
+
+            this.UserManager.AddToRole(user.Id, model.Role);
 
             return this.Ok();
         }

@@ -129,6 +129,7 @@
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult Delete(int id)
         {
             this.productsService.Delete(id);
@@ -141,6 +142,7 @@
         /// <param name="model"></param>
         /// <returns>Returns the new product</returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult Add(AddProductModel model)
         {
             if (!this.ModelState.IsValid)
@@ -170,6 +172,7 @@
         /// <returns>Returns the updated product or error 409 if the barcode already exists in the database</returns>
         [HttpPost]
         [Route("addBarcode")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult AddBarcode(AddBarcodeModel model)
         {
             if (!this.ModelState.IsValid)
@@ -195,6 +198,7 @@
         /// <returns>Returns the updated product or error 409 if the product already has this expiration date</returns>
         [HttpPost]
         [Route("addExpirationDate")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult AddExpirationDate(AddExpirationDateModel model)
         {
             if (!this.ModelState.IsValid)
@@ -218,6 +222,7 @@
         /// <param name="model"></param>
         /// <returns>Returns the updated product</returns>
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult Update(UpdateProductModel model)
         {
             if (!this.ModelState.IsValid)

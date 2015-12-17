@@ -21,6 +21,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [Route("sells")]
         public IHttpActionResult GetSells(string sellerId, string startDate, string endDate)
         {
@@ -35,6 +36,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [Route("waste")]
         public IHttpActionResult GetWaste(string sellerId, string startDate, string endDate)
         {
