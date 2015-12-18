@@ -22,7 +22,7 @@
 
             SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_CONTINUOUS);
 
-            SetThreadExecutionState(ES_CONTINUOUS);
+            //SetThreadExecutionState(ES_CONTINUOUS);
         }
 
         [DllImport("kernel32.dll")]

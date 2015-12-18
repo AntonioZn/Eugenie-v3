@@ -6,6 +6,19 @@
 
     public class SimplifiedProduct
     {
+        public SimplifiedProduct()
+        {
+            
+        }
+
+        public SimplifiedProduct(string name, decimal buyingPrice, MeasureType measure, IEnumerable<Barcode> barcodes)
+        {
+            this.Name = name;
+            this.BuyingPrice = buyingPrice;
+            this.Measure = measure;
+            this.Barcodes = barcodes;
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

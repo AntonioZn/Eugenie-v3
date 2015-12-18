@@ -87,8 +87,9 @@
         public async void ShowProductInformationDialog()
         {
             var productInAllServers = await this.client.GetProductById(this.selectedItem.Id);
-            var model = new ProductInformationViewModel(productInAllServers);
-            var dialog = new ProductInformation(model);
+            var simpleProduct = new SimplifiedProduct(this.selectedItem.Name, this.selectedItem.BuyingPrice, this.selectedItem.Measure, this.selectedItem.Barcodes);
+            var viewModel = new ProductInformationViewModel(productInAllServers, simpleProduct);
+            var dialog = new ProductInformation(viewModel);
             this.DialogIsOpen = true;
             var result = await DialogHost.Show(dialog, "RootDialog");
             this.DialogIsOpen = false;

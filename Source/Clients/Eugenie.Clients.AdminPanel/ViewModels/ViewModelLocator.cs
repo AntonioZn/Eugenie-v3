@@ -27,10 +27,7 @@
             var servers = new List<ServerInformation>
                           {
                               new ServerInformation("Eugenie", "Eugenie", "test 1", "http://localhost:9000"),
-                              new ServerInformation("Eugenie", "Eugenie", "test 2", "http://localhost:9000"),
-                              new ServerInformation("Eugenie", "Eugenie", "test 3", "http://localhost:9000"),
-                              new ServerInformation("Eugenie", "Eugenie", "test 4", "http://localhost:9000"),
-                              new ServerInformation("Eugenie", "Eugenie", "test 5", "http://localhost:9000")
+                              new ServerInformation("Eugenie", "Eugenie", "test 2", "http://localhost:9000")
                           };
 
             var serversManager = new ServersManager(servers);
