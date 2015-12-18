@@ -67,6 +67,7 @@
     <Compile Include="Contracts\IServersManager.cs" />
     <Compile Include="Contracts\IWebApiServerClient.cs" />
     <Compile Include="Helpers\ServersManager.cs" />
+    <Compile Include="Messages\RefreshServersMessage.cs" />
     <Compile Include="Messages\ServerTestingFinishedMessage.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\ServerInformation.cs" />

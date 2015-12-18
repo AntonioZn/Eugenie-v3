@@ -11,6 +11,7 @@
             this.Username = username;
             this.Password = password;
             this.Name = name;
+            this.Address = address;
             this.Uri = new Uri(address);
         }
         
@@ -20,6 +21,9 @@
 
         public string Name { get; set; }
 
+        public string Address { get; set; }
+
+        [JsonIgnore]
         public Uri Uri { get; set; }
 
         [JsonIgnore]

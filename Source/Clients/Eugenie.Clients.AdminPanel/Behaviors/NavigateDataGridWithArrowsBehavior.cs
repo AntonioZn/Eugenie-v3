@@ -30,30 +30,34 @@
                 var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
                 var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
                 var dataGrid = userControl.FindName("DataGrid") as DataGrid;
-                var dataContext = dataGrid.DataContext as ProductsEditorViewModel;
 
-                if (dataGrid != null && dataGrid.Items.Count > 0 && !dataContext.DialogIsOpen)
+                if (dataGrid != null)
                 {
-                    if (e.Key == Key.Enter)
-                    {
-                        dataContext.ShowProductInformationDialog();
-                    }
-                    else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
-                    {
-                        dataGrid.SelectedIndex = dataGrid.SelectedIndex + 1;
-                    }
-                    else if (e.Key == Key.Up && dataGrid.SelectedIndex > 0)
-                    {
-                        dataGrid.SelectedIndex = dataGrid.SelectedIndex - 1;
-                    }
+                    var dataContext = dataGrid.DataContext as ProductsEditorViewModel;
 
-                    if (dataGrid.SelectedItem != null)
+                    if (dataGrid.Items.Count > 0 && !dataContext.DialogIsOpen)
                     {
-                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        if (e.Key == Key.Enter && dataGrid.SelectedIndex != -1)
+                        {
+                            dataContext.ShowProductInformationDialog();
+                        }
+                        else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
+                        {
+                            dataGrid.SelectedIndex = dataGrid.SelectedIndex + 1;
+                        }
+                        else if (e.Key == Key.Up && dataGrid.SelectedIndex > 0)
+                        {
+                            dataGrid.SelectedIndex = dataGrid.SelectedIndex - 1;
+                        }
+
+                        if (dataGrid.SelectedItem != null)
+                        {
+                            dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        }
+
+                        e.Handled = true;
                     }
                 }
-
-                e.Handled = true;
             }
         }
     }

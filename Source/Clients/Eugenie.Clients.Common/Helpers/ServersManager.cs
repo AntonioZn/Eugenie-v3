@@ -19,11 +19,8 @@
 
     public class ServersManager : IServersManager
     {
-        private readonly IEnumerable<ServerInformation> servers;
-
-        public ServersManager(IEnumerable<ServerInformation> servers)
+        public ServersManager()
         {
-            this.servers = servers;
             this.ActiveServers = new SortedDictionary<ServerInformation, HttpClient>();
         }
 
@@ -31,9 +28,11 @@
 
         public HttpClient FastestServer => this.ActiveServers.First().Value;
 
-        public async Task<IDictionary<ServerInformation, HttpClient>> TestServers()
+        public async Task<IDictionary<ServerInformation, HttpClient>> TestServers(IEnumerable<ServerInformation> servers)
         {
-            foreach (var server in this.servers)
+            this.ActiveServers.Clear();
+
+            foreach (var server in servers)
             {
                 var client = new HttpClient { BaseAddress = server.Uri };
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -47,7 +46,11 @@
                 }
             }
 
-            Messenger.Default.Send(new ServerTestingFinishedMessage());
+            if (this.ActiveServers.Any())
+            {
+                Messenger.Default.Send(new ServerTestingFinishedMessage());
+            }
+
             return this.ActiveServers;
         }
 

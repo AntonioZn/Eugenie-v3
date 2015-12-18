@@ -1,12 +1,11 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
-    using System.Collections.Generic;
-
     using Autofac;
 
     using Common.Contracts;
     using Common.Helpers;
-    using Common.Models;
+
+    using Properties;
 
     public class ViewModelLocator
     {
@@ -21,22 +20,26 @@
 
         public ActiveServersViewModel ActiveServersViewModel => this.container.Resolve<ActiveServersViewModel>();
 
+        public SettingsViewModel SettingsViewModel => this.container.Resolve<SettingsViewModel>();
+
         private void Register()
         {
-            var containerBuilder = new ContainerBuilder();
-            var servers = new List<ServerInformation>
-                          {
-                              new ServerInformation("Eugenie", "Eugenie", "test 1", "http://localhost:9000"),
-                              new ServerInformation("Eugenie", "Eugenie", "test 2", "http://localhost:9000")
-                          };
+            if (Settings.Default.Servers == string.Empty)
+            {
+                Settings.Default.Servers = "[]";
+                Settings.Default.Save();
+            }
 
-            var serversManager = new ServersManager(servers);
+            var containerBuilder = new ContainerBuilder();
+
+            var serversManager = new ServersManager();
             var client = new WebApiServerClient(serversManager);
 
             containerBuilder.RegisterInstance(serversManager).As<IServersManager>();
             containerBuilder.RegisterInstance(client).As<IWebApiServerClient>();
             containerBuilder.RegisterType<ProductsEditorViewModel>();
             containerBuilder.RegisterType<ActiveServersViewModel>();
+            containerBuilder.RegisterType<SettingsViewModel>();
 
             this.container = containerBuilder.Build();
         }

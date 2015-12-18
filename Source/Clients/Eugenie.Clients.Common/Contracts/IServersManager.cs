@@ -12,6 +12,6 @@
 
         HttpClient FastestServer { get; }
 
-        Task<IDictionary<ServerInformation, HttpClient>> TestServers();
+        Task<IDictionary<ServerInformation, HttpClient>> TestServers(IEnumerable<ServerInformation> servers);
     }
 }
