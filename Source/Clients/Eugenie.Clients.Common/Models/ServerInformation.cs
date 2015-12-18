@@ -2,21 +2,30 @@
 {
     using System;
 
+    using Newtonsoft.Json;
+
     public class ServerInformation : IComparable<ServerInformation>
     {
-        public ServerInformation(string name, string address, string authToken)
+        public ServerInformation(string username, string password, string name, string address)
         {
+            this.Username = username;
+            this.Password = password;
             this.Name = name;
             this.Uri = new Uri(address);
-            this.AuthToken = authToken;
         }
+        
+        public string Username { get; set; }
+
+        public string Password { get; set; }
 
         public string Name { get; set; }
 
         public Uri Uri { get; set; }
 
+        [JsonIgnore]
         public string AuthToken { get; set; }
 
+        [JsonIgnore]
         public TimeSpan Ping { get; set; }
 
         public int CompareTo(ServerInformation other)

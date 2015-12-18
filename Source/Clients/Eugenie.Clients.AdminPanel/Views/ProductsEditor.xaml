@@ -70,6 +70,16 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Мярка"
                                     Binding="{Binding Measure}"
+                                    Width="1*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="IsTabStop"
+                                    Value="False" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Доставна цена"
+                                    Binding="{Binding BuyingPrice}"
                                     Width="2*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">

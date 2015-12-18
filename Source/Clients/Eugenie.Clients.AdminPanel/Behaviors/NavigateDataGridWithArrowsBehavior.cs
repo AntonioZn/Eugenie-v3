@@ -30,12 +30,13 @@
                 var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
                 var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
                 var dataGrid = userControl.FindName("DataGrid") as DataGrid;
+                var dataContext = dataGrid.DataContext as ProductsEditorViewModel;
 
-                if (dataGrid != null && dataGrid.Items.Count > 0)
+                if (dataGrid != null && dataGrid.Items.Count > 0 && !dataContext.DialogIsOpen)
                 {
                     if (e.Key == Key.Enter)
                     {
-                        (dataGrid.DataContext as ProductsEditorViewModel)?.ShowProductInformationDialog();
+                        dataContext.ShowProductInformationDialog();
                     }
                     else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
                     {

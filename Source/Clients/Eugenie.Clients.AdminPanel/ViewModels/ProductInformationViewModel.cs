@@ -1,27 +1,22 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Common.Models;
 
     using Data.Models;
 
-    using GalaSoft.MvvmLight;
-
-    public class ProductInformationViewModel : ViewModelBase
+    public class ProductInformationViewModel
     {
-        public ProductInformationViewModel(SimplifiedProduct simpleProduct)
+        public ProductInformationViewModel(IDictionary<ServerInformation, Product> products)
         {
-            this.Product = new Product
-                           {
-                               Id = simpleProduct.Id,
-                               Name = simpleProduct.Name,
-                               Measure = simpleProduct.Measure,
-                               BuyingPrice = simpleProduct.BuyingPrice,
-                               Barcodes = simpleProduct.Barcodes.ToList()
-                           };
+            this.Products = products;
+            this.FirstProduct = this.Products.First().Value;
         }
 
-        public Product Product { get; set; }
+        public IDictionary<ServerInformation, Product> Products { get; set; }
+
+        public Product FirstProduct { get; set; }
     }
 }

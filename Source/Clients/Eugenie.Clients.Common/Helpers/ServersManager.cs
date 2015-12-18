@@ -15,6 +15,8 @@
 
     using Models;
 
+    using Newtonsoft.Json;
+
     public class ServersManager : IServersManager
     {
         private readonly IEnumerable<ServerInformation> servers;
@@ -37,9 +39,8 @@
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.BaseAddress = server.Uri;
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", server.AuthToken);
 
-                var result = await this.GetProductsCountAsync(client, server);
+                var result = await this.GetToken(client, server);
                 if (result)
                 {
                     this.ActiveServers.Add(server, client);
@@ -50,12 +51,17 @@
             return this.ActiveServers;
         }
 
-        private async Task<bool> GetProductsCountAsync(HttpClient client, ServerInformation server)
+        private async Task<bool> GetToken(HttpClient client, ServerInformation server)
         {
             try
             {
                 var stopWatch = Stopwatch.StartNew();
-                var response = await client.GetAsync("api/products");
+                var content = new StringContent($"grant_type=password&username={server.Username}&password={server.Password}");
+                var response = await client.PostAsync("api/account/token", content);
+                var result = await response.Content.ReadAsStringAsync();
+                var deserializedResult = JsonConvert.DeserializeObject<LoginTokenResponse>(result);
+                server.AuthToken = deserializedResult.access_token;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", server.AuthToken);
                 server.Ping = stopWatch.Elapsed;
                 if (response.IsSuccessStatusCode)
                 {

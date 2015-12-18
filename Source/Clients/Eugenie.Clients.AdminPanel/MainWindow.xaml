@@ -68,6 +68,11 @@
                                     <Views:ProductsEditor />
                                 </Domain:MenuItem.Content>
                             </Domain:MenuItem>
+                            <Domain:MenuItem Name="Настройки">
+                            <Domain:MenuItem.Content>
+                                <Views:Settings />
+                            </Domain:MenuItem.Content>
+                            </Domain:MenuItem>
 
                         </ListBox>
                     </StackPanel>

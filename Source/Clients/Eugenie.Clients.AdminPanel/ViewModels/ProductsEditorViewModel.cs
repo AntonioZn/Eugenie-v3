@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows;
 
     using Common.Contracts;
@@ -28,6 +29,8 @@
             this.LoadingVisibility = Visibility.Collapsed;
             Messenger.Default.Register<ServerTestingFinishedMessage>(this, this.OnServerTestingFinishedMessage);
         }
+
+        public bool DialogIsOpen { get; private set; }
 
         public Visibility LoadingVisibility
         {
@@ -81,11 +84,14 @@
             }
         }
 
-        public void ShowProductInformationDialog()
+        public async void ShowProductInformationDialog()
         {
-            var model = new ProductInformationViewModel(this.SelectedItem);
+            var productInAllServers = await this.client.GetProductById(this.selectedItem.Id);
+            var model = new ProductInformationViewModel(productInAllServers);
             var dialog = new ProductInformation(model);
-            var result = DialogHost.Show(dialog, "RootDialog");
+            this.DialogIsOpen = true;
+            var result = await DialogHost.Show(dialog, "RootDialog");
+            this.DialogIsOpen = false;
         }
 
         private async void OnServerTestingFinishedMessage(ServerTestingFinishedMessage obj)
