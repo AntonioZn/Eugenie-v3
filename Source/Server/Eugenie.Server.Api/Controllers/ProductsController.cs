@@ -42,13 +42,13 @@
         public IHttpActionResult GetByPage(int page, int pageSize)
         {
             return this.Ok(this.productsService.All(page, pageSize).Select(x => new
-                                                                                {
-                                                                                    x.Id,
-                                                                                    x.Name,
-                                                                                    x.BuyingPrice,
-                                                                                    x.Barcodes,
-                                                                                    x.Measure
-                                                                                }).ToList());
+            {
+                x.Id,
+                x.Name,
+                x.BuyingPrice,
+                x.Barcodes,
+                x.Measure
+            }).ToList());
         }
 
         /// <summary>
@@ -217,7 +217,7 @@
         }
 
         /// <summary>
-        ///     Sets all product properties to the new ones except quantity, which is added to the existing
+        ///  Sets all product properties to the new ones except quantity, which is added to the existing
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Returns the updated product</returns>

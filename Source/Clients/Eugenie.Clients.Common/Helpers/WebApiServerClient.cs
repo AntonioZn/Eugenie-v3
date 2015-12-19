@@ -1,6 +1,8 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Text;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -36,7 +38,7 @@
             return JsonConvert.DeserializeObject<IEnumerable<SimplifiedProduct>>(result);
         }
 
-        public async Task<IDictionary<ServerInformation, Product>> GetProductById(int id)
+        public async Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(int id)
         {
             var products = new Dictionary<ServerInformation, Product>();
 
@@ -49,6 +51,20 @@
             }
 
             return products;
+        }
+
+        public async void UpdateAsync(IDictionary<ServerInformation, Product> productsServersPair)
+        {
+            foreach (var pair in productsServersPair)
+            {
+                var client = this.serversManager.ActiveServers[pair.Key];
+
+                var serialized = JsonConvert.SerializeObject(pair.Value);
+                var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync("api/products", content);
+                var result = await response.Content.ReadAsStringAsync();
+            }
         }
     }
 }

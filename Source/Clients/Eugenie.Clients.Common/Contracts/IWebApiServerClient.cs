@@ -13,6 +13,8 @@
 
         Task<int> GetProductsCountAsync();
 
-        Task<IDictionary<ServerInformation, Product>> GetProductById(int id);
+        Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(int id);
+
+        void UpdateAsync(IDictionary<ServerInformation, Product> productsServersPair);
     }
 }

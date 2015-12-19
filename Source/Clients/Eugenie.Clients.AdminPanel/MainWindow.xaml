@@ -113,6 +113,8 @@
                                     </Label>
                                     <TextBox Grid.Column="1"
                                              Margin="8 0 0 0"
+                                             DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
+                                             Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              MaterialDesign:TextFieldAssist.Hint="Търсене"
                                              MinWidth="200"
                                              VerticalAlignment="Center" />

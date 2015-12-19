@@ -8,6 +8,7 @@
 
     public class UpdateProductModel
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -15,15 +16,16 @@
         [MinLength(ValidationConstants.ProductNameMinLength)]
         public string Name { get; set; }
 
+        [Required]
         public decimal BuyingPrice { get; set; }
 
+        [Required]
         public decimal SellingPrice { get; set; }
 
+        [Required]
         public MeasureType Measure { get; set; }
 
-        /// <summary>
-        ///     This quantity must be added to the existing quantity
-        /// </summary>
+        [Required]
         public decimal Quantity { get; set; }
     }
 }

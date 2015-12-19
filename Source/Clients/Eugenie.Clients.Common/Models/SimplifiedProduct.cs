@@ -11,8 +11,9 @@
             
         }
 
-        public SimplifiedProduct(string name, decimal buyingPrice, MeasureType measure, IEnumerable<Barcode> barcodes)
+        public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, IEnumerable<Barcode> barcodes)
         {
+            this.Id = id;
             this.Name = name;
             this.BuyingPrice = buyingPrice;
             this.Measure = measure;
@@ -28,5 +29,10 @@
         public MeasureType Measure { get; set; }
 
         public IEnumerable<Barcode> Barcodes { get; set; }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }
