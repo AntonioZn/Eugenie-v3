@@ -99,8 +99,9 @@
     <Compile Include="ViewModels\ActiveServersViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\ManageShops.xaml.cs">
+      <DependentUpon>ManageShops.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProductInformation.xaml.cs">
       <DependentUpon>ProductInformation.xaml</DependentUpon>
     </Compile>
@@ -123,6 +124,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ManageShops.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProductInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

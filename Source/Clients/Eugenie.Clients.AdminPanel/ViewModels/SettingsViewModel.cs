@@ -17,7 +17,7 @@
     {
         private ObservableCollection<ServerInformation> servers; 
         private string name;
-        private string address;
+        private string address = "http://";
         private string username;
         private string password;
 

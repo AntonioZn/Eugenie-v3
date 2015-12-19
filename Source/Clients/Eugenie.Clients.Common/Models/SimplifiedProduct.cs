@@ -16,11 +16,6 @@
         private SimplifiedProduct tempProduct;
         private bool isInEditMode;
 
-        public SimplifiedProduct()
-        {
-            
-        }
-
         public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, IEnumerable<Barcode> barcodes)
         {
             this.Id = id;
