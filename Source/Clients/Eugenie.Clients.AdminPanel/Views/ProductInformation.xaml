@@ -20,21 +20,21 @@
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Width="420"
                          HorizontalAlignment="Left"
-                         Text="{Binding FirstProduct.Name}" />
+                         Text="{Binding FirstProduct.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <ComboBox materialDesign:TextFieldAssist.Hint="Мярка"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           Margin="0,10,0,0"
                           Width="420"
                           HorizontalAlignment="Left"
                           ItemsSource="{Binding Measures}"
-                          SelectedItem="{Binding FirstProduct.Measure}">
+                          SelectedItem="{Binding FirstProduct.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </ComboBox>
                 <TextBox materialDesign:TextFieldAssist.Hint="Доставна цена"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Margin="0,10,0,0"
                          Width="420"
                          HorizontalAlignment="Left"
-                         Text="{Binding FirstProduct.BuyingPrice}" />
+                         Text="{Binding FirstProduct.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Hidden"
                           MaxHeight="160"

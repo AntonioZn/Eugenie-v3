@@ -72,6 +72,7 @@
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\SimplifiedProduct.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\WebApiServerClient.cs" />
   </ItemGroup>

@@ -84,7 +84,7 @@
                 throw new ArgumentException($"Product with Id {productId} does not exist");
             }
 
-            if (this.productsRepository.All().FirstOrDefault(x => x.Name == name) != null)
+            if (this.productsRepository.All().FirstOrDefault(x => x.Name == name && x.Id != productId) != null)
             {
                 throw new ArgumentException($"A product with name {name} already exists");
             }

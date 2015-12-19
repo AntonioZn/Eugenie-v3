@@ -1,10 +1,11 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Data;
 
     using Common.Contracts;
     using Common.Messages;
@@ -19,8 +20,7 @@
 
     public class ProductsEditorViewModel : ViewModelBase
     {
-        private HashSet<SimplifiedProduct> allProducts;
-        private ObservableCollection<SimplifiedProduct> products;
+        private readonly ObservableCollection<SimplifiedProduct> products;
         private readonly IWebApiServerClient client;
         private Visibility loadingVisibility;
         private SimplifiedProduct selectedItem;
@@ -29,6 +29,11 @@
         public ProductsEditorViewModel(IWebApiServerClient client)
         {
             this.client = client;
+
+            this.products = new ObservableCollection<SimplifiedProduct>();
+            this.Products = CollectionViewSource.GetDefaultView(this.products);
+            this.Products.Filter = this.Search;
+
             this.LoadingVisibility = Visibility.Collapsed;
             Messenger.Default.Register<ServerTestingFinishedMessage>(this, this.OnServerTestingFinishedMessage);
         }
@@ -43,7 +48,7 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
-                this.Search();
+                this.Products.Refresh();
             }
         }
 
@@ -62,32 +67,7 @@
             }
         }
 
-        public IEnumerable<SimplifiedProduct> Products
-        {
-            get
-            {
-                if (this.products == null)
-                {
-                    this.products = new ObservableCollection<SimplifiedProduct>();
-                }
-
-                return this.products;
-            }
-
-            set
-            {
-                if (this.products == null)
-                {
-                    this.products = new ObservableCollection<SimplifiedProduct>();
-                }
-
-                this.products.Clear();
-                foreach (var product in value)
-                {
-                    this.products.Add(product);
-                }
-            }
-        }
+        public ICollectionView Products { get; set; }
 
         public SimplifiedProduct SelectedItem
         {
@@ -104,8 +84,8 @@
         public async void ShowProductInformationDialog()
         {
             var productInAllServers = await this.client.GetProductByIdAsync(this.selectedItem.Id);
-            var simpleProduct = new SimplifiedProduct(this.selectedItem.Id, this.selectedItem.Name, this.selectedItem.BuyingPrice, this.selectedItem.Measure, this.selectedItem.Barcodes);
-            var viewModel = new ProductInformationViewModel(productInAllServers, simpleProduct);
+            this.selectedItem.BeginEdit();
+            var viewModel = new ProductInformationViewModel(productInAllServers, this.selectedItem);
             var dialog = new ProductInformation(viewModel);
 
             this.DialogIsOpen = true;
@@ -113,34 +93,41 @@
             var result = await DialogHost.Show(dialog, "RootDialog");
             this.DialogIsOpen = false;
 
-            if ((bool)result)
+            if ((bool) result)
             {
+                this.selectedItem.EndEdit();
                 foreach (var pair in productInAllServers)
                 {
-                    pair.Value.Name = simpleProduct.Name;
-                    pair.Value.Measure = simpleProduct.Measure;
-                    pair.Value.BuyingPrice = simpleProduct.BuyingPrice;
-                    pair.Value.Barcodes = simpleProduct.Barcodes.ToList();
+                    pair.Value.Name = this.selectedItem.Name;
+                    pair.Value.Measure = this.selectedItem.Measure;
+                    pair.Value.BuyingPrice = this.selectedItem.BuyingPrice;
+                    pair.Value.Barcodes = this.selectedItem.Barcodes.ToList();
                 }
-
-                //TODO: update product in Products list
+                
                 this.client.UpdateAsync(productInAllServers);
+            }
+            else
+            {
+                this.selectedItem.CancelEdit();
             }
         }
 
-        private void Search()
+        private bool Search(object obj)
         {
+            var product = obj as SimplifiedProduct;
             var searchAsArray = this.SearchValue.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            this.Products = this.allProducts.Where(x => searchAsArray.All(n => x.Name.ToLower().Contains(n))).OrderByDescending(x => searchAsArray.Any(n => x.Name.StartsWith(n))).ToList();
+            return searchAsArray.All(word => product.Name.Contains(word));
         }
-
-
+        
         private async void OnServerTestingFinishedMessage(ServerTestingFinishedMessage obj)
         {
             this.LoadingVisibility = Visibility.Visible;
-            var responseProducts = await this.client.GetProductsByPageAsync(1, 2000);
-            this.allProducts = new HashSet<SimplifiedProduct>(responseProducts);
-            this.Products = this.allProducts;
+            this.products.Clear();
+            foreach (var product in await this.client.GetProductsByPageAsync(1, 2000))
+            {
+                this.products.Add(product);
+            }
+            
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }
