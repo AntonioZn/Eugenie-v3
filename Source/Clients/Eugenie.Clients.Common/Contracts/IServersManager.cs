@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -8,9 +9,7 @@
 
     public interface IServersManager
     {
-        IDictionary<ServerInformation, HttpClient> ActiveServers { get; }
-
-        HttpClient FastestServer { get; }
+        event EventHandler<ServerTestingFinishedEventArgs> ServerTestingFinished;
 
         Task<IDictionary<ServerInformation, HttpClient>> TestServers(IEnumerable<ServerInformation> servers);
     }

@@ -64,11 +64,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IServersManager.cs" />
     <Compile Include="Contracts\IWebApiServerClient.cs" />
+    <Compile Include="Contracts\IServersManager.cs" />
     <Compile Include="Helpers\ServersManager.cs" />
-    <Compile Include="Messages\RefreshServersMessage.cs" />
-    <Compile Include="Messages\ServerTestingFinishedMessage.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\SimplifiedProduct.cs" />

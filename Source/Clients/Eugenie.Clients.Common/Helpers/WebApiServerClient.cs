@@ -15,49 +15,42 @@
 
     public class WebApiServerClient : IWebApiServerClient
     {
-        private readonly IServersManager serversManager;
-
-        public WebApiServerClient(IServersManager serversManager)
+        public async Task<int> GetProductsCountAsync(KeyValuePair<ServerInformation, HttpClient> server)
         {
-            this.serversManager = serversManager;
-        }
-        
-        public async Task<int> GetProductsCountAsync()
-        {
-            var response = await this.serversManager.FastestServer.GetAsync("api/products");
+            var response = await server.Value.GetAsync("api/products");
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<int>(result);
         }
         
-        public async Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(int page, int pageSize)
+        public async Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(KeyValuePair<ServerInformation, HttpClient> server, int page, int pageSize)
         {
-            var response = await this.serversManager.FastestServer.GetAsync($"api/products?page={page}&pageSize={pageSize}");
+            var response = await server.Value.GetAsync($"api/products?page={page}&pageSize={pageSize}");
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<SimplifiedProduct>>(result);
         }
 
-        public async Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(int id)
+        public async Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(IDictionary<ServerInformation, HttpClient> servers, int id)
         {
             var products = new Dictionary<ServerInformation, Product>();
 
-            foreach (var server in this.serversManager.ActiveServers)
+            foreach (var pair in servers)
             {
-                var response = await server.Value.GetAsync($"api/products/{id}");
+                var response = await pair.Value.GetAsync($"api/products/{id}");
                 var result = await response.Content.ReadAsStringAsync();
 
-                products.Add(server.Key, JsonConvert.DeserializeObject<Product>(result));
+                products.Add(pair.Key, JsonConvert.DeserializeObject<Product>(result));
             }
 
             return products;
         }
 
-        public async void UpdateAsync(IDictionary<ServerInformation, Product> productsServersPair)
+        public async void UpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair)
         {
             foreach (var pair in productsServersPair)
             {
-                var client = this.serversManager.ActiveServers[pair.Key];
+                var client = servers[pair.Key];
 
                 var serialized = JsonConvert.SerializeObject(pair.Value);
                 var content = new StringContent(serialized, Encoding.UTF8, "application/json");

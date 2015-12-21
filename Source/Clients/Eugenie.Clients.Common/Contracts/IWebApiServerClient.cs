@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     using Data.Models;
@@ -9,12 +10,12 @@
 
     public interface IWebApiServerClient
     {
-        Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(int page, int pageSize);
+        Task<int> GetProductsCountAsync(KeyValuePair<ServerInformation, HttpClient> server);
 
-        Task<int> GetProductsCountAsync();
+        Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(KeyValuePair<ServerInformation, HttpClient> server, int page, int pageSize);
 
-        Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(int id);
+        Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(IDictionary<ServerInformation, HttpClient> servers, int id);
 
-        void UpdateAsync(IDictionary<ServerInformation, Product> productsServersPair);
+        void UpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair);
     }
 }

@@ -1,17 +1,13 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
     using Contracts;
-
-    using GalaSoft.MvvmLight.Messaging;
-
-    using Messages;
 
     using Models;
 
@@ -19,18 +15,11 @@
 
     public class ServersManager : IServersManager
     {
-        public ServersManager()
-        {
-            this.ActiveServers = new SortedDictionary<ServerInformation, HttpClient>();
-        }
-
-        public IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
-
-        public HttpClient FastestServer => this.ActiveServers.First().Value;
+        public event EventHandler<ServerTestingFinishedEventArgs> ServerTestingFinished;
 
         public async Task<IDictionary<ServerInformation, HttpClient>> TestServers(IEnumerable<ServerInformation> servers)
         {
-            this.ActiveServers.Clear();
+            var activeServers = new SortedDictionary<ServerInformation, HttpClient>();
 
             foreach (var server in servers)
             {
@@ -42,16 +31,12 @@
                 var result = await this.GetToken(client, server);
                 if (result)
                 {
-                    this.ActiveServers.Add(server, client);
+                    activeServers.Add(server, client);
                 }
             }
 
-            if (this.ActiveServers.Any())
-            {
-                Messenger.Default.Send(new ServerTestingFinishedMessage());
-            }
-
-            return this.ActiveServers;
+            this.OnServerTestingFinished(new ServerTestingFinishedEventArgs(activeServers));
+            return activeServers;
         }
 
         private async Task<bool> GetToken(HttpClient client, ServerInformation server)
@@ -76,6 +61,15 @@
             }
 
             return false;
+        }
+
+        private void OnServerTestingFinished(ServerTestingFinishedEventArgs e)
+        {
+            var handler = this.ServerTestingFinished;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
     }
 }

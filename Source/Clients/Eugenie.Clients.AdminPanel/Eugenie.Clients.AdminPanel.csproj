@@ -167,7 +167,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Views\App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Eugenie.Data.Models\Eugenie.Data.Models.csproj">
