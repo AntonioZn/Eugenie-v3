@@ -69,6 +69,7 @@
     <Compile Include="Helpers\ServersManager.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\ServerInformation.cs" />
+    <Compile Include="Models\ServerTestingFinishedEventArgs.cs" />
     <Compile Include="Models\SimplifiedProduct.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,6 +27,10 @@
 
         public IDbSet<MissingProduct> MissingProducts { get; set; }
 
+        public IDbSet<Settings> Settings { get; set; } 
+
+        public IDbSet<Shipment> Shipments { get; set; } 
+
         public static EugenieDbContext Create()
         {
             return new EugenieDbContext();

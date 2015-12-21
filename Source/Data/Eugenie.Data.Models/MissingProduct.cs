@@ -7,6 +7,11 @@
 
     public class MissingProduct
     {
+        public MissingProduct()
+        {
+            this.Date = DateTime.UtcNow;
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -14,6 +19,7 @@
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(ValidationConstants.BarcodeMaxLength)]
         public string Barcode { get; set; }
 
         public DateTime Date { get; set; }

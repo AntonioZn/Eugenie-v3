@@ -72,6 +72,8 @@
     <Compile Include="ProductWithQuantity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sell.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Shipment.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Waste.cs" />
   </ItemGroup>
