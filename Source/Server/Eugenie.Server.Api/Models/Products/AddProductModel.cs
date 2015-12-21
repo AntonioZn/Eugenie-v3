@@ -1,6 +1,6 @@
 ﻿namespace Eugenie.Server.Api.Models.Products
 {
-    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Common.Constants;
@@ -13,16 +13,20 @@
         [MaxLength(ValidationConstants.ProductNameMaxLength)]
         public string Name { get; set; }
 
+        [MaxLength(ValidationConstants.ProductNameMaxLength)]
+        public string OldName { get; set; }
+
         public decimal BuyingPrice { get; set; }
 
         public decimal SellingPrice { get; set; }
 
+        [Required]
         public MeasureType Measure { get; set; }
 
         public decimal Quantity { get; set; }
 
-        public string Barcode { get; set; }
+        public IEnumerable<Barcode> Barcodes { get; set; }
 
-        public DateTime? ExpirationDate { get; set; }
+        public IEnumerable<ExpirationDate> ExpirationDates { get; set; }
     }
 }

@@ -17,7 +17,7 @@
         public virtual Product Product { get; set; }
 
         //TODO: review ?
-        [Required]
+        //[Required]
         [MaxLength(20)]
         public string Batch { get; set; }
 

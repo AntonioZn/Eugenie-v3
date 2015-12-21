@@ -7,8 +7,6 @@
 
     using Contracts;
 
-    using Data.Models;
-
     using Models;
 
     using Newtonsoft.Json;
@@ -46,7 +44,7 @@
             return products;
         }
 
-        public async void UpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair)
+        public async void AddOrUpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair)
         {
             foreach (var pair in productsServersPair)
             {
@@ -55,7 +53,7 @@
                 var serialized = JsonConvert.SerializeObject(pair.Value);
                 var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
-                var response = await client.PutAsync("api/products", content);
+                var response = await client.PostAsync("api/products", content);
                 var result = await response.Content.ReadAsStringAsync();
             }
         }

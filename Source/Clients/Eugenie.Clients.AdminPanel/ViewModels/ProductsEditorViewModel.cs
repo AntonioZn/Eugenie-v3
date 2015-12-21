@@ -11,12 +11,16 @@
 
     using Common.Contracts;
     using Common.Models;
-    using Common.Helpers;
+
+    using Data.Models;
+
     using GalaSoft.MvvmLight;
 
     using MaterialDesignThemes.Wpf;
 
     using Views;
+
+    using Product = Common.Models.Product;
 
     public class ProductsEditorViewModel : ViewModelBase
     {
@@ -89,6 +93,15 @@
         {
             var productInAllServers = await this.client.GetProductByIdAsync(this.activeServers, this.selectedItem.Id);
 
+            foreach (var key in productInAllServers.Keys.ToList())
+            {
+                if (productInAllServers[key] == null)
+                {
+                    productInAllServers[key] = new Product();
+                }
+            }
+
+            var oldName = this.selectedItem.Name;
             this.selectedItem.BeginEdit();
 
             var viewModel = new ProductInformationViewModel(productInAllServers, this.selectedItem);
@@ -104,12 +117,14 @@
                 foreach (var pair in productInAllServers)
                 {
                     pair.Value.Name = this.selectedItem.Name;
+                    pair.Value.OldName = oldName;
                     pair.Value.Measure = this.selectedItem.Measure;
                     pair.Value.BuyingPrice = this.selectedItem.BuyingPrice;
-                    pair.Value.Barcodes = this.selectedItem.Barcodes.ToList();
+                    pair.Value.Barcodes = this.selectedItem.Barcodes;
+                    pair.Value.ExpirationDates = new List<ExpirationDate>() {new ExpirationDate() {Batch = "asdasd", Date = new DateTime(2015, 12, 29)} };
                 }
 
-                this.client.UpdateAsync(this.activeServers, productInAllServers);
+                this.client.AddOrUpdateAsync(this.activeServers, productInAllServers);
             }
             else
             {
@@ -124,7 +139,7 @@
             return searchAsArray.All(word => product.Name.Contains(word));
         }
 
-        private async void OnServerTestingFinished(object sender, ServersManager.ServerTestingFinishedEventArgs e)
+        private async void OnServerTestingFinished(object sender, ServerTestingFinishedEventArgs e)
         {
             this.activeServers = e.ActiveServers;
 

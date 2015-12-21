@@ -68,6 +68,7 @@
     <Compile Include="Contracts\IServersManager.cs" />
     <Compile Include="Helpers\ServersManager.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\ServerTestingFinishedEventArgs.cs" />
     <Compile Include="Models\SimplifiedProduct.cs" />
@@ -84,7 +85,6 @@
       <Name>Eugenie.Data.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

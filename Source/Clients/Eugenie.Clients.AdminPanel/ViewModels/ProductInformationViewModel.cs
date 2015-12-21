@@ -6,12 +6,15 @@
 
     using Data.Models;
 
+    using Product = Common.Models.Product;
+
     public class ProductInformationViewModel
     {
         public ProductInformationViewModel(IDictionary<ServerInformation, Product> products, SimplifiedProduct simpleProduct)
         {
             this.Products = products;
             this.FirstProduct = simpleProduct;
+            //TODO: foreach enum
             this.Measures = new List<MeasureType> { MeasureType.бр, MeasureType.кг, MeasureType.л };
         }
 

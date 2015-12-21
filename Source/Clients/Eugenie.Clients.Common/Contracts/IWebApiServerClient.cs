@@ -4,8 +4,6 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    using Data.Models;
-
     using Models;
 
     public interface IWebApiServerClient
@@ -16,6 +14,6 @@
 
         Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(IDictionary<ServerInformation, HttpClient> servers, int id);
 
-        void UpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair);
+        void AddOrUpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair);
     }
 }

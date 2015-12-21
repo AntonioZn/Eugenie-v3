@@ -4,13 +4,10 @@
     using System.Linq;
     using System.Web.Http;
 
-    using Data.Models;
-
     using Models.Products;
 
     using Services.Data.Contracts;
-
-    //TODO: fix summaries
+    
     [Authorize]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
@@ -52,57 +49,14 @@
         }
 
         /// <summary>
-        ///     Gets a product by its Id if such exists
-        /// </summary>
-        /// <param name="id">An Id of a existing product</param>
-        /// <returns>One product</returns>
-        [HttpGet]
-        public IHttpActionResult GetById(int id)
-        {
-            var product = this.productsService.FindById(id).FirstOrDefault();
-
-            if (product == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok(product);
-        }
-
-        /// <summary>
-        ///     Gets a List of products that fullfil the search query and sorts them accordingly
+        ///     Gets a products by it's name
         /// </summary>
         /// <param name="name">Product name</param>
-        /// <returns>Returns a list of products</returns>
+        /// <returns>Returns a product</returns>
         [HttpGet]
         public IHttpActionResult GetByName(string name)
         {
-            var products = this.productsService.FindByName(name).ToList();
-
-            if (products.Count == 0)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok(products);
-        }
-
-        /// <summary>
-        ///     Gets a product by its barcode if such exists
-        /// </summary>
-        /// <param name="barcode">Barcode of an existing product</param>
-        /// <returns>Returns a list of products</returns>
-        [HttpGet]
-        public IHttpActionResult GetByBarcode(string barcode)
-        {
-            var product = this.productsService.FindByBarcode(barcode).FirstOrDefault();
-
-            if (product == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok(product);
+            return this.Ok(this.productsService.FindByName(name));
         }
 
         /// <summary>
@@ -115,65 +69,32 @@
         {
             var products = this.productsService.FindByQuantity(quantity).ToList();
 
-            if (products.Count == 0)
-            {
-                return this.NotFound();
-            }
-
             return this.Ok(products);
         }
 
         /// <summary>
-        ///     Finds and deletes a product by its Id
+        ///     Finds and deletes a product by its name
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(string id)
         {
-            this.productsService.Delete(id);
-            return this.Ok();
+            try
+            {
+                this.productsService.Delete(id);
+                return this.Ok();
+            }
+            catch
+            {
+                return this.NotFound();
+            }
         }
-
-        /// <summary>
-        ///     Adds a new product
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Returns the new product</returns>
+        
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Add(AddProductModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            if (model.Measure == 0)
-            {
-                model.Measure = MeasureType.бр;
-            }
-
-            try
-            {
-                return this.Ok(this.productsService.Add(model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcode, model.ExpirationDate));
-            }
-            catch (ArgumentException ex)
-            {
-                return this.BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        ///     Adds a barcode to an existing product.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Returns the updated product or error 409 if the barcode already exists in the database</returns>
-        [HttpPost]
-        [Route("addBarcode")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult AddBarcode(AddBarcodeModel model)
+        public IHttpActionResult AddOrUpdateProduct(AddProductModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -182,57 +103,7 @@
 
             try
             {
-                return this.Ok(this.productsService.AddBarcode(model.Id, model.Barcode));
-            }
-            catch (ArgumentException ex)
-            {
-                return this.BadRequest(ex.Message);
-            }
-        }
-
-        //TODO: check for default values
-        /// <summary>
-        ///     Adds and expiration date to an existing product.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Returns the updated product or error 409 if the product already has this expiration date</returns>
-        [HttpPost]
-        [Route("addExpirationDate")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult AddExpirationDate(AddExpirationDateModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            try
-            {
-                return this.Ok(this.productsService.AddExpirationDate(model.Id, model.Date));
-            }
-            catch (ArgumentException ex)
-            {
-                return this.BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        ///  Sets all product properties to the new ones except quantity, which is added to the existing
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Returns the updated product</returns>
-        [HttpPut]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult Update(UpdateProductModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            try
-            {
-                return this.Ok(this.productsService.Update(model.Id, model.Name, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity));
+                return this.Ok(this.productsService.AddOrUpdate(model.Name, model.OldName, model.BuyingPrice, model.SellingPrice, model.Measure, model.Quantity, model.Barcodes.Select(x => x.Value), model.ExpirationDates.Select(x => x.Date)));
             }
             catch (ArgumentException ex)
             {
