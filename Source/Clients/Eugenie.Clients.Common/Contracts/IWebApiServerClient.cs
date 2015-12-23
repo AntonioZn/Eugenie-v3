@@ -12,7 +12,7 @@
 
         Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(KeyValuePair<ServerInformation, HttpClient> server, int page, int pageSize);
 
-        Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(IDictionary<ServerInformation, HttpClient> servers, int id);
+        Task<IDictionary<ServerInformation, Product>> GetProductByName(IDictionary<ServerInformation, HttpClient> servers, string name);
 
         void AddOrUpdateAsync(IDictionary<ServerInformation, HttpClient> servers, IDictionary<ServerInformation, Product> productsServersPair);
     }

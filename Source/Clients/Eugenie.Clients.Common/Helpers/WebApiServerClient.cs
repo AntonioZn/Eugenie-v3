@@ -29,13 +29,13 @@
             return JsonConvert.DeserializeObject<IEnumerable<SimplifiedProduct>>(result);
         }
 
-        public async Task<IDictionary<ServerInformation, Product>> GetProductByIdAsync(IDictionary<ServerInformation, HttpClient> servers, int id)
+        public async Task<IDictionary<ServerInformation, Product>> GetProductByName(IDictionary<ServerInformation, HttpClient> servers, string name)
         {
             var products = new Dictionary<ServerInformation, Product>();
 
             foreach (var pair in servers)
             {
-                var response = await pair.Value.GetAsync($"api/products/{id}");
+                var response = await pair.Value.GetAsync($"api/products/{name}");
                 var result = await response.Content.ReadAsStringAsync();
 
                 products.Add(pair.Key, JsonConvert.DeserializeObject<Product>(result));

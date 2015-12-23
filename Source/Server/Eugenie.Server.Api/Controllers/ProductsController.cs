@@ -54,9 +54,9 @@
         /// <param name="name">Product name</param>
         /// <returns>Returns a product</returns>
         [HttpGet]
-        public IHttpActionResult GetByName(string name)
+        public IHttpActionResult GetByName(string id)
         {
-            return this.Ok(this.productsService.FindByName(name));
+            return this.Ok(this.productsService.FindByName(id));
         }
 
         /// <summary>

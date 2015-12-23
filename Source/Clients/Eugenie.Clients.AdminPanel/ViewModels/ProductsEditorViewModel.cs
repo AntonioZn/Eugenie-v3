@@ -91,7 +91,7 @@
         //TODO: Send message when dialog is opened and closed
         public async void ShowProductInformationDialog()
         {
-            var productInAllServers = await this.client.GetProductByIdAsync(this.activeServers, this.selectedItem.Id);
+            var productInAllServers = await this.client.GetProductByName(this.activeServers, this.selectedItem.Name);
 
             foreach (var key in productInAllServers.Keys.ToList())
             {
@@ -136,7 +136,7 @@
         {
             var product = obj as SimplifiedProduct;
             var searchAsArray = this.SearchValue.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return searchAsArray.All(word => product.Name.Contains(word));
+            return searchAsArray.AsParallel().All(word => product.Name.Contains(word));
         }
 
         private async void OnServerTestingFinished(object sender, ServerTestingFinishedEventArgs e)
