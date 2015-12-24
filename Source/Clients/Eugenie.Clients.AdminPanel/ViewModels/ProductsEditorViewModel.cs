@@ -5,7 +5,6 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
-    using System.Net.Http;
     using System.Windows;
     using System.Windows.Data;
 
@@ -20,29 +19,24 @@
 
     using Views;
 
-    using Product = Common.Models.Product;
-
     public class ProductsEditorViewModel : ViewModelBase
     {
         private readonly ObservableCollection<SimplifiedProduct> products;
-        private readonly IServersManager serversManager;
-        private readonly IWebApiServerClient client;
+        private readonly IServerManager manager;
         private Visibility loadingVisibility;
-        private SimplifiedProduct selectedItem;
         private string searchValue = string.Empty;
-        private IDictionary<ServerInformation, HttpClient> activeServers;
 
-        public ProductsEditorViewModel(IServersManager serversManager, IWebApiServerClient client)
+        public ProductsEditorViewModel(IServerManager manager)
         {
-            this.client = client;
-            this.serversManager = serversManager;
-            this.serversManager.ServerTestingFinished += this.OnServerTestingFinished;
+            this.manager = manager;
 
             this.products = new ObservableCollection<SimplifiedProduct>();
             this.Products = CollectionViewSource.GetDefaultView(this.products);
             this.Products.Filter = this.Search;
 
             this.LoadingVisibility = Visibility.Collapsed;
+
+            manager.ServerTestingFinished += this.OnServerTestingFinished;
         }
 
         public string SearchValue
@@ -76,35 +70,17 @@
 
         public ICollectionView Products { get; set; }
 
-        public SimplifiedProduct SelectedItem
-        {
-            get
-            {
-                return this.selectedItem;
-            }
-            set
-            {
-                this.Set(() => this.SelectedItem, ref this.selectedItem, value);
-            }
-        }
+        public SimplifiedProduct SelectedItem { get; set; }
 
         //TODO: Send message when dialog is opened and closed
         public async void ShowProductInformationDialog()
         {
-            var productInAllServers = await this.client.GetProductByName(this.activeServers, this.selectedItem.Name);
+            var productInAllServers = await this.manager.GetProductByNameAsync(this.SelectedItem.Name);
 
-            foreach (var key in productInAllServers.Keys.ToList())
-            {
-                if (productInAllServers[key] == null)
-                {
-                    productInAllServers[key] = new Product();
-                }
-            }
+            var oldName = this.SelectedItem.Name;
+            this.SelectedItem.BeginEdit();
 
-            var oldName = this.selectedItem.Name;
-            this.selectedItem.BeginEdit();
-
-            var viewModel = new ProductInformationViewModel(productInAllServers, this.selectedItem);
+            var viewModel = new ProductInformationViewModel(productInAllServers, this.SelectedItem);
             var dialog = new ProductInformation(viewModel);
 
             this.DialogIsOpen = true;
@@ -113,22 +89,22 @@
 
             if ((bool)result)
             {
-                this.selectedItem.EndEdit();
+                this.SelectedItem.EndEdit();
                 foreach (var pair in productInAllServers)
                 {
-                    pair.Value.Name = this.selectedItem.Name;
+                    pair.Value.Name = this.SelectedItem.Name;
                     pair.Value.OldName = oldName;
-                    pair.Value.Measure = this.selectedItem.Measure;
-                    pair.Value.BuyingPrice = this.selectedItem.BuyingPrice;
-                    pair.Value.Barcodes = this.selectedItem.Barcodes;
-                    pair.Value.ExpirationDates = new List<ExpirationDate>() {new ExpirationDate() {Batch = "asdasd", Date = new DateTime(2015, 12, 29)} };
+                    pair.Value.Measure = this.SelectedItem.Measure;
+                    pair.Value.BuyingPrice = this.SelectedItem.BuyingPrice;
+                    pair.Value.Barcodes = this.SelectedItem.Barcodes;
+                    pair.Value.ExpirationDates = new List<ExpirationDate>() { new ExpirationDate() { Batch = "asdasd", Date = new DateTime(2015, 12, 29) } };
                 }
 
-                this.client.AddOrUpdateAsync(this.activeServers, productInAllServers);
+                this.manager.AddOrUpdateAsync(productInAllServers);
             }
             else
             {
-                this.selectedItem.CancelEdit();
+                this.SelectedItem.CancelEdit();
             }
         }
 
@@ -139,22 +115,21 @@
             return searchAsArray.AsParallel().All(word => product.Name.Contains(word));
         }
 
-        private async void OnServerTestingFinished(object sender, ServerTestingFinishedEventArgs e)
+        private async void OnServerTestingFinished(object sender, EventArgs e)
         {
-            this.activeServers = e.ActiveServers;
-
-            this.LoadingVisibility = Visibility.Visible;
-
-            this.products.Clear();
-            if (this.activeServers.Any())
+            if (this.manager.HasActiveServer)
             {
-                foreach (var product in await this.client.GetProductsByPageAsync(this.activeServers.First(), 1, 2000))
+                this.LoadingVisibility = Visibility.Visible;
+
+                this.products.Clear();
+
+                foreach (var product in await this.manager.GetProductsByPageAsync(1, 2000))
                 {
                     this.products.Add(product);
                 }
-            }
 
-            this.LoadingVisibility = Visibility.Collapsed;
+                this.LoadingVisibility = Visibility.Collapsed;
+            }
         }
     }
 }

@@ -32,8 +32,10 @@
 
             var containerBuilder = new ContainerBuilder();
             
-            containerBuilder.RegisterType<ServersManager>().As<IServersManager>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<WebApiServerClient>().As<IWebApiServerClient>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ServerTester>().As<IServerTester>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();

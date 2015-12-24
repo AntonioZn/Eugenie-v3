@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows;
@@ -9,25 +10,21 @@
     using Common.Models;
 
     using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-
-    using Newtonsoft.Json;
-
-    using Properties;
+    using GalaSoft.MvvmLight.Command;
 
     public class ActiveServersViewModel : ViewModelBase
     {
-        private readonly IServersManager serversManager;
+        private readonly IServerManager manager;
         private Visibility loadingVisibility;
         private ObservableCollection<ServerInformation> servers;
 
-        public ActiveServersViewModel(IServersManager serversManager)
+        public ActiveServersViewModel(IServerManager manager)
         {
-            this.serversManager = serversManager;
-            this.RefreshServersCommand = new RelayCommand(this.Initialize);
-            this.LoadingVisibility = Visibility.Collapsed;
+            this.manager = manager;
+            this.RefreshServersCommand = new RelayCommand(this.Refresh);
+            this.LoadingVisibility = Visibility.Visible;
 
-            this.Initialize();
+            manager.ServerTestingFinished += this.OnServerTestingFinished;
         }
 
         public ICommand RefreshServersCommand { get; private set; }
@@ -71,12 +68,15 @@
             }
         }
 
-        private async void Initialize()
+        private void Refresh()
         {
-            var savedServers = JsonConvert.DeserializeObject<IEnumerable<ServerInformation>>(Settings.Default.Servers);
             this.LoadingVisibility = Visibility.Visible;
-            var serversDictionary = await this.serversManager.TestServers(savedServers);
-            this.Servers = serversDictionary.Keys;
+            this.manager.Initialize();
+        }
+
+        private void OnServerTestingFinished(object sender, EventArgs e)
+        {
+            this.Servers = this.manager.ActiveServers.Keys;
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }

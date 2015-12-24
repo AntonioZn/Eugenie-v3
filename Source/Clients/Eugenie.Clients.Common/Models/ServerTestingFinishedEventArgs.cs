@@ -3,15 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    using System.Net.Http;
-
     public class ServerTestingFinishedEventArgs : EventArgs
     {
-        public ServerTestingFinishedEventArgs(IDictionary<ServerInformation, HttpClient> activeServers)
+        public ServerTestingFinishedEventArgs(IEnumerable<ServerInformation> activeServers)
         {
             this.ActiveServers = activeServers;
         }
 
-        public IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
+        public IEnumerable<ServerInformation> ActiveServers { get; set; }
     }
 }

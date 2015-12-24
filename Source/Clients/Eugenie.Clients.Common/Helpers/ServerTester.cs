@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -13,30 +12,22 @@
 
     using Newtonsoft.Json;
 
-    public class ServersManager : IServersManager
+    public class ServerTester : IServerTester
     {
-        public event EventHandler<ServerTestingFinishedEventArgs> ServerTestingFinished;
-
-        public async Task<IDictionary<ServerInformation, HttpClient>> TestServers(IEnumerable<ServerInformation> servers)
+        public async Task<HttpClient> TestServer(ServerInformation server)
         {
-            var activeServers = new SortedDictionary<ServerInformation, HttpClient>();
+            var client = new HttpClient { BaseAddress = server.Uri };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.BaseAddress = server.Uri;
 
-            foreach (var server in servers)
+            var result = await this.GetToken(client, server);
+            if (result)
             {
-                var client = new HttpClient { BaseAddress = server.Uri };
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.BaseAddress = server.Uri;
-
-                var result = await this.GetToken(client, server);
-                if (result)
-                {
-                    activeServers.Add(server, client);
-                }
+                return client;
             }
 
-            this.OnServerTestingFinished(new ServerTestingFinishedEventArgs(activeServers));
-            return activeServers;
+            throw new ArgumentException();
         }
 
         private async Task<bool> GetToken(HttpClient client, ServerInformation server)
@@ -61,15 +52,6 @@
             }
 
             return false;
-        }
-
-        private void OnServerTestingFinished(ServerTestingFinishedEventArgs e)
-        {
-            var handler = this.ServerTestingFinished;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
     }
 }

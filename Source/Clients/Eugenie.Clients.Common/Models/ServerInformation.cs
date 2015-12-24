@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Models
 {
     using System;
+    using System.Net.Http;
 
     using Newtonsoft.Json;
 
@@ -31,6 +32,9 @@
 
         [JsonIgnore]
         public TimeSpan Ping { get; set; }
+
+        [JsonIgnore]
+        public HttpClient Client { get; set; }
 
         public int CompareTo(ServerInformation other)
         {
