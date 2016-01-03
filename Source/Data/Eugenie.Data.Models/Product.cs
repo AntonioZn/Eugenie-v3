@@ -15,6 +15,7 @@
         {
             this.barcodes = new HashSet<Barcode>();
             this.expirationDates = new HashSet<ExpirationDate>();
+            this.Measure = MeasureType.бр;
         }
 
         public int Id { get; set; }

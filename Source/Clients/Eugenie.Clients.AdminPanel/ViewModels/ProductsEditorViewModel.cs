@@ -49,6 +49,7 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
+                //TODO: make filter refresh only on ENTER
                 this.Products.Refresh();
             }
         }
@@ -71,8 +72,7 @@
         public ICollectionView Products { get; set; }
 
         public SimplifiedProduct SelectedItem { get; set; }
-
-        //TODO: Send message when dialog is opened and closed
+        
         public async void ShowProductInformationDialog()
         {
             var productInAllServers = await this.manager.GetProductByNameAsync(this.SelectedItem.Name);
@@ -111,6 +111,8 @@
         private bool Search(object obj)
         {
             var product = obj as SimplifiedProduct;
+
+            //TODO: extract array creation
             var searchAsArray = this.SearchValue.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return searchAsArray.AsParallel().All(word => product.Name.Contains(word));
         }

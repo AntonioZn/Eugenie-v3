@@ -36,82 +36,6 @@
             return this.productsRepository.All().Count();
         }
 
-        //TODO: add stockprice
-        public Product AddOrUpdate(string name, string oldName, decimal buyingPrice, decimal sellingPrice, 
-            MeasureType measure, decimal quantity, IEnumerable<string> barcodes, IEnumerable<DateTime> expirationDates)
-        {
-            if (name != oldName && this.productsRepository.All().Any(x => x.Name == name))
-            {
-                throw new ArgumentException($"A product with name {name} already exists");
-            }
-
-            if (oldName != null)
-            {
-                var oldProduct = this.productsRepository.All().FirstOrDefault(x => x.Name == oldName);
-                if (oldProduct != null)
-                {
-                    oldProduct.Name = name;
-                    oldProduct.BuyingPrice = buyingPrice;
-                    oldProduct.SellingPrice = sellingPrice;
-                    oldProduct.Measure = measure;
-                    oldProduct.Quantity += quantity;
-                    
-                    foreach (var barcode in barcodes)
-                    {
-                        if (!this.barcodesRepository.All().Any(x => x.Value == barcode))
-                        {
-                            var barcodeObj = new Barcode { Value = barcode };
-                            oldProduct.Barcodes.Add(barcodeObj);
-                        }
-                    }
-                    
-                    foreach (var expirationDate in expirationDates)
-                    {
-                        if (oldProduct.ExpirationDates.All(x => x.Date != expirationDate))
-                        {
-                            var expDateObj = new ExpirationDate { Date = expirationDate };
-                            oldProduct.ExpirationDates.Add(expDateObj);
-                        }
-                    }
-                    
-                    this.productsRepository.SaveChanges();
-                    return oldProduct;
-                }
-            }
-
-            var newProduct = new Product
-                          {
-                              Name = name,
-                              BuyingPrice = buyingPrice,
-                              SellingPrice = sellingPrice,
-                              Measure = measure,
-                              Quantity = quantity
-                          };
-            
-            foreach (var barcode in barcodes)
-            {
-                if (!this.barcodesRepository.All().Any(x => x.Value == barcode))
-                {
-                    var barcodeObj = new Barcode { Value = barcode };
-                    newProduct.Barcodes.Add(barcodeObj);
-                }
-            }
-            
-            foreach (var expirationDate in expirationDates)
-            {
-                if (newProduct.ExpirationDates.All(x => x.Date != expirationDate))
-                {
-                    var expDateObj = new ExpirationDate { Date = expirationDate };
-                    newProduct.ExpirationDates.Add(expDateObj);
-                }
-            }
-
-            this.productsRepository.Add(newProduct);
-            this.productsRepository.SaveChanges();
-
-            return newProduct;
-        }
-
         public IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize)
         {
             return this.productsRepository.All().OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
@@ -125,6 +49,79 @@
         public IQueryable<Product> FindByQuantity(decimal quantity)
         {
             return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
+        }
+        
+        public Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, 
+            MeasureType? measure, decimal? quantity, IEnumerable<string> barcodes, IEnumerable<DateTime> expirationDates)
+        {
+            if (newName != null && this.productsRepository.All().FirstOrDefault(x => x.Name == newName) != null)
+            {
+                throw new ArgumentException($"A product with name {newName} already exists");
+            }
+
+            var product = this.productsRepository.All().FirstOrDefault(x => x.Name == name);
+            if (product == null)
+            {
+                product = new Product();
+                this.productsRepository.Add(product);
+            }
+
+            var stockPrice = this.CalculateStockPrice(product, sellingPrice, quantity);
+            this.dailyEarningsService.AddStockPrice(stockPrice);
+
+            this.MapProperties(product, name, newName, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
+
+            this.productsRepository.SaveChanges();
+
+            return product;
+        }
+
+        private decimal CalculateStockPrice(Product product, decimal? sellingPrice, decimal? quantity)
+        {
+            decimal stockPrice = 0;
+            var sellingPriceDifference = sellingPrice.GetValueOrDefault() - product.SellingPrice;
+            stockPrice += sellingPriceDifference * product.Quantity;
+            stockPrice += sellingPrice.GetValueOrDefault() * quantity.GetValueOrDefault();
+
+            return stockPrice;
+        }
+
+        private void MapProperties(Product product, string name, string newName, decimal? buyingPrice, decimal? sellingPrice,
+                                   MeasureType? measure, decimal? quantity, IEnumerable<string> barcodes, IEnumerable<DateTime> expirationDates)
+        {
+            product.Name = newName ?? name;
+            product.BuyingPrice = buyingPrice ?? product.BuyingPrice;
+            product.SellingPrice = sellingPrice ?? product.SellingPrice;
+            product.Measure = measure ?? product.Measure;
+            product.Quantity += quantity ?? 0;
+
+            foreach (var barcode in product.Barcodes.ToList())
+            {
+                if (!barcodes.Contains(barcode.Value))
+                {
+                    this.barcodesRepository.Delete(barcode);
+                    product.Barcodes.Remove(barcode);
+                }
+            }
+
+            foreach (var barcode in barcodes)
+            {
+                if (!this.barcodesRepository.All().Any(x => x.Value == barcode))
+                {
+                    var barcodeObj = new Barcode { Value = barcode };
+                    product.Barcodes.Add(barcodeObj);
+                }
+            }
+
+            //TODO: add expiration date deletion
+            foreach (var expirationDate in expirationDates)
+            {
+                if (product.ExpirationDates.All(x => x.Date != expirationDate))
+                {
+                    var expDateObj = new ExpirationDate { Date = expirationDate };
+                    product.ExpirationDates.Add(expDateObj);
+                }
+            }
         }
     }
 }

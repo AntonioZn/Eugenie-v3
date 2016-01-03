@@ -42,11 +42,11 @@ namespace Eugenie.Server.Api
 
         private void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<EugenieDbContext>().As<IEugenieDbContext>();
+            builder.RegisterType<EugenieDbContext>().As<IEugenieDbContext>().InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(EfGenericRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
             builder.RegisterType<ProductsService>().As<IProductsService>();
             builder.RegisterType<DealsService>().As<IDealsService>();
             builder.RegisterType<DailyEarningsService>().As<IDailyEarningsService>();
-            builder.RegisterGeneric(typeof (EfGenericRepository<>)).As(typeof (IRepository<>)).InstancePerLifetimeScope();
         }
     }
 }
