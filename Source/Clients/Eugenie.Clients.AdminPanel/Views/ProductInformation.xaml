@@ -82,13 +82,13 @@
                                              Width="Auto"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Key.Name}" />
-                                    <TextBox materialDesign:TextFieldAssist.Hint="Количество"
+                                    <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Quantity}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"
                                              Margin="20,0,0,0"
                                              Width="100"
                                              HorizontalAlignment="Left"
-                                             Text="{Binding Value.Quantity}" />
+                                             Text="{Binding Value.QuantityToAdd}" />
                                     <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"

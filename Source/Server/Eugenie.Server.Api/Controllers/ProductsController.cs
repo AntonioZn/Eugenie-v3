@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Web.Http;
 
+    using Data.Models;
+
     using Models.Products;
 
     using Services.Data.Contracts;
@@ -79,7 +81,7 @@
             try
             {
                 return this.Ok(this.productsService.AddOrUpdate(model.Name, model.NewName, model.BuyingPrice, model.SellingPrice, 
-                    model.Measure, model.Quantity, model.Barcodes ?? Enumerable.Empty<string>(), model.ExpirationDates ?? Enumerable.Empty<DateTime>()));
+                    model.Measure, model.Quantity, model.Barcodes ?? Enumerable.Empty<Barcode>(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>()));
             }
             catch (ArgumentException ex)
             {

@@ -4,24 +4,27 @@
 
     using Data.Models;
 
+    using Newtonsoft.Json;
+
     public class Product
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
+        
+        public string NewName { get; set; }
 
-        public string OldName { get; set; }
+        public decimal? BuyingPrice { get; set; }
 
-        public decimal BuyingPrice { get; set; }
+        public decimal? SellingPrice { get; set; }
 
-        public decimal SellingPrice { get; set; }
+        public MeasureType? Measure { get; set; }
+        
+        public decimal? Quantity { get; set; }
+        
+        [JsonIgnore]
+        public decimal? QuantityToAdd { get; set; }
 
-        public MeasureType Measure { get; set; }
+        public IEnumerable<Barcode> Barcodes { get; set; }
 
-        public decimal Quantity { get; set; }
-
-        public virtual IEnumerable<Barcode> Barcodes { get; set; }
-
-        public virtual IEnumerable<ExpirationDate> ExpirationDates { get; set; }
+        public IEnumerable<ExpirationDate> ExpirationDates { get; set; }
     }
 }

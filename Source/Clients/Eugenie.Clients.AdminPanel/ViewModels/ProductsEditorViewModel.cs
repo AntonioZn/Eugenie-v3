@@ -25,6 +25,7 @@
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
         private string searchValue = string.Empty;
+        private string[] searchAsArray = new string[0];
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -49,7 +50,8 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
-                //TODO: make filter refresh only on ENTER
+                this.searchAsArray = value.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                //TODO: refresh on ENTER ???
                 this.Products.Refresh();
             }
         }
@@ -77,7 +79,7 @@
         {
             var productInAllServers = await this.manager.GetProductByNameAsync(this.SelectedItem.Name);
 
-            var oldName = this.SelectedItem.Name;
+            var name = this.SelectedItem.Name;
             this.SelectedItem.BeginEdit();
 
             var viewModel = new ProductInformationViewModel(productInAllServers, this.SelectedItem);
@@ -92,12 +94,13 @@
                 this.SelectedItem.EndEdit();
                 foreach (var pair in productInAllServers)
                 {
-                    pair.Value.Name = this.SelectedItem.Name;
-                    pair.Value.OldName = oldName;
+                    pair.Value.Name = name;
+                    pair.Value.NewName = this.SelectedItem.Name;
                     pair.Value.Measure = this.SelectedItem.Measure;
                     pair.Value.BuyingPrice = this.SelectedItem.BuyingPrice;
                     pair.Value.Barcodes = this.SelectedItem.Barcodes;
-                    pair.Value.ExpirationDates = new List<ExpirationDate>() { new ExpirationDate() { Batch = "asdasd", Date = new DateTime(2015, 12, 29) } };
+                    pair.Value.Quantity = pair.Value.QuantityToAdd;
+                    //pair.Value.ExpirationDates = new List<ExpirationDate> { new ExpirationDate() { Batch = "asdasd", Date = new DateTime(2016, 12, 29) } };
                 }
 
                 this.manager.AddOrUpdateAsync(productInAllServers);
@@ -111,10 +114,8 @@
         private bool Search(object obj)
         {
             var product = obj as SimplifiedProduct;
-
-            //TODO: extract array creation
-            var searchAsArray = this.SearchValue.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return searchAsArray.AsParallel().All(word => product.Name.Contains(word));
+            
+            return this.searchAsArray.All(word => product.Name.Contains(word));
         }
 
         private async void OnServerTestingFinished(object sender, EventArgs e)

@@ -16,7 +16,7 @@
         private SimplifiedProduct tempProduct;
         private bool isInEditMode;
 
-        public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, IEnumerable<Barcode> barcodes)
+        public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, ICollection<Barcode> barcodes)
         {
             this.Id = id;
             this.Name = name;
@@ -69,15 +69,7 @@
             }
         }
 
-        public IEnumerable<Barcode> Barcodes { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public ICollection<Barcode> Barcodes { get; set; }
 
         public void BeginEdit()
         {
@@ -107,6 +99,14 @@
                 this.Measure = this.tempProduct.Measure;
                 this.isInEditMode = false;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -52,9 +52,9 @@
         }
         
         public Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, 
-            MeasureType? measure, decimal? quantity, IEnumerable<string> barcodes, IEnumerable<DateTime> expirationDates)
+            MeasureType? measure, decimal? quantity, IEnumerable<Barcode> barcodes, IEnumerable<ExpirationDate> expirationDates)
         {
-            if (newName != null && this.productsRepository.All().FirstOrDefault(x => x.Name == newName) != null)
+            if (newName != null && name != newName && this.productsRepository.All().FirstOrDefault(x => x.Name == newName) != null)
             {
                 throw new ArgumentException($"A product with name {newName} already exists");
             }
@@ -67,11 +67,11 @@
             }
 
             var stockPrice = this.CalculateStockPrice(product, sellingPrice, quantity);
-            this.dailyEarningsService.AddStockPrice(stockPrice);
 
             this.MapProperties(product, name, newName, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
 
             this.productsRepository.SaveChanges();
+            this.dailyEarningsService.AddStockPrice(stockPrice);
 
             return product;
         }
@@ -87,7 +87,7 @@
         }
 
         private void MapProperties(Product product, string name, string newName, decimal? buyingPrice, decimal? sellingPrice,
-                                   MeasureType? measure, decimal? quantity, IEnumerable<string> barcodes, IEnumerable<DateTime> expirationDates)
+                                   MeasureType? measure, decimal? quantity, IEnumerable<Barcode> barcodes, IEnumerable<ExpirationDate> expirationDates)
         {
             product.Name = newName ?? name;
             product.BuyingPrice = buyingPrice ?? product.BuyingPrice;
@@ -97,7 +97,7 @@
 
             foreach (var barcode in product.Barcodes.ToList())
             {
-                if (!barcodes.Contains(barcode.Value))
+                if (barcodes.All(x => x.Value != barcode.Value))
                 {
                     this.barcodesRepository.Delete(barcode);
                     product.Barcodes.Remove(barcode);
@@ -106,20 +106,18 @@
 
             foreach (var barcode in barcodes)
             {
-                if (!this.barcodesRepository.All().Any(x => x.Value == barcode))
+                if (!this.barcodesRepository.All().Any(x => x.Value == barcode.Value))
                 {
-                    var barcodeObj = new Barcode { Value = barcode };
-                    product.Barcodes.Add(barcodeObj);
+                    product.Barcodes.Add(barcode);
                 }
             }
 
             //TODO: add expiration date deletion
             foreach (var expirationDate in expirationDates)
             {
-                if (product.ExpirationDates.All(x => x.Date != expirationDate))
+                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date))
                 {
-                    var expDateObj = new ExpirationDate { Date = expirationDate };
-                    product.ExpirationDates.Add(expDateObj);
+                    product.ExpirationDates.Add(expirationDate);
                 }
             }
         }

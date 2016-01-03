@@ -25,8 +25,8 @@
 
         public decimal? Quantity { get; set; }
 
-        public IEnumerable<string> Barcodes { get; set; }
+        public IEnumerable<Barcode> Barcodes { get; set; }
 
-        public IEnumerable<DateTime> ExpirationDates { get; set; }
+        public IEnumerable<ExpirationDate> ExpirationDates { get; set; }
     }
 }

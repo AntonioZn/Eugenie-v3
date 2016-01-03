@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System;
     using System.Collections.Generic;
 
     using Common.Models;
@@ -14,8 +15,12 @@
         {
             this.Products = products;
             this.FirstProduct = simpleProduct;
-            //TODO: foreach enum
-            this.Measures = new List<MeasureType> { MeasureType.бр, MeasureType.кг, MeasureType.л };
+
+            this.Measures = new List<MeasureType>();
+            foreach (var measureType in Enum.GetValues(typeof(MeasureType)))
+            {
+                this.Measures.Add((MeasureType)measureType);
+            }
         }
 
         public IDictionary<ServerInformation, Product> Products { get; set; }
