@@ -19,20 +19,20 @@
         public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient webApiClient)
         {
             this.storage = storage;
+            this.storage.ServerAdded += this.OnServerAdded;
+            this.storage.ServerDeleted += this.OnServerDeleted;
             this.tester = tester;
             this.webApiClient = webApiClient;
 
             this.ActiveServers = new Dictionary<ServerInformation, HttpClient>();
 
-            this.Initialize();
+            this.TestServers();
             //var inactiveServers = storage.Servers.Except(this.ActiveServers.Keys);
         }
 
-        public event EventHandler ServerTestingFinished;
-
-        public bool HasActiveServer => this.ActiveServers.Any();
-
         public IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
+
+        #region WebApi
 
         public async Task<int> GetProductsCount()
         {
@@ -65,47 +65,32 @@
                 this.webApiClient.AddOrUpdateAsync(client, pair.Value);
             }
         }
+        #endregion
 
-        public async void AddServer(ServerInformation server)
-        {
-            this.storage.AddServer(server);
-            await this.TestServer(server);
-        }
-        
-        public void DeleteServer(ServerInformation server)
-        {
-            this.storage.DeleteServer(server);
-            var serverToDelete = this.ActiveServers.FirstOrDefault(x => x.Key.Name == server.Name);
-            this.ActiveServers.Remove(serverToDelete);
-        }
+        public event EventHandler ServerTestingFinished;
 
-        public async void Initialize()
+        public async void TestServers()
         {
             this.ActiveServers.Clear();
             foreach (var server in this.storage.Servers)
             {
-                await this.TestServer(server);
+                try
+                {
+                    var client = await this.tester.TestServer(server);
+                    this.ActiveServers.Add(server, client);
+                }
+                catch (ArgumentException ex)
+                {
+
+                }
             }
 
-            this.OnServerTestingFinished(EventArgs.Empty);
-        }
-
-        private async Task TestServer(ServerInformation server)
-        {
-            try
-            {
-                var client = await this.tester.TestServer(server);
-                this.ActiveServers.Add(server, client);
-            }
-            catch (ArgumentException ex)
-            {
-
-            }
+            this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
 
         private HttpClient GetFastestServer()
         {
-            ServerInformation fastestServer = this.ActiveServers.Keys.ToList()[0];
+            var fastestServer = this.ActiveServers.Keys.ToList()[0];
             foreach (var server in this.ActiveServers.Keys)
             {
                 if (fastestServer.Ping > server.Ping)
@@ -116,13 +101,25 @@
 
             return this.ActiveServers[fastestServer];
         }
-        
-        private void OnServerTestingFinished(EventArgs e)
+
+        private async void OnServerAdded(object sender, ServerAddedEventArgs e)
         {
-            var handler = this.ServerTestingFinished;
-            if (handler != null)
+            try
             {
-                handler(this, e);
+                var client = await this.tester.TestServer(e.Server);
+                this.ActiveServers.Add(e.Server, client);
+            }
+            catch (ArgumentException ex)
+            {
+
+            }
+        }
+
+        private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
+        {
+            if (this.ActiveServers.ContainsKey(e.Server))
+            {
+                this.ActiveServers.Remove(e.Server);
             }
         }
     }

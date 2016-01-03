@@ -117,7 +117,7 @@
 
         private async void OnServerTestingFinished(object sender, EventArgs e)
         {
-            if (this.manager.HasActiveServer)
+            if (this.manager.ActiveServers.Any())
             {
                 this.LoadingVisibility = Visibility.Visible;
 

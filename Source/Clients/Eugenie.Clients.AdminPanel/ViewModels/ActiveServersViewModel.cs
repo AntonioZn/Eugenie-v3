@@ -22,7 +22,7 @@
         {
             this.manager = manager;
             this.RefreshServersCommand = new RelayCommand(this.Refresh);
-            this.LoadingVisibility = Visibility.Collapsed;
+            this.LoadingVisibility = Visibility.Visible;
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
         }
@@ -42,6 +42,7 @@
             }
         }
 
+        //TODO: auto refresh active servers when adding new server
         public ICollection<ServerInformation> Servers
         {
             get
@@ -71,7 +72,7 @@
         private void Refresh()
         {
             this.LoadingVisibility = Visibility.Visible;
-            this.manager.Initialize();
+            this.manager.TestServers();
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)

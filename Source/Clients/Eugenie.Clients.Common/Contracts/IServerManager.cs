@@ -9,15 +9,11 @@
 
     public interface IServerManager
     {
-        event EventHandler ServerTestingFinished;
-
         IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
 
+        event EventHandler ServerTestingFinished;
+
         void AddOrUpdateAsync(IDictionary<ServerInformation, Product> serverProductPairs);
-
-        void AddServer(ServerInformation server);
-
-        void DeleteServer(ServerInformation server);
 
         Task<IDictionary<ServerInformation, Product>> GetProductByNameAsync(string name);
 
@@ -25,8 +21,6 @@
 
         Task<int> GetProductsCount();
 
-        void Initialize();
-
-        bool HasActiveServer { get; }
+        void TestServers();
     }
 }

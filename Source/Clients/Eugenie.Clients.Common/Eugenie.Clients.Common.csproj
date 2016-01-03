@@ -72,6 +72,8 @@
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ServerAddedEventArgs.cs" />
+    <Compile Include="Models\ServerDeletedEventArgs.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\ServerTestingFinishedEventArgs.cs" />
     <Compile Include="Models\SimplifiedProduct.cs" />
