@@ -22,7 +22,7 @@
         {
             this.manager = manager;
             this.RefreshServersCommand = new RelayCommand(this.Refresh);
-            this.LoadingVisibility = Visibility.Visible;
+            this.LoadingVisibility = Visibility.Collapsed;
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
         }

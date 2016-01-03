@@ -75,11 +75,13 @@
         public void DeleteServer(ServerInformation server)
         {
             this.storage.DeleteServer(server);
-            this.ActiveServers.Remove(server);
+            var serverToDelete = this.ActiveServers.FirstOrDefault(x => x.Key.Name == server.Name);
+            this.ActiveServers.Remove(serverToDelete);
         }
 
         public async void Initialize()
         {
+            this.ActiveServers.Clear();
             foreach (var server in this.storage.Servers)
             {
                 await this.TestServer(server);

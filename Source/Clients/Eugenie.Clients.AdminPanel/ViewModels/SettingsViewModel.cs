@@ -4,6 +4,7 @@
     using System.Collections.ObjectModel;
     using System.Windows.Input;
 
+    using Common.Contracts;
     using Common.Models;
 
     using GalaSoft.MvvmLight;
@@ -15,14 +16,16 @@
 
     public class SettingsViewModel : ViewModelBase
     {
+        private readonly IServerManager manager;
         private ObservableCollection<ServerInformation> servers; 
         private string name;
         private string address = "http://";
         private string username;
         private string password;
 
-        public SettingsViewModel()
+        public SettingsViewModel(IServerManager manager)
         {
+            this.manager = manager;
             this.AddNewServerCommand = new RelayCommand(this.HandleAddNewServerCommand);
             this.DeleteServerCommand = new RelayCommand<ServerInformation>(this.HandleDeleteServerCommand);
             var savedServers = JsonConvert.DeserializeObject<ICollection<ServerInformation>>(Settings.Default.Servers);
@@ -116,27 +119,22 @@
 
         private void HandleAddNewServerCommand()
         {
-            this.Servers.Add(new ServerInformation(this.username, this.password, this.name, this.address));
+            var newServer = new ServerInformation(this.username, this.password, this.name, this.address);
 
             this.Name = string.Empty;
             this.Address = string.Empty;
             this.Username = string.Empty;
             this.Password = string.Empty;
 
-            this.SaveServers();
+
+            this.manager.AddServer(newServer);
         }
 
         private void HandleDeleteServerCommand(ServerInformation server)
         {
             this.Servers.Remove(server);
 
-            this.SaveServers();
-        }
-
-        private void SaveServers()
-        {
-            Settings.Default.Servers = JsonConvert.SerializeObject(this.Servers);
-            Settings.Default.Save();
+            this.manager.DeleteServer(server);
         }
     }
 }

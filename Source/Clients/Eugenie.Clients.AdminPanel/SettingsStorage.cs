@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.AdminPanel
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Common.Contracts;
     using Common.Models;
@@ -33,7 +34,8 @@
 
         public void DeleteServer(ServerInformation server)
         {
-            this.Servers.Remove(server);
+            var serverToDelete = this.Servers.FirstOrDefault(x => x.Name == server.Name);
+            this.Servers.Remove(serverToDelete);
             this.SaveSettings();
         }
 
