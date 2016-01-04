@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -10,8 +9,6 @@
 
     using Common.Contracts;
     using Common.Models;
-
-    using Data.Models;
 
     using GalaSoft.MvvmLight;
 

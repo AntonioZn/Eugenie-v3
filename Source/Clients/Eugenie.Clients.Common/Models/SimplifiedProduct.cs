@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Models
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
@@ -15,6 +16,8 @@
         private MeasureType measure;
         private SimplifiedProduct tempProduct;
         private bool isInEditMode;
+        private ObservableCollection<Barcode> barcodes; 
+        private IList<Barcode> tempBarcodes;
 
         public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, ICollection<Barcode> barcodes)
         {
@@ -69,13 +72,39 @@
             }
         }
 
-        public ICollection<Barcode> Barcodes { get; set; }
+        public ICollection<Barcode> Barcodes
+        {
+            get
+            {
+                if (this.barcodes == null)
+                {
+                    this.barcodes = new ObservableCollection<Barcode>();
+                }
+
+                return this.barcodes;
+            }
+
+            set
+            {
+                if (this.barcodes == null)
+                {
+                    this.barcodes = new ObservableCollection<Barcode>();
+                }
+
+                this.barcodes.Clear();
+                foreach (var barcode in value)
+                {
+                    this.barcodes.Add(barcode);
+                }
+            }
+        }
 
         public void BeginEdit()
         {
             if (!this.isInEditMode)
             {
                 this.tempProduct = this.MemberwiseClone() as SimplifiedProduct;
+                this.tempBarcodes = new List<Barcode>(this.barcodes);
                 this.isInEditMode = true;
             }
         }
@@ -85,6 +114,7 @@
             if (this.isInEditMode)
             {
                 this.tempProduct = null;
+                this.tempBarcodes = null;
                 this.isInEditMode = false;
             }
         }
@@ -97,6 +127,7 @@
                 this.Name = this.tempProduct.Name;
                 this.BuyingPrice = this.tempProduct.BuyingPrice;
                 this.Measure = this.tempProduct.Measure;
+                this.Barcodes = this.tempBarcodes;
                 this.isInEditMode = false;
             }
         }

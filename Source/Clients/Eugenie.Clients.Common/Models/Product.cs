@@ -25,6 +25,6 @@
 
         public IEnumerable<Barcode> Barcodes { get; set; }
 
-        public IEnumerable<ExpirationDate> ExpirationDates { get; set; }
+        public ICollection<ExpirationDate> ExpirationDates { get; set; }
     }
 }

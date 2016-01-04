@@ -8,10 +8,11 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="20"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+             x:Name="productInformationUserControl">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
             <StackPanel Margin="20,20,0,0"
@@ -46,11 +47,24 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
-                                <Border x:Name="Border"
-                                        Padding="8"
+                                <Border Padding="4"
                                         BorderThickness="0 0 0 1"
                                         BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                    <TextBlock Text="{Binding Value}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Value}" />
+                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Margin="5,0,0,0"
+                                                ToolTip="Изтрий"
+                                                Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
+                                                CommandParameter="{Binding}">
+                                            <Viewbox Width="24"
+                                                     Height="24">
+                                                <Path Stretch="Fill"
+                                                      Data="F1 M 25.3333,23.75L 50.6667,23.75C 51.5411,23.75 51.8541,27.3125 51.8541,27.3125L 24.1458,27.3125C 24.1458,27.3125 24.4589,23.75 25.3333,23.75 Z M 35.625,19.7917L 40.375,19.7917C 40.8122,19.7917 41.9583,20.9378 41.9583,21.375C 41.9583,21.8122 40.8122,22.9584 40.375,22.9584L 35.625,22.9584C 35.1878,22.9584 34.0416,21.8122 34.0416,21.375C 34.0416,20.9378 35.1878,19.7917 35.625,19.7917 Z M 27.7083,28.5L 48.2916,28.5C 49.1661,28.5 49.875,29.2089 49.875,30.0834L 48.2916,53.8334C 48.2916,54.7078 47.5828,55.4167 46.7083,55.4167L 29.2917,55.4167C 28.4172,55.4167 27.7083,54.7078 27.7083,53.8334L 26.125,30.0834C 26.125,29.2089 26.8339,28.5 27.7083,28.5 Z M 30.0833,31.6667L 30.4792,52.25L 33.25,52.25L 32.8542,31.6667L 30.0833,31.6667 Z M 36.4167,31.6667L 36.4167,52.25L 39.5833,52.25L 39.5833,31.6667L 36.4167,31.6667 Z M 43.1458,31.6667L 42.75,52.25L 45.5208,52.25L 45.9167,31.6667L 43.1458,31.6667 Z "
+                                                      Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                            </Viewbox>
+                                        </Button>
+                                    </StackPanel>
                                 </Border>
                             </StackPanel>
                         </DataTemplate>
@@ -68,8 +82,7 @@
                               ItemsSource="{Binding Products}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="Border"
-                                    Padding="8"
+                            <Border Padding="8"
                                     BorderThickness="1,1,1,0"
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
                                 <StackPanel Orientation="Horizontal">
@@ -79,45 +92,64 @@
                                              IsTabStop="False"
                                              Focusable="False"
                                              IsReadOnly="True"
-                                             Width="Auto"
+                                             Width="110"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Key.Name}" />
                                     <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Quantity}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"
                                              Margin="20,0,0,0"
-                                             Width="100"
+                                             Width="70"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Value.QuantityToAdd}" />
                                     <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"
                                              Margin="20,0,0,0"
-                                             Width="100"
+                                             Width="90"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Value.SellingPrice}" />
-                                    <Expander IsExpanded="False"
-                                              IsTabStop="False"
-                                              Margin="20,0,0,0"
-                                              HorizontalAlignment="Stretch">
-                                        <Expander.Header>
-                                            <TextBlock Text="Годности" />
-                                        </Expander.Header>
+                                    <materialDesign:PopupBox PlacementMode="BottomAndAlignCentres"
+                                                             ToolTipService.Placement="Right"
+                                                             ToolTip="Срокове на годност"
+                                                             IsTabStop="False"
+                                                             Focusable="False">
                                         <StackPanel Orientation="Horizontal">
                                             <ScrollViewer VerticalScrollBarVisibility="Hidden"
                                                           IsTabStop="False"
                                                           VerticalAlignment="Top"
-                                                          MaxHeight="140">
+                                                          MaxHeight="200">
                                                 <ItemsControl IsTabStop="False"
                                                               ItemsSource="{Binding Value.ExpirationDates}"
-                                                              Margin="0,0,5,0">
+                                                              TextElement.FontSize="18">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Vertical">
-                                                                <Border BorderThickness="0 0 0 1"
+                                                                <Border Padding="4"
+                                                                        BorderThickness="0 0 0 1"
                                                                         BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                                                    <TextBlock Text="{Binding Date, StringFormat=dd/MM/yyyy}"
-                                                                               Margin="0,3,0,0" />
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                                                                        <TextBlock Text="-"
+                                                                                   Margin="5,0,0,0" />
+                                                                        <TextBlock Text="{Binding Batch}" 
+                                                                                   Margin="5,0,0,0"
+                                                                                   Width="80"/>
+                                                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                                                Margin="5,0,0,0"
+                                                                                HorizontalAlignment="Right"
+                                                                                HorizontalContentAlignment="Stretch"
+                                                                                ToolTip="Изтрий"
+                                                                                Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
+                                                                                CommandParameter="{Binding}">
+                                                                            <Viewbox Width="24"
+                                                                                     Height="24">
+                                                                                <Path Stretch="Fill"
+                                                                                      Data="F1 M 25.3333,23.75L 50.6667,23.75C 51.5411,23.75 51.8541,27.3125 51.8541,27.3125L 24.1458,27.3125C 24.1458,27.3125 24.4589,23.75 25.3333,23.75 Z M 35.625,19.7917L 40.375,19.7917C 40.8122,19.7917 41.9583,20.9378 41.9583,21.375C 41.9583,21.8122 40.8122,22.9584 40.375,22.9584L 35.625,22.9584C 35.1878,22.9584 34.0416,21.8122 34.0416,21.375C 34.0416,20.9378 35.1878,19.7917 35.625,19.7917 Z M 27.7083,28.5L 48.2916,28.5C 49.1661,28.5 49.875,29.2089 49.875,30.0834L 48.2916,53.8334C 48.2916,54.7078 47.5828,55.4167 46.7083,55.4167L 29.2917,55.4167C 28.4172,55.4167 27.7083,54.7078 27.7083,53.8334L 26.125,30.0834C 26.125,29.2089 26.8339,28.5 27.7083,28.5 Z M 30.0833,31.6667L 30.4792,52.25L 33.25,52.25L 32.8542,31.6667L 30.0833,31.6667 Z M 36.4167,31.6667L 36.4167,52.25L 39.5833,52.25L 39.5833,31.6667L 36.4167,31.6667 Z M 43.1458,31.6667L 42.75,52.25L 45.5208,52.25L 45.9167,31.6667L 43.1458,31.6667 Z "
+                                                                                      Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                                                            </Viewbox>
+                                                                        </Button>
+                                                                    </StackPanel>
                                                                 </Border>
                                                             </StackPanel>
                                                         </DataTemplate>
@@ -125,16 +157,29 @@
                                                 </ItemsControl>
                                             </ScrollViewer>
                                         </StackPanel>
-                                    </Expander>
-                                    <StackPanel Margin="20,0,0,0">
+                                    </materialDesign:PopupBox>
+                                    <StackPanel Margin="20,0,0,0"
+                                                Orientation="Horizontal">
                                         <DatePicker HorizontalAlignment="Left"
                                                     VerticalAlignment="Top"
                                                     materialDesign:TextFieldAssist.Hint="Избери дата"
-                                                    IsTabStop="False" />
-                                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                                Content="Добави"
-                                                Margin="0,5,0,0"
-                                                IsTabStop="False" />
+                                                    IsTabStop="False"
+                                                    SelectedDate="{Binding ElementName=productInformationUserControl, Path=DataContext.Date}" />
+                                        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                                IsTabStop="False"
+                                                Margin="5,0,0,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                ToolTip="Добави"
+                                                Command="{Binding ElementName=productInformationUserControl, Path=DataContext.AddExpirationDateCommand}"
+                                                CommandParameter="{Binding Key}">
+                                            <Viewbox Width="24"
+                                                     Height="24">
+                                                <Path Stretch="Fill"
+                                                      Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z "
+                                                      Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                            </Viewbox>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
