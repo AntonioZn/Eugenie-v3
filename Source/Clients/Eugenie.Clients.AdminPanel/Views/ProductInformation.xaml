@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Eugenie.Clients.Common.Converters;assembly=Eugenie.Clients.Common"
              Height="Auto"
              Width="Auto"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -13,6 +14,9 @@
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
              x:Name="productInformationUserControl">
+    <UserControl.Resources>
+        <converters:ServerInformationExprationDateMultiCommandParameterConverter x:Key="ServerInformationExprationDateMultiCommandParameterConverter" />
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
             <StackPanel Margin="20,20,0,0"
@@ -51,8 +55,10 @@
                                         BorderThickness="0 0 0 1"
                                         BorderBrush="{DynamicResource MaterialDesignDivider}">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Value}" />
+                                        <TextBlock Text="{Binding Value}"
+                                                   VerticalAlignment="Center" />
                                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                VerticalAlignment="Center"
                                                 Margin="5,0,0,0"
                                                 ToolTip="Изтрий"
                                                 Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
@@ -98,28 +104,30 @@
                                     <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Quantity}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"
-                                             Margin="20,0,0,0"
+                                             Margin="10,0,0,0"
                                              Width="70"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Value.QuantityToAdd}" />
                                     <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Top"
-                                             Margin="20,0,0,0"
+                                             Margin="10,0,0,0"
                                              Width="90"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Value.SellingPrice}" />
-                                    <materialDesign:PopupBox PlacementMode="BottomAndAlignCentres"
-                                                             ToolTipService.Placement="Right"
+                                    <materialDesign:PopupBox ToolTipService.Placement="Right"
+                                                             PlacementMode="BottomAndAlignCentres"
                                                              ToolTip="Срокове на годност"
-                                                             IsTabStop="False"
+                                                             Margin="10,0,0,0"
                                                              Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Background="White">
                                             <ScrollViewer VerticalScrollBarVisibility="Hidden"
                                                           IsTabStop="False"
                                                           VerticalAlignment="Top"
-                                                          MaxHeight="200">
+                                                          MaxHeight="250">
                                                 <ItemsControl IsTabStop="False"
+                                                              x:Name="currentProduct"
                                                               ItemsSource="{Binding Value.ExpirationDates}"
                                                               TextElement.FontSize="18">
                                                     <ItemsControl.ItemTemplate>
@@ -129,19 +137,26 @@
                                                                         BorderThickness="0 0 0 1"
                                                                         BorderBrush="{DynamicResource MaterialDesignDivider}">
                                                                     <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                                                                        <TextBlock Text="{Binding Date, StringFormat=dd/MM/yyyy}"
+                                                                                   VerticalAlignment="Center" />
                                                                         <TextBlock Text="-"
-                                                                                   Margin="5,0,0,0" />
-                                                                        <TextBlock Text="{Binding Batch}" 
                                                                                    Margin="5,0,0,0"
-                                                                                   Width="80"/>
+                                                                                   VerticalAlignment="Center" />
+                                                                        <TextBlock Text="{Binding Batch}"
+                                                                                   Margin="5,0,0,0"
+                                                                                   Width="120"
+                                                                                   VerticalAlignment="Center" />
                                                                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                                                 Margin="5,0,0,0"
-                                                                                HorizontalAlignment="Right"
-                                                                                HorizontalContentAlignment="Stretch"
+                                                                                VerticalAlignment="Center"
                                                                                 ToolTip="Изтрий"
-                                                                                Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
-                                                                                CommandParameter="{Binding}">
+                                                                                Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteExpirationDateCommand}">
+                                                                            <Button.CommandParameter>
+                                                                                <MultiBinding Converter="{StaticResource ServerInformationExprationDateMultiCommandParameterConverter}">
+                                                                                    <Binding />
+                                                                                    <Binding ElementName="currentProduct" Path="DataContext.Value" />
+                                                                                </MultiBinding>
+                                                                            </Button.CommandParameter>
                                                                             <Viewbox Width="24"
                                                                                      Height="24">
                                                                                 <Path Stretch="Fill"
@@ -158,21 +173,24 @@
                                             </ScrollViewer>
                                         </StackPanel>
                                     </materialDesign:PopupBox>
-                                    <StackPanel Margin="20,0,0,0"
+                                    <StackPanel Margin="10,0,0,0"
                                                 Orientation="Horizontal">
-                                        <DatePicker HorizontalAlignment="Left"
-                                                    VerticalAlignment="Top"
+                                        <DatePicker VerticalAlignment="Bottom"
                                                     materialDesign:TextFieldAssist.Hint="Избери дата"
-                                                    IsTabStop="False"
                                                     SelectedDate="{Binding ElementName=productInformationUserControl, Path=DataContext.Date}" />
+                                        <TextBox materialDesign:TextFieldAssist.Hint="Партиден №"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 VerticalAlignment="Bottom"
+                                                 Width="100"
+                                                 Margin="10,0,0,0"
+                                                 Text="{Binding ElementName=productInformationUserControl, Path=DataContext.Batch}" />
                                         <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                                 IsTabStop="False"
-                                                Margin="5,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Top"
+                                                Margin="10,0,0,0"
+                                                VerticalAlignment="Bottom"
                                                 ToolTip="Добави"
                                                 Command="{Binding ElementName=productInformationUserControl, Path=DataContext.AddExpirationDateCommand}"
-                                                CommandParameter="{Binding Key}">
+                                                CommandParameter="{Binding Value}">
                                             <Viewbox Width="24"
                                                      Height="24">
                                                 <Path Stretch="Fill"

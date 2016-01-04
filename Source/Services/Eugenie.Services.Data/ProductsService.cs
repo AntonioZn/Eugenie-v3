@@ -13,14 +13,17 @@
 
     public class ProductsService : IProductsService
     {
-        private readonly IRepository<Barcode> barcodesRepository;
-        private readonly IDailyEarningsService dailyEarningsService;
         private readonly IRepository<Product> productsRepository;
+        private readonly IRepository<Barcode> barcodesRepository;
+        private readonly IRepository<ExpirationDate> expirationDatesRepository;
+        private readonly IDailyEarningsService dailyEarningsService;
 
-        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IDailyEarningsService dailyEarningsService)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository,
+            IRepository<ExpirationDate> expirationDatesRepository, IDailyEarningsService dailyEarningsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
+            this.expirationDatesRepository = expirationDatesRepository;
             this.dailyEarningsService = dailyEarningsService;
         }
 
@@ -52,7 +55,7 @@
         }
         
         public Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, 
-            MeasureType? measure, decimal? quantity, IEnumerable<Barcode> barcodes, IEnumerable<ExpirationDate> expirationDates)
+            MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
             if (newName != null && name != newName && this.productsRepository.All().FirstOrDefault(x => x.Name == newName) != null)
             {
@@ -87,7 +90,7 @@
         }
 
         private void MapProperties(Product product, string name, string newName, decimal? buyingPrice, decimal? sellingPrice,
-                                   MeasureType? measure, decimal? quantity, IEnumerable<Barcode> barcodes, IEnumerable<ExpirationDate> expirationDates)
+                                   MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
             product.Name = newName ?? name;
             product.BuyingPrice = buyingPrice ?? product.BuyingPrice;
@@ -100,7 +103,6 @@
                 if (barcodes.All(x => x.Value != barcode.Value))
                 {
                     this.barcodesRepository.Delete(barcode);
-                    product.Barcodes.Remove(barcode);
                 }
             }
 
@@ -112,10 +114,17 @@
                 }
             }
 
-            //TODO: add expiration date deletion
+            foreach (var expirationDate in product.ExpirationDates.ToList())
+            {
+                if (expirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
+                {
+                    this.expirationDatesRepository.Delete(expirationDate);
+                }
+            }
+            
             foreach (var expirationDate in expirationDates)
             {
-                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date))
+                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
                 {
                     product.ExpirationDates.Add(expirationDate);
                 }

@@ -68,6 +68,7 @@
     <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
+    <Compile Include="Converters\ServerInformationExprationDateMultiCommandParameterConverter.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />

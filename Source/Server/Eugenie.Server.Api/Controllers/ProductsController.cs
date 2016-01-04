@@ -81,7 +81,7 @@
             try
             {
                 return this.Ok(this.productsService.AddOrUpdate(model.Name, model.NewName, model.BuyingPrice, model.SellingPrice, 
-                    model.Measure, model.Quantity, model.Barcodes ?? Enumerable.Empty<Barcode>(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>()));
+                    model.Measure, model.Quantity, model.Barcodes ?? Enumerable.Empty<Barcode>().ToList(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>().ToList()));
             }
             catch (ArgumentException ex)
             {

@@ -48,7 +48,6 @@
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
                 this.searchAsArray = value.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                //TODO: refresh on ENTER ???
                 this.Products.Refresh();
             }
         }
@@ -97,7 +96,6 @@
                     pair.Value.BuyingPrice = this.SelectedItem.BuyingPrice;
                     pair.Value.Barcodes = this.SelectedItem.Barcodes;
                     pair.Value.Quantity = pair.Value.QuantityToAdd;
-                    //pair.Value.ExpirationDates = new List<ExpirationDate> { new ExpirationDate() { Batch = "asdasd", Date = new DateTime(2016, 12, 29) } };
                 }
 
                 this.manager.AddOrUpdateAsync(productInAllServers);

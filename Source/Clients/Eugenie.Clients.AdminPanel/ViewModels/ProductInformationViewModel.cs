@@ -31,8 +31,11 @@
 
 
             this.DeleteBarcodeCommand = new RelayCommand<Barcode>(this.HandleDeleteBarcodeCommand);
-            this.AddExpirationDateCommand = new RelayCommand<ServerInformation>(this.HandleAddExpirationDateCommand);
+            this.DeleteExpirationDateCommand = new RelayCommand<object>(this.HandleDeleteExpirationDateCommand);
+            this.AddExpirationDateCommand = new RelayCommand<Product>(this.HandleAddExpirationDateCommand);
         }
+
+        public ICommand DeleteExpirationDateCommand { get; set; }
 
         public ICommand AddExpirationDateCommand { get; set; }
 
@@ -48,8 +51,7 @@
                 this.Set(() => this.Date, ref this.date, value);
             }
         }
-
-        //TODO: add batch text field to view
+        
         public string Batch
         {
             get
@@ -76,9 +78,20 @@
             this.FirstProduct.Barcodes.Remove(barcode);
         }
 
-        private void HandleAddExpirationDateCommand(ServerInformation server)
+        //TODO: add validation
+        private void HandleAddExpirationDateCommand(Product product)
         {
-            this.Products[server].ExpirationDates.Add(new ExpirationDate { Batch = this.Batch, Date = this.Date.GetValueOrDefault() });
+            product.ExpirationDates.Add(new ExpirationDate { Batch = this.Batch, Date = this.Date.GetValueOrDefault() });
+            this.Date = null;
+            this.Batch = null;
+        }
+
+        private void HandleDeleteExpirationDateCommand(object parameter)
+        {
+            var values = (object[])parameter;
+            var expirationDate = values[0] as ExpirationDate;
+            var product = values[1] as Product;
+            product.ExpirationDates.Remove(expirationDate);
         }
     }
 }

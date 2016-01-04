@@ -14,7 +14,7 @@
 
         int Count();
 
-        Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, MeasureType? measure, decimal? quantity, IEnumerable<Barcode> barcodes, IEnumerable<ExpirationDate> expirationDates);
+        Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates);
 
         IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize);
 
