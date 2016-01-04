@@ -22,6 +22,8 @@
 
         public SettingsViewModel SettingsViewModel => this.container.Resolve<SettingsViewModel>();
 
+        public AddNewProductViewModel AddNewProductViewModel => this.container.Resolve<AddNewProductViewModel>();
+
         private void Register()
         {
             if (Settings.Default.Servers == string.Empty)
@@ -36,9 +38,11 @@
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ProductsCache>().As<IProductsCache>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<AddNewProductViewModel>().InstancePerLifetimeScope();
 
             this.container = containerBuilder.Build();
         }

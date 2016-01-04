@@ -1,13 +1,8 @@
 ﻿namespace Eugenie.Clients.AdminPanel.Views
 {
-    using System.Windows.Controls;
-
     using ViewModels;
 
-    /// <summary>
-    ///     Interaction logic for ProductInformation.xaml
-    /// </summary>
-    public partial class ProductInformation : UserControl
+    public partial class ProductInformation
     {
         public ProductInformation(ProductInformationViewModel model)
         {

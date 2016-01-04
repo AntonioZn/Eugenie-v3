@@ -66,6 +66,11 @@
                                     <Views:ProductsEditor />
                                 </Domain:MenuItem.Content>
                             </Domain:MenuItem>
+                            <Domain:MenuItem Name="Доставка">
+                                <Domain:MenuItem.Content>
+                                    <Views:AddNewProduct />
+                                </Domain:MenuItem.Content>
+                            </Domain:MenuItem>
                             <Domain:MenuItem Name="Управление">
                                 <Domain:MenuItem.Content>
                                     <Views:ManageShops />

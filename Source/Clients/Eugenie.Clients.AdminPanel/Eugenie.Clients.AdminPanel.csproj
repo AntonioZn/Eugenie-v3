@@ -94,11 +94,15 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
     <Compile Include="SettingsStorage.cs" />
+    <Compile Include="ViewModels\AddNewProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ActiveServersViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
+    <Compile Include="Views\AddNewProduct.xaml.cs">
+      <DependentUpon>AddNewProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ManageShops.xaml.cs">
       <DependentUpon>ManageShops.xaml</DependentUpon>
     </Compile>
@@ -124,6 +128,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AddNewProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ManageShops.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

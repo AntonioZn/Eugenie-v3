@@ -29,7 +29,6 @@
                 this.Measures.Add((MeasureType)measureType);
             }
 
-
             this.DeleteBarcodeCommand = new RelayCommand<Barcode>(this.HandleDeleteBarcodeCommand);
             this.DeleteExpirationDateCommand = new RelayCommand<object>(this.HandleDeleteExpirationDateCommand);
             this.AddExpirationDateCommand = new RelayCommand<Product>(this.HandleAddExpirationDateCommand);

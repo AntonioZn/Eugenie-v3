@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -15,14 +16,19 @@
         private readonly IServerStorage storage;
         private readonly IServerTester tester;
         private readonly IWebApiClient webApiClient;
+        private readonly IProductsCache cache;
+        private readonly SemaphoreSlim semaphore;
 
-        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient webApiClient)
+        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient webApiClient, IProductsCache cache)
         {
             this.storage = storage;
             this.storage.ServerAdded += this.OnServerAdded;
             this.storage.ServerDeleted += this.OnServerDeleted;
             this.tester = tester;
             this.webApiClient = webApiClient;
+            this.cache = cache;
+            
+            this.semaphore = new SemaphoreSlim(1, 1);
 
             this.ActiveServers = new Dictionary<ServerInformation, HttpClient>();
 
@@ -41,7 +47,15 @@
 
         public async Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(int page, int pageSize)
         {
-            return await this.webApiClient.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
+            await this.semaphore.WaitAsync();
+            if (this.cache.SimplifiedProducts != null)
+            {
+                return this.cache.SimplifiedProducts;
+            }
+
+            this.cache.SimplifiedProducts = await this.webApiClient.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
+            this.semaphore.Release();
+            return this.cache.SimplifiedProducts;
         }
 
         public async Task<IDictionary<ServerInformation, Product>> GetProductByNameAsync(string name)
