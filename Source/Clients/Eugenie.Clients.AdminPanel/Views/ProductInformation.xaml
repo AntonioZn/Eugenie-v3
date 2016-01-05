@@ -30,6 +30,7 @@
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           Margin="0,10,0,0"
                           Width="420"
+                          IsTabStop="False"
                           HorizontalAlignment="Left"
                           ItemsSource="{Binding Measures}"
                           SelectedItem="{Binding FirstProduct.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -60,6 +61,7 @@
                                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                 VerticalAlignment="Center"
                                                 Margin="5,0,0,0"
+                                                IsTabStop="False"
                                                 ToolTip="Изтрий"
                                                 Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
                                                 CommandParameter="{Binding}">
@@ -150,6 +152,7 @@
                                                                                 Margin="5,0,0,0"
                                                                                 VerticalAlignment="Center"
                                                                                 ToolTip="Изтрий"
+                                                                                IsTabStop="False"
                                                                                 Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteExpirationDateCommand}">
                                                                             <Button.CommandParameter>
                                                                                 <MultiBinding Converter="{StaticResource ServerInformationExprationDateMultiCommandParameterConverter}">

@@ -18,10 +18,10 @@
     {
         private readonly IServerStorage storage;
         private readonly IServerManager manager;
-        private ObservableCollection<string> exisitingProducts;
+        private readonly INameFromBarcodeGenerator nameGenerator;
+        private ObservableCollection<SimplifiedProduct> exisitingProducts;
         private string name;
         private string addingType;
-        private string barcode;
 
         private AddNewProductViewModel()
         {
@@ -36,11 +36,13 @@
             this.Products = new Dictionary<ServerInformation, Product>();
         }
 
-        public AddNewProductViewModel(IServerStorage storage, IServerManager manager) : this()
+        public AddNewProductViewModel(IServerStorage storage, IServerManager manager, INameFromBarcodeGenerator nameGenerator) : this()
         {
             this.storage = storage;
             this.manager = manager;
             manager.ServerTestingFinished += this.OnServerTestingFinished;
+
+            this.nameGenerator = nameGenerator;
 
             this.FirstProduct = new SimplifiedProduct("сол", 10, MeasureType.бр, new List<Barcode> { new Barcode { Value = "123123123" } });
             
@@ -50,12 +52,14 @@
             }
         }
 
-        public AddNewProductViewModel(IServerStorage storage, IServerManager manager, SimplifiedProduct simplifiedProduct) : this()
+        public AddNewProductViewModel(IServerStorage storage, IServerManager manager, INameFromBarcodeGenerator nameGenerator, SimplifiedProduct simplifiedProduct) : this()
         {
             this.storage = storage;
             this.manager = manager;
             manager.ServerTestingFinished += this.OnServerTestingFinished;
-            
+
+            this.nameGenerator = nameGenerator;
+
             this.FirstProduct = simplifiedProduct;
 
             foreach (var server in this.storage.Servers)
@@ -65,15 +69,10 @@
         }
 
         public string Barcode
-        {
-            get
-            {
-                return this.barcode;
-            }
-
+        { 
             set
             {
-                this.barcode = value;
+                this.FirstProduct.Barcodes.Add(new Barcode {Value = value});
             }
         }
 
@@ -94,7 +93,7 @@
                 {
                     this.AddingType = "Въведете име";
                 }
-                else if (this.ExistingProductsNames.Contains(value))
+                else if (this.ExistingProducts.Any(x => x.Name == value))
                 {
                     this.AddingType = "Добавяне на наличност";
                 }
@@ -124,13 +123,13 @@
 
         public IDictionary<ServerInformation, Product> Products { get; set; }
 
-        public IEnumerable<string> ExistingProductsNames
+        public IEnumerable<SimplifiedProduct> ExistingProducts
         {
             get
             {
                 if (this.exisitingProducts == null)
                 {
-                    this.exisitingProducts = new ObservableCollection<string>();
+                    this.exisitingProducts = new ObservableCollection<SimplifiedProduct>();
                 }
 
                 return this.exisitingProducts;
@@ -140,7 +139,7 @@
             {
                 if (this.exisitingProducts == null)
                 {
-                    this.exisitingProducts = new ObservableCollection<string>();
+                    this.exisitingProducts = new ObservableCollection<SimplifiedProduct>();
                 }
 
                 this.exisitingProducts.Clear();
@@ -155,8 +154,7 @@
 
         private async void OnServerTestingFinished(object sender, EventArgs e)
         {
-            var products = await this.manager.GetProductsByPageAsync(1, int.MaxValue);
-            this.ExistingProductsNames = products.Select(x => x.Name);
+            this.ExistingProducts = await this.manager.GetProductsByPageAsync(1, int.MaxValue);
         }
     }
 }

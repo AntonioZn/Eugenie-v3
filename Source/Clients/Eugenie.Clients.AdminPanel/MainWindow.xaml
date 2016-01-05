@@ -53,9 +53,10 @@
                                       Margin="16"
                                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                         <ListBox x:Name="FlyoutMenuListBox"
-                                 IsTabStop="False"
                                  Margin="0,16,0,16"
                                  SelectedIndex="0"
+                                 Focusable="False"
+                                 GotFocus="FlyoutMenuListBox_OnGotFocus"
                                  PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="Domain:MenuItem">
@@ -124,6 +125,8 @@
                                     </Label>
                                     <TextBox Grid.Column="1"
                                              Margin="8 0 0 0"
+                                             x:Name="txtSearch"
+                                             TextChanged="TxtSearch_OnTextChanged"
                                              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
                                              Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              MaterialDesign:TextFieldAssist.Hint="Търсене"
@@ -172,6 +175,7 @@
                             </ItemsControl>
                             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                     Margin="20,0,0,0"
+                                    IsTabStop="False"
                                     Command="{Binding RefreshServersCommand}"
                                     ToolTip="Обнови активните компютри">
                                 <Viewbox Width="24"

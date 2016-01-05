@@ -23,7 +23,6 @@
         private Visibility loadingVisibility;
         private string searchValue = string.Empty;
         private string[] searchAsArray = new string[0];
-        private string barcode;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -31,7 +30,6 @@
 
             this.products = new ObservableCollection<SimplifiedProduct>();
             this.Products = CollectionViewSource.GetDefaultView(this.products);
-            this.Products.Filter = this.Search;
 
             this.LoadingVisibility = Visibility.Collapsed;
 
@@ -40,14 +38,18 @@
 
         public string Barcode
         {
-            get
-            {
-                return this.barcode;
-            }
-
             set
             {
-                this.barcode = value;
+                this.SearchValue = string.Empty;
+
+                this.Products.Filter = (obj) =>
+                {
+                    var product = obj as SimplifiedProduct;
+
+                    return product.Barcodes.Any(x => x.Value == value);
+                };
+
+                this.Products.Refresh();
             }
         }
 
@@ -61,7 +63,15 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
-                this.searchAsArray = value.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                this.searchAsArray = value.ToLower().Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                this.Products.Filter = (obj) =>
+                {
+                    var product = obj as SimplifiedProduct;
+
+                    return this.searchAsArray.All(word => product.Name.Contains(word));
+                };
+
                 this.Products.Refresh();
             }
         }
@@ -84,12 +94,12 @@
         public ICollectionView Products { get; set; }
 
         public SimplifiedProduct SelectedItem { get; set; }
-        
+
         public async void ShowProductInformationDialog()
         {
             var productInAllServers = await this.manager.GetProductByNameAsync(this.SelectedItem.Name);
 
-            var name = this.SelectedItem.Name;
+            var oldName = this.SelectedItem.Name;
             this.SelectedItem.BeginEdit();
 
             var viewModel = new ProductInformationViewModel(productInAllServers, this.SelectedItem);
@@ -104,7 +114,7 @@
                 this.SelectedItem.EndEdit();
                 foreach (var pair in productInAllServers)
                 {
-                    pair.Value.Name = name;
+                    pair.Value.Name = oldName;
                     pair.Value.NewName = this.SelectedItem.Name;
                     pair.Value.Measure = this.SelectedItem.Measure;
                     pair.Value.BuyingPrice = this.SelectedItem.BuyingPrice;
@@ -118,13 +128,6 @@
             {
                 this.SelectedItem.CancelEdit();
             }
-        }
-
-        private bool Search(object obj)
-        {
-            var product = obj as SimplifiedProduct;
-            
-            return this.searchAsArray.All(word => product.Name.Contains(word));
         }
 
         private async void OnServerTestingFinished(object sender, EventArgs e)
@@ -143,6 +146,5 @@
                 this.LoadingVisibility = Visibility.Collapsed;
             }
         }
-
     }
 }

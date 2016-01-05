@@ -2,6 +2,6 @@
 {
     public interface IBarcodeHandler
     {
-        string Barcode { get; set; }
+        string Barcode { set; }
     }
 }

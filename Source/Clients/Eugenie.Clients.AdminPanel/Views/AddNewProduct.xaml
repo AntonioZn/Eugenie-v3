@@ -14,9 +14,11 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}">
+             Background="{DynamicResource MaterialDesignPaper}"
+             IsTabStop="False">
     <materialDesign:Card HorizontalAlignment="Center"
-                         Margin="0,50,0,0">
+                         Margin="0,50,0,0"
+                         IsTabStop="False">
         <StackPanel Orientation="Vertical">
             <materialDesign:ColorZone Mode="PrimaryDark"
                                       Padding="16"
@@ -29,9 +31,11 @@
                                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                  Padding="8"
                                  Margin="10,10,0,0"
+                                 IsTabStop="False"
                                  HorizontalAlignment="Left">
                 <CheckBox Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
                           Content="Автоматично име"
+                          IsTabStop="False"
                           VerticalContentAlignment="Center" 
                           IsChecked="{Binding AutomaticName}"/>
             </materialDesign:Card>
@@ -43,8 +47,9 @@
                               Width="420"
                               materialDesign:TextFieldAssist.Hint="Име"
                               IsEditable="True"
+                              DisplayMemberPath="Name"
                               Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding ExistingProductsNames}">
+                              ItemsSource="{Binding ExistingProducts}">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />
@@ -86,6 +91,7 @@
                                             <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                     VerticalAlignment="Center"
                                                     Margin="5,0,0,0"
+                                                    IsTabStop="False"
                                                     ToolTip="Изтрий"
                                                     Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteBarcodeCommand}"
                                                     CommandParameter="{Binding}">
@@ -174,6 +180,7 @@
                                                                                        VerticalAlignment="Center" />
                                                                             <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                                                     Margin="5,0,0,0"
+                                                                                    IsTabStop="False"
                                                                                     VerticalAlignment="Center"
                                                                                     ToolTip="Изтрий"
                                                                                     Command="{Binding ElementName=productInformationUserControl, Path=DataContext.DeleteExpirationDateCommand}">

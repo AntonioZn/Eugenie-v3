@@ -39,6 +39,8 @@
             containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ProductsCache>().As<IProductsCache>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<NameFromBarcodeGenerator>().As<INameFromBarcodeGenerator>().InstancePerLifetimeScope();
+
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();

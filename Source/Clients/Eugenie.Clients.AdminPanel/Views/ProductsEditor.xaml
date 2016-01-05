@@ -34,51 +34,54 @@
                              Height="100" />
             </materialDesign:Card>
         </Grid>
-        <DataGrid x:Name="DataGrid"
-                  FontSize="25"
-                  ItemsSource="{Binding Products}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  SelectedItem="{Binding SelectedItem}"
-                  CanUserSortColumns="True"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  KeyboardNavigation.TabNavigation="None"
-                  AlternatingRowBackground="AliceBlue"
-                  AlternationCount="2"
-                  Margin="100,0,100,50">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Име"
-                                    Binding="{Binding Name}"
-                                    Width="6*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Мярка"
-                                    Binding="{Binding Measure}"
-                                    Width="1*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Доставна цена"
-                                    Binding="{Binding BuyingPrice}"
-                                    Width="2*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <materialDesign:Card Margin="20"
+                             Padding="20"
+                             IsTabStop="False">
+            <DataGrid x:Name="DataGrid"
+                      FontSize="25"
+                      ItemsSource="{Binding Products}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      SelectedItem="{Binding SelectedItem}"
+                      CanUserSortColumns="True"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      KeyboardNavigation.TabNavigation="None"
+                      AlternatingRowBackground="AliceBlue"
+                      AlternationCount="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Име"
+                                        Binding="{Binding Name}"
+                                        Width="6*">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="IsTabStop"
+                                        Value="False" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Мярка"
+                                        Binding="{Binding Measure}"
+                                        Width="1*">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="IsTabStop"
+                                        Value="False" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Доставна цена"
+                                        Binding="{Binding BuyingPrice}"
+                                        Width="2*">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="IsTabStop"
+                                        Value="False" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
     </Grid>
 </UserControl>
