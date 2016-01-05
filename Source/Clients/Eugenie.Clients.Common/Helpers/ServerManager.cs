@@ -27,8 +27,8 @@
             this.tester = tester;
             this.webApiClient = webApiClient;
             this.cache = cache;
-            
-            this.semaphore = new SemaphoreSlim(1, 1);
+
+            this.semaphore = new SemaphoreSlim(1);
 
             this.ActiveServers = new Dictionary<ServerInformation, HttpClient>();
 
@@ -50,11 +50,14 @@
             await this.semaphore.WaitAsync();
             if (this.cache.SimplifiedProducts != null)
             {
+                this.semaphore.Release();
                 return this.cache.SimplifiedProducts;
             }
 
             this.cache.SimplifiedProducts = await this.webApiClient.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
+
             this.semaphore.Release();
+
             return this.cache.SimplifiedProducts;
         }
 

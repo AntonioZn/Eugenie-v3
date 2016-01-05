@@ -8,6 +8,7 @@
         xmlns:Views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Eugenie.Clients.AdminPanel.Behaviors"
+        xmlns:commonBehaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -20,6 +21,7 @@
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior />
+        <commonBehaviors:HandleBarcodeScannerWindowBehavior />
     </i:Interaction.Behaviors>
     <Grid>
         <Grid Panel.ZIndex="1000"
@@ -85,7 +87,7 @@
                     </StackPanel>
                 </MaterialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel>
-                    <MaterialDesign:ColorZone Mode="PrimaryMid"
+                    <MaterialDesign:ColorZone Mode="PrimaryDark"
                                               Padding="6"
                                               DockPanel.Dock="Top"
                                               IsTabStop="False">

@@ -48,16 +48,6 @@
                   AlternationCount="2"
                   Margin="100,0,100,50">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№"
-                                    Binding="{Binding Id}"
-                                    Width="2*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
                 <DataGridTextColumn Header="Име"
                                     Binding="{Binding Name}"
                                     Width="6*">

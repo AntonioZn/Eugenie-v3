@@ -54,6 +54,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -64,6 +65,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\HandleBarcodeScannerWindowBehavior.cs" />
+    <Compile Include="Contracts\IBarcodeHandler.cs" />
     <Compile Include="Contracts\IServerStorage.cs" />
     <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />

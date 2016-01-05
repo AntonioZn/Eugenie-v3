@@ -19,16 +19,13 @@
         private ObservableCollection<Barcode> barcodes; 
         private IList<Barcode> tempBarcodes;
 
-        public SimplifiedProduct(int id, string name, decimal buyingPrice, MeasureType measure, ICollection<Barcode> barcodes)
+        public SimplifiedProduct(string name, decimal buyingPrice, MeasureType measure, ICollection<Barcode> barcodes)
         {
-            this.Id = id;
             this.Name = name;
             this.BuyingPrice = buyingPrice;
             this.Measure = measure;
             this.Barcodes = barcodes;
         }
-
-        public int Id { get; set; }
 
         public string Name
         {
@@ -123,7 +120,6 @@
         {
             if (this.isInEditMode)
             {
-                this.Id = this.tempProduct.Id;
                 this.Name = this.tempProduct.Name;
                 this.BuyingPrice = this.tempProduct.BuyingPrice;
                 this.Measure = this.tempProduct.Measure;

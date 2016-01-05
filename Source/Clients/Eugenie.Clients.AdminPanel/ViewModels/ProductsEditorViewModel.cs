@@ -16,13 +16,14 @@
 
     using Views;
 
-    public class ProductsEditorViewModel : ViewModelBase
+    public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly ObservableCollection<SimplifiedProduct> products;
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
         private string searchValue = string.Empty;
         private string[] searchAsArray = new string[0];
+        private string barcode;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -35,6 +36,19 @@
             this.LoadingVisibility = Visibility.Collapsed;
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
+        }
+
+        public string Barcode
+        {
+            get
+            {
+                return this.barcode;
+            }
+
+            set
+            {
+                this.barcode = value;
+            }
         }
 
         public string SearchValue
@@ -129,5 +143,6 @@
                 this.LoadingVisibility = Visibility.Collapsed;
             }
         }
+
     }
 }
