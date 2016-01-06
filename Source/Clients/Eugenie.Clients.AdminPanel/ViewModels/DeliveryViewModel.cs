@@ -96,6 +96,7 @@
                 if (value == string.Empty)
                 {
                     this.AddingType = "Въведете име";
+                    this.FirstProduct = new SimplifiedProduct(value, 0, MeasureType.бр, new List<Barcode>());
                 }
                 else
                 {

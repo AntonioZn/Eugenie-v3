@@ -100,6 +100,12 @@
     <Compile Include="ViewModels\ActiveServersViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
+    <Compile Include="Views\Controls\BarcodePresenter.xaml.cs">
+      <DependentUpon>BarcodePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ShopSpecificProduct.xaml.cs">
+      <DependentUpon>ShopSpecificProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Delivery.xaml.cs">
       <DependentUpon>Delivery.xaml</DependentUpon>
     </Compile>
@@ -128,6 +134,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Controls\BarcodePresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ShopSpecificProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Delivery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
