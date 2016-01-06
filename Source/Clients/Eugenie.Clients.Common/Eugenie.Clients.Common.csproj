@@ -73,12 +73,15 @@
     <Compile Include="Contracts\IServerManager.cs" />
     <Compile Include="Converters\ServerInformationExprationDateMultiCommandParameterConverter.cs" />
     <Compile Include="Contracts\INameFromBarcodeGenerator.cs" />
-    <Compile Include="Helpers\IProductsCache.cs" />
+    <Compile Include="Contracts\IProductsCache.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\ProductsCache.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
+    <Compile Include="Models\Barcode.cs" />
+    <Compile Include="Models\ExpirationDate.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
+    <Compile Include="Models\MeasureType.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ServerAddedEventArgs.cs" />
     <Compile Include="Models\ServerDeletedEventArgs.cs" />
@@ -91,12 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Data\Eugenie.Data.Models\Eugenie.Data.Models.csproj">
-      <Project>{55a6d213-bb87-46dc-a802-166a3aaaa2b8}</Project>
-      <Name>Eugenie.Data.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

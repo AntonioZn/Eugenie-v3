@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Data.Models;
-
     using Newtonsoft.Json;
 
     public class Product

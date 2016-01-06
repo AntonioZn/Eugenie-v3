@@ -22,7 +22,7 @@
 
         public SettingsViewModel SettingsViewModel => this.container.Resolve<SettingsViewModel>();
 
-        public AddNewProductViewModel AddNewProductViewModel => this.container.Resolve<AddNewProductViewModel>();
+        public DeliveryViewModel AddNewProductViewModel => this.container.Resolve<DeliveryViewModel>();
 
         private void Register()
         {
@@ -44,7 +44,7 @@
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<AddNewProductViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
 
             this.container = containerBuilder.Build();
         }

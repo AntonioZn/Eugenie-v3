@@ -6,12 +6,8 @@
 
     using Common.Models;
 
-    using Data.Models;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-
-    using Product = Common.Models.Product;
 
     public class ProductInformationViewModel : ViewModelBase
     {
@@ -37,6 +33,8 @@
         public ICommand DeleteExpirationDateCommand { get; set; }
 
         public ICommand AddExpirationDateCommand { get; set; }
+
+        public ICommand DeleteBarcodeCommand { get; set; }
 
         public DateTime? Date
         {
@@ -64,7 +62,6 @@
             }
         }
 
-        public ICommand DeleteBarcodeCommand { get; set; }
 
         public IDictionary<ServerInformation, Product> Products { get; set; }
 
@@ -80,7 +77,7 @@
         //TODO: add validation
         private void HandleAddExpirationDateCommand(Product product)
         {
-            product.ExpirationDates.Add(new ExpirationDate { Batch = this.Batch, Date = this.Date.GetValueOrDefault() });
+            product.ExpirationDates.Add(new ExpirationDate(this.Date.GetValueOrDefault(), this.Batch));
             this.Date = null;
             this.Batch = null;
         }

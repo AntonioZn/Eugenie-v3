@@ -6,9 +6,6 @@
 
     using Microsoft.Owin.Hosting;
 
-    /// <summary>
-    ///     Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow
     {
         public const uint ES_CONTINUOUS = 0x80000000;

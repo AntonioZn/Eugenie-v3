@@ -15,17 +15,17 @@
     {
         private readonly IServerStorage storage;
         private readonly IServerTester tester;
-        private readonly IWebApiClient webApiClient;
+        private readonly IWebApiClient client;
         private readonly IProductsCache cache;
         private readonly SemaphoreSlim semaphore;
 
-        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient webApiClient, IProductsCache cache)
+        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient client, IProductsCache cache)
         {
             this.storage = storage;
             this.storage.ServerAdded += this.OnServerAdded;
             this.storage.ServerDeleted += this.OnServerDeleted;
             this.tester = tester;
-            this.webApiClient = webApiClient;
+            this.client = client;
             this.cache = cache;
 
             this.semaphore = new SemaphoreSlim(1);
@@ -42,7 +42,7 @@
 
         public async Task<int> GetProductsCount()
         {
-            return await this.webApiClient.GetProductsCountAsync(this.GetFastestServer());
+            return await this.client.GetProductsCountAsync(this.GetFastestServer());
         }
 
         public async Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(int page, int pageSize)
@@ -54,7 +54,7 @@
                 return this.cache.SimplifiedProducts;
             }
 
-            this.cache.SimplifiedProducts = await this.webApiClient.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
+            this.cache.SimplifiedProducts = await this.client.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
 
             this.semaphore.Release();
 
@@ -67,7 +67,7 @@
 
             foreach (var pair in this.ActiveServers)
             {
-                var product = await this.webApiClient.GetProductByName(pair.Value, name);
+                var product = await this.client.GetProductByName(pair.Value, name);
                 result.Add(pair.Key, product);
             }
 
@@ -79,7 +79,7 @@
             foreach (var pair in serverProductPairs)
             {
                 var client = this.ActiveServers[pair.Key];
-                this.webApiClient.AddOrUpdateAsync(client, pair.Value);
+                this.client.AddOrUpdateAsync(client, pair.Value);
             }
         }
         #endregion

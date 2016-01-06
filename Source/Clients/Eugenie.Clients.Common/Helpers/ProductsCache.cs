@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using Contracts;
+
     using Models;
 
     public class ProductsCache : IProductsCache

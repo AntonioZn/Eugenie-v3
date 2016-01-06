@@ -7,8 +7,6 @@
 
     using Annotations;
 
-    using Data.Models;
-
     public class SimplifiedProduct : INotifyPropertyChanged, IEditableObject
     {
         private string name;

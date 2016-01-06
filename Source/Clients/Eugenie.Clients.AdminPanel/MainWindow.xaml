@@ -71,7 +71,7 @@
                             </Domain:MenuItem>
                             <Domain:MenuItem Name="Доставка">
                                 <Domain:MenuItem.Content>
-                                    <Views:AddNewProduct />
+                                    <Views:Delivery />
                                 </Domain:MenuItem.Content>
                             </Domain:MenuItem>
                             <Domain:MenuItem Name="Управление">

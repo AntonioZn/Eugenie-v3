@@ -94,14 +94,14 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
     <Compile Include="SettingsStorage.cs" />
-    <Compile Include="ViewModels\AddNewProductViewModel.cs" />
+    <Compile Include="ViewModels\DeliveryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ActiveServersViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
-    <Compile Include="Views\AddNewProduct.xaml.cs">
-      <DependentUpon>AddNewProduct.xaml</DependentUpon>
+    <Compile Include="Views\Delivery.xaml.cs">
+      <DependentUpon>Delivery.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManageShops.xaml.cs">
       <DependentUpon>ManageShops.xaml</DependentUpon>
@@ -128,7 +128,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\AddNewProduct.xaml">
+    <Page Include="Views\Delivery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,10 +178,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\Eugenie.Data.Models\Eugenie.Data.Models.csproj">
-      <Project>{55a6d213-bb87-46dc-a802-166a3aaaa2b8}</Project>
-      <Name>Eugenie.Data.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eugenie.Clients.Common\Eugenie.Clients.Common.csproj">
       <Project>{6ddaa611-7d96-4aae-8a0c-ff6de87784d0}</Project>
       <Name>Eugenie.Clients.Common</Name>

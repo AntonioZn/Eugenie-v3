@@ -9,6 +9,7 @@
         public MainWindow()
         {
             this.InitializeComponent();
+            this.txtSearch.Focus();
         }
 
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

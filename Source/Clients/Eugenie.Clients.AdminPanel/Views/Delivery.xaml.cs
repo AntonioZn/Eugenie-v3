@@ -2,9 +2,9 @@
 {
     using ViewModels;
 
-    public partial class AddNewProduct
+    public partial class Delivery
     {
-        public AddNewProduct()
+        public Delivery()
         {
             InitializeComponent();
             var resource = this.TryFindResource("ViewModelLocator");
@@ -13,7 +13,7 @@
             this.DataContext = viewModel;
         }
 
-        public AddNewProduct(AddNewProductViewModel model)
+        public Delivery(DeliveryViewModel model)
         {
             this.DataContext = model;
         }

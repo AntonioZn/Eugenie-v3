@@ -1,7 +1,9 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
+    using System.Threading.Tasks;
+
     public interface INameFromBarcodeGenerator
     {
-        string GetName(string barcode);
+        Task<string> GetName(string barcode);
     }
 }
