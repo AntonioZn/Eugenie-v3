@@ -4,7 +4,7 @@
 
     using Newtonsoft.Json;
 
-    public class ServerInformation : IComparable<ServerInformation>
+    public class ServerInformation
     {
         public ServerInformation(string username, string password, string name, string address)
         {
@@ -31,10 +31,5 @@
 
         [JsonIgnore]
         public TimeSpan Ping { get; set; }
-
-        public int CompareTo(ServerInformation other)
-        {
-            return this.Ping.CompareTo(other.Ping);
-        }
     }
 }

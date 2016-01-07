@@ -13,14 +13,12 @@
         {
             this.Products = products;
             this.MainProduct = mainProduct;
-
-            this.Measures = MeasureTypeMapper.GetTypes();
         }
         
         public IDictionary<ServerInformation, Product> Products { get; set; }
 
         public Product MainProduct { get; set; }
 
-        public IEnumerable<MeasureType> Measures { get; set; }
+        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
     }
 }

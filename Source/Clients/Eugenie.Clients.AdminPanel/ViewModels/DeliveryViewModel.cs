@@ -16,20 +16,20 @@
         private readonly IServerStorage storage;
         private readonly IServerManager manager;
         private readonly INameFromBarcodeGenerator nameGenerator;
-        private string name;
-        private string addingType;
+
         private Product mainProduct;
+        private string name;
+        private string addingType = "Въведете име";
 
         public DeliveryViewModel(IServerStorage storage, IServerManager manager, INameFromBarcodeGenerator nameGenerator)
         {
             this.storage = storage;
+            this.storage.ServerAdded += this.OnServerAdded;
+            this.storage.ServerDeleted += this.OnServerDeleted;
             this.nameGenerator = nameGenerator;
             this.manager = manager;
             
             this.AutomaticName = true;
-            this.AddingType = "Въведете име";
-
-            this.Measures = MeasureTypeMapper.GetTypes();
 
             this.Products = new ObservableDictionary<ServerInformation, Product>();
             foreach (var server in this.storage.Servers)
@@ -107,7 +107,7 @@
 
         public IEnumerable<Product> ExistingProducts => this.manager.Cache.Products;
 
-        public IEnumerable<MeasureType> Measures { get; set; }
+        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
         public async void HandleBarcode(string barcode)
         {
@@ -140,6 +140,16 @@
                     //TODO: notify barcode exists
                 }
             }
+        }
+
+        private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
+        {
+            this.Products.Remove(e.Server);
+        }
+
+        private void OnServerAdded(object sender, ServerAddedEventArgs e)
+        {
+            this.Products.Add(e.Server, new Product());
         }
     }
 }
