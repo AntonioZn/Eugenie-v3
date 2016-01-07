@@ -10,9 +10,7 @@
     {
         Task<int> GetProductsCountAsync(HttpClient client);
 
-        Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
-
-        Task<Product> GetProductByName(HttpClient client, string name);
+        Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
 
         void AddOrUpdateAsync(HttpClient client, Product product);
     }

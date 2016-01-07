@@ -27,7 +27,7 @@
                 return client;
             }
 
-            throw new ArgumentException();
+            return null;
         }
 
         private async Task<bool> GetToken(HttpClient client, ServerInformation server)

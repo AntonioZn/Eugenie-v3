@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -13,131 +13,93 @@
 
     public class ServerManager : IServerManager
     {
+        private const int PageSize = 200;
+
         private readonly IServerStorage storage;
         private readonly IServerTester tester;
-        private readonly IWebApiClient client;
-        private readonly IProductsCache cache;
-        private readonly SemaphoreSlim semaphore;
+        private readonly IWebApiClient apiClient;
 
-        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient client, IProductsCache cache)
+        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
         {
             this.storage = storage;
-            this.storage.ServerAdded += this.OnServerAdded;
-            this.storage.ServerDeleted += this.OnServerDeleted;
+            //this.storage.ServerAdded += this.OnServerAdded;
+            //this.storage.ServerDeleted += this.OnServerDeleted;
             this.tester = tester;
-            this.client = client;
-            this.cache = cache;
+            this.apiClient = apiClient;
+            this.Cache = cache;
 
-            this.semaphore = new SemaphoreSlim(1);
-
-            this.ActiveServers = new Dictionary<ServerInformation, HttpClient>();
-
-            this.TestServers();
-            //var inactiveServers = storage.Servers.Except(this.ActiveServers.Keys);
+            this.Initialize();
         }
 
-        public IDictionary<ServerInformation, HttpClient> ActiveServers { get; set; }
+        public IProductsCache Cache { get; set; }
 
-        #region WebApi
-
-        public async Task<int> GetProductsCount()
+        public async void Initialize()
         {
-            return await this.client.GetProductsCountAsync(this.GetFastestServer());
-        }
+            this.Cache.ProductsPerServer.Clear();
+            await Task.Run(() =>
+                     {
+                         Parallel.ForEach(this.storage.Servers, (server) =>
+                                                                      {
+                                                                          this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
+                                                                          var client = this.tester.TestServer(server).Result;
+                                                                          if (client != null)
+                                                                          {
+                                                                              var products = this.GetProductsAsync(client).Result;
+                                                                              foreach (var product in products)
+                                                                              {
+                                                                                  this.Cache.ProductsPerServer[server].Add(product);
+                                                                              }
+                                                                          }
+                                                                      });
+                     });
 
-        public async Task<IEnumerable<SimplifiedProduct>> GetProductsByPageAsync(int page, int pageSize)
-        {
-            await this.semaphore.WaitAsync();
-            if (this.cache.SimplifiedProducts != null)
-            {
-                this.semaphore.Release();
-                return this.cache.SimplifiedProducts;
-            }
-
-            this.cache.SimplifiedProducts = await this.client.GetProductsByPageAsync(this.GetFastestServer(), page, pageSize);
-
-            this.semaphore.Release();
-
-            return this.cache.SimplifiedProducts;
-        }
-
-        public async Task<IDictionary<ServerInformation, Product>> GetProductByNameAsync(string name)
-        {
-            var result = new Dictionary<ServerInformation, Product>();
-
-            foreach (var pair in this.ActiveServers)
-            {
-                var product = await this.client.GetProductByName(pair.Value, name);
-                result.Add(pair.Key, product);
-            }
-
-            return result;
+            this.Cache.Products = this.Cache.ProductsPerServer.FirstOrDefault().Value;
+            this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddOrUpdateAsync(IDictionary<ServerInformation, Product> serverProductPairs)
         {
             foreach (var pair in serverProductPairs)
             {
-                var client = this.ActiveServers[pair.Key];
-                this.client.AddOrUpdateAsync(client, pair.Value);
+                //var currentClient = this.ActiveServers[pair.Key];
+                //this.apiClient.AddOrUpdateAsync(currentClient, pair.Value);
             }
         }
-        #endregion
 
         public event EventHandler ServerTestingFinished;
 
-        public async void TestServers()
+        private async Task<IEnumerable<Product>> GetProductsAsync(HttpClient client)
         {
-            this.ActiveServers.Clear();
-            foreach (var server in this.storage.Servers)
-            {
-                try
-                {
-                    var client = await this.tester.TestServer(server);
-                    this.ActiveServers.Add(server, client);
-                }
-                catch (ArgumentException ex)
-                {
+            var productCount = await this.apiClient.GetProductsCountAsync(client);
+            var pageCount = (productCount + PageSize - 1) / PageSize;
 
-                }
+            var result = new List<Product>(productCount);
+            for (int i = 1; i <= pageCount; i++)
+            {
+                var response = await this.apiClient.GetProductsByPageAsync(client, i, PageSize);
+                result.AddRange(response);
             }
 
-            this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
+            return result;
         }
 
-        private HttpClient GetFastestServer()
-        {
-            var fastestServer = this.ActiveServers.Keys.ToList()[0];
-            foreach (var server in this.ActiveServers.Keys)
-            {
-                if (fastestServer.Ping > server.Ping)
-                {
-                    fastestServer = server;
-                }
-            }
-
-            return this.ActiveServers[fastestServer];
-        }
-
-        private async void OnServerAdded(object sender, ServerAddedEventArgs e)
-        {
-            try
-            {
-                var client = await this.tester.TestServer(e.Server);
-                this.ActiveServers.Add(e.Server, client);
-            }
-            catch (ArgumentException ex)
-            {
-
-            }
-        }
-
-        private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
-        {
-            if (this.ActiveServers.ContainsKey(e.Server))
-            {
-                this.ActiveServers.Remove(e.Server);
-            }
-        }
+        //private async void OnServerAdded(object sender, ServerAddedEventArgs e)
+        //{
+        //    this.Cache.ProductsPerServer.Add(e.Server, new ObservableCollection<Product>());
+        //    var client = await this.tester.TestServer(e.Server);
+        //    if (client != null)
+        //    {
+        //        var products = await this.GetProductsAsync(client);
+        //        foreach (var product in products)
+        //        {
+        //            this.Cache.ProductsPerServer[e.Server].Add(product);
+        //        }
+        //    }
+        //}
+        //
+        //private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
+        //{
+        //    this.Cache.ProductsPerServer.Remove(e.Server);
+        //}
     }
 }

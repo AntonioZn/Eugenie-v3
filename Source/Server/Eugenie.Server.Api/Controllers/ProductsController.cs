@@ -30,14 +30,7 @@
         [HttpGet]
         public IHttpActionResult GetByPage(int page, int pageSize)
         {
-            return this.Ok(this.productsService.All(page, pageSize).Select(x => new
-            {
-                x.Id,
-                x.Name,
-                x.BuyingPrice,
-                x.Barcodes,
-                x.Measure
-            }).ToList());
+            return this.Ok(this.productsService.All(page, pageSize).ToList());
         }
 
         [HttpGet]

@@ -21,10 +21,11 @@
         public ActiveServersViewModel(IServerManager manager)
         {
             this.manager = manager;
-            this.RefreshServersCommand = new RelayCommand(this.Refresh);
             this.LoadingVisibility = Visibility.Visible;
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
+
+            this.RefreshServersCommand = new RelayCommand(this.Refresh);
         }
 
         public ICommand RefreshServersCommand { get; private set; }
@@ -72,12 +73,12 @@
         private void Refresh()
         {
             this.LoadingVisibility = Visibility.Visible;
-            this.manager.TestServers();
+            this.manager.Initialize();
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
-            this.Servers = this.manager.ActiveServers.Keys;
+            //this.Servers = this.manager.ActiveServers.Keys;
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }

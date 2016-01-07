@@ -53,7 +53,7 @@
             {
                 if (this.barcodeReader.Length != 0)
                 {
-                    this.handler.Barcode = this.barcodeReader.ToString();
+                    this.handler.HandleBarcode(this.barcodeReader.ToString());
                     this.barcodeReader.Clear();
                 }
 

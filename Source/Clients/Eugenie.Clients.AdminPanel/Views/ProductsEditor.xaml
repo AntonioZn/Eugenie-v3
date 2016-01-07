@@ -16,31 +16,13 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
-        <Grid x:Name="Overlay"
-              Panel.ZIndex="1000"
-              Visibility="{Binding LoadingVisibility}">
-            <Grid.Background>
-                <SolidColorBrush Color="Black"
-                                 Opacity=".7" />
-            </Grid.Background>
-            <materialDesign:Card UniformCornerRadius="100"
-                                 Padding="10"
-                                 VerticalAlignment="Center"
-                                 HorizontalAlignment="Center">
-                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                             Value="20"
-                             IsIndeterminate="True"
-                             Width="100"
-                             Height="100" />
-            </materialDesign:Card>
-        </Grid>
         <materialDesign:Card Margin="20"
                              Padding="20"
                              IsTabStop="False">
             <DataGrid x:Name="DataGrid"
                       FontSize="25"
                       ItemsSource="{Binding Products}"
-                      SelectedItem="{Binding SelectedItem}"
+                      SelectedItem="{Binding SelectedProduct}"
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"

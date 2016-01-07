@@ -71,9 +71,10 @@
     <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
-    <Compile Include="Converters\ServerInformationExprationDateMultiCommandParameterConverter.cs" />
+    <Compile Include="Converters\MultiCommandParameterConverter.cs" />
     <Compile Include="Contracts\INameFromBarcodeGenerator.cs" />
     <Compile Include="Contracts\IProductsCache.cs" />
+    <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\ProductsCache.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
@@ -82,12 +83,12 @@
     <Compile Include="Models\ExpirationDate.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
-    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ObservableDictionary.cs" />
     <Compile Include="Models\ServerAddedEventArgs.cs" />
     <Compile Include="Models\ServerDeletedEventArgs.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\ServerTestingFinishedEventArgs.cs" />
-    <Compile Include="Models\SimplifiedProduct.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\WebApiClient.cs" />
