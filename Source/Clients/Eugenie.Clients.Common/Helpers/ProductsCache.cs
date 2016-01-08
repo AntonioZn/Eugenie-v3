@@ -15,7 +15,7 @@
 
         public ProductsCache()
         {
-            this.ProductsPerServer = new ObservableDictionary<ServerInformation, ObservableCollection<Product>>();
+            this.ProductsPerServer = new ObservableConcurrentDictionary<ServerInformation, ObservableCollection<Product>>();
         }
         
         public IEnumerable<Product> Products

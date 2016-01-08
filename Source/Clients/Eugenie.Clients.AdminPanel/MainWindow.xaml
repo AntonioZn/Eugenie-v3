@@ -41,7 +41,8 @@
                              Height="100" />
             </MaterialDesign:Card>
         </Grid>
-        <MaterialDesign:DialogHost Identifier="RootDialog"
+        <MaterialDesign:DialogHost x:Name="dialogHost"
+                                   Identifier="RootDialog"
                                    IsTabStop="False">
             <MaterialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                        IsTabStop="False">

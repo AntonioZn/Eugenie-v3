@@ -68,6 +68,7 @@
                 </StackPanel>
                 <controls:BarcodePresenter DockPanel.Dock="Right"
                                            Margin="20,20,20,0"
+                                           DataContext="{Binding MainProduct}"
                                            Height="{Binding ElementName=mainInfoStackPanel, Path=ActualHeight}" />
             </DockPanel>
             <ScrollViewer VerticalScrollBarVisibility="Hidden"

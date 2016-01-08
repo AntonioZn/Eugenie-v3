@@ -23,7 +23,8 @@
 
         private bool isInEditMode;
         private Product tempProduct;
-        private IList<Barcode> tempBarcodes;
+        private ICollection<Barcode> tempBarcodes;
+        private ICollection<ExpirationDate> tempExpirationDates;
 
         public Product()
         {
@@ -32,6 +33,9 @@
             this.DeleteBarcodeCommand = new RelayCommand<Barcode>(this.HandleDeleteBarcodeCommand);
             this.DeleteExpirationDateCommand = new RelayCommand<ExpirationDate>(this.HandleDeleteExpirationDateCommand);
             this.AddExpirationDateCommand = new RelayCommand(this.HandleAddExpirationDateCommand);
+
+            this.Barcodes = new List<Barcode>();
+            this.ExpirationDates = new List<ExpirationDate>();
         }
 
         public ICommand DeleteExpirationDateCommand { get; set; }
@@ -162,7 +166,8 @@
             if (!this.isInEditMode)
             {
                 this.tempProduct = this.MemberwiseClone() as Product;
-                this.tempBarcodes = new List<Barcode>(this.barcodes);
+                this.tempBarcodes = new List<Barcode>(this.Barcodes);
+                this.tempExpirationDates = new List<ExpirationDate>(this.ExpirationDates);
                 this.isInEditMode = true;
             }
         }
@@ -173,10 +178,12 @@
             {
                 this.tempProduct = null;
                 this.tempBarcodes = null;
+                this.tempExpirationDates = null;
                 this.isInEditMode = false;
             }
         }
 
+        //TODO: add all properties
         public void CancelEdit()
         {
             if (this.isInEditMode)

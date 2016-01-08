@@ -71,7 +71,6 @@
     <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
-    <Compile Include="Converters\MultiCommandParameterConverter.cs" />
     <Compile Include="Contracts\INameFromBarcodeGenerator.cs" />
     <Compile Include="Contracts\IProductsCache.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
@@ -83,7 +82,7 @@
     <Compile Include="Models\ExpirationDate.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
-    <Compile Include="Models\ObservableDictionary.cs" />
+    <Compile Include="Models\ObservableConcurrentDictionary.cs" />
     <Compile Include="Models\ServerAddedEventArgs.cs" />
     <Compile Include="Models\ServerDeletedEventArgs.cs" />
     <Compile Include="Models\ServerInformation.cs" />

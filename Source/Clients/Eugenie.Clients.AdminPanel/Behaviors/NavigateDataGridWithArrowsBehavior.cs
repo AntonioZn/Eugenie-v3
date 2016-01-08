@@ -6,6 +6,8 @@
     using System.Windows.Interactivity;
     using System.Windows.Media;
 
+    using MaterialDesignThemes.Wpf;
+
     using ViewModels;
 
     public class NavigateDataGridWithArrowsBehavior : Behavior<Window>
@@ -24,7 +26,9 @@
 
         private void PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter)
+            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+
+            if (dialogHost.IsOpen == false && (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter))
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
                 var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
@@ -35,7 +39,7 @@
                 {
                     var dataContext = dataGrid.DataContext as ProductsEditorViewModel;
 
-                    if (dataGrid.Items.Count > 0 && !dataContext.DialogIsOpen)
+                    if (dataGrid.Items.Count > 0)
                     {
                         if (e.Key == Key.Enter && dataGrid.SelectedIndex != -1)
                         {

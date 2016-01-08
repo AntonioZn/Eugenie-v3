@@ -108,10 +108,10 @@
                             <StackPanel Margin="10,0,0,0"
                                         Orientation="Horizontal">
                                 <DatePicker VerticalAlignment="Bottom"
-                                            SelectedDate="{Binding Value.Date}"
+                                            SelectedDate="{Binding Value.Date, Mode=TwoWay}"
                                             materialDesign:TextFieldAssist.Hint="Избери дата" />
                                 <TextBox materialDesign:TextFieldAssist.Hint="Партиден №"
-                                         Text="{Binding Value.Batch}"
+                                         Text="{Binding Value.Batch, Mode=TwoWay}"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                          VerticalAlignment="Bottom"
                                          Width="100"

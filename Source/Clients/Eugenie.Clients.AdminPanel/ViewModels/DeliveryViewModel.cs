@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -31,7 +32,7 @@
             
             this.AutomaticName = true;
 
-            this.Products = new ObservableDictionary<ServerInformation, Product>();
+            this.Products = new ObservableConcurrentDictionary<ServerInformation, Product>();
             foreach (var server in this.storage.Servers)
             {
                 this.Products.Add(server, new Product());

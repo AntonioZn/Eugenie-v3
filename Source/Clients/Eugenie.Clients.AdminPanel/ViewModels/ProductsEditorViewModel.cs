@@ -1,12 +1,14 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Data;
 
     using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
 
     using GalaSoft.MvvmLight;
@@ -54,15 +56,13 @@
                 this.Products.Filter = (obj) =>
                 {
                     var product = obj as Product;
-
+                
                     return searchAsArray.All(word => product.Name.Contains(word));
                 };
 
                 this.Products.Refresh();
             }
         }
-
-        public bool DialogIsOpen { get; private set; }
 
         public ICollectionView Products => CollectionViewSource.GetDefaultView(this.manager.Cache.Products);
 
@@ -83,9 +83,7 @@
             var viewModel = new ProductInformationViewModel(productInAllServers, this.SelectedProduct);
             var dialog = new ProductInformation(viewModel);
             
-            this.DialogIsOpen = true;
             var result = await DialogHost.Show(dialog, "RootDialog");
-            this.DialogIsOpen = false;
             
             if ((bool)result)
             {
