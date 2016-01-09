@@ -29,13 +29,12 @@
             return JsonConvert.DeserializeObject<HashSet<Product>>(result);
         }
 
-        public async void AddOrUpdateAsync(HttpClient client, Product product)
+        public async Task AddOrUpdateAsync(HttpClient client, AddProductModel model)
         {
-            var serialized = JsonConvert.SerializeObject(product);
+            var serialized = JsonConvert.SerializeObject(model);
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("api/products", content);
-            var result = await response.Content.ReadAsStringAsync();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -51,12 +50,12 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
-                var searchAsArray = value.ToLower().Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var searchAsArray = value.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 this.Products.Filter = (obj) =>
                 {
                     var product = obj as Product;
-                
+
                     return searchAsArray.All(word => product.Name.Contains(word));
                 };
 
@@ -70,39 +69,30 @@
 
         public async void ShowProductInformationDialog()
         {
-            var productInAllServers = new Dictionary<ServerInformation, Product>();
+            var productInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
             foreach (var pair in this.manager.Cache.ProductsPerServer)
             {
                 var product = pair.Value.FirstOrDefault(x => x.Name == this.SelectedProduct.Name);
-                productInAllServers.Add(pair.Key, product ?? new Product());
+                var productViewModel = new ProductViewModel(product ?? new Product());
+                productInAllServers.Add(pair.Key, productViewModel);
             }
-            
-            var oldName = this.SelectedProduct.Name;
-            this.SelectedProduct.BeginEdit();
-            
-            var viewModel = new ProductInformationViewModel(productInAllServers, this.SelectedProduct);
+
+            var selectedProductViewModel = new ProductViewModel(DeepCopier<Product>.Copy(this.SelectedProduct));
+            var viewModel = new ProductInformationViewModel(productInAllServers, selectedProductViewModel);
             var dialog = new ProductInformation(viewModel);
             
             var result = await DialogHost.Show(dialog, "RootDialog");
             
-            if ((bool)result)
+            if ((bool) result)
             {
-                this.SelectedProduct.EndEdit();
                 foreach (var pair in productInAllServers)
                 {
-                    pair.Value.NewName = this.SelectedProduct.Name;
-                    pair.Value.Name = oldName;
-                    pair.Value.Measure = this.SelectedProduct.Measure;
-                    pair.Value.BuyingPrice = this.SelectedProduct.BuyingPrice;
-                    pair.Value.Barcodes = this.SelectedProduct.Barcodes;
-                    pair.Value.Quantity = pair.Value.QuantityToAdd;
+                    pair.Value.MapProperties(selectedProductViewModel);
                 }
             
-                this.manager.AddOrUpdateAsync(productInAllServers);
-            }
-            else
-            {
-                this.SelectedProduct.CancelEdit();
+                await this.manager.AddOrUpdateAsync(productInAllServers);
+            
+                this.Products.Refresh();
             }
         }
     }

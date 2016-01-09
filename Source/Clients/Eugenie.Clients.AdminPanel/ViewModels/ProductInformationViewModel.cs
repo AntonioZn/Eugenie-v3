@@ -9,15 +9,15 @@
 
     public class ProductInformationViewModel : ViewModelBase
     {
-        public ProductInformationViewModel(IDictionary<ServerInformation, Product> products, Product mainProduct)
+        public ProductInformationViewModel(IDictionary<ServerInformation, ProductViewModel> products, ProductViewModel mainProduct)
         {
             this.Products = products;
             this.MainProduct = mainProduct;
         }
         
-        public IDictionary<ServerInformation, Product> Products { get; set; }
+        public IDictionary<ServerInformation, ProductViewModel> Products { get; set; }
 
-        public Product MainProduct { get; set; }
+        public ProductViewModel MainProduct { get; set; }
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
     }

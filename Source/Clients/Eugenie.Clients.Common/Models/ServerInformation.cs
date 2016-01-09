@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Models
 {
     using System;
+    using System.Net.Http;
 
     using Newtonsoft.Json;
 
@@ -12,7 +13,6 @@
             this.Password = password;
             this.Name = name;
             this.Address = address;
-            this.Uri = new Uri(address);
         }
         
         public string Username { get; set; }
@@ -24,12 +24,12 @@
         public string Address { get; set; }
 
         [JsonIgnore]
-        public Uri Uri { get; set; }
-
-        [JsonIgnore]
         public string AuthToken { get; set; }
 
         [JsonIgnore]
         public TimeSpan Ping { get; set; }
+
+        [JsonIgnore]
+        public HttpClient Client { get; set; }
     }
 }

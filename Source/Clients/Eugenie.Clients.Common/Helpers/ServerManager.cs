@@ -40,8 +40,10 @@
                      {
                          Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
-                                                                          this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
                                                                           var client = this.tester.TestServer(server).Result;
+                                                                          server.Client = client;
+                                                                          this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
+
                                                                           if (client != null)
                                                                           {
                                                                               var products = this.GetProductsAsync(client).Result;
@@ -57,12 +59,19 @@
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddOrUpdateAsync(IDictionary<ServerInformation, Product> serverProductPairs)
+        public async Task AddOrUpdateAsync(IDictionary<ServerInformation, ProductViewModel> serverProductPairs)
         {
             foreach (var pair in serverProductPairs)
             {
-                //var currentClient = this.ActiveServers[pair.Key];
-                //this.apiClient.AddOrUpdateAsync(currentClient, pair.Value);
+                var currentClient = pair.Key.Client;
+                if (currentClient == null)
+                {
+                    //TODO: retry later
+                }
+                else
+                {
+                    await this.apiClient.AddOrUpdateAsync(currentClient, pair.Value.GetModel());
+                }
             }
         }
 

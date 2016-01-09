@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using Models;
 
@@ -11,7 +12,7 @@
 
         IProductsCache Cache { get; set; }
 
-        void AddOrUpdateAsync(IDictionary<ServerInformation, Product> serverProductPairs);
+        Task AddOrUpdateAsync(IDictionary<ServerInformation, ProductViewModel> serverProductPairs);
 
         void Initialize();
     }

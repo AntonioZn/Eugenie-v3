@@ -16,10 +16,10 @@
     {
         public async Task<HttpClient> TestServer(ServerInformation server)
         {
-            var client = new HttpClient { BaseAddress = server.Uri };
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.BaseAddress = server.Uri;
+            client.BaseAddress = new Uri(server.Address);
 
             var result = await this.GetToken(client, server);
             if (result)

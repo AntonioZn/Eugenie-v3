@@ -20,26 +20,26 @@
                                      Width="110"
                                      HorizontalAlignment="Left"
                                      Text="{Binding Key.Name}" />
-                            <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Quantity}"
+                            <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Top"
                                      Margin="10,0,0,0"
                                      Width="70"
                                      HorizontalAlignment="Left"
-                                     Text="{Binding Value.QuantityToAdd}" />
+                                     Text="{Binding Value.QuantityToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Top"
                                      Margin="10,0,0,0"
                                      Width="90"
                                      HorizontalAlignment="Left"
-                                     Text="{Binding Value.SellingPrice}" />
+                                     Text="{Binding Value.Product.SellingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <materialDesign:PopupBox ToolTipService.Placement="Right"
                                                      PlacementMode="BottomAndAlignCentres"
                                                      ToolTip="Срокове на годност"
                                                      Margin="10,0,0,0"
                                                      Focusable="False">
-                                <DataGrid ItemsSource="{Binding Value.ExpirationDates}"
+                                <DataGrid ItemsSource="{Binding Value.Product.ExpirationDates}"
                                           HeadersVisibility="None"
                                           CanUserSortColumns="True"
                                           AutoGenerateColumns="False"

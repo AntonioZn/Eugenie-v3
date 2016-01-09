@@ -47,11 +47,11 @@
                         }
                         else if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
                         {
-                            dataGrid.SelectedIndex = dataGrid.SelectedIndex + 1;
+                            dataGrid.SelectedIndex += 1;
                         }
                         else if (e.Key == Key.Up && dataGrid.SelectedIndex > 0)
                         {
-                            dataGrid.SelectedIndex = dataGrid.SelectedIndex - 1;
+                            dataGrid.SelectedIndex -= 1;
                         }
 
                         if (dataGrid.SelectedItem != null)

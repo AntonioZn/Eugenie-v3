@@ -1,20 +1,11 @@
-﻿namespace Eugenie.Server.Api.Models.Products
+﻿namespace Eugenie.Clients.Common.Models
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using Common.Constants;
-
-    using Data.Models;
 
     public class AddProductModel
     {
-        [Required]
-        [MaxLength(ValidationConstants.ProductNameMaxLength)]
         public string Name { get; set; }
-
-        [MaxLength(ValidationConstants.ProductNameMaxLength)]
+        
         public string OldName { get; set; }
 
         public decimal BuyingPrice { get; set; }
@@ -23,7 +14,7 @@
         
         public MeasureType Measure { get; set; }
 
-        public decimal QuantityToAdd { get; set; }
+        public decimal? QuantityToAdd { get; set; }
 
         public ICollection<Barcode> Barcodes { get; set; }
 

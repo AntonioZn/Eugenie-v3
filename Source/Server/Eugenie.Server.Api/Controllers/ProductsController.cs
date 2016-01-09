@@ -30,7 +30,8 @@
         [HttpGet]
         public IHttpActionResult GetByPage(int page, int pageSize)
         {
-            return this.Ok(this.productsService.All(page, pageSize).ToList());
+            var result = this.productsService.All(page, pageSize).ToList();
+            return this.Ok(result);
         }
 
         [HttpGet]
@@ -73,8 +74,8 @@
             
             try
             {
-                return this.Ok(this.productsService.AddOrUpdate(model.Name, model.NewName, model.BuyingPrice, model.SellingPrice, 
-                    model.Measure, model.Quantity, model.Barcodes ?? Enumerable.Empty<Barcode>().ToList(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>().ToList()));
+                return this.Ok(this.productsService.AddOrUpdate(model.Name, model.OldName, model.BuyingPrice, model.SellingPrice, 
+                    model.Measure, model.QuantityToAdd, model.Barcodes ?? Enumerable.Empty<Barcode>().ToList(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>().ToList()));
             }
             catch (ArgumentException ex)
             {

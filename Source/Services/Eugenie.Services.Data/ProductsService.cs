@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
 
     using Common.Constants;
@@ -41,7 +42,7 @@
 
         public IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize)
         {
-            return this.productsRepository.All().OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
+            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates").OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
         }
 
         public Product FindByName(string name)
@@ -54,15 +55,15 @@
             return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
         }
         
-        public Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, 
+        public Product AddOrUpdate(string name, string oldName, decimal? buyingPrice, decimal? sellingPrice, 
             MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
-            if (newName != null && name != newName && this.productsRepository.All().FirstOrDefault(x => x.Name == newName) != null)
+            if (oldName != name && this.productsRepository.All().Any(x => x.Name == name))
             {
-                throw new ArgumentException($"A product with name {newName} already exists");
+                throw new ArgumentException($"A product with name {name} already exists");
             }
 
-            var product = this.productsRepository.All().FirstOrDefault(x => x.Name == name);
+            var product = this.productsRepository.All().FirstOrDefault(x => x.Name == oldName);
             if (product == null)
             {
                 product = new Product();
@@ -71,7 +72,7 @@
 
             var stockPrice = this.CalculateStockPrice(product, sellingPrice, quantity);
 
-            this.MapProperties(product, name, newName, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
+            this.MapProperties(product, name, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
 
             this.productsRepository.SaveChanges();
             this.dailyEarningsService.AddStockPrice(stockPrice);
@@ -89,10 +90,10 @@
             return stockPrice;
         }
 
-        private void MapProperties(Product product, string name, string newName, decimal? buyingPrice, decimal? sellingPrice,
+        private void MapProperties(Product product, string name, decimal? buyingPrice, decimal? sellingPrice,
                                    MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
-            product.Name = newName ?? name;
+            product.Name = name;
             product.BuyingPrice = buyingPrice ?? product.BuyingPrice;
             product.SellingPrice = sellingPrice ?? product.SellingPrice;
             product.Measure = measure ?? product.Measure;

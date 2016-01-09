@@ -12,6 +12,6 @@
 
         Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
 
-        void AddOrUpdateAsync(HttpClient client, Product product);
+        Task AddOrUpdateAsync(HttpClient client, AddProductModel model);
     }
 }
