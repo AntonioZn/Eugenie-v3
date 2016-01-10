@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -11,8 +12,6 @@
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-
-    using MaterialDesignThemes.Wpf;
 
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
@@ -31,7 +30,7 @@
 
             this.AutomaticName = true;
 
-            this.AddCommand = new RelayCommand(this.HandleAddCommand, this.CanAddCommand);
+            this.AddCommand = new RelayCommand<UserControl>(this.HandleAddCommand, this.CanAddCommand);
             this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
         }
 
@@ -171,7 +170,7 @@
         }
 
         //TODO: when new item is added add it to cache
-        private async void HandleAddCommand()
+        private async void HandleAddCommand(UserControl arg)
         {
             foreach (var pair in this.ProductInAllServers)
             {
@@ -182,9 +181,9 @@
             this.Name = string.Empty;
         }
 
-        private bool CanAddCommand()
+        private bool CanAddCommand(UserControl arg)
         {
-            return this.Name.Length > 2;
+            return !string.IsNullOrEmpty(this.Name) && arg.HasNoValidationErrors();
         }
 
         private void HandleCancelCommand()

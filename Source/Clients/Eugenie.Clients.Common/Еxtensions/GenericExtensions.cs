@@ -2,7 +2,7 @@
 {
     using Newtonsoft.Json;
 
-    public static class Generic
+    public static class GenericExtensions
     {
         public static T DeepClone<T>(this T item)
         {

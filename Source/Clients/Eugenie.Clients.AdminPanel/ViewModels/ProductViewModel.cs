@@ -104,7 +104,7 @@
 
         private bool CanAddExpirationDate()
         {
-            return this.Date != null && this.Batch != null;
+            return this.Date != null;
         }
 
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)

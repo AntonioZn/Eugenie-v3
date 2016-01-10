@@ -92,10 +92,18 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\WebApiClient.cs" />
-    <Compile Include="Еxtensions\Generic.cs" />
+    <Compile Include="Validations\NameValidation.cs" />
+    <Compile Include="Еxtensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Еxtensions\GenericExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Eugenie.Common\Eugenie.Common.csproj">
+      <Project>{cb4424bf-729b-437f-a54b-8483fdfa9529}</Project>
+      <Name>Eugenie.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,9 +1,14 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
 
     using Common.Helpers;
     using Common.Models;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -17,27 +22,27 @@
             this.ProductInAllServers = productInAllServers;
             this.MainProductViewModel = mainMainProductViewModel;
 
-            this.SaveChangesCommand = new RelayCommand(this.HandleSaveChangesCommand, this.CanSaveChanges);
+            this.SaveChangesCommand = new RelayCommand<UserControl>(this.HandleSaveChangesCommand, this.CanSaveChanges);
             this.CancelChangesCommand = new RelayCommand(this.HandleCancelChangesCommand);
         }
 
-        public RelayCommand SaveChangesCommand { get; set; }
+        public ICommand CancelChangesCommand { get; set; }
 
-        public RelayCommand CancelChangesCommand { get; set; }
-
+        public ICommand SaveChangesCommand { get; set; }
+    
         private void HandleCancelChangesCommand()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
         }
 
-        private void HandleSaveChangesCommand()
+        private void HandleSaveChangesCommand(UserControl obj)
         {
             DialogHost.CloseDialogCommand.Execute(true, null);
         }
 
-        private bool CanSaveChanges()
+        private bool CanSaveChanges(UserControl arg)
         {
-            return this.MainProductViewModel.Product.Name.Length > 2;
+            return arg.HasNoValidationErrors();
         }
 
         public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
