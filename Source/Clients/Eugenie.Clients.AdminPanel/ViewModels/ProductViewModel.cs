@@ -1,7 +1,9 @@
-﻿namespace Eugenie.Clients.Common.Models
+﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
     using System.Windows.Input;
+
+    using Common.Models;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -18,7 +20,7 @@
 
             this.DeleteBarcodeCommand = new RelayCommand<Barcode>(this.HandleDeleteBarcodeCommand);
             this.DeleteExpirationDateCommand = new RelayCommand<ExpirationDate>(this.HandleDeleteExpirationDateCommand);
-            this.AddExpirationDateCommand = new RelayCommand(this.HandleAddExpirationDateCommand);
+            this.AddExpirationDateCommand = new RelayCommand(this.HandleAddExpirationDateCommand, this.CanAddExpirationDate);
         }
 
         public Product Product { get; set; }
@@ -40,7 +42,6 @@
 
             set
             {
-                this.date = value;
                 this.Set(() => this.Date, ref this.date, value);
             }
         }
@@ -54,7 +55,6 @@
 
             set
             {
-                this.batch = value;
                 this.Set(() => this.Batch, ref this.batch, value);
             }
         }
@@ -80,7 +80,7 @@
             model.SellingPrice = this.Product.SellingPrice;
             model.BuyingPrice = this.Product.BuyingPrice;
             model.Measure = this.Product.Measure;
-            model.QuantityToAdd = this.QuantityToAdd;
+            model.QuantityToAdd = this.QuantityToAdd ?? 0;
             model.ExpirationDates = this.Product.ExpirationDates;
             model.Barcodes = this.Product.Barcodes;
 
@@ -100,6 +100,11 @@
             this.Product.ExpirationDates.Add(new ExpirationDate(this.Date.GetValueOrDefault(), this.Batch));
             this.Date = null;
             this.Batch = null;
+        }
+
+        private bool CanAddExpirationDate()
+        {
+            return this.Date != null && this.Batch != null;
         }
 
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)

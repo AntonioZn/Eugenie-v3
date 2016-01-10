@@ -9,7 +9,7 @@
             InitializeComponent();
             var resource = this.TryFindResource("ViewModelLocator");
             var viewModelLocator = resource as ViewModelLocator;
-            var viewModel = viewModelLocator.AddNewProductViewModel;
+            var viewModel = viewModelLocator.AddNewMainProductViewModel;
             this.DataContext = viewModel;
         }
 

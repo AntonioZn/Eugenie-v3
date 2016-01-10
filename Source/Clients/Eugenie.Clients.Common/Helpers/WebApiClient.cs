@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -29,12 +30,14 @@
             return JsonConvert.DeserializeObject<HashSet<Product>>(result);
         }
 
-        public async Task AddOrUpdateAsync(HttpClient client, AddProductModel model)
+        public async Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model)
         {
             var serialized = JsonConvert.SerializeObject(model);
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("api/products", content);
+
+            return response.StatusCode;
         }
     }
 }

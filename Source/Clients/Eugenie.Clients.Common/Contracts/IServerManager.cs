@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Models;
@@ -12,7 +11,7 @@
 
         IProductsCache Cache { get; set; }
 
-        Task AddOrUpdateAsync(IDictionary<ServerInformation, ProductViewModel> serverProductPairs);
+        Task AddOrUpdateAsync(ServerInformation server, AddProductModel model);
 
         void Initialize();
     }

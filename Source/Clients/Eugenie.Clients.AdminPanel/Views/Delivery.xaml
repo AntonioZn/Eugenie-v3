@@ -16,8 +16,7 @@
                          IsTabStop="False">
         <StackPanel Orientation="Vertical">
             <materialDesign:ColorZone Mode="PrimaryDark"
-                                      Padding="16"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                                      Padding="16">
                 <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
                            Text="{Binding AddingType}"
                            HorizontalAlignment="Center" />
@@ -41,10 +40,10 @@
                             x:Name="mainInfoStackPanel">
                     <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               Width="420"
+                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                               materialDesign:TextFieldAssist.Hint="Име"
                               IsEditable="True"
                               DisplayMemberPath="Name"
-                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ExistingProducts}">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -58,17 +57,17 @@
                               Width="420"
                               HorizontalAlignment="Left"
                               ItemsSource="{Binding Measures}"
-                              SelectedItem="{Binding MainProduct.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox materialDesign:TextFieldAssist.Hint="Доставна цена"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              Margin="0,10,0,0"
                              Width="420"
                              HorizontalAlignment="Left"
-                             Text="{Binding MainProduct.Product.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding MainProductViewModel.Product.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <controls:BarcodePresenter DockPanel.Dock="Right"
                                            Margin="20,20,20,0"
-                                           DataContext="{Binding MainProduct.Product}"
+                                           DataContext="{Binding MainProductViewModel}"
                                            Height="{Binding ElementName=mainInfoStackPanel, Path=ActualHeight}" />
             </DockPanel>
             <ScrollViewer VerticalScrollBarVisibility="Hidden"
@@ -82,15 +81,17 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Margin="0,20,20,20">
-                <Button IsDefault="True"
-                        IsTabStop="False"
-                        Content="Запази"
-                        Style="{DynamicResource MaterialDesignFlatButton}" />
                 <Button IsCancel="True"
                         IsTabStop="False"
                         Margin="8 0 0 0"
                         Content="Откажи"
-                        Style="{DynamicResource MaterialDesignFlatButton}" />
+                        Style="{DynamicResource MaterialDesignFlatButton}" 
+                        Command="{Binding CancelCommand}"/>
+                <Button IsDefault="True"
+                        IsTabStop="False"
+                        Content="Запази"
+                        Style="{DynamicResource MaterialDesignRaisedDarkButton}" 
+                        Command="{Binding AddCommand}"/>
             </StackPanel>
         </StackPanel>
     </materialDesign:Card>

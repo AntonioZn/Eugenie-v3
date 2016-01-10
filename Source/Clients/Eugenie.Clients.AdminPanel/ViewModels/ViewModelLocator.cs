@@ -22,7 +22,7 @@
 
         public SettingsViewModel SettingsViewModel => this.container.Resolve<SettingsViewModel>();
 
-        public DeliveryViewModel AddNewProductViewModel => this.container.Resolve<DeliveryViewModel>();
+        public DeliveryViewModel AddNewMainProductViewModel => this.container.Resolve<DeliveryViewModel>();
 
         private void Register()
         {

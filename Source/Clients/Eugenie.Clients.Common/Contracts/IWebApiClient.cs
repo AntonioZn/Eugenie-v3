@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -12,6 +13,6 @@
 
         Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
 
-        Task AddOrUpdateAsync(HttpClient client, AddProductModel model);
+        Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model);
     }
 }

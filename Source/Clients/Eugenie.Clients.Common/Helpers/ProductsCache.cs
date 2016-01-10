@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -15,7 +16,7 @@
 
         public ProductsCache()
         {
-            this.ProductsPerServer = new ObservableConcurrentDictionary<ServerInformation, ObservableCollection<Product>>();
+            this.ProductsPerServer = new ConcurrentDictionary<ServerInformation, ObservableCollection<Product>>();
         }
         
         public IEnumerable<Product> Products

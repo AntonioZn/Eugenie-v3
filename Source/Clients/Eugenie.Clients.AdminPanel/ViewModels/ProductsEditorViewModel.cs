@@ -7,8 +7,8 @@
     using System.Windows.Data;
 
     using Common.Contracts;
-    using Common.Helpers;
     using Common.Models;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
 
@@ -77,7 +77,7 @@
                 productInAllServers.Add(pair.Key, productViewModel);
             }
 
-            var selectedProductViewModel = new ProductViewModel(DeepCopier<Product>.Copy(this.SelectedProduct));
+            var selectedProductViewModel = new ProductViewModel(this.SelectedProduct.DeepClone());
             var viewModel = new ProductInformationViewModel(productInAllServers, selectedProductViewModel);
             var dialog = new ProductInformation(viewModel);
             
@@ -88,9 +88,8 @@
                 foreach (var pair in productInAllServers)
                 {
                     pair.Value.MapProperties(selectedProductViewModel);
+                    await this.manager.AddOrUpdateAsync(pair.Key, pair.Value.GetModel());
                 }
-            
-                await this.manager.AddOrUpdateAsync(productInAllServers);
             
                 this.Products.Refresh();
             }

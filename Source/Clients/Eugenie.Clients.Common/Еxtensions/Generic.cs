@@ -1,10 +1,10 @@
-﻿namespace Eugenie.Clients.Common.Helpers
+﻿namespace Eugenie.Clients.Common.Еxtensions
 {
     using Newtonsoft.Json;
 
-    public static class DeepCopier<T>
+    public static class Generic
     {
-        public static T Copy(T item)
+        public static T DeepClone<T>(this T item)
         {
             var serialized = JsonConvert.SerializeObject(item);
             var deserialized = JsonConvert.DeserializeObject<T>(serialized);

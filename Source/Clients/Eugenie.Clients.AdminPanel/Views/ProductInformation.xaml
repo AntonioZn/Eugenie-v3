@@ -14,6 +14,12 @@
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}">
     <StackPanel Orientation="Vertical">
+        <materialDesign:ColorZone Mode="PrimaryDark"
+                                  Padding="16">
+            <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                       Text="Промяна на продукт"
+                       HorizontalAlignment="Center" />
+        </materialDesign:ColorZone>
         <DockPanel LastChildFill="True">
             <StackPanel x:Name="mainInfoStackPanel"
                         DockPanel.Dock="Left"
@@ -23,7 +29,7 @@
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Width="420"
                          HorizontalAlignment="Left"
-                         Text="{Binding MainProduct.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding MainProductViewModel.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <ComboBox materialDesign:TextFieldAssist.Hint="Мярка"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           Margin="0,10,0,0"
@@ -31,18 +37,18 @@
                           IsTabStop="False"
                           HorizontalAlignment="Left"
                           ItemsSource="{Binding Measures}"
-                          SelectedItem="{Binding MainProduct.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </ComboBox>
                 <TextBox materialDesign:TextFieldAssist.Hint="Доставна цена"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Margin="0,10,0,0"
                          Width="420"
                          HorizontalAlignment="Left"
-                         Text="{Binding MainProduct.Product.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding MainProductViewModel.Product.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <controls:BarcodePresenter DockPanel.Dock="Right"
                                        Margin="20,20,20,0"
-                                       DataContext="{Binding MainProduct}"
+                                       DataContext="{Binding MainProductViewModel}"
                                        Height="{Binding ElementName=mainInfoStackPanel, Path=ActualHeight}" />
         </DockPanel>
         <ScrollViewer VerticalScrollBarVisibility="Hidden"
@@ -56,24 +62,18 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Margin="0,20,20,20">
-            <Button IsDefault="True"
-                    IsTabStop="False"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                    Content="Запази">
-                <Button.CommandParameter>
-                    <System:Boolean>True</System:Boolean>
-                </Button.CommandParameter>
-            </Button>
             <Button IsCancel="True"
                     IsTabStop="False"
                     Margin="8 0 0 0"
                     Content="Назад"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-                <Button.CommandParameter>
-                    <System:Boolean>False</System:Boolean>
-                </Button.CommandParameter>
+                    Command="{Binding CancelChangesCommand}">
+            </Button>
+            <Button IsDefault="True"
+                    IsTabStop="False"
+                    Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Command="{Binding SaveChangesCommand}"
+                    Content="Запази">
             </Button>
         </StackPanel>
     </StackPanel>

@@ -22,8 +22,8 @@
         public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
         {
             this.storage = storage;
-            //this.storage.ServerAdded += this.OnServerAdded;
-            //this.storage.ServerDeleted += this.OnServerDeleted;
+            this.storage.ServerAdded += this.OnServerAdded;
+            this.storage.ServerDeleted += this.OnServerDeleted;
             this.tester = tester;
             this.apiClient = apiClient;
             this.Cache = cache;
@@ -32,6 +32,19 @@
         }
 
         public IProductsCache Cache { get; set; }
+
+        public async Task AddOrUpdateAsync(ServerInformation server, AddProductModel model)
+        {
+            var currentClient = server.Client;
+            if (currentClient == null)
+            {
+                //TODO: retry later
+            }
+            else
+            {
+                await this.apiClient.AddOrUpdateAsync(currentClient, model);
+            }
+        }
 
         public async void Initialize()
         {
@@ -55,24 +68,8 @@
                                                                       });
                      });
 
-            this.Cache.Products = this.Cache.ProductsPerServer.FirstOrDefault().Value;
+            this.Cache.Products = this.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
-        }
-
-        public async Task AddOrUpdateAsync(IDictionary<ServerInformation, ProductViewModel> serverProductPairs)
-        {
-            foreach (var pair in serverProductPairs)
-            {
-                var currentClient = pair.Key.Client;
-                if (currentClient == null)
-                {
-                    //TODO: retry later
-                }
-                else
-                {
-                    await this.apiClient.AddOrUpdateAsync(currentClient, pair.Value.GetModel());
-                }
-            }
         }
 
         public event EventHandler ServerTestingFinished;
@@ -92,23 +89,14 @@
             return result;
         }
 
-        //private async void OnServerAdded(object sender, ServerAddedEventArgs e)
-        //{
-        //    this.Cache.ProductsPerServer.Add(e.Server, new ObservableCollection<Product>());
-        //    var client = await this.tester.TestServer(e.Server);
-        //    if (client != null)
-        //    {
-        //        var products = await this.GetProductsAsync(client);
-        //        foreach (var product in products)
-        //        {
-        //            this.Cache.ProductsPerServer[e.Server].Add(product);
-        //        }
-        //    }
-        //}
-        //
-        //private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
-        //{
-        //    this.Cache.ProductsPerServer.Remove(e.Server);
-        //}
+        private void OnServerAdded(object sender, ServerAddedEventArgs e)
+        {
+            this.Initialize();
+        }
+        
+        private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
+        {
+            this.Initialize();
+        }
     }
 }
