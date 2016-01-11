@@ -2,10 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
 
     using GalaSoft.MvvmLight;
 
-    public class Product : ViewModelBase
+    using Helpers;
+
+    public class Product : ViewModelBase, IDataErrorInfo
     {
         private string name;
         private decimal buyingPrice;
@@ -29,7 +32,7 @@
 
             set
             {
-                this.Set(() => this.Name, ref this.name, value);
+                this.Set(() => this.Name, ref this.name, value.TrimStart());
             }
         }
 
@@ -100,5 +103,21 @@
                 }
             }
         }
+        
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case "Name":
+                        return Validator.ValidateProductName(this.Name);
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        public string Error { get; }
     }
 }

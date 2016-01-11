@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:Eugenie.Clients.AdminPanel.Views.Controls"
-             xmlns:validations="clr-namespace:Eugenie.Clients.Common.Validations;assembly=Eugenie.Clients.Common"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="20"
@@ -12,7 +11,8 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
-             IsTabStop="False">
+             IsTabStop="False"
+             DataContext="{Binding Path=DeliveryViewModel, Source={StaticResource ViewModelLocator}}">
     <materialDesign:Card HorizontalAlignment="Center"
                          Margin="0,50,0,0"
                          IsTabStop="False">
@@ -45,15 +45,8 @@
                               materialDesign:TextFieldAssist.Hint="Име"
                               IsEditable="True"
                               DisplayMemberPath="Name"
-                              ItemsSource="{Binding ExistingProducts}">
-                        <ComboBox.Text>
-                            <Binding Path="Name"
-                                     UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validations:NameValidation />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </ComboBox.Text>
+                              ItemsSource="{Binding ExistingProducts}"
+                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />

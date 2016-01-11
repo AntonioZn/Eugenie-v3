@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:Eugenie.Clients.AdminPanel.Views.Controls"
-             xmlns:validations="clr-namespace:Eugenie.Clients.Common.Validations;assembly=Eugenie.Clients.Common"
              Height="Auto"
              Width="Auto"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -29,17 +28,8 @@
                 <TextBox materialDesign:TextFieldAssist.Hint="Име"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Width="420"
-                         HorizontalAlignment="Left">
-                    <TextBox.Text>
-                        <Binding Path="MainProductViewModel.Product.Name"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validations:NameValidation />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                         HorizontalAlignment="Left"
+                         Text="{Binding MainProductViewModel.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 <ComboBox materialDesign:TextFieldAssist.Hint="Мярка"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           Margin="0,10,0,0"

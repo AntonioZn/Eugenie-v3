@@ -1,10 +1,14 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -12,92 +16,49 @@
     public class SettingsViewModel : ViewModelBase
     {
         private readonly IServerStorage storage;
-        private string name;
-        private string address = "http://";
-        private string username;
-        private string password;
+        private ServerInformation newServer;
 
         public SettingsViewModel(IServerStorage storage)
         {
             this.storage = storage;
-            this.AddNewServerCommand = new RelayCommand(this.HandleAddNewServerCommand);
+            this.AddNewServerCommand = new RelayCommand<UserControl>(this.HandleAddNewServerCommand, this.CanAddNewServer);
             this.DeleteServerCommand = new RelayCommand<ServerInformation>(this.HandleDeleteServerCommand);
         }
-
+        
         public ICommand AddNewServerCommand { get; private set; }
+
         public ICommand DeleteServerCommand { get; private set; }
+
+        public ServerInformation NewServer
+        {
+            get
+            {
+                return this.newServer ?? (this.newServer = new ServerInformation());
+            }
+            set
+            {
+                this.Set(() => this.NewServer, ref this.newServer, value);
+            }
+        }
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
 
-        public string Name
+        private bool CanAddNewServer(UserControl arg)
         {
-            get
-            {
-                return this.name; 
-                
-            }
-            set
-            {
-                this.Set(() => this.Name, ref this.name, value);
-            }
+            return arg.HasNoValidationErrors()
+                && Validator.ValidatePassword(this.NewServer.Password) == null
+                && this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
         }
 
-        public string Address
+        public void HandleAddNewServerCommand(UserControl arg)
         {
-            get
-            {
-                return this.address;
+            this.storage.AddServer(this.NewServer);
 
-            }
-            set
-            {
-                this.Set(() => this.Address, ref this.address, value);
-            }
-        }
-
-        public string Username
-        {
-            get
-            {
-                return this.username;
-
-            }
-            set
-            {
-                this.Set(() => this.Username, ref this.username, value);
-            }
-        }
-
-        public string Password
-        {
-            get
-            {
-                return this.password;
-
-            }
-            set
-            {
-                this.Set(() => this.Password, ref this.password, value);
-            }
-        }
-
-        private void HandleAddNewServerCommand()
-        {
-            var newServer = new ServerInformation(this.username, this.password, this.name, this.address);
-
-            this.Name = string.Empty;
-            this.Address = string.Empty;
-            this.Username = string.Empty;
-            this.Password = string.Empty;
-
-
-            this.storage.AddServer(newServer);
+            this.NewServer = new ServerInformation();;
         }
 
         private void HandleDeleteServerCommand(ServerInformation server)
         {
-            this.Servers.Remove(server);
-
             this.storage.DeleteServer(server);
         }
     }

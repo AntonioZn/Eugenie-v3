@@ -21,10 +21,10 @@
             this.waste = new HashSet<Waste>();
         }
 
-        [MaxLength(ValidationConstants.FirstNameLength)]
+        [MaxLength(ValidationConstants.FirstNameMaxLength)]
         public string FirstName { get; set; }
 
-        [MaxLength(ValidationConstants.LastNameLength)]
+        [MaxLength(ValidationConstants.LastNameMaxLength)]
         public string LastName { get; set; }
 
         public virtual ICollection<Sell> Sells

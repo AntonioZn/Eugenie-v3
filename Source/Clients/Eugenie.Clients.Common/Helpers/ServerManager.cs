@@ -46,6 +46,7 @@
             }
         }
 
+        //TODO: semaphore?
         public async void Initialize()
         {
             this.Cache.ProductsPerServer.Clear();
@@ -68,7 +69,12 @@
                                                                       });
                      });
 
-            this.Cache.Products = this.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
+            var singleServerProducts = this.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
+            if (singleServerProducts != null)
+            {
+                this.Cache.Products = singleServerProducts;
+            }
+
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
 

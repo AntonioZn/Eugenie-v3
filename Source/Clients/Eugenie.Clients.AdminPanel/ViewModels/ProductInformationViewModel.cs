@@ -1,8 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -29,7 +27,13 @@
         public ICommand CancelChangesCommand { get; set; }
 
         public ICommand SaveChangesCommand { get; set; }
-    
+
+        public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
+
+        public ProductViewModel MainProductViewModel { get; set; }
+
+        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
+
         private void HandleCancelChangesCommand()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
@@ -44,11 +48,5 @@
         {
             return arg.HasNoValidationErrors();
         }
-
-        public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
-
-        public ProductViewModel MainProductViewModel { get; set; }
-
-        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
     }
 }

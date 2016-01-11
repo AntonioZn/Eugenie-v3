@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Input;
 
@@ -42,26 +43,16 @@
                 this.Set(() => this.LoadingVisibility, ref this.loadingVisibility, value);
             }
         }
-
-        //TODO: auto refresh active servers when adding new server
+        
         public ICollection<ServerInformation> Servers
         {
             get
             {
-                if (this.servers == null)
-                {
-                    this.servers = new ObservableCollection<ServerInformation>();
-                }
-
-                return this.servers;
+                return this.servers ?? (this.servers = new ObservableCollection<ServerInformation>());
             }
             set
             {
-                if (this.servers == null)
-                {
-                    this.servers = new ObservableCollection<ServerInformation>();
-                }
-
+                this.servers = this.servers ?? new ObservableCollection<ServerInformation>();
                 this.servers.Clear();
                 foreach (var server in value)
                 {
@@ -78,7 +69,7 @@
 
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
-            //this.Servers = this.manager.ActiveServers.Keys;
+            this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }

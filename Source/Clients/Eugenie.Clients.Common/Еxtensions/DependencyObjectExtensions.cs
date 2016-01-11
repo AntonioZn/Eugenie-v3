@@ -8,6 +8,11 @@
     {
         public static bool HasNoValidationErrors(this DependencyObject item)
         {
+            if (item == null)
+            {
+                return false;
+            }
+
             return !Validation.GetHasError(item) &&
             LogicalTreeHelper.GetChildren(item)
             .OfType<DependencyObject>()

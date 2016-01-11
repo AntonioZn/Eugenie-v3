@@ -8,7 +8,7 @@
     {
         [Required]
         [Display(Name = "Username")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = ValidationConstants.UserNameMinLength)]
+        [StringLength(ValidationConstants.UsernameMaxLength, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = ValidationConstants.UsernameMinLength)]
         public string Username { get; set; }
 
         [Required]
@@ -22,7 +22,7 @@
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = ValidationConstants.PasswordMinLength)]
+        [StringLength(ValidationConstants.PasswordMaxLength, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = ValidationConstants.PasswordMinLength)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

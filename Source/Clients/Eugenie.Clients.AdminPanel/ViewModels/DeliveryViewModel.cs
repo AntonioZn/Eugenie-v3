@@ -183,7 +183,7 @@
 
         private bool CanAddCommand(UserControl arg)
         {
-            return !string.IsNullOrEmpty(this.Name) && arg.HasNoValidationErrors();
+            return Validator.ValidateProductName(this.Name) == null && arg.HasNoValidationErrors();
         }
 
         private void HandleCancelCommand()
