@@ -56,14 +56,15 @@
                                                  Text="{Binding Username}"
                                                  IsTabStop="False"
                                                  IsHitTestVisible="False" />
-                                        <PasswordBox materialDesign:TextFieldAssist.Hint="Парола"
-                                                     VerticalAlignment="Bottom"
-                                                     Margin="20,0,0,0"
-                                                     Width="100"
-                                                     HorizontalAlignment="Left"
-                                                     Password="88888888"
-                                                     IsTabStop="False"
-                                                     IsHitTestVisible="False" />
+                                        <TextBox materialDesign:TextFieldAssist.Hint="Парола"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 VerticalAlignment="Bottom"
+                                                 Margin="20,0,0,0"
+                                                 Width="100"
+                                                 HorizontalAlignment="Left"
+                                                 IsTabStop="False"
+                                                 IsHitTestVisible="False"
+                                                 Text="{Binding Password}" />
                                         <TextBox materialDesign:TextFieldAssist.Hint="Адрес"
                                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                  VerticalAlignment="Bottom"
@@ -112,13 +113,14 @@
                                  Width="100"
                                  HorizontalAlignment="Left"
                                  Text="{Binding NewServer.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                        <PasswordBox x:Name="passwordBox"
-                                     materialDesign:TextFieldAssist.Hint="Парола"
-                                     VerticalAlignment="Bottom"
-                                     Margin="20,0,0,0"
-                                     Width="100"
-                                     HorizontalAlignment="Left"
-                                     PasswordChanged="PasswordTextBox_OnPasswordChanged" />
+                        <TextBox materialDesign:TextFieldAssist.Hint="Парола"
+                                 materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 VerticalAlignment="Bottom"
+                                 Margin="20,0,0,0"
+                                 Width="100"
+                                 HorizontalAlignment="Left"
+                                 Text="{Binding NewServer.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <TextBox materialDesign:TextFieldAssist.Hint="Адрес"
                                  materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -130,7 +132,6 @@
                         <Button x:Name="addButton"
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                 Margin="20,0,0,0"
-                                Click="AddButton_OnClick"
                                 Command="{Binding AddNewServerCommand}"
                                 CommandParameter="{Binding ElementName=userControl}"
                                 ToolTip="Добави">

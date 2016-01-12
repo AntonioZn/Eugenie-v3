@@ -2,13 +2,14 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Text.RegularExpressions;
 
     using Contracts;
 
     using GalaSoft.MvvmLight;
 
     using Helpers;
+
+    using Еxtensions;
 
     public class Product : ViewModelBase, IValidatableObject
     {
@@ -36,7 +37,7 @@
 
             set
             {
-                this.Set(() => this.Name, ref this.name, Regex.Replace(value.TrimStart(), @"\s+", " "));
+                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
             }
         }
 

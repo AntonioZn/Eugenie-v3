@@ -42,9 +42,8 @@
 
         private bool CanAddNewServer()
         {
-            return //this.NewServer.HasNoValidationErrors()
-                //&& 
-                this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
+            return this.NewServer.HasNoValidationErrors()
+                && this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
         }
 
         public void HandleAddNewServerCommand()

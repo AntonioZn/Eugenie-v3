@@ -2,7 +2,8 @@
 {
     using System;
     using System.Net.Http;
-    using System.Text.RegularExpressions;
+
+    using Contracts;
 
     using GalaSoft.MvvmLight;
 
@@ -10,7 +11,9 @@
 
     using Newtonsoft.Json;
 
-    public class ServerInformation : ViewModelBase
+    using Еxtensions;
+
+    public class ServerInformation : ViewModelBase, IValidatableObject
     {
         private string name;
         private string address = "http://";
@@ -26,7 +29,7 @@
             }
             set
             {
-                this.Set(() => this.Name, ref this.name, Regex.Replace(value.TrimStart(), @"\s+", " "));
+                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
             }
         }
 
@@ -77,23 +80,35 @@
 
         [JsonIgnore]
         public HttpClient Client { get; set; }
-        
+
         public string this[string propertyName]
         {
             get
             {
                 switch (propertyName)
                 {
-                    case "Name":
+                    case nameof(this.Name):
                         return Validator.ValidateServerName(this.Name);
-                    case "Username":
+                    case nameof(this.Username):
                         return Validator.ValidateUsername(this.Username);
-                    case "Address":
+                    case nameof(this.Address):
                         return Validator.ValidateAddress(this.Address);
+                    case nameof(this.Password):
+                        return Validator.ValidatePassword(this.Password);
                     default:
                         return null;
                 }
             }
+        }
+
+        public string Error { get; }
+
+        public bool HasNoValidationErrors()
+        {
+            return this[nameof(this.Name)] == null
+                && this[nameof(this.Username)] == null
+                && this[nameof(this.Address)] == null
+                && this[nameof(this.Password)] == null;
         }
     }
 }
