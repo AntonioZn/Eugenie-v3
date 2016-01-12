@@ -39,8 +39,6 @@
                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                 IsTabStop="False"
                                 ToolTip="Изтрий"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.DeleteBarcodeCommand}"
                                 CommandParameter="{Binding}">
                             <Viewbox Width="24"
