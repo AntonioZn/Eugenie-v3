@@ -14,7 +14,7 @@
         
         public MeasureType Measure { get; set; }
 
-        public string QuantityToAdd { get; set; }
+        public decimal? QuantityToAdd { get; set; }
 
         public ICollection<Barcode> Barcodes { get; set; }
 

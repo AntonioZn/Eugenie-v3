@@ -107,9 +107,8 @@
 
         public void MapProperties(ProductViewModel baseProduct)
         {
-            this.Product.Name = baseProduct.Product.Name;
-            this.OldName = baseProduct.OldName;
-            this.Product.BuyingPrice = decimal.Parse(this.BuyingPrice);
+            this.Product.Name = baseProduct.Product.Name.Trim();
+            this.Product.BuyingPrice = decimal.Parse(baseProduct.BuyingPrice);
             this.Product.SellingPrice = string.IsNullOrEmpty(this.SellingPrice) ? this.Product.SellingPrice : decimal.Parse(this.SellingPrice);
             this.Product.Measure = baseProduct.Product.Measure;
             this.Product.Barcodes = baseProduct.Product.Barcodes;
@@ -119,21 +118,22 @@
 
         public AddProductModel GetModel()
         {
-            var model = new AddProductModel();
-            model.Name = this.Product.Name;
-            model.OldName = this.OldName;
-            if (!string.IsNullOrEmpty(this.SellingPrice))
+            var model = new AddProductModel
+                        {
+                            Name = this.Product.Name,
+                            OldName = this.OldName,
+                            Measure = this.Product.Measure,
+                            ExpirationDates = this.Product.ExpirationDates,
+                            Barcodes = this.Product.Barcodes
+                        };
+
+            model.SellingPrice = this.Product.SellingPrice;
+            model.BuyingPrice = this.Product.BuyingPrice;
+
+            if (!string.IsNullOrEmpty(this.QuantityToAdd))
             {
-                model.SellingPrice = decimal.Parse(this.SellingPrice);
+                model.QuantityToAdd = decimal.Parse(this.QuantityToAdd);
             }
-            if (!string.IsNullOrEmpty(this.BuyingPrice))
-            {
-                model.BuyingPrice = decimal.Parse(this.BuyingPrice);
-            }
-            model.Measure = this.Product.Measure;
-            model.QuantityToAdd = this.QuantityToAdd;
-            model.ExpirationDates = this.Product.ExpirationDates;
-            model.Barcodes = this.Product.Barcodes;
 
             this.QuantityToAdd = null;
 
