@@ -16,7 +16,7 @@
     {
         private readonly IServerManager manager;
         private readonly INameFromBarcodeGenerator nameGenerator;
-        
+
         private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
         private ProductViewModel mainMainProductViewModel;
         private string name = string.Empty;
@@ -30,11 +30,11 @@
             this.AutomaticName = true;
             this.MainProductViewModel = new ProductViewModel(new Product());
 
-            this.AddCommand = new RelayCommand(this.HandleAddCommand);
+            this.SaveCommand = new RelayCommand(this.HandleSaveCommand, this.CanSave);
             this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
         }
 
-        public ICommand AddCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public ICommand CancelCommand { get; set; }
 
@@ -87,7 +87,7 @@
                 this.Set(() => this.MainProductViewModel, ref this.mainMainProductViewModel, value);
             }
         }
-        
+
         public string Name
         {
             get
@@ -97,8 +97,6 @@
 
             set
             {
-                value = value.Trim();
-
                 var existingProduct = this.ExistingProducts.FirstOrDefault(x => x.Name == value);
                 if (existingProduct != null)
                 {
@@ -170,7 +168,7 @@
         }
 
         //TODO: when new item is added add it to cache
-        private async void HandleAddCommand()
+        private async void HandleSaveCommand()
         {
             foreach (var pair in this.ProductInAllServers)
             {
@@ -181,23 +179,16 @@
             this.Name = string.Empty;
         }
 
+        private bool CanSave()
+        {
+            return this.MainProductViewModel.Product.HasNoValidationErrors()
+                && this.MainProductViewModel.HasNoValidationErrors()
+                && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
+        }
+
         private void HandleCancelCommand()
         {
             this.Name = string.Empty;
-        }
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                switch (propertyName)
-                {
-                    case nameof(this.Name):
-                        return Validator.ValidateProductName(this.Name);
-                    default:
-                        return null;
-                }
-            }
         }
     }
 }

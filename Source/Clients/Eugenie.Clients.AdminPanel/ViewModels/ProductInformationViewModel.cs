@@ -19,13 +19,13 @@
             this.ProductInAllServers = productInAllServers;
             this.MainProductViewModel = mainMainProductViewModel;
 
-            this.SaveChangesCommand = new RelayCommand(this.HandleSaveChangesCommand, this.CanSaveChanges);
-            this.CancelChangesCommand = new RelayCommand(this.HandleCancelChangesCommand);
+            this.SaveCommand = new RelayCommand(this.HandleSaveCommand, this.CanSave);
+            this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
         }
 
-        public ICommand CancelChangesCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
-        public ICommand SaveChangesCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
 
@@ -33,19 +33,20 @@
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
-        private void HandleCancelChangesCommand()
+        private void HandleCancelCommand()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
         }
 
-        private void HandleSaveChangesCommand()
+        private void HandleSaveCommand()
         {
             DialogHost.CloseDialogCommand.Execute(true, null);
         }
 
-        private bool CanSaveChanges()
+        private bool CanSave()
         {
             return this.MainProductViewModel.Product.HasNoValidationErrors()
+                && this.MainProductViewModel.HasNoValidationErrors()
                 && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
         }
     }
