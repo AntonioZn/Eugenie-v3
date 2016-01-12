@@ -3,33 +3,40 @@
     using System;
     using System.Windows.Input;
 
+    using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    public class ProductViewModel : ViewModelBase
+    public class ProductViewModel : ViewModelBase, IValidatableObject
     {
         private DateTime? date;
         private string batch;
+        private string quantityToAdd;
+        private string sellingPrice;
+        private string buyingPrice;
 
         public ProductViewModel(Product product)
         {
             this.Product = product;
             this.OldName = product.Name;
+            this.SellingPrice = product.SellingPrice.ToString();
+            this.BuyingPrice = product.BuyingPrice.ToString();
 
             this.DeleteBarcodeCommand = new RelayCommand<Barcode>(this.HandleDeleteBarcodeCommand);
             this.DeleteExpirationDateCommand = new RelayCommand<ExpirationDate>(this.HandleDeleteExpirationDateCommand);
             this.AddExpirationDateCommand = new RelayCommand(this.HandleAddExpirationDateCommand, this.CanAddExpirationDate);
         }
 
-        public Product Product { get; set; }
-
         public ICommand DeleteExpirationDateCommand { get; set; }
 
         public ICommand AddExpirationDateCommand { get; set; }
 
         public ICommand DeleteBarcodeCommand { get; set; }
+
+        public Product Product { get; set; }
 
         public string OldName { get; set; }
 
@@ -45,7 +52,7 @@
                 this.Set(() => this.Date, ref this.date, value);
             }
         }
-        
+
         public string Batch
         {
             get
@@ -58,29 +65,73 @@
                 this.Set(() => this.Batch, ref this.batch, value);
             }
         }
+        
+        public string BuyingPrice
+        {
+            get
+            {
+                return this.buyingPrice;
+            }
 
-        public decimal? QuantityToAdd { get; set; }
+            set
+            {
+                this.Set(() => this.BuyingPrice, ref this.buyingPrice, value?.Trim());
+            }
+        }
+
+        public string QuantityToAdd
+        {
+            get
+            {
+                return this.quantityToAdd;
+            }
+
+            set
+            {
+                this.Set(() => this.QuantityToAdd, ref this.quantityToAdd, value?.Trim());
+            }
+        }
+
+        public string SellingPrice
+        {
+            get
+            {
+                return this.sellingPrice;
+            }
+
+            set
+            {
+                this.Set(() => this.SellingPrice, ref this.sellingPrice, value?.Trim());
+            }
+        }
 
         public void MapProperties(ProductViewModel baseProduct)
         {
             this.Product.Name = baseProduct.Product.Name;
             this.OldName = baseProduct.OldName;
+            this.Product.BuyingPrice = decimal.Parse(this.BuyingPrice);
+            this.Product.SellingPrice = string.IsNullOrEmpty(this.SellingPrice) ? this.Product.SellingPrice : decimal.Parse(this.SellingPrice);
             this.Product.Measure = baseProduct.Product.Measure;
-            this.Product.BuyingPrice = baseProduct.Product.BuyingPrice;
             this.Product.Barcodes = baseProduct.Product.Barcodes;
-            this.Product.Quantity += this.QuantityToAdd ?? 0;
+
+            this.Product.Quantity += string.IsNullOrEmpty(this.QuantityToAdd) ? 0 : decimal.Parse(this.QuantityToAdd);
         }
 
         public AddProductModel GetModel()
         {
             var model = new AddProductModel();
-
             model.Name = this.Product.Name;
             model.OldName = this.OldName;
-            model.SellingPrice = this.Product.SellingPrice;
-            model.BuyingPrice = this.Product.BuyingPrice;
+            if (!string.IsNullOrEmpty(this.SellingPrice))
+            {
+                model.SellingPrice = decimal.Parse(this.SellingPrice);
+            }
+            if (!string.IsNullOrEmpty(this.BuyingPrice))
+            {
+                model.BuyingPrice = decimal.Parse(this.BuyingPrice);
+            }
             model.Measure = this.Product.Measure;
-            model.QuantityToAdd = this.QuantityToAdd ?? 0;
+            model.QuantityToAdd = this.QuantityToAdd;
             model.ExpirationDates = this.Product.ExpirationDates;
             model.Barcodes = this.Product.Barcodes;
 
@@ -94,7 +145,6 @@
             this.Product.Barcodes.Remove(barcode);
         }
 
-        //TODO: add validation
         private void HandleAddExpirationDateCommand()
         {
             this.Product.ExpirationDates.Add(new ExpirationDate(this.Date.GetValueOrDefault(), this.Batch));
@@ -110,6 +160,33 @@
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)
         {
             this.Product.ExpirationDates.Remove(expirationDate);
+        }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case nameof(this.QuantityToAdd):
+                        return Validator.ValidateNullableDecimal(this.QuantityToAdd);
+                    case nameof(this.SellingPrice):
+                        return Validator.ValidateNullableDecimal(this.SellingPrice);
+                    case nameof(this.BuyingPrice):
+                        return Validator.ValidateNotNullableDecimal(this.BuyingPrice);
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        public string Error { get; }
+
+        public bool HasNoValidationErrors()
+        {
+            return this[nameof(this.QuantityToAdd)] == null
+                && this[nameof(this.SellingPrice)] == null
+                && this[nameof(this.BuyingPrice)] == null;
         }
     }
 }

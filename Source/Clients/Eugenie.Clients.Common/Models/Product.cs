@@ -2,16 +2,19 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+
+    using Contracts;
 
     using GalaSoft.MvvmLight;
 
     using Helpers;
 
-    public class Product : ViewModelBase, IDataErrorInfo
+    public class Product : ViewModelBase, IValidatableObject
     {
         private string name;
         private decimal buyingPrice;
+        private decimal? sellingPrice;
         private MeasureType measure;
         private ObservableCollection<Barcode> barcodes;
         private ObservableCollection<ExpirationDate> expirationDates;
@@ -23,6 +26,7 @@
             this.Barcodes = new List<Barcode>();
             this.ExpirationDates = new List<ExpirationDate>();
         }
+
         public string Name
         {
             get
@@ -32,7 +36,7 @@
 
             set
             {
-                this.Set(() => this.Name, ref this.name, value.TrimStart());
+                this.Set(() => this.Name, ref this.name, Regex.Replace(value.TrimStart(), @"\s+", " "));
             }
         }
 
@@ -49,7 +53,18 @@
             }
         }
 
-        public decimal? SellingPrice { get; set; }
+        public decimal? SellingPrice
+        {
+            get
+            {
+                return this.sellingPrice;
+            }
+
+            set
+            {
+                this.Set(() => this.SellingPrice, ref this.sellingPrice, value);
+            }
+        }
 
         public MeasureType Measure
         {
@@ -84,7 +99,7 @@
                 }
             }
         }
-        
+
         public ICollection<ExpirationDate> ExpirationDates
         {
             get
@@ -103,14 +118,14 @@
                 }
             }
         }
-        
+
         public string this[string propertyName]
         {
             get
             {
                 switch (propertyName)
                 {
-                    case "Name":
+                    case nameof(this.Name):
                         return Validator.ValidateProductName(this.Name);
                     default:
                         return null;
@@ -119,5 +134,10 @@
         }
 
         public string Error { get; }
+
+        public bool HasNoValidationErrors()
+        {
+            return this[nameof(this.Name)] == null;
+        }
     }
 }

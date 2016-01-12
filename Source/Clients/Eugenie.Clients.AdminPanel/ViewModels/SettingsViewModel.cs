@@ -2,13 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Helpers;
     using Common.Models;
-    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -21,7 +18,7 @@
         public SettingsViewModel(IServerStorage storage)
         {
             this.storage = storage;
-            this.AddNewServerCommand = new RelayCommand<UserControl>(this.HandleAddNewServerCommand, this.CanAddNewServer);
+            this.AddNewServerCommand = new RelayCommand(this.HandleAddNewServerCommand, this.CanAddNewServer);
             this.DeleteServerCommand = new RelayCommand<ServerInformation>(this.HandleDeleteServerCommand);
         }
         
@@ -43,14 +40,14 @@
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
 
-        private bool CanAddNewServer(UserControl arg)
+        private bool CanAddNewServer()
         {
-            return arg.HasNoValidationErrors()
-                && Validator.ValidatePassword(this.NewServer.Password) == null
-                && this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
+            return //this.NewServer.HasNoValidationErrors()
+                //&& 
+                this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
         }
 
-        public void HandleAddNewServerCommand(UserControl arg)
+        public void HandleAddNewServerCommand()
         {
             this.storage.AddServer(this.NewServer);
 

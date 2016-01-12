@@ -70,7 +70,7 @@
                 this.productsRepository.Add(product);
             }
 
-            var stockPrice = this.CalculateStockPrice(product, sellingPrice, quantity);
+            var stockPrice = this.CalculateStockPrice(product, sellingPrice ?? product.SellingPrice, quantity ?? 0);
 
             this.MapProperties(product, name, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
 
@@ -80,12 +80,13 @@
             return product;
         }
 
-        private decimal CalculateStockPrice(Product product, decimal? sellingPrice, decimal? quantity)
+        private decimal CalculateStockPrice(Product product, decimal sellingPrice, decimal quantity)
         {
             decimal stockPrice = 0;
-            var sellingPriceDifference = sellingPrice.GetValueOrDefault() - product.SellingPrice;
+
+            var sellingPriceDifference = sellingPrice - product.SellingPrice;
             stockPrice += sellingPriceDifference * product.Quantity;
-            stockPrice += sellingPrice.GetValueOrDefault() * quantity.GetValueOrDefault();
+            stockPrice += sellingPrice * quantity;
 
             return stockPrice;
         }
@@ -115,13 +116,14 @@
                 }
             }
 
-            foreach (var expirationDate in product.ExpirationDates.ToList())
-            {
-                if (expirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
-                {
-                    this.expirationDatesRepository.Delete(expirationDate);
-                }
-            }
+            //TODO: remove deletion?
+            //foreach (var expirationDate in product.ExpirationDates.ToList())
+            //{
+            //    if (expirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
+            //    {
+            //        this.expirationDatesRepository.Delete(expirationDate);
+            //    }
+            //}
             
             foreach (var expirationDate in expirationDates)
             {

@@ -59,10 +59,5 @@
                 this.expirationDates = value;
             }
         }
-
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
     }
 }

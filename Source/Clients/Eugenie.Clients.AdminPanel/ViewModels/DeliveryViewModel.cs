@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -13,7 +12,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
+    public class DeliveryViewModel : ViewModelBase
     {
         private readonly IServerManager manager;
         private readonly INameFromBarcodeGenerator nameGenerator;
@@ -29,8 +28,9 @@
             this.manager = manager;
 
             this.AutomaticName = true;
+            this.MainProductViewModel = new ProductViewModel(new Product());
 
-            this.AddCommand = new RelayCommand<UserControl>(this.HandleAddCommand, this.CanAddCommand);
+            this.AddCommand = new RelayCommand(this.HandleAddCommand);
             this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
         }
 
@@ -170,7 +170,7 @@
         }
 
         //TODO: when new item is added add it to cache
-        private async void HandleAddCommand(UserControl arg)
+        private async void HandleAddCommand()
         {
             foreach (var pair in this.ProductInAllServers)
             {
@@ -181,14 +181,23 @@
             this.Name = string.Empty;
         }
 
-        private bool CanAddCommand(UserControl arg)
-        {
-            return Validator.ValidateProductName(this.Name) == null && arg.HasNoValidationErrors();
-        }
-
         private void HandleCancelCommand()
         {
             this.Name = string.Empty;
+        }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case nameof(this.Name):
+                        return Validator.ValidateProductName(this.Name);
+                    default:
+                        return null;
+                }
+            }
         }
     }
 }

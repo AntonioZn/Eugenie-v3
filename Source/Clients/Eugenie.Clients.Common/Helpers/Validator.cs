@@ -83,5 +83,22 @@
 
             return null;
         }
+
+        public static string ValidateNullableDecimal(string argument)
+        {
+            if (string.IsNullOrEmpty(argument))
+            {
+                return null;
+            }
+
+            decimal number;
+            return decimal.TryParse(argument, out number) ? null : "Невалидно поле";
+        }
+
+        public static string ValidateNotNullableDecimal(string argument)
+        {
+            decimal number;
+            return decimal.TryParse(argument, out number) ? null : "Невалидно поле";
+        }
     }
 }

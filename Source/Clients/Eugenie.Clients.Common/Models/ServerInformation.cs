@@ -1,8 +1,8 @@
 ﻿namespace Eugenie.Clients.Common.Models
 {
     using System;
-    using System.ComponentModel;
     using System.Net.Http;
+    using System.Text.RegularExpressions;
 
     using GalaSoft.MvvmLight;
 
@@ -10,7 +10,7 @@
 
     using Newtonsoft.Json;
 
-    public class ServerInformation : ViewModelBase, IDataErrorInfo
+    public class ServerInformation : ViewModelBase
     {
         private string name;
         private string address = "http://";
@@ -26,7 +26,7 @@
             }
             set
             {
-                this.Set(() => this.Name, ref this.name, value.TrimStart());
+                this.Set(() => this.Name, ref this.name, Regex.Replace(value.TrimStart(), @"\s+", " "));
             }
         }
 
@@ -77,8 +77,7 @@
 
         [JsonIgnore]
         public HttpClient Client { get; set; }
-
-        [JsonIgnore]
+        
         public string this[string propertyName]
         {
             get
@@ -96,8 +95,5 @@
                 }
             }
         }
-
-        [JsonIgnore]
-        public string Error { get; }
     }
 }
