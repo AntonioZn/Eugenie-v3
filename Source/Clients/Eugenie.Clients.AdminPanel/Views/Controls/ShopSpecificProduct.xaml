@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
     <StackPanel>
         <ItemsControl IsTabStop="False"
                       ItemsSource="{Binding ProductInAllServers}">
@@ -10,31 +11,41 @@
                     <Border Padding="8"
                             BorderThickness="1,1,1,0"
                             BorderBrush="{DynamicResource MaterialDesignDivider}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox materialDesign:TextFieldAssist.Hint="Магазин"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Stretch"
+                                     materialDesign:TextFieldAssist.Hint="Магазин"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     VerticalAlignment="Top"
                                      IsTabStop="False"
                                      Focusable="False"
                                      IsReadOnly="True"
-                                     Width="110"
-                                     HorizontalAlignment="Left"
                                      Text="{Binding Key.Name}" />
-                            <TextBox materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Grid.Column="1"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Stretch"
+                                     materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     VerticalAlignment="Top"
                                      Margin="10,0,0,0"
-                                     Width="70"
-                                     HorizontalAlignment="Left"
                                      Text="{Binding Value.QuantityToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                            <TextBox materialDesign:TextFieldAssist.Hint="Продажна цена"
+                            <TextBox Grid.Column="2"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Stretch"
+                                     materialDesign:TextFieldAssist.Hint="Продажна цена"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     VerticalAlignment="Top"
                                      Margin="10,0,0,0"
-                                     Width="90"
-                                     HorizontalAlignment="Left"
                                      Text="{Binding Value.SellingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                            <materialDesign:PopupBox ToolTipService.Placement="Right"
+                            <materialDesign:PopupBox Grid.Column="3"
+                                                     ToolTipService.Placement="Right"
                                                      PlacementMode="BottomAndAlignCentres"
                                                      ToolTip="Срокове на годност"
                                                      Margin="10,0,0,0"
@@ -105,37 +116,40 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </materialDesign:PopupBox>
-                            <StackPanel Margin="10,0,0,0"
-                                        Orientation="Horizontal">
-                                <DatePicker VerticalAlignment="Bottom"
-                                            SelectedDate="{Binding Value.Date, Mode=TwoWay}"
-                                            materialDesign:TextFieldAssist.Hint="Избери дата" />
-                                <TextBox materialDesign:TextFieldAssist.Hint="Партиден №"
-                                         Text="{Binding Value.Batch, Mode=TwoWay}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         VerticalAlignment="Bottom"
-                                         Width="100"
-                                         Margin="10,0,0,0" />
-                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                        IsTabStop="False"
+                            <DatePicker Grid.Column="4"
                                         Margin="10,0,0,0"
                                         VerticalAlignment="Bottom"
-                                        ToolTip="Добави"
-                                        Command="{Binding Value.AddExpirationDateCommand}">
-                                    <Viewbox Width="24"
-                                             Height="24">
-                                        <Path Stretch="Fill"
-                                              Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z "
-                                              Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
-                                    </Viewbox>
-                                </Button>
-                            </StackPanel>
-                        </StackPanel>
+                                        HorizontalAlignment="Stretch"
+                                        SelectedDate="{Binding Value.Date, Mode=TwoWay}"
+                                        materialDesign:TextFieldAssist.Hint="Избери дата" />
+                            <TextBox Grid.Column="5"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Stretch"
+                                     materialDesign:TextFieldAssist.Hint="Партиден №"
+                                     Text="{Binding Value.Batch, Mode=TwoWay}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Margin="10,0,0,0" />
+                            <Button Grid.Column="6"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    IsTabStop="False"
+                                    Margin="10,0,0,0"
+                                    ToolTip="Добави"
+                                    Command="{Binding Value.AddExpirationDateCommand}">
+                                <Viewbox Width="24"
+                                         Height="24">
+                                    <Path Stretch="Fill"
+                                          Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z "
+                                          Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                </Viewbox>
+                            </Button>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <Border BorderThickness="0,1,0,0"
                 BorderBrush="{DynamicResource MaterialDesignDivider}" />
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -22,7 +22,7 @@
         <Grid Margin="20,20,20,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" x:Name="mainInfoGrid">
                 <Grid.RowDefinitions>
@@ -57,13 +57,8 @@
                                        DataContext="{Binding MainProductViewModel}"
                                        Height="{Binding ElementName=mainInfoGrid, Path=ActualHeight}" />
         </Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Hidden"
-                      IsTabStop="False"
-                      Margin="20,20,20,0"
-                      MaxHeight="400"
-                      VerticalAlignment="Top">
-            <controls:ShopSpecificProduct />
-        </ScrollViewer>
+        <controls:ShopSpecificProduct Margin="20,20,20,0"
+                                      MaxHeight="400" />
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
