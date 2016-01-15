@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -22,8 +23,7 @@
         public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
         {
             this.storage = storage;
-            this.storage.ServerAdded += this.OnServerAdded;
-            this.storage.ServerDeleted += this.OnServerDeleted;
+            this.storage.Servers.CollectionChanged += this.OnServerAdded;
             this.tester = tester;
             this.apiClient = apiClient;
             this.Cache = cache;
@@ -46,7 +46,7 @@
             }
         }
 
-        //TODO: semaphore?
+        //TODO: add a way to cancel
         public async void Initialize()
         {
             this.Cache.ProductsPerServer.Clear();
@@ -95,12 +95,7 @@
             return result;
         }
 
-        private void OnServerAdded(object sender, ServerAddedEventArgs e)
-        {
-            this.Initialize();
-        }
-        
-        private void OnServerDeleted(object sender, ServerDeletedEventArgs e)
+        private void OnServerAdded(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.Initialize();
         }

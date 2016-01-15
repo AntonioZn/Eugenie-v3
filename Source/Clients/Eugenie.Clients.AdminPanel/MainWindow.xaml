@@ -80,6 +80,11 @@
                                     <Views:ManageShops />
                                 </Domain:MenuItem.Content>
                             </Domain:MenuItem>
+                            <Domain:MenuItem Name="Национална лотария">
+                                <Domain:MenuItem.Content>
+                                    <Views:NationalLottery />
+                                </Domain:MenuItem.Content>
+                            </Domain:MenuItem>
                             <Domain:MenuItem Name="Настройки">
                                 <Domain:MenuItem.Content>
                                     <Views:Settings />

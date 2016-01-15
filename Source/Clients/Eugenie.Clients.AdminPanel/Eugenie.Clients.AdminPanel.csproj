@@ -113,6 +113,9 @@
     <Compile Include="Views\ManageShops.xaml.cs">
       <DependentUpon>ManageShops.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NationalLottery.xaml.cs">
+      <DependentUpon>NationalLottery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProductInformation.xaml.cs">
       <DependentUpon>ProductInformation.xaml</DependentUpon>
     </Compile>
@@ -148,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ManageShops.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NationalLottery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

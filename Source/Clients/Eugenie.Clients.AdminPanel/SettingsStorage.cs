@@ -1,7 +1,5 @@
 ﻿namespace Eugenie.Clients.AdminPanel
 {
-    using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
 
@@ -16,7 +14,7 @@
     {
         private ObservableCollection<ServerInformation> servers;
 
-        public ICollection<ServerInformation> Servers
+        public ObservableCollection<ServerInformation> Servers
         {
             get
             {
@@ -36,10 +34,7 @@
 
             set
             {
-                if (this.servers == null)
-                {
-                    this.servers = new ObservableCollection<ServerInformation>();
-                }
+                this.servers = this.servers ?? (this.servers = new ObservableCollection<ServerInformation>());
 
                 this.servers.Clear();
                 foreach (var server in value)
@@ -49,25 +44,17 @@
             }
         }
 
-        public event EventHandler<ServerAddedEventArgs> ServerAdded;
-
         public void AddServer(ServerInformation server)
         {
             this.Servers.Add(server);
             this.SaveSettings();
-            
-            this.ServerAdded?.Invoke(this, new ServerAddedEventArgs(server));
         }
-
-        public event EventHandler<ServerDeletedEventArgs> ServerDeleted;
 
         public void DeleteServer(ServerInformation server)
         {
             var serverToDelete = this.Servers.FirstOrDefault(x => x.Name == server.Name);
             this.Servers.Remove(serverToDelete);
             this.SaveSettings();
-
-            this.ServerDeleted?.Invoke(this, new ServerDeletedEventArgs(server));
         }
 
         private void SaveSettings()
