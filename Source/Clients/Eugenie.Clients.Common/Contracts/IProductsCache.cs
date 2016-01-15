@@ -10,5 +10,7 @@
         IEnumerable<Product> Products { get; set; }
 
         IDictionary<ServerInformation, ObservableCollection<Product>> ProductsPerServer { get; set; }
+
+        ICollection<MissingProduct> MissingProducts { get; set; } 
     }
 }

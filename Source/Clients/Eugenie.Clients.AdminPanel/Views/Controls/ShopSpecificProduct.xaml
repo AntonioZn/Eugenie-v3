@@ -17,7 +17,7 @@
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="1.75*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
                                                          ToolTipService.Placement="Right"
                                                          PlacementMode="BottomAndAlignCentres"
                                                          ToolTip="Срокове на годност"
-                                                         Margin="10,0,0,0"
+                                                         Margin="5,0,0,0"
                                                          Focusable="False">
                                     <DataGrid ItemsSource="{Binding Value.Product.ExpirationDates}"
                                               HeadersVisibility="None"
@@ -117,7 +117,7 @@
                                     </DataGrid>
                                 </materialDesign:PopupBox>
                                 <DatePicker Grid.Column="4"
-                                            Margin="10,0,0,0"
+                                            Margin="5,0,0,0"
                                             VerticalAlignment="Bottom"
                                             HorizontalAlignment="Stretch"
                                             SelectedDate="{Binding Value.Date, Mode=TwoWay}"

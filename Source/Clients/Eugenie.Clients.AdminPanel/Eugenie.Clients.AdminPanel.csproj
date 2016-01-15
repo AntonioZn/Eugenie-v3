@@ -92,9 +92,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\KeyHandlersBehavior.cs" />
     <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
+    <Compile Include="ViewModels\MissingProductsViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -112,6 +114,9 @@
     </Compile>
     <Compile Include="Views\ManageShops.xaml.cs">
       <DependentUpon>ManageShops.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MissingProducts.xaml.cs">
+      <DependentUpon>MissingProducts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NationalLottery.xaml.cs">
       <DependentUpon>NationalLottery.xaml</DependentUpon>
@@ -151,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ManageShops.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MissingProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

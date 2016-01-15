@@ -11,7 +11,7 @@
     using Services.Data.Contracts;
     
     [Authorize]
-    [RoutePrefix("api/products")]
+    [RoutePrefix("api/missingProducts")]
     public class ProductsController : ApiController
     {
         private readonly IProductsService productsService;

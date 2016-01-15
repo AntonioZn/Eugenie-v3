@@ -62,6 +62,8 @@
     <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="DailyEarningsService.cs" />
     <Compile Include="DealsService.cs" />
+    <Compile Include="Contracts\IMissingProductsService.cs" />
+    <Compile Include="MissingProductsService.cs" />
     <Compile Include="ProductsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

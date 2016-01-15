@@ -9,7 +9,7 @@
              d:DesignWidth="300"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
-             TextElement.FontSize="16"
+             TextElement.FontSize="20"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -17,12 +17,13 @@
              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
         <materialDesign:Card Margin="20"
-                             Padding="20"
+                             Padding="20,0,20,20"
                              IsTabStop="False">
-            <DataGrid x:Name="DataGrid"
+            <DataGrid x:Name="dataGrid"
                       FontSize="25"
                       ItemsSource="{Binding Products}"
                       SelectedItem="{Binding SelectedProduct}"
+                      SelectedIndex="0"
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"

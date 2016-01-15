@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
@@ -50,6 +51,7 @@
         public async void Initialize()
         {
             this.Cache.ProductsPerServer.Clear();
+            var missingProducts = new ConcurrentDictionary<MissingProduct, byte>();
             await Task.Run(() =>
                      {
                          Parallel.ForEach(this.storage.Servers, (server) =>
@@ -57,9 +59,14 @@
                                                                           var client = this.tester.TestServer(server).Result;
                                                                           server.Client = client;
                                                                           this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
-
+                                                                          
                                                                           if (client != null)
                                                                           {
+                                                                              foreach (var missingProduct in this.apiClient.GetMissingProducts(client).Result)
+                                                                              {
+                                                                                  missingProducts.TryAdd(missingProduct, 1);
+                                                                              }
+
                                                                               var products = this.GetProductsAsync(client).Result;
                                                                               foreach (var product in products)
                                                                               {
@@ -68,6 +75,11 @@
                                                                           }
                                                                       });
                      });
+
+            foreach (var pair in missingProducts)
+            {
+                this.Cache.MissingProducts.Add(pair.Key);
+            }
 
             var singleServerProducts = this.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
             if (singleServerProducts != null)

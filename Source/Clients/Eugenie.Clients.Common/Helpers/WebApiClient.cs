@@ -27,7 +27,7 @@
             var response = await client.GetAsync($"api/products?page={page}&pageSize={pageSize}");
 
             var result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<HashSet<Product>>(result);
+            return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
 
         public async Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model)
@@ -38,6 +38,14 @@
             var response = await client.PostAsync("api/products", content);
 
             return response.StatusCode;
+        }
+
+        public async Task<ISet<MissingProduct>> GetMissingProducts(HttpClient client)
+        {
+            var response = await client.GetAsync($"api/missingProducts");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ISet<MissingProduct>>(result);
         }
     }
 }

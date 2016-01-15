@@ -47,6 +47,7 @@ namespace Eugenie.Server.Api
             builder.RegisterType<ProductsService>().As<IProductsService>();
             builder.RegisterType<DealsService>().As<IDealsService>();
             builder.RegisterType<DailyEarningsService>().As<IDailyEarningsService>();
+            builder.RegisterType<MissingProductsService>().As<IMissingProductsService>();
         }
     }
 }

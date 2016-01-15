@@ -6,11 +6,11 @@
     using System.Windows.Interactivity;
     using System.Windows.Media;
 
+    using Common.Contracts;
+
     using MaterialDesignThemes.Wpf;
 
-    using ViewModels;
-
-    public class NavigateDataGridWithArrowsBehavior : Behavior<Window>
+    public class KeyHandlersBehavior : Behavior<Window>
     {
         protected override void OnAttached()
         {
@@ -28,30 +28,26 @@
         {
             var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
 
-            if (!dialogHost.IsOpen && (e.Key == Key.Down || e.Key == Key.Up))
+            if (!dialogHost.IsOpen && (e.Key == Key.Enter || e.Key == Key.Delete))
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
                 var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
                 var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
-                var dataGrid = userControl.FindName("dataGrid") as DataGrid;
+                var dataContext = userControl?.DataContext;
 
-                if (dataGrid?.Items.Count > 0)
+                if (dataContext != null)
                 {
-                    if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
+                    if (e.Key == Key.Enter && dataContext is IEnterHandler)
                     {
-                        dataGrid.SelectedIndex += 1;
-                    }
-                    else if (e.Key == Key.Up && dataGrid.SelectedIndex > 0)
-                    {
-                        dataGrid.SelectedIndex -= 1;
+                        ((IEnterHandler)dataContext).HandleEnter();
+                        e.Handled = true;
                     }
 
-                    if (dataGrid.SelectedItem != null)
+                    if (e.Key == Key.Delete && dataContext is IDeleteHandler)
                     {
-                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        ((IDeleteHandler)dataContext).HandleDelete();
+                        e.Handled = true;
                     }
-
-                    e.Handled = true;
                 }
             }
         }

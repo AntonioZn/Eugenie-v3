@@ -16,7 +16,7 @@
 
     using Views;
 
-    public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler
+    public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IEnterHandler
     {
         private readonly IServerManager manager;
         private string searchValue = string.Empty;
@@ -67,7 +67,7 @@
 
         public Product SelectedProduct { get; set; }
 
-        public async void ShowProductInformationDialog()
+        public async void HandleEnter()
         {
             var productInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
             foreach (var pair in this.manager.Cache.ProductsPerServer)
@@ -80,17 +80,17 @@
             var selectedProductViewModel = new ProductViewModel(this.SelectedProduct.DeepClone());
             var viewModel = new ProductInformationViewModel(productInAllServers, selectedProductViewModel);
             var dialog = new ProductInformation(viewModel);
-            
+
             var result = await DialogHost.Show(dialog, "RootDialog");
-            
-            if ((bool) result)
+
+            if ((bool)result)
             {
                 foreach (var pair in productInAllServers)
                 {
                     pair.Value.MapProperties(selectedProductViewModel);
                     await this.manager.AddOrUpdateAsync(pair.Key, pair.Value.GetModel());
                 }
-            
+
                 this.Products.Refresh();
             }
         }

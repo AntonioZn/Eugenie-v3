@@ -12,6 +12,8 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
+    using MaterialDesignThemes.Wpf;
+
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
@@ -177,6 +179,7 @@
             }
 
             this.Name = string.Empty;
+            DialogHost.CloseDialogCommand.Execute(true, null);
         }
 
         private bool CanSave()
@@ -189,6 +192,7 @@
         private void HandleCancelCommand()
         {
             this.Name = string.Empty;
+            DialogHost.CloseDialogCommand.Execute(false, null);
         }
     }
 }

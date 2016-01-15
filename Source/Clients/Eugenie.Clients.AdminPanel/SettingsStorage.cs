@@ -34,7 +34,7 @@
 
             set
             {
-                this.servers = this.servers ?? (this.servers = new ObservableCollection<ServerInformation>());
+                this.servers = this.servers ?? new ObservableCollection<ServerInformation>();
 
                 this.servers.Clear();
                 foreach (var server in value)

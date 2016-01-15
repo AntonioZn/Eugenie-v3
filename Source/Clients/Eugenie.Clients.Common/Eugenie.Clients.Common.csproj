@@ -67,6 +67,8 @@
   <ItemGroup>
     <Compile Include="Behaviors\HandleBarcodeScannerWindowBehavior.cs" />
     <Compile Include="Contracts\IBarcodeHandler.cs" />
+    <Compile Include="Contracts\IDeleteHandler.cs" />
+    <Compile Include="Contracts\IEnterHandler.cs" />
     <Compile Include="Contracts\IServerStorage.cs" />
     <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IValidatableObject.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Models\ExpirationDate.cs" />
     <Compile Include="Models\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
+    <Compile Include="Models\MissingProduct.cs" />
     <Compile Include="Models\ObservableConcurrentDictionary.cs" />
     <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\Product.cs" />

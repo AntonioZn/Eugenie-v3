@@ -14,5 +14,7 @@
         Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
 
         Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model);
+
+        Task<ISet<MissingProduct>> GetMissingProducts(HttpClient client);
     }
 }

@@ -9,20 +9,22 @@
 
     public class ViewModelLocator
     {
-        private IContainer container;
+        public static IContainer container;
 
         public ViewModelLocator()
         {
             this.Register();
         }
 
-        public ProductsEditorViewModel ProductsEditorViewModel => this.container.Resolve<ProductsEditorViewModel>();
+        public ProductsEditorViewModel ProductsEditorViewModel => container.Resolve<ProductsEditorViewModel>();
 
-        public ActiveServersViewModel ActiveServersViewModel => this.container.Resolve<ActiveServersViewModel>();
+        public ActiveServersViewModel ActiveServersViewModel => container.Resolve<ActiveServersViewModel>();
 
-        public SettingsViewModel SettingsViewModel => this.container.Resolve<SettingsViewModel>();
+        public SettingsViewModel SettingsViewModel => container.Resolve<SettingsViewModel>();
 
-        public DeliveryViewModel DeliveryViewModel => this.container.Resolve<DeliveryViewModel>();
+        public DeliveryViewModel DeliveryViewModel => container.Resolve<DeliveryViewModel>();
+
+        public MissingProductsViewModel MissingProductsViewModel => container.Resolve<MissingProductsViewModel>();
 
         private void Register()
         {
@@ -45,8 +47,9 @@
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();
 
-            this.container = containerBuilder.Build();
+            container = containerBuilder.Build();
         }
     }
 }

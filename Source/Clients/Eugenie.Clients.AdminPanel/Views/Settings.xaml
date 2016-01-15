@@ -9,9 +9,11 @@
              d:DesignHeight="1000"
              d:DesignWidth="1000"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="16"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=SettingsViewModel, Source={StaticResource ViewModelLocator}}"
              IsTabStop="False">

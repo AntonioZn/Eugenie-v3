@@ -21,6 +21,7 @@
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior />
+        <behaviors:KeyHandlersBehavior />
         <commonBehaviors:HandleBarcodeScannerWindowBehavior />
     </i:Interaction.Behaviors>
     <Grid>
@@ -73,6 +74,11 @@
                             <Domain:MenuItem Name="Доставка">
                                 <Domain:MenuItem.Content>
                                     <Views:Delivery />
+                                </Domain:MenuItem.Content>
+                            </Domain:MenuItem>
+                            <Domain:MenuItem Name="Липсващи продукти">
+                                <Domain:MenuItem.Content>
+                                    <Views:MissingProducts />
                                 </Domain:MenuItem.Content>
                             </Domain:MenuItem>
                             <Domain:MenuItem Name="Управление">
