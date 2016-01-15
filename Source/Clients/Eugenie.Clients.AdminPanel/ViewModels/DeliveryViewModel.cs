@@ -12,7 +12,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    public class DeliveryViewModel : ViewModelBase
+    public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
         private readonly INameFromBarcodeGenerator nameGenerator;

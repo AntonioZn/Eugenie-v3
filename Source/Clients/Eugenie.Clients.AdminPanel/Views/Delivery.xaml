@@ -21,9 +21,16 @@
         <StackPanel Orientation="Vertical">
             <materialDesign:ColorZone Mode="PrimaryDark"
                                       Padding="16">
-                <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
-                           Text="{Binding AddingType}"
-                           HorizontalAlignment="Center" />
+                <Grid>
+                    <materialDesign:PackIcon Kind="TagTextOutline"
+                                             Width="48"
+                                             Height="48"
+                                             VerticalAlignment="Center"
+                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Foreground}" />
+                    <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                               Text="{Binding AddingType}"
+                               HorizontalAlignment="Center" />
+                </Grid>
             </materialDesign:ColorZone>
             <materialDesign:Card Background="{DynamicResource PrimaryHueDarkBrush}"
                                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
@@ -44,12 +51,25 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0"
                       x:Name="mainInfoGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    <materialDesign:PackIcon Kind="Alphabetical"
+                                             Grid.Column="0"
+                                             Grid.Row="0"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
                     <ComboBox Grid.Row="0"
+                              Grid.Column="1"
+                              Margin="10,0,0,0"
                               HorizontalAlignment="Stretch"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               materialDesign:TextFieldAssist.Hint="Име"
@@ -63,18 +83,34 @@
                             </ItemsPanelTemplate>
                         </ComboBox.ItemsPanel>
                     </ComboBox>
+                    <materialDesign:PackIcon Kind="WeightKilogram"
+                                             Grid.Column="0"
+                                             Grid.Row="1"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
                     <ComboBox Grid.Row="1"
+                              Grid.Column="1"
                               HorizontalAlignment="Stretch"
                               materialDesign:TextFieldAssist.Hint="Мярка"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              Margin="0,10,0,0"
+                              Margin="10,10,0,0"
                               ItemsSource="{Binding Measures}"
                               SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <materialDesign:PackIcon Kind="CashUsd"
+                                             Grid.Column="0"
+                                             Grid.Row="2"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
                     <TextBox Grid.Row="2"
+                             Grid.Column="1"
                              HorizontalAlignment="Stretch"
                              materialDesign:TextFieldAssist.Hint="Доставна цена"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             Margin="0,10,0,0"
+                             Margin="10,10,0,0"
                              Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </Grid>
                 <controls:BarcodePresenter Grid.Column="1"

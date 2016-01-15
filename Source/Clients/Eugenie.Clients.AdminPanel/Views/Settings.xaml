@@ -151,12 +151,10 @@
                                 Command="{Binding AddNewServerCommand}"
                                 CommandParameter="{Binding ElementName=userControl}"
                                 ToolTip="Добави">
-                            <Viewbox Width="24"
-                                     Height="24">
-                                <Path Stretch="Fill"
-                                      Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z "
-                                      Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
-                            </Viewbox>
+                            <materialDesign:PackIcon Kind="PlusCircleOutline"
+                                                     Width="24"
+                                                     Height="24"
+                                                     Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                         </Button>
                     </Grid>
                 </Border>
