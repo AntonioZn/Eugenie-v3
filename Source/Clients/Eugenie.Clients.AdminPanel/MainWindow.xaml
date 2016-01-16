@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:MaterialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:Domain="clr-namespace:Eugenie.Clients.AdminPanel.Domain"
-        xmlns:Views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:domain="clr-namespace:Eugenie.Clients.AdminPanel.Domain"
+        xmlns:views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Eugenie.Clients.AdminPanel.Behaviors"
         xmlns:commonBehaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
@@ -15,7 +15,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="16"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        FontFamily="pack://application:,,,/materialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         IsTabStop="False"
         WindowState="Maximized"
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
@@ -31,7 +31,7 @@
                 <SolidColorBrush Color="Black"
                                  Opacity=".7" />
             </Grid.Background>
-            <MaterialDesign:Card UniformCornerRadius="100"
+            <materialDesign:Card UniformCornerRadius="100"
                                  Padding="10"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center">
@@ -40,83 +40,89 @@
                              IsIndeterminate="True"
                              Width="100"
                              Height="100" />
-            </MaterialDesign:Card>
+            </materialDesign:Card>
         </Grid>
-        <MaterialDesign:DialogHost x:Name="dialogHost"
+        <materialDesign:DialogHost x:Name="dialogHost"
                                    Identifier="RootDialog"
                                    IsTabStop="False">
-            <MaterialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
+            <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                        IsTabStop="False">
-                <MaterialDesign:DrawerHost.LeftDrawerContent>
+                <materialDesign:DrawerHost.LeftDrawerContent>
                     <StackPanel Orientation="Vertical">
                         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                       IsTabStop="False"
                                       HorizontalAlignment="Right"
                                       Margin="16"
                                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                        <ListBox x:Name="FlyoutMenuListBox"
+                        <ListBox x:Name="flyoutMenuListBox"
                                  Margin="0,16,0,16"
                                  SelectedIndex="0"
                                  Focusable="False"
                                  GotFocus="FlyoutMenuListBox_OnGotFocus"
                                  PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                             <ListBox.ItemTemplate>
-                                <DataTemplate DataType="Domain:MenuItem">
+                                <DataTemplate DataType="domain:MenuItem">
                                     <TextBlock Text="{Binding Name}"
                                                Margin="60,0,32,0" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                            <Domain:MenuItem Name="Продукти">
-                                <Domain:MenuItem.Content>
-                                    <Views:ProductsEditor />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
-                            <Domain:MenuItem Name="Доставка">
-                                <Domain:MenuItem.Content>
-                                    <Views:Delivery />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
-                            <Domain:MenuItem Name="Липсващи продукти">
-                                <Domain:MenuItem.Content>
-                                    <Views:MissingProducts />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
-                            <Domain:MenuItem Name="Управление">
-                                <Domain:MenuItem.Content>
-                                    <Views:ManageShops />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
-                            <Domain:MenuItem Name="Национална лотария">
-                                <Domain:MenuItem.Content>
-                                    <Views:NationalLottery />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
-                            <Domain:MenuItem Name="Настройки">
-                                <Domain:MenuItem.Content>
-                                    <Views:Settings />
-                                </Domain:MenuItem.Content>
-                            </Domain:MenuItem>
+                            <domain:MenuItem Name="Продукти">
+                                <domain:MenuItem.Content>
+                                    <views:ProductsEditor />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Доставка">
+                                <domain:MenuItem.Content>
+                                    <views:Delivery />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Липсващи продукти">
+                                <domain:MenuItem.Content>
+                                    <views:MissingProducts />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Управление">
+                                <domain:MenuItem.Content>
+                                    <views:ManageShops />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Национална лотария">
+                                <domain:MenuItem.Content>
+                                    <views:NationalLottery />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Настройки">
+                                <domain:MenuItem.Content>
+                                    <views:Settings />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
                         </ListBox>
                     </StackPanel>
-                </MaterialDesign:DrawerHost.LeftDrawerContent>
-                <DockPanel>
-                    <MaterialDesign:ColorZone Mode="PrimaryDark"
+                </materialDesign:DrawerHost.LeftDrawerContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone Mode="PrimaryDark"
+                                              Grid.Row="0"
+                                              Panel.ZIndex="1"
                                               Padding="6"
-                                              DockPanel.Dock="Top"
-                                              IsTabStop="False">
+                                              IsTabStop="False"
+                                              materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <StackPanel Orientation="Horizontal"
-                                    MaterialDesign:RippleAssist.IsCentered="True">
+                                    materialDesign:RippleAssist.IsCentered="True">
                             <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                           IsChecked="False"
                                           IsTabStop="False"
                                           x:Name="MenuToggleButton"
                                           Margin="10,0,0,0" />
-                            <MaterialDesign:ColorZone Mode="Standard"
+                            <materialDesign:ColorZone Mode="Standard"
                                                       Padding="8 4 8 4"
                                                       CornerRadius="2"
                                                       Panel.ZIndex="1"
                                                       Margin="16 0 0 0"
-                                                      MaterialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                                      materialDesign:ShadowAssist.ShadowDepth="Depth1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -124,7 +130,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Label>
-                                        <MaterialDesign:PackIcon Kind="Magnify"
+                                        <materialDesign:PackIcon Kind="Magnify"
                                                                  Width="16"
                                                                  Height="16"
                                                                  Opacity=".56"
@@ -136,11 +142,11 @@
                                              TextChanged="TxtSearch_OnTextChanged"
                                              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
                                              Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             MaterialDesign:TextFieldAssist.Hint="Търсене"
+                                             materialDesign:TextFieldAssist.Hint="Търсене"
                                              MinWidth="200"
                                              VerticalAlignment="Center" />
                                 </Grid>
-                            </MaterialDesign:ColorZone>
+                            </materialDesign:ColorZone>
                             <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                     IsTabStop="False"
                                     Margin="8 0 0 0"
@@ -166,7 +172,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock ToolTip="{Binding Name}">
-                                        <MaterialDesign:PackIcon Kind="Monitor"
+                                        <materialDesign:PackIcon Kind="Monitor"
                                                                  Width="30"
                                                                  Height="30" />
                                         </TextBlock>
@@ -178,18 +184,19 @@
                                     IsTabStop="False"
                                     Command="{Binding RefreshServersCommand}"
                                     ToolTip="Обнови активните компютри">
-                                <MaterialDesign:PackIcon Kind="Refresh"
+                                <materialDesign:PackIcon Kind="Refresh"
                                                          Width="26"
                                                          Height="26"
                                                          Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                             </Button>
                         </StackPanel>
-                    </MaterialDesign:ColorZone>
-                    <ContentControl Content="{Binding ElementName=FlyoutMenuListBox, Path=SelectedItem.Content}"
+                    </materialDesign:ColorZone>
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding ElementName=flyoutMenuListBox, Path=SelectedItem.Content}"
                                     IsTabStop="False"
                                     x:Name="MainFrame" />
-                </DockPanel>
-            </MaterialDesign:DrawerHost>
-        </MaterialDesign:DialogHost>
+                </Grid>
+            </materialDesign:DrawerHost>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>

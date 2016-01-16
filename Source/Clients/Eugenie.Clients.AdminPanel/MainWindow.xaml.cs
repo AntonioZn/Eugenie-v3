@@ -24,9 +24,9 @@
 
         private void TxtSearch_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (this.FlyoutMenuListBox.SelectedIndex != 0)
+            if (this.flyoutMenuListBox.SelectedIndex != 0)
             {
-                this.FlyoutMenuListBox.SelectedIndex = 0;
+                this.flyoutMenuListBox.SelectedIndex = 0;
             }
         }
     }
