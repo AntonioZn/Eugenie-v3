@@ -14,7 +14,7 @@
         public MainWindow()
         {
             this.InitializeComponent();
-            var baseAddress = "http://localhost:9000/";
+            var baseAddress = "http://192.168.1.2:9000/";
             WebApp.Start<Startup>(baseAddress);
 
             SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_CONTINUOUS);

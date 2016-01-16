@@ -5,7 +5,6 @@
     using System.Windows.Interactivity;
     using System.Text;
     using System.Windows;
-    using System.Windows.Media;
 
     using Contracts;
 
@@ -39,8 +38,7 @@
             if (e.Key == Key.F11)
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
-                var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
+                var userControl = contentControl.Content as UserControl;
                 this.handler = userControl.DataContext as IBarcodeHandler;
 
                 if (this.handler != null)

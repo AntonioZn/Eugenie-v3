@@ -4,7 +4,6 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Interactivity;
-    using System.Windows.Media;
 
     using Common.Contracts;
 
@@ -31,8 +30,7 @@
             if (!dialogHost.IsOpen && (e.Key == Key.Enter || e.Key == Key.Delete))
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var contentPresenter = VisualTreeHelper.GetChild(contentControl, 0);
-                var userControl = VisualTreeHelper.GetChild(contentPresenter, 0) as UserControl;
+                var userControl = contentControl.Content as UserControl;
                 var dataContext = userControl?.DataContext;
 
                 if (dataContext != null)
