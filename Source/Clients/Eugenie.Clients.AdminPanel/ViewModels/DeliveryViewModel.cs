@@ -23,13 +23,13 @@
         private ProductViewModel mainMainProductViewModel;
         private string name = string.Empty;
         private string addingType = "Въведете име";
+        private bool automaticName = true;
 
         public DeliveryViewModel(IServerManager manager, INameFromBarcodeGenerator nameGenerator)
         {
             this.nameGenerator = nameGenerator;
             this.manager = manager;
 
-            this.AutomaticName = true;
             this.MainProductViewModel = new ProductViewModel(new Product());
 
             this.SaveCommand = new RelayCommand(this.HandleSaveCommand, this.CanSave);
@@ -62,7 +62,18 @@
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
-        public bool AutomaticName { get; set; }
+        public bool AutomaticName
+        {
+            get
+            {
+                return this.automaticName;
+            }
+
+            set
+            {
+                this.Set(() => this.AutomaticName, ref this.automaticName, value);
+            }
+        }
 
         public string AddingType
         {
@@ -172,6 +183,7 @@
         //TODO: when new item is added add it to cache
         private async void HandleSaveCommand()
         {
+            DialogHost.CloseDialogCommand.Execute(true, null);
             foreach (var pair in this.ProductInAllServers)
             {
                 pair.Value.MapProperties(this.MainProductViewModel);
@@ -179,7 +191,6 @@
             }
 
             this.Name = string.Empty;
-            DialogHost.CloseDialogCommand.Execute(true, null);
         }
 
         private bool CanSave()
@@ -191,8 +202,8 @@
 
         private void HandleCancelCommand()
         {
-            this.Name = string.Empty;
             DialogHost.CloseDialogCommand.Execute(false, null);
+            this.Name = string.Empty;
         }
     }
 }
