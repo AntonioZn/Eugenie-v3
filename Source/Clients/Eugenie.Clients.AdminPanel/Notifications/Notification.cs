@@ -1,6 +1,10 @@
 ﻿namespace Eugenie.Clients.AdminPanel.Notifications
 {
+    using System.Windows.Media;
+
     using GalaSoft.MvvmLight;
+
+    using MaterialDesignThemes.Wpf;
 
     public class Notification : ViewModelBase
     {
@@ -8,8 +12,10 @@
         private string title;
         private string message;
 
-        public Notification(string title, string message)
+        public Notification(PackIconKind icon, SolidColorBrush color, string title, string message)
         {
+            this.Icon = icon;
+            this.Color = color;
             this.Title = title;
             this.Message = message;
         }
@@ -26,6 +32,10 @@
                 this.Set(() => this.Id, ref this.id, value);
             }
         }
+
+        public PackIconKind Icon { get; set; }
+
+        public SolidColorBrush Color { get; set; }
 
         public string Title
         {

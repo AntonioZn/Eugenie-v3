@@ -183,11 +183,10 @@
                             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                     Margin="20,0,0,0"
                                     IsTabStop="False"
+                                    Padding="0"
                                     Command="{Binding RefreshServersCommand}"
                                     ToolTip="Обнови активните компютри">
                                 <materialDesign:PackIcon Kind="Refresh"
-                                                         Width="26"
-                                                         Height="26"
                                                          Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                             </Button>
                         </StackPanel>

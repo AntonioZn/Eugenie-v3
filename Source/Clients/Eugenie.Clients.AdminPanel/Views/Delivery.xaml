@@ -17,7 +17,7 @@
     <materialDesign:Card x:Name="mainCard"
         HorizontalAlignment="Center"
                          Width="800"
-                         Margin="0,50,0,0"
+                         Margin="0,20,0,0"
                          IsTabStop="False">
         <StackPanel Orientation="Vertical">
             <materialDesign:ColorZone Mode="PrimaryDark"

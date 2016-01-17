@@ -177,7 +177,7 @@
                 }
                 else
                 {
-                    NotificationsHost.Add("Баркодът съществува", "asd");
+                    NotificationsHost.Error("Баркодът съществува", $"\"{existingProduct.Name}\" съдържа този баркод.");
                 }
             }
         }
