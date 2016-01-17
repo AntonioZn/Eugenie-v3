@@ -18,13 +18,14 @@
         public SettingsViewModel(IServerStorage storage)
         {
             this.storage = storage;
+
             this.AddNewServerCommand = new RelayCommand(this.HandleAddNewServerCommand, this.CanAddNewServer);
             this.DeleteServerCommand = new RelayCommand<ServerInformation>(this.HandleDeleteServerCommand);
         }
         
-        public ICommand AddNewServerCommand { get; private set; }
+        public ICommand AddNewServerCommand { get; }
 
-        public ICommand DeleteServerCommand { get; private set; }
+        public ICommand DeleteServerCommand { get; }
 
         public ServerInformation NewServer
         {
@@ -43,19 +44,19 @@
         private bool CanAddNewServer()
         {
             return this.NewServer.HasNoValidationErrors()
-                && this.storage.Servers.FirstOrDefault(x => x.Name == this.NewServer.Name || x.Address == this.NewServer.Address) == null;
+                && this.storage.Servers.All(x => x.Name != this.NewServer.Name && x.Address != this.NewServer.Address);
         }
 
         public void HandleAddNewServerCommand()
         {
-            this.storage.AddServer(this.NewServer);
+            this.storage.Servers.Add(this.NewServer);
 
             this.NewServer = new ServerInformation();;
         }
 
         private void HandleDeleteServerCommand(ServerInformation server)
         {
-            this.storage.DeleteServer(server);
+            this.storage.Servers.Remove(server);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Eugenie.Clients.AdminPanel
 {
     using System.Collections.ObjectModel;
-    using System.Linq;
+    using System.Collections.Specialized;
 
     using Common.Contracts;
     using Common.Models;
@@ -12,52 +12,20 @@
 
     public class SettingsStorage : IServerStorage
     {
-        private ObservableCollection<ServerInformation> servers;
-
-        public ObservableCollection<ServerInformation> Servers
+        public SettingsStorage()
         {
-            get
+            if (string.IsNullOrEmpty(Settings.Default.Servers))
             {
-                if (this.servers == null)
-                {
-                    if (Settings.Default.Servers == string.Empty)
-                    {
-                        Settings.Default.Servers = "[]";
-                        Settings.Default.Save();
-                    }
-
-                    this.servers = JsonConvert.DeserializeObject<ObservableCollection<ServerInformation>>(Settings.Default.Servers);
-                }
-
-                return this.servers;
+                Settings.Default.Servers = "[]";
+                Settings.Default.Save();
             }
-
-            set
-            {
-                this.servers = this.servers ?? new ObservableCollection<ServerInformation>();
-
-                this.servers.Clear();
-                foreach (var server in value)
-                {
-                    this.servers.Add(server);
-                }
-            }
+            this.Servers = JsonConvert.DeserializeObject<ObservableCollection<ServerInformation>>(Settings.Default.Servers);
+            this.Servers.CollectionChanged += this.OnServersChanged;
         }
 
-        public void AddServer(ServerInformation server)
-        {
-            this.Servers.Add(server);
-            this.SaveSettings();
-        }
+        public ObservableCollection<ServerInformation> Servers { get; }
 
-        public void DeleteServer(ServerInformation server)
-        {
-            var serverToDelete = this.Servers.FirstOrDefault(x => x.Name == server.Name);
-            this.Servers.Remove(serverToDelete);
-            this.SaveSettings();
-        }
-
-        private void SaveSettings()
+        private void OnServersChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Settings.Default.Servers = JsonConvert.SerializeObject(this.Servers);
             Settings.Default.Save();

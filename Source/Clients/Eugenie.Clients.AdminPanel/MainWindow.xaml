@@ -108,7 +108,7 @@
                     <materialDesign:ColorZone Mode="PrimaryDark"
                                               Grid.Row="0"
                                               Panel.ZIndex="1"
-                                              Padding="6"
+                                              Padding="16"
                                               IsTabStop="False"
                                               materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <StackPanel Orientation="Horizontal"
@@ -183,10 +183,12 @@
                             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                     Margin="20,0,0,0"
                                     IsTabStop="False"
-                                    Padding="0"
+                                    Padding="15,0,15,0"
                                     Command="{Binding RefreshServersCommand}"
                                     ToolTip="Обнови активните компютри">
                                 <materialDesign:PackIcon Kind="Refresh"
+                                                         Width="32"
+                                                         Height="32"
                                                          Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                             </Button>
                         </StackPanel>

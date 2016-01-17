@@ -34,5 +34,41 @@ namespace Eugenie.Clients.AdminPanel.Properties {
                 this["Servers"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PrimaryColorUri {
+            get {
+                return ((string)(this["PrimaryColorUri"]));
+            }
+            set {
+                this["PrimaryColorUri"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AccentColorUri {
+            get {
+                return ((string)(this["AccentColorUri"]));
+            }
+            set {
+                this["AccentColorUri"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsDark {
+            get {
+                return ((bool)(this["IsDark"]));
+            }
+            set {
+                this["IsDark"] = value;
+            }
+        }
     }
 }

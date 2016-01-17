@@ -13,7 +13,7 @@
 
     using Views;
 
-    public class MissingProductsViewModel : ViewModelBase, IDeleteHandler, IEnterHandler
+    public class MissingProductsViewModel : ViewModelBase, IEnterHandler
     {
         private readonly IServerManager manager;
 
@@ -26,11 +26,6 @@
 
         public IEnumerable<MissingProduct> MissingProducts => this.manager.Cache.MissingProducts;
         
-        public void HandleDelete()
-        {
-            //throw new System.NotImplementedException();
-        }
-
         public async void HandleEnter()
         {
             var viewModel = ViewModelLocator.container.Resolve<DeliveryViewModel>();

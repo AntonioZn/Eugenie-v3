@@ -24,7 +24,7 @@
         public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
         {
             this.storage = storage;
-            this.storage.Servers.CollectionChanged += this.OnServerAdded;
+            this.storage.Servers.CollectionChanged += this.OnServersChanged;
             this.tester = tester;
             this.apiClient = apiClient;
             this.Cache = cache;
@@ -107,7 +107,7 @@
             return result;
         }
 
-        private void OnServerAdded(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnServersChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.Initialize();
         }

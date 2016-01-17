@@ -102,6 +102,7 @@
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
     <Compile Include="ViewModels\MissingProductsViewModel.cs" />
+    <Compile Include="ViewModels\PaletteSelectorViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -110,6 +111,12 @@
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
     <Compile Include="Views\Controls\BarcodePresenter.xaml.cs">
       <DependentUpon>BarcodePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Palette.xaml.cs">
+      <DependentUpon>Palette.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\PalleteSelector.xaml.cs">
+      <DependentUpon>PalleteSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\ShopSpecificProduct.xaml.cs">
       <DependentUpon>ShopSpecificProduct.xaml</DependentUpon>
@@ -153,6 +160,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\BarcodePresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Palette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\PalleteSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

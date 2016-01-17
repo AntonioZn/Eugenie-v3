@@ -22,9 +22,7 @@
               IsReadOnly="True"
               SelectionMode="Single"
               VerticalScrollBarVisibility="Disabled"
-              KeyboardNavigation.TabNavigation="None"
-              AlternatingRowBackground="AliceBlue"
-              AlternationCount="2">
+              KeyboardNavigation.TabNavigation="None">
         <DataGrid.Columns>
             <DataGridTextColumn Width="*"
                                 Binding="{Binding Value}">

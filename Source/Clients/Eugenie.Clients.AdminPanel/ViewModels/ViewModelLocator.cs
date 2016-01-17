@@ -26,6 +26,8 @@
 
         public MissingProductsViewModel MissingProductsViewModel => container.Resolve<MissingProductsViewModel>();
 
+        public PaletteSelectorViewModel PaletteSelectorViewModel => container.Resolve<PaletteSelectorViewModel>();
+
         private void Register()
         {
             if (Settings.Default.Servers == string.Empty)
@@ -48,6 +50,7 @@
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<PaletteSelectorViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }
