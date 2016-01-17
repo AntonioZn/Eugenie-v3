@@ -1,8 +1,11 @@
 ﻿namespace Eugenie.Clients.AdminPanel
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+
+    using Notifications;
 
     public partial class MainWindow
     {
@@ -28,6 +31,17 @@
             {
                 this.flyoutMenuListBox.SelectedIndex = 0;
             }
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            NotificationsHost.SetOwner(this);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            NotificationsHost.Close();
+            base.OnClosed(e);
         }
     }
 }

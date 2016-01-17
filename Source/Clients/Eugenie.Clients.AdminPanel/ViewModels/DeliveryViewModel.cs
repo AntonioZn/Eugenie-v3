@@ -14,6 +14,8 @@
 
     using MaterialDesignThemes.Wpf;
 
+    using Notifications;
+
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
@@ -175,7 +177,7 @@
                 }
                 else
                 {
-                    //TODO: notify barcode exists
+                    NotificationsHost.Add("Баркодът съществува", "asd");
                 }
             }
         }

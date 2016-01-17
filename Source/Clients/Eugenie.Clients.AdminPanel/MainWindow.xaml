@@ -18,6 +18,7 @@
         FontFamily="pack://application:,,,/materialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         IsTabStop="False"
         WindowState="Maximized"
+        Loaded="MainWindow_OnLoaded"
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior />
