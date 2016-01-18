@@ -11,7 +11,7 @@
     using Services.Data.Contracts;
     
     [Authorize]
-    [RoutePrefix("api/missingProducts")]
+    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         private readonly IProductsService productsService;
@@ -22,15 +22,16 @@
         }
 
         [HttpGet]
+        [Route("count")]
         public IHttpActionResult GetCount()
         {
             return this.Ok(this.productsService.Count());
         }
         
         [HttpGet]
-        public IHttpActionResult GetByPage(int page, int pageSize)
+        public IHttpActionResult GetAll()
         {
-            var result = this.productsService.All(page, pageSize).ToList();
+            var result = this.productsService.All().ToList();
             return this.Ok(result);
         }
 

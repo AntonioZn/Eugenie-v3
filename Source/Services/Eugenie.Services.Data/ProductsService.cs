@@ -5,8 +5,6 @@
     using System.Data.Entity;
     using System.Linq;
 
-    using Common.Constants;
-
     using Contracts;
 
     using Eugenie.Data;
@@ -40,9 +38,9 @@
             return this.productsRepository.All().Count();
         }
 
-        public IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize)
+        public IQueryable<Product> All()
         {
-            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates").OrderBy(pr => pr.Id).Skip((page - 1) * pageSize).Take(pageSize);
+            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates");
         }
 
         public Product FindByName(string name)

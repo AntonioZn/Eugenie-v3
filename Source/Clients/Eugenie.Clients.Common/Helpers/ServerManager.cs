@@ -2,11 +2,8 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
     using System.Linq;
-    using System.Net.Http;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -15,8 +12,6 @@
 
     public class ServerManager : IServerManager
     {
-        private const int PageSize = 200;
-
         private readonly IServerStorage storage;
         private readonly IServerTester tester;
         private readonly IWebApiClient apiClient;
@@ -24,7 +19,10 @@
         public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
         {
             this.storage = storage;
-            this.storage.Servers.CollectionChanged += this.OnServersChanged;
+            this.storage.Servers.CollectionChanged += (s, e) =>
+                                                      {
+                                                          this.Initialize();
+                                                      };
             this.tester = tester;
             this.apiClient = apiClient;
             this.Cache = cache;
@@ -47,6 +45,8 @@
             }
         }
 
+        public event EventHandler ServerTestingFinished;
+
         //TODO: add a way to cancel
         public async void Initialize()
         {
@@ -62,13 +62,12 @@
                                                                           
                                                                           if (client != null)
                                                                           {
-                                                                              foreach (var missingProduct in this.apiClient.GetMissingProducts(client).Result)
+                                                                              foreach (var missingProduct in this.apiClient.GetMissingProductsAsync(client).Result)
                                                                               {
                                                                                   missingProducts.TryAdd(missingProduct, 1);
                                                                               }
 
-                                                                              var products = this.GetProductsAsync(client).Result;
-                                                                              foreach (var product in products)
+                                                                              foreach (var product in this.apiClient.GetProductsAsync(client).Result)
                                                                               {
                                                                                   this.Cache.ProductsPerServer[server].Add(product);
                                                                               }
@@ -88,28 +87,6 @@
             }
 
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
-        }
-
-        public event EventHandler ServerTestingFinished;
-
-        private async Task<IEnumerable<Product>> GetProductsAsync(HttpClient client)
-        {
-            var productCount = await this.apiClient.GetProductsCountAsync(client);
-            var pageCount = (productCount + PageSize - 1) / PageSize;
-
-            var result = new List<Product>(productCount);
-            for (int i = 1; i <= pageCount; i++)
-            {
-                var response = await this.apiClient.GetProductsByPageAsync(client, i, PageSize);
-                result.AddRange(response);
-            }
-
-            return result;
-        }
-
-        private void OnServersChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            this.Initialize();
         }
     }
 }

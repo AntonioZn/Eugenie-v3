@@ -14,17 +14,9 @@
 
     public class WebApiClient : IWebApiClient
     {
-        public async Task<int> GetProductsCountAsync(HttpClient client)
+        public async Task<IEnumerable<Product>> GetProductsAsync(HttpClient client)
         {
             var response = await client.GetAsync("api/products");
-
-            var result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<int>(result);
-        }
-
-        public async Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize)
-        {
-            var response = await client.GetAsync($"api/products?page={page}&pageSize={pageSize}");
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
@@ -40,7 +32,7 @@
             return response.StatusCode;
         }
 
-        public async Task<ISet<MissingProduct>> GetMissingProducts(HttpClient client)
+        public async Task<ISet<MissingProduct>> GetMissingProductsAsync(HttpClient client)
         {
             var response = await client.GetAsync($"api/missingProducts");
 

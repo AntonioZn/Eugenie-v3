@@ -1,10 +1,7 @@
 ﻿namespace Eugenie.Services.Data.Contracts
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Common.Constants;
 
     using Eugenie.Data.Models;
 
@@ -16,7 +13,7 @@
 
         Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates);
 
-        IQueryable<Product> All(int page, int pageSize = GlobalConstants.ProductsPageSize);
+        IQueryable<Product> All();
 
         Product FindByName(string name);
 

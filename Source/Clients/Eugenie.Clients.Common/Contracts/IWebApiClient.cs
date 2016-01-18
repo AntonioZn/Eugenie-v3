@@ -9,12 +9,10 @@
 
     public interface IWebApiClient
     {
-        Task<int> GetProductsCountAsync(HttpClient client);
-
-        Task<IEnumerable<Product>> GetProductsByPageAsync(HttpClient client, int page, int pageSize);
+        Task<IEnumerable<Product>> GetProductsAsync(HttpClient client);
 
         Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model);
 
-        Task<ISet<MissingProduct>> GetMissingProducts(HttpClient client);
+        Task<ISet<MissingProduct>> GetMissingProductsAsync(HttpClient client);
     }
 }
