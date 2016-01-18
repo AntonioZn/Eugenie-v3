@@ -1,7 +1,6 @@
 ﻿namespace Eugenie.Server.Api.Controllers
 {
     using System;
-    using System.Data.Entity;
     using System.Linq;
     using System.Web.Http;
 
@@ -19,7 +18,7 @@
 
         public IHttpActionResult Get()
         {
-            var reports = this.reportsService.GetReports().Include("Wastes").Include("Sells").Include("Shipments").Select(x => new
+            var reports = this.reportsService.GetReports().Select(x => new
             {
                 Date = x.Date,
                 Earning = x.Sells.Sum(y => (decimal?)y.Total) ?? 0,
@@ -29,10 +28,34 @@
 
             return this.Ok(reports);
         }
-        
+
         public IHttpActionResult Get(DateTime date)
         {
-            var reports = this.reportsService.GetReports().Include("Waste").Include("Sells").Include("Shipments").FirstOrDefault(x => x.Date == date);
+            var reports = this.reportsService.GetReports().Select(r => new
+            {
+                Date = r.Date,
+                Waste = r.Waste.Select(w => new
+                {
+                    Date = w.Date,
+                    Total = w.Total,
+                    Products = w.Products.Select(pr => new
+                    {
+                        Name = pr.Product.Name,
+                        Quantity = pr.Quantity
+                    })
+                }),
+                Sells = r.Sells.Select(s => new
+                {
+                    Date = s.Date,
+                    Total = s.Total,
+                    Products = s.Products.Select(pr => new
+                    {
+                        Name = pr.Product.Name,
+                        Quantity = pr.Quantity
+                    })
+                })
+            }).FirstOrDefault(x => x.Date == date);
+
             if (reports != null)
             {
                 return this.Ok(reports);

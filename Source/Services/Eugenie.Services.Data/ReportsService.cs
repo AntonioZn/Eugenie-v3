@@ -29,7 +29,7 @@
 
         public IQueryable<Report> GetReports()
         {
-            return this.reportsRepository.All().Include("Wastes").Include("Sells").Include("Shipments");
+            return this.reportsRepository.All().Include("Waste").Include("Sells").Include("Shipments");
         }
 
         public Report GetTodaysReport()
