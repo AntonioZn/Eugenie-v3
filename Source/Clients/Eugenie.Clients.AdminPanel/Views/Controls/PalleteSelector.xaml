@@ -95,6 +95,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center">Светло</TextBlock>
                 <ToggleButton Margin="12 0 8 0"
+                              IsChecked="{Binding ToggleBase}"
                               Command="{Binding ToggleBaseCommand}"
                               CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
                 <TextBlock VerticalAlignment="Center">Тъмно</TextBlock>

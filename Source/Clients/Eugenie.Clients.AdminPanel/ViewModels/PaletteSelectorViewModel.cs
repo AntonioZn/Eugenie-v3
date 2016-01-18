@@ -13,20 +13,29 @@
 
     public class PaletteSelectorViewModel
     {
-        public ICommand ToggleBaseCommand => new RelayCommand<bool>(this.ApplyBase);
+        private bool toggleBase = Settings.Default.IsDark;
+
+        public bool ToggleBase
+        {
+            get
+            {
+                return this.toggleBase;
+            }
+
+            set
+            {
+                this.toggleBase = value;
+                new PaletteHelper().SetLightDark(value);
+                Settings.Default.IsDark = value;
+                Settings.Default.Save();
+            }
+        }
 
         public ICommand ApplyPrimaryCommand => new RelayCommand<Swatch>(this.ApplyPrimary);
 
         public ICommand ApplyAccentCommand => new RelayCommand<Swatch>(this.ApplyAccent);
 
         public IEnumerable<Swatch> Swatches => new SwatchesProvider().Swatches;
-
-        private void ApplyBase(bool isDark)
-        {
-            new PaletteHelper().SetLightDark(isDark);
-            Settings.Default.IsDark = isDark;
-            Settings.Default.Save();
-        }
 
         private void ApplyPrimary(Swatch swatch)
         {
