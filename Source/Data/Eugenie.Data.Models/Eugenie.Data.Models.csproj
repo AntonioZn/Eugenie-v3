@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barcode.cs" />
-    <Compile Include="DailyEarning.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="DummyModels\IdQuantityPair.cs" />
     <Compile Include="ExpirationDate.cs" />
     <Compile Include="MeasureType.cs" />

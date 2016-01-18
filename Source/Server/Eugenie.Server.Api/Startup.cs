@@ -46,7 +46,7 @@ namespace Eugenie.Server.Api
             builder.RegisterGeneric(typeof(EfGenericRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
             builder.RegisterType<ProductsService>().As<IProductsService>();
             builder.RegisterType<DealsService>().As<IDealsService>();
-            builder.RegisterType<DailyEarningsService>().As<IDailyEarningsService>();
+            builder.RegisterType<ReportsService>().As<IReportsService>();
             builder.RegisterType<MissingProductsService>().As<IMissingProductsService>();
         }
     }

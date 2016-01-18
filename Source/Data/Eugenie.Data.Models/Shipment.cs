@@ -21,11 +21,7 @@
 
         [JsonIgnore]
         [Required]
-        public virtual User Seller { get; set; }
-
-        [JsonIgnore]
-        [Required]
-        public virtual DailyEarning DailyEarning { get; set; }
+        public virtual Report Report { get; set; }
 
         public decimal Total { get; set; }
 

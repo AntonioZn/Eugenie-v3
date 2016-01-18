@@ -4,12 +4,12 @@
 
     using Eugenie.Data.Models;
 
-    public interface IDailyEarningsService
+    public interface IReportsService
     {
-        IQueryable<DailyEarning> GetEarnings();
+        IQueryable<Report> GetReports();
 
         void AddStockPrice(decimal total);
 
-        DailyEarning GetDailyEarning();
+        Report GetTodaysReport();
     }
 }

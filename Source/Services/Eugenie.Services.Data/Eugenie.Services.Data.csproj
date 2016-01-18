@@ -57,10 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IDailyEarningsService.cs" />
+    <Compile Include="Contracts\IReportsService.cs" />
     <Compile Include="Contracts\IDealsService.cs" />
     <Compile Include="Contracts\IProductsService.cs" />
-    <Compile Include="DailyEarningsService.cs" />
+    <Compile Include="ReportsService.cs" />
     <Compile Include="DealsService.cs" />
     <Compile Include="Contracts\IMissingProductsService.cs" />
     <Compile Include="MissingProductsService.cs" />

@@ -1,24 +1,25 @@
 ﻿namespace Eugenie.Server.Api.Controllers
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web.Http;
 
     using Services.Data.Contracts;
 
     [Authorize(Roles = "Admin")]
-    public class DailyEarningsController : ApiController
+    public class ReportsController : ApiController
     {
-        private readonly IDailyEarningsService dailyEarningsService;
+        private readonly IReportsService reportsService;
 
-        public DailyEarningsController(IDailyEarningsService dailyEarningsService)
+        public ReportsController(IReportsService reportsService)
         {
-            this.dailyEarningsService = dailyEarningsService;
+            this.reportsService = reportsService;
         }
 
         public IHttpActionResult Get()
         {
-            var dailyEarnings = this.dailyEarningsService.GetEarnings().Select(x => new
+            var reports = this.reportsService.GetReports().Include("Wastes").Include("Sells").Include("Shipments").Select(x => new
             {
                 Date = x.Date,
                 Earning = x.Sells.Sum(y => (decimal?)y.Total) ?? 0,
@@ -26,16 +27,15 @@
                 StockPrice = x.StockPrice
             }).ToList();
 
-            return this.Ok(dailyEarnings);
+            return this.Ok(reports);
         }
-
-        [HttpGet]
-        public IHttpActionResult GetForDate(DateTime date)
+        
+        public IHttpActionResult Get(DateTime date)
         {
-            var dailyEarning = this.dailyEarningsService.GetEarnings().FirstOrDefault(x => x.Date == date);
-            if (dailyEarning != null)
+            var reports = this.reportsService.GetReports().Include("Waste").Include("Sells").Include("Shipments").FirstOrDefault(x => x.Date == date);
+            if (reports != null)
             {
-                return this.Ok(dailyEarning);
+                return this.Ok(reports);
             }
             else
             {

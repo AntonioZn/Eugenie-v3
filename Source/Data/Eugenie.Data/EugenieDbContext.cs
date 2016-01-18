@@ -23,7 +23,7 @@
 
         public IDbSet<Waste> Waste { get; set; }
 
-        public IDbSet<DailyEarning> DailyEarnings { get; set; }
+        public IDbSet<Report> Reports { get; set; }
 
         public IDbSet<MissingProduct> MissingProducts { get; set; }
 

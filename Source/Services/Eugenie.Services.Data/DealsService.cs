@@ -12,20 +12,20 @@
 
     public class DealsService : IDealsService
     {
-        private readonly IDailyEarningsService dailyEarningsService;
+        private readonly IReportsService reportsService;
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<User> sellersRepository;
         private readonly IRepository<Sell> sellsRepository;
         private readonly IRepository<Waste> wasteRepository;
 
         public DealsService(IRepository<Product> productsRepository, IRepository<User> sellersRepository,
-                            IRepository<Sell> sellsRepository, IRepository<Waste> wasteRepository, IDailyEarningsService dailyEarningsService)
+                            IRepository<Sell> sellsRepository, IRepository<Waste> wasteRepository, IReportsService reportsService)
         {
             this.productsRepository = productsRepository;
             this.sellersRepository = sellersRepository;
             this.sellsRepository = sellsRepository;
             this.wasteRepository = wasteRepository;
-            this.dailyEarningsService = dailyEarningsService;
+            this.reportsService = reportsService;
         }
 
         public void Sell(string sellerId, IEnumerable<IdQuantityPair> products)
@@ -53,10 +53,10 @@
             }
 
             var seller = this.sellersRepository.GetById(sellerId);
-            var dailyEarning = this.dailyEarningsService.GetDailyEarning();
+            var report = this.reportsService.GetTodaysReport();
 
             sell.Seller = seller;
-            sell.DailyEarning = dailyEarning;
+            sell.Report = report;
 
             this.sellsRepository.Add(sell);
             this.sellsRepository.SaveChanges();
@@ -87,10 +87,10 @@
             }
             
             var seller = this.sellersRepository.GetById(sellerId);
-            var dailyEarning = this.dailyEarningsService.GetDailyEarning();
+            var report = this.reportsService.GetTodaysReport();
 
             waste.Seller = seller;
-            waste.DailyEarning = dailyEarning;
+            waste.Report = report;
 
             this.wasteRepository.Add(waste);
             this.wasteRepository.SaveChanges();

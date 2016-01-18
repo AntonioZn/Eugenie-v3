@@ -17,15 +17,15 @@
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
         private readonly IRepository<ExpirationDate> expirationDatesRepository;
-        private readonly IDailyEarningsService dailyEarningsService;
+        private readonly IReportsService reportsService;
 
         public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository,
-            IRepository<ExpirationDate> expirationDatesRepository, IDailyEarningsService dailyEarningsService)
+            IRepository<ExpirationDate> expirationDatesRepository, IReportsService reportsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
             this.expirationDatesRepository = expirationDatesRepository;
-            this.dailyEarningsService = dailyEarningsService;
+            this.reportsService = reportsService;
         }
 
         public void Delete(string name)
@@ -75,7 +75,7 @@
             this.MapProperties(product, name, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
 
             this.productsRepository.SaveChanges();
-            this.dailyEarningsService.AddStockPrice(stockPrice);
+            this.reportsService.AddStockPrice(stockPrice);
 
             return product;
         }

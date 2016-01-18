@@ -9,7 +9,7 @@
     {
         IDbSet<Barcode> Barcodes { get; set; }
 
-        IDbSet<DailyEarning> DailyEarnings { get; set; }
+        IDbSet<Report> Reports { get; set; }
 
         IDbSet<ExpirationDate> ExpirationDates { get; set; }
 
