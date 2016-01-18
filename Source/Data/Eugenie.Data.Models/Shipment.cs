@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using Newtonsoft.Json;
 
     public class Shipment
     {
@@ -13,9 +16,16 @@
             this.Date = DateTime.UtcNow;
         }
 
+        [JsonIgnore]
         public int Id { get; set; }
 
+        [JsonIgnore]
+        [Required]
         public virtual User Seller { get; set; }
+
+        [JsonIgnore]
+        [Required]
+        public virtual DailyEarning DailyEarning { get; set; }
 
         public decimal Total { get; set; }
 

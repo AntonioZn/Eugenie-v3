@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Newtonsoft.Json;
+
     public class Sell
     {
         private ICollection<ProductWithQuantity> products;
@@ -14,11 +16,14 @@
             this.Date = DateTime.UtcNow;
         }
 
+        [JsonIgnore]
         public int Id { get; set; }
 
+        [JsonIgnore]
         [Required]
         public virtual User Seller { get; set; }
 
+        [JsonIgnore]
         [Required]
         public virtual DailyEarning DailyEarning { get; set; }
 

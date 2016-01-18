@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using Newtonsoft.Json;
+
     public class DailyEarning
     {
         private ICollection<Sell> sells;
@@ -15,6 +17,7 @@
             this.waste = new HashSet<Waste>();
         }
 
+        [JsonIgnore]
         public int Id { get; set; }
 
         public DateTime Date { get; set; }

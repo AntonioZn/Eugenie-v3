@@ -81,7 +81,6 @@
     <Compile Include="Helpers\ProductsCache.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
-    <Compile Include="Models\TabContent.cs" />
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Models\AddProductModel.cs" />
     <Compile Include="Models\Barcode.cs" />

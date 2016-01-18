@@ -5,6 +5,8 @@
 
     using Common.Constants;
 
+    using Newtonsoft.Json;
+
     public class MissingProduct
     {
         public MissingProduct()
@@ -12,6 +14,7 @@
             this.Date = DateTime.UtcNow;
         }
 
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required]
