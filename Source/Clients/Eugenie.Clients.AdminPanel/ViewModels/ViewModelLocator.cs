@@ -28,6 +28,8 @@
 
         public PaletteSelectorViewModel PaletteSelectorViewModel => container.Resolve<PaletteSelectorViewModel>();
 
+        public EarningsViewModel EarningsViewModel => container.Resolve<EarningsViewModel>();
+
         private void Register()
         {
             if (Settings.Default.Servers == string.Empty)
@@ -51,6 +53,7 @@
             containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<PaletteSelectorViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<EarningsViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

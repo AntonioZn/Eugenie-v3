@@ -77,14 +77,14 @@
                                     <views:Delivery />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
+                            <domain:MenuItem Name="Оборот">
+                                <domain:MenuItem.Content>
+                                    <views:Earnings />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
                             <domain:MenuItem Name="Липсващи продукти">
                                 <domain:MenuItem.Content>
                                     <views:MissingProducts />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Управление">
-                                <domain:MenuItem.Content>
-                                    <views:ManageShops />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
                             <domain:MenuItem Name="Национална лотария">
@@ -102,8 +102,8 @@
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <materialDesign:ColorZone Mode="PrimaryDark"
                                               Grid.Row="0"
@@ -122,7 +122,7 @@
                                                       Padding="8 4 8 4"
                                                       CornerRadius="2"
                                                       Panel.ZIndex="1"
-                                                      Margin="16 0 0 0"
+                                                      Margin="30 0 0 0"
                                                       materialDesign:ShadowAssist.ShadowDepth="Depth1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -152,8 +152,8 @@
                                     IsTabStop="False"
                                     Margin="8 0 0 0"
                                     Panel.ZIndex="0">
-                                <Viewbox Width="16"
-                                         Height="16">
+                                <Viewbox Width="24"
+                                         Height="24">
                                     <Canvas Width="24"
                                             Height="24">
                                         <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z"
@@ -172,11 +172,21 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock ToolTip="{Binding Name}">
-                                        <materialDesign:PackIcon Kind="Monitor"
-                                                                 Width="30"
-                                                                 Height="30" />
-                                        </TextBlock>
+                                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                                Padding="0"
+                                                Height="Auto">
+                                            <StackPanel Orientation="Vertical">
+                                                <materialDesign:PackIcon Kind="Monitor"
+                                                                         Width="24"
+                                                                         Height="24"
+                                                                         Foreground="White"
+                                                                         HorizontalAlignment="Center" />
+                                                <TextBlock Text="{Binding Name}"
+                                                           FontSize="13"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
