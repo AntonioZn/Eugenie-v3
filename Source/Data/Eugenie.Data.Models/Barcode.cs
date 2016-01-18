@@ -15,9 +15,6 @@
         [JsonIgnore]
         public int ProductId { get; set; }
 
-        [JsonIgnore]
-        public virtual Product Product { get; set; }
-
         [Required]
         [Index("Value", IsUnique = true)]
         [MaxLength(ValidationConstants.BarcodeMaxLength)]

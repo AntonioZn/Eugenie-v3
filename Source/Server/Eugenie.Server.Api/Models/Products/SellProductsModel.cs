@@ -8,9 +8,6 @@
     public class SellProductsModel
     {
         [Required]
-        public string SellerId { get; set; }
-
-        [Required]
         public IEnumerable<IdQuantityPair> Products { get; set; }
     }
 }

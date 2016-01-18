@@ -8,10 +8,8 @@
     {
         IQueryable<DailyEarning> GetEarnings();
 
-        void AddWaste(decimal total);
-
-        void AddSell(decimal total);
-
         void AddStockPrice(decimal total);
+
+        DailyEarning GetDailyEarning();
     }
 }

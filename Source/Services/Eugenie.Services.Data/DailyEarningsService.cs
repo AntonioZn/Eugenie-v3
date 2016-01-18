@@ -17,43 +17,10 @@
             this.dailyEarningsRepository = dailyEarningsRepository;
         }
 
-        public void AddWaste(decimal total)
-        {
-            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
-
-            if (dailyEarning == null)
-            {
-                dailyEarning = new DailyEarning();
-                this.dailyEarningsRepository.Add(dailyEarning);
-            }
-            dailyEarning.Waste += total;
-
-            this.dailyEarningsRepository.SaveChanges();
-        }
-
-        public void AddSell(decimal total)
-        {
-            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
-
-            if (dailyEarning == null)
-            {
-                dailyEarning = new DailyEarning();
-                this.dailyEarningsRepository.Add(dailyEarning);
-            }
-            dailyEarning.Earnings += total;
-
-            this.dailyEarningsRepository.SaveChanges();
-        }
-
         public void AddStockPrice(decimal total)
         {
-            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
+            var dailyEarning = this.GetDailyEarning();
 
-            if (dailyEarning == null)
-            {
-                dailyEarning = new DailyEarning();
-                this.dailyEarningsRepository.Add(dailyEarning);
-            }
             dailyEarning.StockPrice += total;
 
             this.dailyEarningsRepository.SaveChanges();
@@ -62,6 +29,19 @@
         public IQueryable<DailyEarning> GetEarnings()
         {
             return this.dailyEarningsRepository.All();
+        }
+
+        public DailyEarning GetDailyEarning()
+        {
+            var dailyEarning = this.dailyEarningsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
+
+            if (dailyEarning == null)
+            {
+                dailyEarning = new DailyEarning();
+                this.dailyEarningsRepository.Add(dailyEarning);
+            }
+
+            return dailyEarning;
         }
     }
 }

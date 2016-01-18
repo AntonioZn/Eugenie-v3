@@ -9,16 +9,11 @@
     {
         [JsonIgnore]
         public int Id { get; set; }
-
+        
         [JsonIgnore]
         public int ProductId { get; set; }
-
-        [JsonIgnore]
-        public virtual Product Product { get; set; }
-
-        //TODO: review ?
-        //[Required]
-        [MaxLength(20)]
+        
+        [MaxLength(100)]
         public string Batch { get; set; }
 
         public DateTime Date { get; set; }

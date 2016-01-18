@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Waste
     {
@@ -15,7 +16,11 @@
 
         public int Id { get; set; }
 
+        [Required]
         public virtual User Seller { get; set; }
+
+        [Required]
+        public virtual DailyEarning DailyEarning { get; set; }
 
         public decimal Total { get; set; }
 

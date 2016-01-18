@@ -53,11 +53,13 @@
             }
 
             var seller = this.sellersRepository.GetById(sellerId);
-            seller.Sells.Add(sell);
-            this.sellersRepository.SaveChanges();
+            var dailyEarning = this.dailyEarningsService.GetDailyEarning();
 
-            this.dailyEarningsService.AddSell(sell.Total);
-            this.productsRepository.SaveChanges();
+            sell.Seller = seller;
+            sell.DailyEarning = dailyEarning;
+
+            this.sellsRepository.Add(sell);
+            this.sellsRepository.SaveChanges();
         }
 
         public void Waste(string sellerId, IEnumerable<IdQuantityPair> products)
@@ -83,13 +85,15 @@
 
                 wastedProduct.Quantity -= product.Quantity;
             }
-
+            
             var seller = this.sellersRepository.GetById(sellerId);
-            seller.Waste.Add(waste);
-            this.sellersRepository.SaveChanges();
+            var dailyEarning = this.dailyEarningsService.GetDailyEarning();
 
-            this.dailyEarningsService.AddWaste(waste.Total);
-            this.productsRepository.SaveChanges();
+            waste.Seller = seller;
+            waste.DailyEarning = dailyEarning;
+
+            this.wasteRepository.Add(waste);
+            this.wasteRepository.SaveChanges();
         }
 
         public IEnumerable<Sell> GetSells(string sellerId, string start, string end)
