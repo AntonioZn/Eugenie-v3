@@ -1,16 +1,21 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     using Models;
 
+    using WebApiModels;
+
     public interface IProductsCache
     {
-        IEnumerable<Product> Products { get; set; }
+        IEnumerable<Product> MainProducts { get; set; }
 
-        IDictionary<ServerInformation, ObservableCollection<Product>> ProductsPerServer { get; set; }
+        IDictionary<ServerInformation, ICollection<Product>> ProductsPerServer { get; }
 
-        ICollection<MissingProduct> MissingProducts { get; set; } 
+        IDictionary<ServerInformation, IEnumerable<Report>> ReportsPerServer { get; }
+
+        ICollection<MissingProduct> MissingProducts { get; set; }
+
+        void SetMainProducts();
     }
 }

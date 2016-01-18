@@ -3,12 +3,15 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using Contracts;
 
     using GalaSoft.MvvmLight;
 
     using Models;
+
+    using WebApiModels;
 
     public class ProductsCache : ViewModelBase, IProductsCache
     {
@@ -17,10 +20,11 @@
 
         public ProductsCache()
         {
-            this.ProductsPerServer = new ConcurrentDictionary<ServerInformation, ObservableCollection<Product>>();
+            this.ProductsPerServer = new ConcurrentDictionary<ServerInformation, ICollection<Product>>();
+            this.ReportsPerServer = new ConcurrentDictionary<ServerInformation, IEnumerable<Report>>();
         }
-        
-        public IEnumerable<Product> Products
+
+        public IEnumerable<Product> MainProducts
         {
             get
             {
@@ -38,7 +42,10 @@
                 }
             }
         }
-        public IDictionary<ServerInformation, ObservableCollection<Product>> ProductsPerServer { get; set; }
+
+        public IDictionary<ServerInformation, ICollection<Product>> ProductsPerServer { get; }
+
+        public IDictionary<ServerInformation, IEnumerable<Report>> ReportsPerServer { get; }
 
         public ICollection<MissingProduct> MissingProducts
         {
@@ -57,6 +64,11 @@
                     this.missingProducts.Add(missingProduct);
                 }
             }
+        }
+
+        public void SetMainProducts()
+        {
+            this.MainProducts = this.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
         }
     }
 }

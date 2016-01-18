@@ -101,7 +101,7 @@
     <Compile Include="Notifications\NotificationsHost.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
-    <Compile Include="ViewModels\EarningsViewModel.cs" />
+    <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\MissingProductsViewModel.cs" />
     <Compile Include="ViewModels\PaletteSelectorViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
@@ -125,9 +125,6 @@
     <Compile Include="Views\Delivery.xaml.cs">
       <DependentUpon>Delivery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Earnings.xaml.cs">
-      <DependentUpon>Earnings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MissingProducts.xaml.cs">
       <DependentUpon>MissingProducts.xaml</DependentUpon>
     </Compile>
@@ -139,6 +136,9 @@
     </Compile>
     <Compile Include="Views\ProductsEditor.xaml.cs">
       <DependentUpon>ProductsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports.xaml.cs">
+      <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -180,10 +180,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Earnings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MissingProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

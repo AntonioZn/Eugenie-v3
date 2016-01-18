@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:viewModels="clr-namespace:Eugenie.Clients.AdminPanel.ViewModels">
+             xmlns:viewModels="clr-namespace:Eugenie.Clients.AdminPanel.ViewModels"
+             xmlns:converters="clr-namespace:Eugenie.Clients.Common.Converters;assembly=Eugenie.Clients.Common">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,6 +16,7 @@
             <Style TargetType="{x:Type dragablz:TabablzControl}"
                    BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
+            <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

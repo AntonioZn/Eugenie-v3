@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Common.Contracts
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -7,12 +8,18 @@
 
     using Models;
 
+    using WebApiModels;
+
     public interface IWebApiClient
     {
-        Task<IEnumerable<Product>> GetProductsAsync(HttpClient client);
+        Task<ICollection<Product>> GetProductsAsync(HttpClient client);
 
         Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model);
 
         Task<ISet<MissingProduct>> GetMissingProductsAsync(HttpClient client);
+
+        Task<ICollection<Report>> GetReportsAsync(HttpClient client);
+
+        Task<ReportDetails> GetReportDetailsAsync(HttpClient client, DateTime date);
     }
 }

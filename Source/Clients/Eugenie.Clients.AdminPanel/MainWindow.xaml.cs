@@ -7,7 +7,7 @@
 
     using Notifications;
 
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -22,7 +22,7 @@
 
         private void FlyoutMenuListBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            this.txtSearch.Focus();
+            //this.txtSearch.Focus();
         }
 
         private void TxtSearch_OnTextChanged(object sender, TextChangedEventArgs e)

@@ -26,10 +26,10 @@
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
 
-            this.RefreshServersCommand = new RelayCommand(this.Refresh);
+            this.RefreshServersCommand = new RelayCommand(this.HandleRefreshServersCommand);
         }
 
-        public ICommand RefreshServersCommand { get; private set; }
+        public ICommand RefreshServersCommand { get; }
 
         public Visibility LoadingVisibility
         {
@@ -61,7 +61,7 @@
             }
         }
 
-        private void Refresh()
+        private void HandleRefreshServersCommand()
         {
             this.LoadingVisibility = Visibility.Visible;
             this.manager.Initialize();

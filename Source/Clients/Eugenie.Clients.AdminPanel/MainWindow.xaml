@@ -11,14 +11,16 @@
         xmlns:commonBehaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
-        TextElement.FontWeight="Medium"
-        TextElement.FontSize="16"
-        FontFamily="pack://application:,,,/materialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         IsTabStop="False"
         WindowState="Maximized"
         Loaded="MainWindow_OnLoaded"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior />
@@ -77,9 +79,9 @@
                                     <views:Delivery />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
-                            <domain:MenuItem Name="Оборот">
+                            <domain:MenuItem Name="Отчети">
                                 <domain:MenuItem.Content>
-                                    <views:Earnings />
+                                    <views:Reports />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
                             <domain:MenuItem Name="Липсващи продукти">

@@ -3,12 +3,13 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.ObjectModel;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Contracts;
 
     using Models;
+
+    using WebApiModels;
 
     public class ServerManager : IServerManager
     {
@@ -51,6 +52,8 @@
         public async void Initialize()
         {
             this.Cache.ProductsPerServer.Clear();
+            this.Cache.ReportsPerServer.Clear();
+
             var missingProducts = new ConcurrentDictionary<MissingProduct, byte>();
             await Task.Run(() =>
                      {
@@ -59,6 +62,7 @@
                                                                           var client = this.tester.TestServer(server).Result;
                                                                           server.Client = client;
                                                                           this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
+                                                                          this.Cache.ReportsPerServer.Add(server, new ObservableCollection<Report>());
                                                                           
                                                                           if (client != null)
                                                                           {
@@ -67,24 +71,16 @@
                                                                                   missingProducts.TryAdd(missingProduct, 1);
                                                                               }
 
-                                                                              foreach (var product in this.apiClient.GetProductsAsync(client).Result)
-                                                                              {
-                                                                                  this.Cache.ProductsPerServer[server].Add(product);
-                                                                              }
+                                                                              this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(client).Result;
+
+                                                                              this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(client).Result;
                                                                           }
                                                                       });
                      });
 
-            foreach (var pair in missingProducts)
-            {
-                this.Cache.MissingProducts.Add(pair.Key);
-            }
+            this.Cache.MissingProducts = missingProducts.Keys;
 
-            var singleServerProducts = this.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
-            if (singleServerProducts != null)
-            {
-                this.Cache.Products = singleServerProducts;
-            }
+            this.Cache.SetMainProducts();
 
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }

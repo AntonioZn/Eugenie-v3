@@ -63,7 +63,7 @@
             }
         }
 
-        public ICollectionView Products => CollectionViewSource.GetDefaultView(this.manager.Cache.Products);
+        public ICollectionView Products => CollectionViewSource.GetDefaultView(this.manager.Cache.MainProducts);
 
         public Product SelectedProduct { get; set; }
 

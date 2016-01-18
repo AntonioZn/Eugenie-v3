@@ -51,7 +51,7 @@
 
             set
             {
-                this.productInAllServers = this.productInAllServers ?? (this.productInAllServers = new ObservableConcurrentDictionary<ServerInformation, ProductViewModel>());
+                this.productInAllServers = this.productInAllServers ?? new ObservableConcurrentDictionary<ServerInformation, ProductViewModel>();
                 this.productInAllServers.Clear();
                 foreach (var pair in value)
                 {
@@ -60,7 +60,7 @@
             }
         }
 
-        public IEnumerable<Product> ExistingProducts => this.manager.Cache.Products;
+        public IEnumerable<Product> ExistingProducts => this.manager.Cache.MainProducts;
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 

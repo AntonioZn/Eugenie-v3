@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Eugenie.Clients.AdminPanel.Views
 {
     /// <summary>
-    /// Interaction logic for Earnings.xaml
+    /// Interaction logic for Reports.xaml
     /// </summary>
-    public partial class Earnings : UserControl
+    public partial class Reports : UserControl
     {
-        public Earnings()
+        public Reports()
         {
             InitializeComponent();
         }

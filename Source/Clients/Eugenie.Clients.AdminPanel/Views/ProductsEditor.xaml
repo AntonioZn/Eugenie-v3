@@ -15,6 +15,14 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="IsTabStop"
+                    Value="False" />
+            <Setter Property="IsHitTestVisible"
+                    Value="False" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <materialDesign:Card Margin="20"
                              Padding="20,0,20,20"
@@ -33,34 +41,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Име"
                                         Binding="{Binding Name}"
-                                        Width="6*">
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="IsTabStop"
-                                        Value="False" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                                        Width="6*" />
                     <DataGridTextColumn Header="Мярка"
                                         Binding="{Binding Measure}"
-                                        Width="1*">
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="IsTabStop"
-                                        Value="False" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                                        Width="1*" />
                     <DataGridTextColumn Header="Доставна цена"
                                         Binding="{Binding BuyingPrice}"
-                                        Width="2*">
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="IsTabStop"
-                                        Value="False" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                                        Width="2*" />
                 </DataGrid.Columns>
             </DataGrid>
         </materialDesign:Card>

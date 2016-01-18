@@ -12,6 +12,8 @@
 
     using Newtonsoft.Json;
 
+    using WebApiModels;
+
     public class ServerTester : IServerTester
     {
         public async Task<HttpClient> TestServer(ServerInformation server)

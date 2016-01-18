@@ -18,7 +18,7 @@
 
         public IHttpActionResult Get()
         {
-            var reports = this.reportsService.GetReports().Select(x => new
+            var reports = this.reportsService.GetReports().OrderByDescending(x => x.Date).Select(x => new
             {
                 Date = x.Date,
                 Earning = x.Sells.Sum(y => (decimal?)y.Total) ?? 0,

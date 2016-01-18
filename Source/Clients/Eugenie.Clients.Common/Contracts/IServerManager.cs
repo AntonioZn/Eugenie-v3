@@ -5,6 +5,8 @@
 
     using Models;
 
+    using WebApiModels;
+
     public interface IServerManager
     {
         event EventHandler ServerTestingFinished;

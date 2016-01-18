@@ -15,6 +15,14 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=MissingProductsViewModel, Source={StaticResource ViewModelLocator}}">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="IsTabStop"
+                    Value="False" />
+            <Setter Property="IsHitTestVisible"
+                    Value="False" />
+        </Style>
+    </UserControl.Resources>
     <materialDesign:Card HorizontalAlignment="Center"
                          Margin="20"
                          Padding="20,0,20,20"
@@ -33,40 +41,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Име"
                                     Width="2*"
-                                    Binding="{Binding Name}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                            <Setter Property="IsHitTestVisible"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                                    Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Баркод"
                                     Width="1*"
-                                    Binding="{Binding Barcode}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                            <Setter Property="IsHitTestVisible"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                                    Binding="{Binding Barcode}" />
                 <DataGridTextColumn Header="Дата"
                                     Width="1*"
-                                    Binding="{Binding Date}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsTabStop"
-                                    Value="False" />
-                            <Setter Property="IsHitTestVisible"
-                                    Value="False" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                                    Binding="{Binding Date}" />
                 <!--<DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">

@@ -13,12 +13,12 @@
                                 BorderBrush="{DynamicResource MaterialDesignDivider}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1.25*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="1.75*" />
-                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1.75*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0"

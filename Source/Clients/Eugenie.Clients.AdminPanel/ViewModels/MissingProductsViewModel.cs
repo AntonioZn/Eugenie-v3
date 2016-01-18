@@ -6,6 +6,7 @@
 
     using Common.Contracts;
     using Common.Models;
+    using Common.WebApiModels;
 
     using GalaSoft.MvvmLight;
 
