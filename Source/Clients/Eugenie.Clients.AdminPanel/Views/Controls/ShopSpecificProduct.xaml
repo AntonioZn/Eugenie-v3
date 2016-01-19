@@ -52,15 +52,12 @@
                                                          Focusable="False">
                                     <DataGrid ItemsSource="{Binding Value.Product.ExpirationDates}"
                                               HeadersVisibility="None"
-                                              CanUserSortColumns="True"
                                               AutoGenerateColumns="False"
                                               CanUserAddRows="False"
                                               IsReadOnly="True"
                                               SelectionMode="Single"
                                               VerticalScrollBarVisibility="Disabled"
                                               KeyboardNavigation.TabNavigation="None"
-                                              AlternatingRowBackground="AliceBlue"
-                                              AlternationCount="2"
                                               materialDesign:DataGridAssist.CellPadding="2">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Binding="{Binding Date, StringFormat=dd/MM/yyyy}">

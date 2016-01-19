@@ -39,22 +39,36 @@
                                 Width="1*"
                                 Binding="{Binding Total}" />
             <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="IsHitTestVisible"
-                                    Value="True" />
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                <DataGridTemplateColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="IsHitTestVisible"
+                                Value="True" />
+                    </Style>
+                </DataGridTemplateColumn.CellStyle>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
                         <materialDesign:PopupBox ToolTipService.Placement="Right"
                                                  PlacementMode="BottomAndAlignCentres"
                                                  ToolTip="Продукти">
-                            
+                            <DataGrid ItemsSource="{Binding Products}"
+                                      FontSize="20"
+                                      HeadersVisibility="None"
+                                      CanUserSortColumns="True"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      IsReadOnly="True"
+                                      SelectionMode="Single"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      KeyboardNavigation.TabNavigation="None">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" />
+                                    <DataGridTextColumn Binding="{Binding Quantity}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </materialDesign:PopupBox>
                     </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>
