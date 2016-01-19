@@ -51,12 +51,12 @@
             return response.StatusCode;
         }
 
-        public async Task<ISet<MissingProduct>> GetMissingProductsAsync(HttpClient client)
+        public async Task<IEnumerable<MissingProduct>> GetMissingProductsAsync(HttpClient client)
         {
             var response = await client.GetAsync($"api/missingProducts");
 
             var result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ISet<MissingProduct>>(result);
+            return JsonConvert.DeserializeObject<IEnumerable<MissingProduct>>(result);
         }
     }
 }

@@ -9,6 +9,7 @@
     using Common.Contracts;
     using Common.Models;
     using Common.WebApiModels;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
 
@@ -44,16 +45,10 @@
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             var hashset = new HashSet<MissingProduct>();
-            foreach (var collection in this.manager.Cache.MissingProductsPerServer.Values)
-            {
-                hashset.UnionWith(collection);
-            }
+            this.manager.Cache.MissingProductsPerServer.Values.ForEach(hashset.UnionWith);
 
             this.MissingProducts.Clear();
-            foreach (var missingProduct in hashset)
-            {
-                this.MissingProducts.Add(missingProduct);
-            }
+            hashset.ForEach(this.MissingProducts.Add);
         }
     }
 }

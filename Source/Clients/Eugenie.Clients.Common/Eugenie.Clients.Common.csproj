@@ -73,11 +73,10 @@
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
-    <Compile Include="Contracts\IProductsCache.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
-    <Compile Include="Helpers\ProductsCache.cs" />
+    <Compile Include="Models\ProductsCache.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Helpers\Validator.cs" />

@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Common.Constants;
 
@@ -23,6 +24,7 @@
 
         [Required]
         [MaxLength(ValidationConstants.BarcodeMaxLength)]
+        [Index(IsUnique = true)]
         public string Barcode { get; set; }
 
         public DateTime Date { get; set; }

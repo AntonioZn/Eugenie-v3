@@ -16,7 +16,7 @@
 
         Task<HttpStatusCode> AddOrUpdateAsync(HttpClient client, AddProductModel model);
 
-        Task<ISet<MissingProduct>> GetMissingProductsAsync(HttpClient client);
+        Task<IEnumerable<MissingProduct>> GetMissingProductsAsync(HttpClient client);
 
         Task<ICollection<Report>> GetReportsAsync(HttpClient client);
 
