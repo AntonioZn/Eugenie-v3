@@ -25,12 +25,12 @@
             return JsonConvert.DeserializeObject<ICollection<Report>>(result);
         }
 
-        public async Task<ReportDetails> GetReportDetailsAsync(HttpClient client, DateTime date)
+        public async Task<ReportDetailsResponse> GetReportDetailsAsync(HttpClient client, DateTime date)
         {
-            var response = await client.GetAsync($"api/reports/{date}");
+            var response = await client.GetAsync($"api/reports?date={date.Year}-{date.Month}-{date.Day}");
 
             var result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ReportDetails>(result);
+            return JsonConvert.DeserializeObject<ReportDetailsResponse>(result);
         }
 
         public async Task<ICollection<Product>> GetProductsAsync(HttpClient client)

@@ -7,9 +7,22 @@
 
     public class Sell
     {
-        public DateTime Date { get; set; }
+        private DateTime date;
 
-        public float Total { get; set; }
+        public DateTime Date
+        {
+            get
+            {
+                return this.date;
+            }
+
+            set
+            {
+                this.date = DateTime.SpecifyKind(DateTime.Parse(value.ToString()),DateTimeKind.Utc).ToLocalTime();
+            }
+        }
+
+        public decimal Total { get; set; }
 
         public IEnumerable<Product> Products { get; set; }
     }

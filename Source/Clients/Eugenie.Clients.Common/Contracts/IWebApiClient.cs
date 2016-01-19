@@ -20,6 +20,6 @@
 
         Task<ICollection<Report>> GetReportsAsync(HttpClient client);
 
-        Task<ReportDetails> GetReportDetailsAsync(HttpClient client, DateTime date);
+        Task<ReportDetailsResponse> GetReportDetailsAsync(HttpClient client, DateTime date);
     }
 }

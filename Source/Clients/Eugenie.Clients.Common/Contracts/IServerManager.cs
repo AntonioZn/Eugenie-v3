@@ -11,11 +11,13 @@
     {
         event EventHandler SelectedServerChanged;
 
-        ActiveServer SelectedServer { get; set; }
+        ServerInformation SelectedServer { get; }
+
+        void SetSelectedServer(string name);
 
         event EventHandler ServerTestingFinished;
 
-        ProductsCache Cache { get; set; }
+        ProductsCache Cache { get; }
 
         Task AddOrUpdateAsync(ServerInformation server, AddProductModel model);
 

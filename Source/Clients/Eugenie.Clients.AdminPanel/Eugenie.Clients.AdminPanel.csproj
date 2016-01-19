@@ -39,6 +39,10 @@
       <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.150, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dragablz.0.0.3.150\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.2.0.37222, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MvvmLightLibs.5.2.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -55,8 +59,8 @@
       <HintPath>..\..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MaterialDesignThemes.1.4.0-ci470\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=1.4.0.473, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaterialDesignThemes.1.4.0.473\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,6 +101,7 @@
     <Compile Include="Notifications\NotificationsHost.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
+    <Compile Include="ViewModels\ReportDetailsViewModel.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\MissingProductsViewModel.cs" />
     <Compile Include="ViewModels\PaletteSelectorViewModel.cs" />
@@ -108,6 +113,9 @@
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
     <Compile Include="Views\Controls\BarcodePresenter.xaml.cs">
       <DependentUpon>BarcodePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\DealsPresenter.xaml.cs">
+      <DependentUpon>DealsPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
@@ -133,6 +141,9 @@
     <Compile Include="Views\ProductsEditor.xaml.cs">
       <DependentUpon>ProductsEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReportDetails.xaml.cs">
+      <DependentUpon>ReportDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
@@ -157,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\BarcodePresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\DealsPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

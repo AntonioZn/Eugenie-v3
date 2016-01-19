@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -14,7 +15,6 @@
     {
         private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
-        private ActiveServer selectedServer;
 
         public ServerManager(IServerStorage storage, IWebApiClient apiClient)
         {
@@ -29,7 +29,7 @@
             this.Initialize();
         }
 
-        public ProductsCache Cache { get; set; }
+        public ProductsCache Cache { get; }
 
         public async Task AddOrUpdateAsync(ServerInformation server, AddProductModel model)
         {
@@ -46,20 +46,14 @@
 
         public event EventHandler SelectedServerChanged;
 
-        public ActiveServer SelectedServer
-        {
-            get
-            {
-                return this.selectedServer;
-            }
+        public ServerInformation SelectedServer { get; private set; }
 
-            set
+        public void SetSelectedServer(string name)
+        {
+            if (this.SelectedServer?.Name != name)
             {
-                if (this.selectedServer != value)
-                {
-                    this.selectedServer = value;
-                    this.SelectedServerChanged?.Invoke(this, EventArgs.Empty);
-                }
+                this.SelectedServer = this.storage.Servers.FirstOrDefault(x => x.Name == name);
+                this.SelectedServerChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -76,19 +70,18 @@
                      {
                          Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
-                                                                          var client = ServerTester.TestServer(server).Result;
-                                                                          server.Client = client;
+                                                                          server.Client = ServerTester.TestServer(server).Result;
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());
                                                                           this.Cache.ReportsPerServer.Add(server, new List<Report>());
                                                                           this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
                                                                           
-                                                                          if (client != null)
+                                                                          if (server.Client != null)
                                                                           {
-                                                                              this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(client).Result;
+                                                                              this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(server.Client).Result;
 
-                                                                              this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(client).Result;
+                                                                              this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(server.Client).Result;
 
-                                                                              this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(client).Result;
+                                                                              this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(server.Client).Result;
                                                                           }
                                                                       });
                      });

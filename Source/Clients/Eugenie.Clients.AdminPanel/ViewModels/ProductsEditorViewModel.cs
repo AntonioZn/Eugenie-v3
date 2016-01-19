@@ -85,8 +85,7 @@
             var selectedProductViewModel = new ProductViewModel(this.SelectedProduct.DeepClone());
             var viewModel = new ProductInformationViewModel(productInAllServers, selectedProductViewModel);
             var dialog = new ProductInformation(viewModel);
-
-            NotificationsHost.Success("asdasd", "asdasd");
+            
             var result = await DialogHost.Show(dialog, "RootDialog");
 
             if ((bool)result)

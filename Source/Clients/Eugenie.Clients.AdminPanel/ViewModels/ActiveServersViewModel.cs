@@ -77,7 +77,7 @@
 
             selectedServer.IsSelected = true;
 
-            this.manager.SelectedServer = selectedServer;
+            this.manager.SetSelectedServer(selectedServer.Name);
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)
