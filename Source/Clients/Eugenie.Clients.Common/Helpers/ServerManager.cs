@@ -33,14 +33,13 @@
 
         public async Task AddOrUpdateAsync(ServerInformation server, AddProductModel model)
         {
-            var currentClient = server.Client;
-            if (currentClient == null)
+            if (server.Client == null)
             {
                 //TODO: retry later
             }
             else
             {
-                await this.apiClient.AddOrUpdateAsync(currentClient, model);
+                await this.apiClient.AddOrUpdateAsync(server.Client, model);
             }
         }
 
@@ -62,19 +61,19 @@
         //TODO: add a way to cancel
         public async void Initialize()
         {
-            this.Cache.ProductsPerServer.Clear();
-            this.Cache.ReportsPerServer.Clear();
-            this.Cache.MissingProductsPerServer.Clear();
-            
             await Task.Run(() =>
-                     {
-                         Parallel.ForEach(this.storage.Servers, (server) =>
+            {
+                this.Cache.ProductsPerServer.Clear();
+                this.Cache.ReportsPerServer.Clear();
+                this.Cache.MissingProductsPerServer.Clear();
+
+                Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
                                                                           server.Client = ServerTester.TestServer(server).Result;
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());
                                                                           this.Cache.ReportsPerServer.Add(server, new List<Report>());
                                                                           this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
-                                                                          
+
                                                                           if (server.Client != null)
                                                                           {
                                                                               this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(server.Client).Result;
@@ -84,8 +83,8 @@
                                                                               this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(server.Client).Result;
                                                                           }
                                                                       });
-                     });
-            
+            });
+
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
     }

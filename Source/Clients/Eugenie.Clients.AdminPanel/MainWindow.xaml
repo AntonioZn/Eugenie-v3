@@ -84,6 +84,11 @@
                                     <views:Reports />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
+                            <domain:MenuItem Name="Служители">
+                                <domain:MenuItem.Content>
+                                    <views:Sellers />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
                             <domain:MenuItem Name="Липсващи продукти">
                                 <domain:MenuItem.Content>
                                     <views:MissingProducts />
