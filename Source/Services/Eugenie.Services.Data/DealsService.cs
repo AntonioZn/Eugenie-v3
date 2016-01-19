@@ -96,44 +96,14 @@
             this.wasteRepository.SaveChanges();
         }
 
-        public IEnumerable<Sell> GetSells(string sellerId, string start, string end)
+        public IQueryable<Sell> GetSells(string name, DateTime start, DateTime end)
         {
-            var startDate = string.IsNullOrEmpty(start) ? DateTime.MinValue : DateTime.Parse(start);
-            var endDate = string.IsNullOrEmpty(end) ? DateTime.MaxValue.AddDays(-1) : DateTime.Parse(end);
-            endDate = endDate.AddDays(1);
-
-            if (string.IsNullOrEmpty(sellerId))
-            {
-                return this.sellsRepository.All().Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0).ToList();
-            }
-
-            var seller = this.sellersRepository.GetById(sellerId);
-            if (seller == null)
-            {
-                throw new ArgumentException($"Seller with Id {sellerId} does not exist", "SellerId");
-            }
-
-            return seller.Sells.Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0);
+            return this.sellsRepository.All().Where(x => x.Seller.UserName == name && x.Date.CompareTo(start) >= 0 && x.Date.CompareTo(end) <= 0);
         }
 
-        public IEnumerable<Waste> GetWaste(string sellerId, string start, string end)
+        public IQueryable<Waste> GetWaste(string name, DateTime start, DateTime end)
         {
-            var startDate = string.IsNullOrEmpty(start) ? DateTime.MinValue : DateTime.Parse(start);
-            var endDate = string.IsNullOrEmpty(end) ? DateTime.MaxValue.AddDays(-1) : DateTime.Parse(end);
-            endDate = endDate.AddDays(1);
-
-            if (string.IsNullOrEmpty(sellerId))
-            {
-                return this.wasteRepository.All().Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0).ToList();
-            }
-
-            var seller = this.sellersRepository.GetById(sellerId);
-            if (seller == null)
-            {
-                throw new ArgumentException($"Seller with Id {sellerId} does not exist", "SellerId");
-            }
-
-            return seller.Waste.Where(x => x.Date.CompareTo(startDate) >= 0 && x.Date.CompareTo(endDate) <= 0);
+            return this.wasteRepository.All().Where(x => x.Seller.UserName == name && x.Date.CompareTo(start) >= 0 && x.Date.CompareTo(end) <= 0);
         }
     }
 }

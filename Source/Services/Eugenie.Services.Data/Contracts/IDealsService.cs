@@ -1,6 +1,8 @@
 ﻿namespace Eugenie.Services.Data.Contracts
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Eugenie.Data.Models;
     using Eugenie.Data.Models.DummyModels;
@@ -11,8 +13,8 @@
 
         void Waste(string sellerId, IEnumerable<IdQuantityPair> products);
 
-        IEnumerable<Sell> GetSells(string sellerId, string startDate, string endDate);
+        IQueryable<Sell> GetSells(string name, DateTime start, DateTime end);
 
-        IEnumerable<Waste> GetWaste(string sellerId, string startDate, string endDate);
+        IQueryable<Waste> GetWaste(string name, DateTime start, DateTime end);
     }
 }

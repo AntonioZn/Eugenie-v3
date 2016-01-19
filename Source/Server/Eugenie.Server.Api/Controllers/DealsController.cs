@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Server.Api.Controllers
 {
     using System;
+    using System.Linq;
     using System.Web.Http;
 
     using Microsoft.AspNet.Identity;
@@ -23,11 +24,22 @@
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("sells")]
-        public IHttpActionResult GetSells(string sellerId, string startDate, string endDate)
+        public IHttpActionResult GetSells(string name, DateTime start, DateTime end)
         {
             try
             {
-                return this.Ok(this.dealsService.GetSells(sellerId, startDate, endDate));
+                var sells = this.dealsService.GetSells(name, start, end.AddDays(1)).Select(x => new
+                {
+                    Date = x.Date,
+                    Total = x.Total,
+                    Products = x.Products.Select(pr => new
+                    {
+                        Name = pr.Product.Name,
+                        Quantity = pr.Quantity,
+                    })
+                });
+
+                return this.Ok(sells);
             }
             catch (ArgumentException ex)
             {
@@ -38,11 +50,22 @@
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("waste")]
-        public IHttpActionResult GetWaste(string sellerId, string startDate, string endDate)
+        public IHttpActionResult GetWaste(string name, DateTime start, DateTime end)
         {
             try
             {
-                return this.Ok(this.dealsService.GetWaste(sellerId, startDate, endDate));
+                var waste = this.dealsService.GetWaste(name, start, end.AddDays(1)).Select(x => new
+                {
+                    Date = x.Date,
+                    Total = x.Total,
+                    Products = x.Products.Select(pr => new
+                    {
+                        Name = pr.Product.Name,
+                        Quantity = pr.Quantity,
+                    })
+                });
+
+                return this.Ok(waste);
             }
             catch (ArgumentException ex)
             {
