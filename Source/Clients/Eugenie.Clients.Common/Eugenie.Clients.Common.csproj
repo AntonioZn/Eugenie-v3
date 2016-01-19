@@ -73,9 +73,11 @@
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
+    <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
+    <Compile Include="Models\ActiveServer.cs" />
     <Compile Include="Models\ProductsCache.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\ServerManager.cs" />

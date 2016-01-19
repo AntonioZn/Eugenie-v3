@@ -9,6 +9,10 @@
 
     public interface IServerManager
     {
+        event EventHandler SelectedServerChanged;
+
+        ActiveServer SelectedServer { get; set; }
+
         event EventHandler ServerTestingFinished;
 
         ProductsCache Cache { get; set; }

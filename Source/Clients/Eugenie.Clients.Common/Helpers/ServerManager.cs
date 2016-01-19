@@ -14,6 +14,7 @@
     {
         private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
+        private ActiveServer selectedServer;
 
         public ServerManager(IServerStorage storage, IWebApiClient apiClient)
         {
@@ -40,6 +41,25 @@
             else
             {
                 await this.apiClient.AddOrUpdateAsync(currentClient, model);
+            }
+        }
+
+        public event EventHandler SelectedServerChanged;
+
+        public ActiveServer SelectedServer
+        {
+            get
+            {
+                return this.selectedServer;
+            }
+
+            set
+            {
+                if (this.selectedServer != value)
+                {
+                    this.selectedServer = value;
+                    this.SelectedServerChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 

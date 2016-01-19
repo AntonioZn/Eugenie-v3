@@ -13,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
             <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
+            <converters:BoolToUnderlineConverter x:Key="BoolToUnderlineConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

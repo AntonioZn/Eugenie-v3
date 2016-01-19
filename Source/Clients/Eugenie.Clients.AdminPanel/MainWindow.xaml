@@ -176,7 +176,9 @@
                                     <DataTemplate>
                                         <Button Style="{StaticResource MaterialDesignFlatButton}"
                                                 Padding="0"
-                                                Height="Auto">
+                                                Height="Auto"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.Select}"
+                                                CommandParameter="{Binding}">
                                             <StackPanel Orientation="Vertical">
                                                 <materialDesign:PackIcon Kind="Monitor"
                                                                          Width="24"
@@ -186,7 +188,8 @@
                                                 <TextBlock Text="{Binding Name}"
                                                            FontSize="13"
                                                            Foreground="White"
-                                                           HorizontalAlignment="Center" />
+                                                           HorizontalAlignment="Center" 
+                                                           TextDecorations="{Binding IsSelected, Converter={StaticResource BoolToUnderlineConverter}}"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -196,7 +199,7 @@
                                     Margin="20,0,0,0"
                                     IsTabStop="False"
                                     Padding="15,0,15,0"
-                                    Command="{Binding RefreshServersCommand}"
+                                    Command="{Binding Refresh}"
                                     ToolTip="Обнови активните компютри">
                                 <materialDesign:PackIcon Kind="Refresh"
                                                          Width="32"

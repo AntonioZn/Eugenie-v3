@@ -21,7 +21,7 @@
         public ReportsViewModel(IServerManager manager)
         {
             this.manager = manager;
-            this.manager.ServerTestingFinished += this.OnServerTestingFinished;
+            this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
         }
 
         public IEnumerable<Report> Reports
@@ -39,9 +39,9 @@
             }
         }
 
-        private void OnServerTestingFinished(object sender, EventArgs e)
+        private void OnSelectedServerChanged(object sender, EventArgs e)
         {
-            this.Reports = this.manager.Cache.ReportsPerServer.FirstOrDefault().Value;
+            this.Reports = this.manager.Cache.ReportsPerServer.FirstOrDefault(x => x.Key.Name == this.manager.SelectedServer.Name).Value;
         }
 
         public void HandleEnter()

@@ -9,6 +9,7 @@
 
     using Common.Contracts;
     using Common.Models;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
@@ -17,7 +18,7 @@
     {
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
-        private ObservableCollection<ServerInformation> servers;
+        private ObservableCollection<ActiveServer> servers;
 
         public ActiveServersViewModel(IServerManager manager)
         {
@@ -26,10 +27,13 @@
 
             manager.ServerTestingFinished += this.OnServerTestingFinished;
 
-            this.RefreshServersCommand = new RelayCommand(this.HandleRefreshServersCommand);
+            this.Refresh = new RelayCommand(this.HandleRefresh);
+            this.Select = new RelayCommand<ActiveServer>(this.HandleSelect);
         }
 
-        public ICommand RefreshServersCommand { get; }
+        public ICommand Refresh { get; }
+
+        public ICommand Select { get; }
 
         public Visibility LoadingVisibility
         {
@@ -43,33 +47,42 @@
                 this.Set(() => this.LoadingVisibility, ref this.loadingVisibility, value);
             }
         }
-        
-        public ICollection<ServerInformation> Servers
+
+        public ICollection<ActiveServer> Servers
         {
             get
             {
-                return this.servers ?? (this.servers = new ObservableCollection<ServerInformation>());
+                return this.servers ?? (this.servers = new ObservableCollection<ActiveServer>());
             }
             set
             {
-                this.servers = this.servers ?? new ObservableCollection<ServerInformation>();
+                this.servers = this.servers ?? new ObservableCollection<ActiveServer>();
                 this.servers.Clear();
-                foreach (var server in value)
-                {
-                    this.servers.Add(server);
-                }
+                value.ForEach(this.servers.Add);
             }
         }
 
-        private void HandleRefreshServersCommand()
+        private void HandleRefresh()
         {
             this.LoadingVisibility = Visibility.Visible;
             this.manager.Initialize();
         }
 
+        private void HandleSelect(ActiveServer selectedServer)
+        {
+            foreach (var server in this.Servers)
+            {
+                server.IsSelected = false;
+            }
+
+            selectedServer.IsSelected = true;
+
+            this.manager.SelectedServer = selectedServer;
+        }
+
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
-            this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).ToList();
+            this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }
