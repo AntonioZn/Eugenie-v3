@@ -1,6 +1,8 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Autofac;
 
@@ -21,11 +23,14 @@
         public MissingProductsViewModel(IServerManager manager)
         {
             this.manager = manager;
+            this.manager.ServerTestingFinished += this.OnServerTestingFinished;
+
+            this.MissingProducts = new ObservableCollection<MissingProduct>();
         }
 
         public MissingProduct SelectedProduct { get; set; }
 
-        public IEnumerable<MissingProduct> MissingProducts => this.manager.Cache.MissingProducts;
+        public ObservableCollection<MissingProduct> MissingProducts { get; }
         
         public async void HandleEnter()
         {
@@ -34,6 +39,21 @@
             viewModel.MainProductViewModel.Product.Barcodes.Add(new Barcode(this.SelectedProduct.Barcode));
             var dialog = new Delivery(true);
             await DialogHost.Show(dialog, "RootDialog");
+        }
+
+        private void OnServerTestingFinished(object sender, EventArgs e)
+        {
+            var hashset = new HashSet<MissingProduct>();
+            foreach (var collection in this.manager.Cache.MissingProductsPerServer.Values)
+            {
+                hashset.UnionWith(collection);
+            }
+
+            this.MissingProducts.Clear();
+            foreach (var missingProduct in hashset)
+            {
+                this.MissingProducts.Add(missingProduct);
+            }
         }
     }
 }

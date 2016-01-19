@@ -5,13 +5,11 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using Contracts;
-
-    public class NameFromBarcodeGenerator : INameFromBarcodeGenerator
+    public static class NameFromBarcodeGenerator
     {
-        private readonly Regex titleCheck = new Regex(@"<title>\s*(.+?)\s*</title>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex titleCheck = new Regex(@"<title>\s*(.+?)\s*</title>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public async Task<string> GetName(string barcode)
+        public static async Task<string> GetName(string barcode)
         {
             return await Task.Run(() =>
                             {
@@ -30,7 +28,7 @@
                                     {
                                         contents += Encoding.UTF8.GetString(buffer, 0, length);
 
-                                        var isMatching = this.titleCheck.Match(contents);
+                                        var isMatching = titleCheck.Match(contents);
                                         if (isMatching.Success)
                                         {
                                             title = isMatching.Groups[1].Value;

@@ -40,12 +40,9 @@
 
             var containerBuilder = new ContainerBuilder();
             
-            containerBuilder.RegisterType<ServerTester>().As<IServerTester>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ProductsCache>().As<IProductsCache>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<NameFromBarcodeGenerator>().As<INameFromBarcodeGenerator>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();

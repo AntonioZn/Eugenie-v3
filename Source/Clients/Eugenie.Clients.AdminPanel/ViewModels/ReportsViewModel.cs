@@ -7,6 +7,7 @@
 
     using Common.Contracts;
     using Common.WebApiModels;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
 
@@ -34,10 +35,7 @@
             {
                 this.reports = this.reports ?? new ObservableCollection<Report>();
                 this.reports.Clear();
-                foreach (var report in value)
-                {
-                    this.reports.Add(report);
-                }
+                value.ForEach(this.reports.Add);
             }
         }
 

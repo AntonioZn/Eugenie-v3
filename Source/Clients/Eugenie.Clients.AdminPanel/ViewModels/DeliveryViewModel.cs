@@ -1,6 +1,8 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
 
@@ -19,18 +21,18 @@
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
-        private readonly INameFromBarcodeGenerator nameGenerator;
 
+        private ObservableCollection<Product> existingProducts; 
         private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
         private ProductViewModel mainMainProductViewModel;
         private string name = string.Empty;
         private string addingType = "Въведете име";
         private bool automaticName = true;
 
-        public DeliveryViewModel(IServerManager manager, INameFromBarcodeGenerator nameGenerator)
+        public DeliveryViewModel(IServerManager manager)
         {
-            this.nameGenerator = nameGenerator;
             this.manager = manager;
+            this.manager.ServerTestingFinished += this.OnServerTestingFinished;
 
             this.MainProductViewModel = new ProductViewModel(new Product());
 
@@ -38,9 +40,11 @@
             this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
         }
 
-        public ICommand SaveCommand { get; set; }
+        public ICommand SaveCommand { get; }
 
-        public ICommand CancelCommand { get; set; }
+        public ICommand CancelCommand { get; }
+
+        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
         public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers
         {
@@ -60,9 +64,20 @@
             }
         }
 
-        public IEnumerable<Product> ExistingProducts => this.manager.Cache.MainProducts;
+        public IEnumerable<Product> ExistingProducts
+        {
+            get
+            {
+                return this.existingProducts ?? (this.existingProducts = new ObservableCollection<Product>());
+            }
 
-        public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
+            set
+            {
+                this.existingProducts = this.existingProducts ?? new ObservableCollection<Product>();
+                this.existingProducts.Clear();
+                value.ForEach(this.existingProducts.Add);
+            }
+        }
 
         public bool AutomaticName
         {
@@ -159,7 +174,7 @@
                 {
                     if (this.AutomaticName && string.IsNullOrEmpty(this.Name))
                     {
-                        this.Name = await this.nameGenerator.GetName(barcode);
+                        this.Name = await NameFromBarcodeGenerator.GetName(barcode);
                     }
 
                     this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
@@ -206,6 +221,11 @@
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
             this.Name = string.Empty;
+        }
+
+        private void OnServerTestingFinished(object sender, EventArgs e)
+        {
+            this.ExistingProducts = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
         }
     }
 }

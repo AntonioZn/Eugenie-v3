@@ -70,11 +70,9 @@
     <Compile Include="Contracts\IDeleteHandler.cs" />
     <Compile Include="Contracts\IEnterHandler.cs" />
     <Compile Include="Contracts\IServerStorage.cs" />
-    <Compile Include="Contracts\IServerTester.cs" />
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
-    <Compile Include="Contracts\INameFromBarcodeGenerator.cs" />
     <Compile Include="Contracts\IProductsCache.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
@@ -100,6 +98,7 @@
     <Compile Include="WebApiModels\Sell.cs" />
     <Compile Include="WebApiModels\Waste.cs" />
     <Compile Include="Еxtensions\GenericExtensions.cs" />
+    <Compile Include="Еxtensions\EnumerableExtensions.cs" />
     <Compile Include="Еxtensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

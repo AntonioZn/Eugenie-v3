@@ -6,24 +6,22 @@
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
-    using Contracts;
-
     using Models;
 
     using Newtonsoft.Json;
 
     using WebApiModels;
 
-    public class ServerTester : IServerTester
+    public static class ServerTester
     {
-        public async Task<HttpClient> TestServer(ServerInformation server)
+        public static async Task<HttpClient> TestServer(ServerInformation server)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.BaseAddress = new Uri(server.Address);
 
-            var result = await this.GetToken(client, server);
+            var result = await GetToken(client, server);
             if (result)
             {
                 return client;
@@ -32,7 +30,7 @@
             return null;
         }
 
-        private async Task<bool> GetToken(HttpClient client, ServerInformation server)
+        private static async Task<bool> GetToken(HttpClient client, ServerInformation server)
         {
             try
             {

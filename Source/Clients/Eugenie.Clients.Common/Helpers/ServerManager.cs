@@ -1,8 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -14,24 +13,22 @@
     public class ServerManager : IServerManager
     {
         private readonly IServerStorage storage;
-        private readonly IServerTester tester;
         private readonly IWebApiClient apiClient;
 
-        public ServerManager(IServerStorage storage, IServerTester tester, IWebApiClient apiClient, IProductsCache cache)
+        public ServerManager(IServerStorage storage, IWebApiClient apiClient)
         {
             this.storage = storage;
             this.storage.Servers.CollectionChanged += (s, e) =>
                                                       {
                                                           this.Initialize();
                                                       };
-            this.tester = tester;
             this.apiClient = apiClient;
-            this.Cache = cache;
+            this.Cache = new ProductsCache();
 
             this.Initialize();
         }
 
-        public IProductsCache Cache { get; set; }
+        public ProductsCache Cache { get; set; }
 
         public async Task AddOrUpdateAsync(ServerInformation server, AddProductModel model)
         {
@@ -53,23 +50,21 @@
         {
             this.Cache.ProductsPerServer.Clear();
             this.Cache.ReportsPerServer.Clear();
-
-            var missingProducts = new ConcurrentDictionary<MissingProduct, byte>();
+            this.Cache.MissingProductsPerServer.Clear();
+            
             await Task.Run(() =>
                      {
                          Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
-                                                                          var client = this.tester.TestServer(server).Result;
+                                                                          var client = ServerTester.TestServer(server).Result;
                                                                           server.Client = client;
-                                                                          this.Cache.ProductsPerServer.Add(server, new ObservableCollection<Product>());
-                                                                          this.Cache.ReportsPerServer.Add(server, new ObservableCollection<Report>());
+                                                                          this.Cache.ProductsPerServer.Add(server, new List<Product>());
+                                                                          this.Cache.ReportsPerServer.Add(server, new List<Report>());
+                                                                          this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
                                                                           
                                                                           if (client != null)
                                                                           {
-                                                                              foreach (var missingProduct in this.apiClient.GetMissingProductsAsync(client).Result)
-                                                                              {
-                                                                                  missingProducts.TryAdd(missingProduct, 1);
-                                                                              }
+                                                                              this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(client).Result;
 
                                                                               this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(client).Result;
 
@@ -77,11 +72,7 @@
                                                                           }
                                                                       });
                      });
-
-            this.Cache.MissingProducts = missingProducts.Keys;
-
-            this.Cache.SetMainProducts();
-
+            
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
     }

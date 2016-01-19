@@ -11,7 +11,7 @@
     {
         event EventHandler ServerTestingFinished;
 
-        IProductsCache Cache { get; set; }
+        ProductsCache Cache { get; set; }
 
         Task AddOrUpdateAsync(ServerInformation server, AddProductModel model);
 

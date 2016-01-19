@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Data;
@@ -19,11 +20,13 @@
     public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IEnterHandler
     {
         private readonly IServerManager manager;
+        private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private string searchValue = string.Empty;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
             this.manager = manager;
+            this.manager.ServerTestingFinished += this.OnServerTestingFinished;
         }
 
         public void HandleBarcode(string barcode)
@@ -63,7 +66,7 @@
             }
         }
 
-        public ICollectionView Products => CollectionViewSource.GetDefaultView(this.manager.Cache.MainProducts);
+        public ICollectionView Products => CollectionViewSource.GetDefaultView(this.products);
 
         public Product SelectedProduct { get; set; }
 
@@ -93,6 +96,12 @@
 
                 this.Products.Refresh();
             }
+        }
+
+        private void OnServerTestingFinished(object sender, EventArgs e)
+        {
+            this.products.Clear();
+            this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
         }
     }
 }
