@@ -37,7 +37,7 @@
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           ItemsSource="{Binding Sellers}"
                           SelectedIndex="0"
-                          Width="200"
+                          Width="300"
                           materialDesign:TextFieldAssist.Hint="Име"
                           DisplayMemberPath="Fullname">
                     <ComboBox.ItemsPanel>
@@ -58,6 +58,8 @@
                             VerticalAlignment="Bottom" />
                 <Button Grid.Column="3"
                         Padding="0"
+                        Margin="10,0,0,0"
+                        Width="50"
                         VerticalAlignment="Bottom"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         Command="{Binding Search}">

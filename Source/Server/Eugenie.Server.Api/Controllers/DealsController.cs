@@ -23,54 +23,37 @@
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("sells")]
-        public IHttpActionResult GetSells(string name, DateTime start, DateTime end)
+        public IHttpActionResult GetDeals(string username, DateTime start, DateTime end)
         {
-            try
+            var sells = this.dealsService.GetSells(username, start, end.AddDays(1)).Select(x => new
             {
-                var sells = this.dealsService.GetSells(name, start, end.AddDays(1)).Select(x => new
+                Date = x.Date,
+                Total = x.Total,
+                Products = x.Products.Select(pr => new
                 {
-                    Date = x.Date,
-                    Total = x.Total,
-                    Products = x.Products.Select(pr => new
-                    {
-                        Name = pr.Product.Name,
-                        Quantity = pr.Quantity,
-                    })
-                });
+                    Name = pr.Product.Name,
+                    Quantity = pr.Quantity,
+                })
+            });
 
-                return this.Ok(sells);
-            }
-            catch (ArgumentException ex)
+            var waste = this.dealsService.GetWaste(username, start, end.AddDays(1)).Select(x => new
             {
-                return this.BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("waste")]
-        public IHttpActionResult GetWaste(string name, DateTime start, DateTime end)
-        {
-            try
-            {
-                var waste = this.dealsService.GetWaste(name, start, end.AddDays(1)).Select(x => new
+                Date = x.Date,
+                Total = x.Total,
+                Products = x.Products.Select(pr => new
                 {
-                    Date = x.Date,
-                    Total = x.Total,
-                    Products = x.Products.Select(pr => new
-                    {
-                        Name = pr.Product.Name,
-                        Quantity = pr.Quantity,
-                    })
-                });
+                    Name = pr.Product.Name,
+                    Quantity = pr.Quantity,
+                })
+            });
 
-                return this.Ok(waste);
-            }
-            catch (ArgumentException ex)
-            {
-                return this.BadRequest(ex.Message);
-            }
+            var result = new
+                         {
+                             Sells = sells,
+                             Waste = waste
+                         };
+
+            return this.Ok(result);
         }
 
         [HttpPut]
