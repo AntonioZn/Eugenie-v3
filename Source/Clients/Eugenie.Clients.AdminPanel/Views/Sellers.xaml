@@ -36,6 +36,7 @@
                 <ComboBox Grid.Column="0"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           ItemsSource="{Binding Sellers}"
+                          SelectedItem="{Binding SelectedSeller}"
                           SelectedIndex="0"
                           Width="300"
                           materialDesign:TextFieldAssist.Hint="Име"
@@ -64,6 +65,8 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         Command="{Binding Search}">
                     <materialDesign:PackIcon Kind="Magnify"
+                                             Width="32"
+                                             Height="32"
                                              Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                 </Button>
             </Grid>

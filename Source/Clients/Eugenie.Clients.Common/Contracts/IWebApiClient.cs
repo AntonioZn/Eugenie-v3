@@ -23,5 +23,7 @@
         Task<ReportDetailsResponse> GetReportDetailsAsync(HttpClient client, DateTime date);
 
         Task<IEnumerable<Seller>> GetSellersAsync(HttpClient client);
+
+        Task<ReportDetailsResponse> GetDealsForSeller(HttpClient client, string username, DateTime start, DateTime end);
     }
 }

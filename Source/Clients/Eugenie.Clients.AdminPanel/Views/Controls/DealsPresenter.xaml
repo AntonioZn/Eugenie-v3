@@ -29,6 +29,8 @@
               AutoGenerateColumns="False"
               CanUserAddRows="False"
               IsReadOnly="True"
+              VerticalScrollBarVisibility="Disabled"
+              HorizontalScrollBarVisibility="Disabled"
               SelectionMode="Single"
               KeyboardNavigation.TabNavigation="None">
         <DataGrid.Columns>

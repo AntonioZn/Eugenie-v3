@@ -41,6 +41,14 @@
             return JsonConvert.DeserializeObject<IEnumerable<Seller>>(result);
         }
 
+        public async Task<ReportDetailsResponse> GetDealsForSeller(HttpClient client, string username, DateTime start, DateTime end)
+        {
+            var response = await client.GetAsync($"api/deals?username={username}&start={start.Year}-{start.Month}-{start.Day}&end={end.Year}-{end.Month}-{end.Day}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ReportDetailsResponse>(result);
+        }
+
         public async Task<ICollection<Product>> GetProductsAsync(HttpClient client)
         {
             var response = await client.GetAsync("api/products");
