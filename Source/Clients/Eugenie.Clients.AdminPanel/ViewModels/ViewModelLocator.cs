@@ -30,6 +30,8 @@
 
         public ReportsViewModel ReportsViewModel => container.Resolve<ReportsViewModel>();
 
+        public SellersViewModel SellersViewModel => container.Resolve<SellersViewModel>();
+
         private void Register()
         {
             if (Settings.Default.Servers == string.Empty)
@@ -51,6 +53,7 @@
             containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<PaletteSelectorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ReportsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<SellersViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

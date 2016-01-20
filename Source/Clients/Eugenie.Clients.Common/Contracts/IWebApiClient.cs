@@ -21,5 +21,7 @@
         Task<ICollection<Report>> GetReportsAsync(HttpClient client);
 
         Task<ReportDetailsResponse> GetReportDetailsAsync(HttpClient client, DateTime date);
+
+        Task<IEnumerable<Seller>> GetSellersAsync(HttpClient client);
     }
 }

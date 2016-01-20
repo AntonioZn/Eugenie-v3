@@ -34,8 +34,7 @@
 
         public Report GetTodaysReport()
         {
-            var date = DateTime.UtcNow.Date;
-            var report = this.reportsRepository.All().FirstOrDefault(x => x.Date == date);
+            var report = this.reportsRepository.All().FirstOrDefault(x => x.Date == DateTime.Today);
 
             if (report == null)
             {

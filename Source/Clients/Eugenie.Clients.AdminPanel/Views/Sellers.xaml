@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:Eugenie.Clients.AdminPanel.Views.Controls"
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -12,11 +15,69 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-    </Grid>
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             DataContext="{Binding Path=SellersViewModel, Source={StaticResource ViewModelLocator}}">
+    <materialDesign:Card HorizontalAlignment="Center"
+                         Padding="20"
+                         Margin="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                          ItemsSource="{Binding Sellers}"
+                          SelectedIndex="0"
+                          Width="200"
+                          materialDesign:TextFieldAssist.Hint="Име"
+                          DisplayMemberPath="Fullname">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+                <DatePicker Grid.Column="1"
+                            Margin="10,0,0,0"
+                            SelectedDate="{Binding Start, Mode=TwoWay}"
+                            materialDesign:TextFieldAssist.Hint="Начална дата"
+                            VerticalAlignment="Bottom" />
+                <DatePicker Grid.Column="2"
+                            Margin="10,0,0,0"
+                            SelectedDate="{Binding End, Mode=TwoWay}"
+                            materialDesign:TextFieldAssist.Hint="Крайна дата"
+                            VerticalAlignment="Bottom" />
+                <Button Grid.Column="3"
+                        Padding="0"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Command="{Binding Search}">
+                    <materialDesign:PackIcon Kind="Magnify"
+                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                </Button>
+            </Grid>
+            <dragablz:TabablzControl Grid.Row="1"
+                                     Margin="0,20,0,0"
+                                     Width="800">
+                <TabItem Header="Брак"
+                         IsTabStop="False">
+                    <controls:DealsPresenter DataContext="{Binding Waste}" />
+                </TabItem>
+                <TabItem Header="Продажби"
+                         IsSelected="True"
+                         IsTabStop="False">
+                    <controls:DealsPresenter DataContext="{Binding Sells}" />
+                </TabItem>
+            </dragablz:TabablzControl>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

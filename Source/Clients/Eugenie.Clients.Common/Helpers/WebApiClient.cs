@@ -33,6 +33,14 @@
             return JsonConvert.DeserializeObject<ReportDetailsResponse>(result);
         }
 
+        public async Task<IEnumerable<Seller>> GetSellersAsync(HttpClient client)
+        {
+            var response = await client.GetAsync("api/sellers");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<Seller>>(result);
+        }
+
         public async Task<ICollection<Product>> GetProductsAsync(HttpClient client)
         {
             var response = await client.GetAsync("api/products");

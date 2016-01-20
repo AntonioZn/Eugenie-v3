@@ -12,7 +12,7 @@
     {
         public MissingProduct()
         {
-            this.Date = DateTime.UtcNow;
+            this.Date = DateTime.Now;
         }
 
         [JsonIgnore]

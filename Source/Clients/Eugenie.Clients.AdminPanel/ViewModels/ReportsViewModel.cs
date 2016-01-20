@@ -47,7 +47,7 @@
 
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
-            this.Reports = this.manager.Cache.ReportsPerServer.FirstOrDefault(x => x.Key == this.manager.SelectedServer).Value;
+            this.Reports = this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
         }
 
         public async void HandleEnter()

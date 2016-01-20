@@ -27,8 +27,7 @@
             return this.Ok(this.sellersRepository.All().Where(x => x.Roles.Any(r => r.RoleId == sellerRoleId)).Select(x => new
             {
                 x.UserName,
-                x.FirstName,
-                x.LastName
+                Fullname = x.FirstName + " " + x.LastName
             }));
         }
     }

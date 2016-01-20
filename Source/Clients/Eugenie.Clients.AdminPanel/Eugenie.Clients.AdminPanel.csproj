@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\MissingProductsViewModel.cs" />
     <Compile Include="ViewModels\PaletteSelectorViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\SellersViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ActiveServersViewModel.cs" />

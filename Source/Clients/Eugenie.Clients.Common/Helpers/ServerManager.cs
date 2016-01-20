@@ -61,12 +61,13 @@
         //TODO: add a way to cancel
         public async void Initialize()
         {
+            this.Cache.ProductsPerServer.Clear();
+            this.Cache.ReportsPerServer.Clear();
+            this.Cache.MissingProductsPerServer.Clear();
+            this.Cache.SellersPerServer.Clear();
+
             await Task.Run(() =>
             {
-                this.Cache.ProductsPerServer.Clear();
-                this.Cache.ReportsPerServer.Clear();
-                this.Cache.MissingProductsPerServer.Clear();
-
                 Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
                                                                           server.Client = ServerTester.TestServer(server).Result;
@@ -77,10 +78,9 @@
                                                                           if (server.Client != null)
                                                                           {
                                                                               this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(server.Client).Result;
-
                                                                               this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(server.Client).Result;
-
                                                                               this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(server.Client).Result;
+                                                                              this.Cache.SellersPerServer[server] = this.apiClient.GetSellersAsync(server.Client).Result;
                                                                           }
                                                                       });
             });

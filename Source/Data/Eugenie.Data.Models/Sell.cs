@@ -13,7 +13,7 @@
         public Sell()
         {
             this.products = new HashSet<ProductWithQuantity>();
-            this.Date = DateTime.UtcNow;
+            this.Date = DateTime.Now;
         }
 
         [JsonIgnore]
