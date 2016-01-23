@@ -44,6 +44,7 @@
             
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<MessageQueueManager>().As<IMessageQueueManager>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();

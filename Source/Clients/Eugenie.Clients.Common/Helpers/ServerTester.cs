@@ -14,7 +14,7 @@
 
     public static class ServerTester
     {
-        public static async Task<HttpClient> TestServer(ServerInformation server)
+        public static async Task<HttpClient> TestServerAsync(ServerInformation server)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();

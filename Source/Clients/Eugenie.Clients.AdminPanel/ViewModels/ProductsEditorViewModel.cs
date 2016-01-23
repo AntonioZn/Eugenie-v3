@@ -93,7 +93,7 @@
                 foreach (var pair in productInAllServers)
                 {
                     pair.Value.MapProperties(selectedProductViewModel);
-                    await this.manager.AddOrUpdateAsync(pair.Key, pair.Value.GetModel());
+                    this.manager.AddOrUpdate(pair.Key, pair.Value.GetModel());
                 }
 
                 this.Products.Refresh();

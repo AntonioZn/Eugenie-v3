@@ -19,7 +19,7 @@
 
         ProductsCache Cache { get; }
 
-        Task AddOrUpdateAsync(ServerInformation server, AddProductModel model);
+        void AddOrUpdate(ServerInformation server, AddProductModel model);
 
         void Initialize();
     }

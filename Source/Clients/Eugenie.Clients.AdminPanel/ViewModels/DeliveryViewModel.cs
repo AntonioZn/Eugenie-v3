@@ -198,13 +198,13 @@
         }
 
         //TODO: when new item is added add it to cache
-        private async void HandleSaveCommand()
+        private void HandleSaveCommand()
         {
             DialogHost.CloseDialogCommand.Execute(true, null);
             foreach (var pair in this.ProductInAllServers)
             {
                 pair.Value.MapProperties(this.MainProductViewModel);
-                await this.manager.AddOrUpdateAsync(pair.Key, pair.Value.GetModel());
+                this.manager.AddOrUpdate(pair.Key, pair.Value.GetModel());
             }
 
             this.Name = string.Empty;

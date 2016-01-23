@@ -15,8 +15,9 @@
     {
         private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
+        private readonly IMessageQueueManager queueManager;
 
-        public ServerManager(IServerStorage storage, IWebApiClient apiClient)
+        public ServerManager(IServerStorage storage, IWebApiClient apiClient, IMessageQueueManager queueManager)
         {
             this.storage = storage;
             this.storage.Servers.CollectionChanged += (s, e) =>
@@ -24,6 +25,7 @@
                                                           this.Initialize();
                                                       };
             this.apiClient = apiClient;
+            this.queueManager = queueManager;
             this.Cache = new ProductsCache();
 
             this.Initialize();
@@ -31,16 +33,11 @@
 
         public ProductsCache Cache { get; }
 
-        public async Task AddOrUpdateAsync(ServerInformation server, AddProductModel model)
+        public void AddOrUpdate(ServerInformation server, AddProductModel model)
         {
-            if (server.Client == null)
-            {
-                //TODO: retry later
-            }
-            else
-            {
-                await this.apiClient.AddOrUpdateAsync(server.Client, model);
-            }
+            var pair = new ServerAddProductPair(server, model);
+            this.queueManager.MessageQueue.Label = server.Name;
+            this.queueManager.MessageQueue.Send(pair);
         }
 
         public event EventHandler SelectedServerChanged;
@@ -70,7 +67,7 @@
             {
                 Parallel.ForEach(this.storage.Servers, (server) =>
                                                                       {
-                                                                          server.Client = ServerTester.TestServer(server).Result;
+                                                                          server.Client = ServerTester.TestServerAsync(server).Result;
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());
                                                                           this.Cache.ReportsPerServer.Add(server, new List<Report>());
                                                                           this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
