@@ -22,7 +22,6 @@
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private string searchValue = string.Empty;
-        private int selectedIndex = 0;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -43,7 +42,6 @@
             };
 
             this.Products.Refresh();
-            this.SelectedIndex = 0;
         }
 
         public string SearchValue
@@ -66,25 +64,12 @@
                 };
 
                 this.Products.Refresh();
-                this.SelectedIndex = 0;
             }
         }
 
         public ICollectionView Products => CollectionViewSource.GetDefaultView(this.products);
 
         public Product SelectedProduct { get; set; }
-
-        public int SelectedIndex
-        {
-            get
-            {
-                return this.selectedIndex;
-            }
-            set
-            {
-                this.Set(() => this.SelectedIndex, ref this.selectedIndex, value);
-            }
-        }
 
         public async void HandleEnter()
         {

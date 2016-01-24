@@ -15,31 +15,17 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     <DataGrid ItemsSource="{Binding Product.Barcodes}"
               HeadersVisibility="None"
-              FontSize="25"
-              CanUserSortColumns="True"
-              AutoGenerateColumns="False"
-              CanUserAddRows="False"
-              IsReadOnly="True"
-              SelectionMode="Single"
-              VerticalScrollBarVisibility="Disabled"
-              KeyboardNavigation.TabNavigation="None">
+              VerticalScrollBarVisibility="Disabled">
         <DataGrid.Columns>
             <DataGridTextColumn Width="*"
-                                Binding="{Binding Value}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="IsTabStop"
-                                Value="False" />
-                        <Setter Property="IsHitTestVisible"
-                                Value="False" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-            </DataGridTextColumn>
+                                Binding="{Binding Value}"/>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="Focusable"
                                 Value="False" />
+                        <Setter Property="IsHitTestVisible"
+                                Value="True" />
                     </Style>
                 </DataGridTemplateColumn.CellStyle>
                 <DataGridTemplateColumn.CellTemplate>

@@ -14,25 +14,10 @@
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
-    <UserControl.Resources>
-        <Style TargetType="DataGridCell">
-            <Setter Property="IsTabStop"
-                    Value="False" />
-            <Setter Property="IsHitTestVisible"
-                    Value="False" />
-        </Style>
-    </UserControl.Resources>
     <DataGrid x:Name="dataGrid"
               ItemsSource="{Binding}"
-              FontSize="25"
-              CanUserSortColumns="True"
-              AutoGenerateColumns="False"
-              CanUserAddRows="False"
-              IsReadOnly="True"
               VerticalScrollBarVisibility="Disabled"
-              HorizontalScrollBarVisibility="Disabled"
-              SelectionMode="Single"
-              KeyboardNavigation.TabNavigation="None">
+              HorizontalScrollBarVisibility="Disabled">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Дата"
                                 Width="1*"
@@ -53,15 +38,7 @@
                                                  PlacementMode="BottomAndAlignCentres"
                                                  ToolTip="Продукти">
                             <DataGrid ItemsSource="{Binding Products}"
-                                      FontSize="20"
-                                      HeadersVisibility="None"
-                                      CanUserSortColumns="True"
-                                      AutoGenerateColumns="False"
-                                      CanUserAddRows="False"
-                                      IsReadOnly="True"
-                                      SelectionMode="Single"
-                                      VerticalScrollBarVisibility="Disabled"
-                                      KeyboardNavigation.TabNavigation="None">
+                                      VerticalScrollBarVisibility="Disabled">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding Name}" />
                                     <DataGridTextColumn Binding="{Binding Quantity}" />

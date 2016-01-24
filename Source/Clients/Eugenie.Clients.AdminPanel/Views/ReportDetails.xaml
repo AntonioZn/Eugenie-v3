@@ -40,26 +40,6 @@
         <dragablz:TabablzControl Grid.Row="1"
                                  IsTabStop="False"
                                  Focusable="False">
-            <TabItem Header="Брак"
-                     IsTabStop="False">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <controls:DealsPresenter Grid.Row="0"
-                                             DataContext="{Binding Waste}" />
-                    <Button Grid.Row="1"
-                            IsCancel="True"
-                            IsTabStop="False"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Margin="0,20,20,20"
-                            Content="Назад"
-                            Style="{DynamicResource MaterialDesignFlatButton}"
-                            Command="{Binding Cancel}" />
-                </Grid>
-            </TabItem>
             <TabItem Header="Продажби"
                      IsSelected="True"
                      IsTabStop="False">
@@ -81,16 +61,28 @@
                             Command="{Binding Cancel}" />
                 </Grid>
             </TabItem>
+            <TabItem Header="Брак"
+                     IsTabStop="False">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:DealsPresenter Grid.Row="0"
+                                             DataContext="{Binding Waste}" />
+                    <Button Grid.Row="1"
+                            IsCancel="True"
+                            IsTabStop="False"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0,20,20,20"
+                            Content="Назад"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{Binding Cancel}" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Доставки"
                      IsTabStop="False">
-                <TabItem.Resources>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="IsTabStop"
-                                Value="False" />
-                        <Setter Property="IsHitTestVisible"
-                                Value="False" />
-                    </Style>
-                </TabItem.Resources>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -98,18 +90,9 @@
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Row="0"
                               x:Name="dataGrid"
-                              DataContext="{Binding Shipments}"
-                              ItemsSource="{Binding}"
-                              FontSize="25"
-                              CanUserSortColumns="True"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              IsReadOnly="True"
+                              ItemsSource="{Binding Shipments}"
                               VerticalScrollBarVisibility="Disabled"
-                              HorizontalScrollBarVisibility="Disabled"
-                              SelectionMode="Single"
-                              KeyboardNavigation.TabNavigation="None"
-                              materialDesign:DataGridAssist.CellPadding="0">
+                              HorizontalScrollBarVisibility="Disabled">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Име"
                                                 Width="3*"

@@ -15,29 +15,14 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=ReportsViewModel, Source={StaticResource ViewModelLocator}}">
-    <UserControl.Resources>
-        <Style TargetType="DataGridCell">
-            <Setter Property="IsTabStop"
-                    Value="False" />
-            <Setter Property="IsHitTestVisible"
-                    Value="False" />
-        </Style>
-    </UserControl.Resources>
     <materialDesign:Card HorizontalAlignment="Center"
                          Margin="20"
                          Padding="20,0,20,20"
                          IsTabStop="False">
         <DataGrid x:Name="dataGrid"
                   SelectedItem="{Binding SelectedReport}"
-                  SelectedIndex="0"
                   ItemsSource="{Binding Reports}"
-                  FontSize="25"
-                  CanUserSortColumns="True"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  KeyboardNavigation.TabNavigation="None">
+                  FontSize="25">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Дата"
                                     Width="1*"

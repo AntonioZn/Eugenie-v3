@@ -1,4 +1,5 @@
-<Application x:Class="Eugenie.Clients.AdminPanel.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Application x:Class="Eugenie.Clients.AdminPanel.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,18 +7,53 @@
              mc:Ignorable="d"
              xmlns:viewModels="clr-namespace:Eugenie.Clients.AdminPanel.ViewModels"
              xmlns:converters="clr-namespace:Eugenie.Clients.Common.Converters;assembly=Eugenie.Clients.Common"
-             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz">
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="NormalTabItemStyle"
+                   TargetType="{x:Type dragablz:DragablzItem}"
+                   BasedOn="{StaticResource MaterialDesignDragableTabItemStyle}">
+                <Setter Property="Padding"
+                        Value="15,0,15,0" />
+            </Style>
             <Style TargetType="{x:Type dragablz:TabablzControl}"
-                   BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
+                   BasedOn="{StaticResource MaterialDesignTabablzControlStyle}">
+                <Setter Property="ItemContainerStyle"
+                        Value="{StaticResource NormalTabItemStyle}" />
+            </Style>
+            <Style TargetType="{x:Type DataGrid}"
+                   BasedOn="{StaticResource MaterialDesignDataGrid}">
+                <Setter Property="FontSize"
+                        Value="25" />
+                <Setter Property="CanUserSortColumns"
+                        Value="True" />
+                <Setter Property="AutoGenerateColumns"
+                        Value="False" />
+                <Setter Property="CanUserAddRows"
+                        Value="False" />
+                <Setter Property="IsReadOnly"
+                        Value="True" />
+                <Setter Property="SelectionMode"
+                        Value="Single" />
+                <Setter Property="KeyboardNavigation.TabNavigation"
+                        Value="None" />
+                <Setter Property="materialDesign:DataGridAssist.CellPadding"
+                        Value="0" />
+            </Style>
+            <Style TargetType="{x:Type DataGridCell}">
+                <Setter Property="IsTabStop"
+                        Value="False" />
+                <Setter Property="IsHitTestVisible"
+                        Value="False" />
+            </Style>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
             <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
-            <converters:BoolToUnderlineConverter x:Key="BoolToUnderlineConverter"/>
+            <converters:BoolToUnderlineConverter x:Key="BoolToUnderlineConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
