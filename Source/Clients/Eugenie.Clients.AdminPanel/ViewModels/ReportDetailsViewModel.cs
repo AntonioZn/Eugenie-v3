@@ -24,6 +24,7 @@
             this.Cancel = new RelayCommand(this.HandleCancel);
             this.Waste = new ObservableCollection<Waste>();
             this.Sells = new ObservableCollection<Sell>();
+            this.Shipments = new ObservableCollection<Shipment>();
             this.Initialize(client, date);
         }
 
@@ -32,6 +33,8 @@
         public ObservableCollection<Waste> Waste { get; }
 
         public ObservableCollection<Sell> Sells { get; }
+
+        public ObservableCollection<Shipment> Shipments { get; }
 
         private async void Initialize(HttpClient client, DateTime date)
         {
@@ -42,6 +45,9 @@
 
             this.Sells.Clear();
             details.Sells.ForEach(this.Sells.Add);
+
+            this.Shipments.Clear();
+            details.Shipments.ForEach(this.Shipments.Add);
         }
 
         private void HandleCancel()

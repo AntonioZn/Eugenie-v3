@@ -22,7 +22,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0"
                                   Mode="PrimaryDark"
@@ -43,23 +42,107 @@
                                  Focusable="False">
             <TabItem Header="Брак"
                      IsTabStop="False">
-                <controls:DealsPresenter DataContext="{Binding Waste}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:DealsPresenter Grid.Row="0"
+                                             DataContext="{Binding Waste}" />
+                    <Button Grid.Row="1"
+                            IsCancel="True"
+                            IsTabStop="False"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0,20,20,20"
+                            Content="Назад"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{Binding Cancel}" />
+                </Grid>
             </TabItem>
             <TabItem Header="Продажби"
                      IsSelected="True"
                      IsTabStop="False">
-                <controls:DealsPresenter DataContext="{Binding Sells}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:DealsPresenter Grid.Row="0"
+                                             DataContext="{Binding Sells}" />
+                    <Button Grid.Row="1"
+                            IsCancel="True"
+                            IsTabStop="False"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0,20,20,20"
+                            Content="Назад"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{Binding Cancel}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Доставки"
+                     IsTabStop="False">
+                <TabItem.Resources>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="IsTabStop"
+                                Value="False" />
+                        <Setter Property="IsHitTestVisible"
+                                Value="False" />
+                    </Style>
+                </TabItem.Resources>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0"
+                              x:Name="dataGrid"
+                              DataContext="{Binding Shipments}"
+                              ItemsSource="{Binding}"
+                              FontSize="25"
+                              CanUserSortColumns="True"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              VerticalScrollBarVisibility="Disabled"
+                              HorizontalScrollBarVisibility="Disabled"
+                              SelectionMode="Single"
+                              KeyboardNavigation.TabNavigation="None"
+                              materialDesign:DataGridAssist.CellPadding="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Име"
+                                                Width="3*"
+                                                Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Цена"
+                                                Width="1*"
+                                                Binding="{Binding SellingPrice}" />
+                            <DataGridTextColumn Header="Количество"
+                                                Width="1*"
+                                                Binding="{Binding Quantity}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Margin="0,20,20,20">
+                        <Button IsCancel="True"
+                                IsTabStop="False"
+                                Margin="8 0 0 0"
+                                Content="Назад"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Command="{Binding Cancel}">
+                        </Button>
+                        <Button IsDefault="True"
+                                IsTabStop="False"
+                                Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                Command="{Binding ShowPdf}"
+                                Content="Отвори PDF">
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </TabItem>
         </dragablz:TabablzControl>
-        <Button Grid.Row="2"
-                IsCancel="True"
-                IsTabStop="False"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,20,20,20"
-                Content="Назад"
-                Style="{DynamicResource MaterialDesignFlatButton}"
-                Command="{Binding Cancel}">
-        </Button>
     </Grid>
 </UserControl>

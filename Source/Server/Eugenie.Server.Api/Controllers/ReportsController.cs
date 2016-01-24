@@ -53,7 +53,13 @@
                         Name = pr.Product.Name,
                         Quantity = pr.Quantity
                     })
-                })
+                }),
+                Shipments = r.Shipments.Select(sh => new
+                                                     {
+                                                         sh.Product.Name,
+                                                         sh.Product.SellingPrice,
+                                                         sh.Quantity
+                                                     })
             }).FirstOrDefault(x => x.Date == date);
 
             if (reports != null)

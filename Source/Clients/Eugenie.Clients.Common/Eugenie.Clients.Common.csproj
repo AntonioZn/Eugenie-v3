@@ -103,6 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebApiModels\Sell.cs" />
     <Compile Include="WebApiModels\Seller.cs" />
+    <Compile Include="WebApiModels\Shipment.cs" />
     <Compile Include="WebApiModels\Waste.cs" />
     <Compile Include="Еxtensions\GenericExtensions.cs" />
     <Compile Include="Еxtensions\EnumerableExtensions.cs" />
