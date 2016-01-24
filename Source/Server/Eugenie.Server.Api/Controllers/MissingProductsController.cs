@@ -6,7 +6,6 @@
     using Services.Data.Contracts;
 
     [Authorize(Roles = "Admin")]
-    [RoutePrefix("api/missingProducts")]
     public class MissingProductsController : ApiController
     {
         private readonly IMissingProductsService missingProductsService;

@@ -101,6 +101,7 @@
     <Compile Include="Notifications\NotificationsHost.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
+    <Compile Include="ViewModels\NewServerViewModel.cs" />
     <Compile Include="ViewModels\ReportDetailsViewModel.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\MissingProductsViewModel.cs" />

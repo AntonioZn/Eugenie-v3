@@ -13,48 +13,38 @@
     public class SettingsViewModel : ViewModelBase
     {
         private readonly IServerStorage storage;
-        private ServerInformation newServer;
 
         public SettingsViewModel(IServerStorage storage)
         {
             this.storage = storage;
 
-            this.AddNewServerCommand = new RelayCommand(this.HandleAddNewServerCommand, this.CanAddNewServer);
-            this.DeleteServerCommand = new RelayCommand<ServerInformation>(this.HandleDeleteServerCommand);
-        }
-        
-        public ICommand AddNewServerCommand { get; }
+            this.NewServerViewModel = new NewServerViewModel();
 
-        public ICommand DeleteServerCommand { get; }
-
-        public ServerInformation NewServer
-        {
-            get
-            {
-                return this.newServer ?? (this.newServer = new ServerInformation());
-            }
-            set
-            {
-                this.Set(() => this.NewServer, ref this.newServer, value);
-            }
+            this.Add = new RelayCommand(this.HandleAdd, this.CanAdd);
+            this.Delete = new RelayCommand<ServerInformation>(this.HandleDelete);
         }
+
+        public NewServerViewModel NewServerViewModel { get; set; }
+
+        public ICommand Add { get; }
+
+        public ICommand Delete { get; }
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
-
-        private bool CanAddNewServer()
+        
+        private bool CanAdd()
         {
-            return this.NewServer.HasNoValidationErrors()
-                && this.storage.Servers.All(x => x.Name != this.NewServer.Name && x.Address != this.NewServer.Address);
+            return this.NewServerViewModel.HasNoValidationErrors()
+                && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
         }
 
-        public void HandleAddNewServerCommand()
+        public void HandleAdd()
         {
-            this.storage.Servers.Add(this.NewServer);
-
-            this.NewServer = new ServerInformation();;
+            this.storage.Servers.Add(this.NewServerViewModel.GetServer());
+            this.NewServerViewModel.Reset();
         }
 
-        private void HandleDeleteServerCommand(ServerInformation server)
+        private void HandleDelete(ServerInformation server)
         {
             this.storage.Servers.Remove(server);
         }

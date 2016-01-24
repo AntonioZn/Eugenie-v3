@@ -77,20 +77,43 @@
                                                  Text="********"
                                                  IsTabStop="False"
                                                  IsHitTestVisible="False" />
-                                        <TextBox Grid.Column="3"
-                                                 materialDesign:TextFieldAssist.Hint="Адрес"
-                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                 HorizontalAlignment="Stretch"
-                                                 VerticalAlignment="Bottom"
-                                                 Margin="20,0,0,0"
-                                                 Text="{Binding Address}"
-                                                 IsTabStop="False"
-                                                 IsHitTestVisible="False" />
+                                        <materialDesign:PopupBox Grid.Column="3"
+                                                                 ToolTipService.Placement="Right"
+                                                                 PlacementMode="BottomAndAlignCentres"
+                                                                 ToolTip="Адреси"
+                                                                 HorizontalAlignment="Center"
+                                                                 Margin="5,0,0,0"
+                                                                 Focusable="False">
+                                            <DataGrid ItemsSource="{Binding Addresses}"
+                                                      HeadersVisibility="None"
+                                                      AutoGenerateColumns="False"
+                                                      CanUserAddRows="False"
+                                                      FontSize="25"
+                                                      IsReadOnly="True"
+                                                      SelectionMode="Single"
+                                                      VerticalScrollBarVisibility="Disabled"
+                                                      KeyboardNavigation.TabNavigation="None">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Binding="{Binding}">
+                                                        <DataGridTextColumn.CellStyle>
+                                                            <Style TargetType="DataGridCell">
+                                                                <Setter Property="IsTabStop"
+                                                                        Value="False" />
+                                                                <Setter Property="IsHitTestVisible"
+                                                                        Value="False" />
+                                                                <Setter Property="VerticalAlignment"
+                                                                        Value="Center" />
+                                                            </Style>
+                                                        </DataGridTextColumn.CellStyle>
+                                                    </DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </materialDesign:PopupBox>
                                         <Button Grid.Column="4"
                                                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                 Margin="20,0,0,0"
                                                 ToolTip="Изтрий"
-                                                Command="{Binding ElementName=userControl, Path=DataContext.DeleteServerCommand}"
+                                                Command="{Binding Path=SettingsViewModel.Delete, Source={StaticResource ViewModelLocator}}"
                                                 CommandParameter="{Binding}">
                                             <Viewbox Width="24"
                                                      Height="24">
@@ -123,7 +146,7 @@
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  VerticalAlignment="Bottom"
                                  HorizontalAlignment="Stretch"
-                                 Text="{Binding NewServer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                 Text="{Binding NewServerViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <TextBox Grid.Column="1"
                                  materialDesign:TextFieldAssist.Hint="Акаунт"
                                  materialDesign:ValidationAssist.OnlyShowOnFocus="True"
@@ -131,7 +154,7 @@
                                  VerticalAlignment="Bottom"
                                  Margin="20,0,0,0"
                                  HorizontalAlignment="Stretch"
-                                 Text="{Binding NewServer.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                 Text="{Binding NewServerViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <TextBox Grid.Column="2"
                                  materialDesign:TextFieldAssist.Hint="Парола"
                                  materialDesign:ValidationAssist.OnlyShowOnFocus="True"
@@ -139,20 +162,19 @@
                                  VerticalAlignment="Bottom"
                                  Margin="20,0,0,0"
                                  HorizontalAlignment="Stretch"
-                                 Text="{Binding NewServer.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                 Text="{Binding NewServerViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <TextBox Grid.Column="3"
-                                 materialDesign:TextFieldAssist.Hint="Адрес"
+                                 materialDesign:TextFieldAssist.Hint="Адреси"
                                  materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  VerticalAlignment="Bottom"
                                  Margin="20,0,0,0"
                                  HorizontalAlignment="Stretch"
-                                 Text="{Binding NewServer.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                 Text="{Binding NewServerViewModel.Addresses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Button Grid.Column="4"
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                 Margin="20,0,0,0"
-                                Command="{Binding AddNewServerCommand}"
-                                CommandParameter="{Binding ElementName=userControl}"
+                                Command="{Binding Path=SettingsViewModel.Add, Source={StaticResource ViewModelLocator}}"
                                 ToolTip="Добави">
                             <materialDesign:PackIcon Kind="PlusCircleOutline"
                                                      Width="24"

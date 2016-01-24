@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.Common.Helpers
 {
     using System;
+    using System.Linq;
 
     using Eugenie.Common.Constants;
 
@@ -54,18 +55,26 @@
             return null;
         }
 
-        public static string ValidateAddress(string address)
+        public static string ValidateAddresses(string[] addresses)
         {
-            try
+            if (!addresses.Any())
             {
-                new Uri(address);
+                return "Невалидни адреси";
+            }
 
-                return null;
-            }
-            catch
+            foreach (var address in addresses)
             {
-                return "Невалиден адрес";
+                try
+                {
+                    new Uri(address);
+                }
+                catch
+                {
+                    return "Невалидни адреси";
+                }
             }
+
+            return null;
         }
 
         public static string ValidatePassword(string argument)

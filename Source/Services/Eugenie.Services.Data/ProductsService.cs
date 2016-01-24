@@ -114,15 +114,6 @@
                     product.Barcodes.Add(barcode);
                 }
             }
-
-            //TODO: remove deletion?
-            //foreach (var expirationDate in product.ExpirationDates.ToList())
-            //{
-            //    if (expirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
-            //    {
-            //        this.expirationDatesRepository.Delete(expirationDate);
-            //    }
-            //}
             
             foreach (var expirationDate in expirationDates)
             {

@@ -197,8 +197,7 @@
                 }
             }
         }
-
-        //TODO: when new item is added add it to cache
+        
         private void HandleSaveCommand()
         {
             DialogHost.CloseDialogCommand.Execute(true, null);
