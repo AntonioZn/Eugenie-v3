@@ -82,6 +82,7 @@
                                                                       });
             });
 
+            this.SetSelectedServer("");
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
     }

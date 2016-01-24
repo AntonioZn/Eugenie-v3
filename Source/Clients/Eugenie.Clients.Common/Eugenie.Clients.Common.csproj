@@ -102,7 +102,7 @@
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\MessageQueueManager.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
-    <Compile Include="Helpers\PDFInvoiceGenerator.cs" />
+    <Compile Include="Helpers\PdfShipmentInvoiceGenerator.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\Validator.cs" />

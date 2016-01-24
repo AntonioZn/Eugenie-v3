@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -99,7 +100,7 @@
 
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
-            this.Sellers = this.manager.Cache.SellersPerServer[this.manager.SelectedServer];
+            this.Sellers = this.manager.SelectedServer == null ? Enumerable.Empty<Seller>() : this.manager.Cache.SellersPerServer[this.manager.SelectedServer];
         }
     }
 }
