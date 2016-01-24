@@ -11,5 +11,7 @@
         void AddStockPrice(decimal total);
 
         Report GetTodaysReport();
+
+        void AddShipment(Product product, decimal quantity);
     }
 }

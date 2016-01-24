@@ -27,6 +27,23 @@
             this.reportsRepository.SaveChanges();
         }
 
+        public void AddShipment(Product product, decimal quantity)
+        {
+            var report = this.GetTodaysReport();
+            var shipment = report.Shipments.FirstOrDefault(x => x.Product == product);
+            if (shipment != null)
+            {
+                shipment.Quantity += quantity;
+            }
+            else
+            {
+                shipment = new Shipment();
+                shipment.Product = product;
+                shipment.Quantity = quantity;
+                report.Shipments.Add(shipment);
+            }
+        }
+
         public IQueryable<Report> GetReports()
         {
             return this.reportsRepository.All().Include("Waste").Include("Sells").Include("Shipments");

@@ -14,15 +14,12 @@
     {
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
-        private readonly IRepository<ExpirationDate> expirationDatesRepository;
         private readonly IReportsService reportsService;
 
-        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository,
-            IRepository<ExpirationDate> expirationDatesRepository, IReportsService reportsService)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IReportsService reportsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
-            this.expirationDatesRepository = expirationDatesRepository;
             this.reportsService = reportsService;
         }
 
@@ -72,8 +69,12 @@
 
             this.MapProperties(product, name, buyingPrice, sellingPrice, measure, quantity, barcodes, expirationDates);
 
-            this.productsRepository.SaveChanges();
+            if (quantity.GetValueOrDefault() != 0)
+            {
+                this.reportsService.AddShipment(product, quantity.GetValueOrDefault());
+            }
             this.reportsService.AddStockPrice(stockPrice);
+            this.productsRepository.SaveChanges();
 
             return product;
         }
@@ -125,7 +126,7 @@
             
             foreach (var expirationDate in expirationDates)
             {
-                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date && x.Batch != expirationDate.Batch))
+                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date || x.Batch != expirationDate.Batch))
                 {
                     product.ExpirationDates.Add(expirationDate);
                 }
