@@ -61,10 +61,17 @@
                     var client = ServerTester.TestServerAsync(pair.Deserialized.ServerInformation).Result;
                     if (client != null)
                     {
-                        var status = this.apiClient.AddOrUpdateAsync(client, pair.Deserialized.AddProductModel).Result;
-                        if (status == HttpStatusCode.OK)
+                        try
                         {
-                            this.manager.MessageQueue.ReceiveById(pair.Id);
+                            var status = this.apiClient.AddOrUpdateAsync(client, pair.Deserialized.AddProductModel).Result;
+                            if (status == HttpStatusCode.OK)
+                            {
+                                this.manager.MessageQueue.ReceiveById(pair.Id);
+                            }
+                        }
+                        catch
+                        {
+                            
                         }
                     }
                     else
