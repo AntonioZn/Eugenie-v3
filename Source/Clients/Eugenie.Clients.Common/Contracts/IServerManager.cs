@@ -17,10 +17,14 @@
 
         event EventHandler ServerTestingFinished;
 
-        ProductsCache Cache { get; }
+        Cache Cache { get; }
 
         void AddOrUpdate(ServerInformation server, AddProductModel model);
 
         void Initialize();
+        
+        event EventHandler ProductsCacheChanged;
+
+        void AddProductToCache(Product product);
     }
 }

@@ -15,8 +15,6 @@
 
     using MaterialDesignThemes.Wpf;
 
-    using Notifications;
-
     using Views;
 
     public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IEnterHandler
@@ -24,11 +22,13 @@
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private string searchValue = string.Empty;
+        private int selectedIndex = 0;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
             this.manager = manager;
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
+            this.manager.ProductsCacheChanged += this.OnServerTestingFinished;
         }
 
         public void HandleBarcode(string barcode)
@@ -43,6 +43,7 @@
             };
 
             this.Products.Refresh();
+            this.SelectedIndex = 0;
         }
 
         public string SearchValue
@@ -65,12 +66,25 @@
                 };
 
                 this.Products.Refresh();
+                this.SelectedIndex = 0;
             }
         }
 
         public ICollectionView Products => CollectionViewSource.GetDefaultView(this.products);
 
         public Product SelectedProduct { get; set; }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                return this.selectedIndex;
+            }
+            set
+            {
+                this.Set(() => this.SelectedIndex, ref this.selectedIndex, value);
+            }
+        }
 
         public async void HandleEnter()
         {
@@ -85,7 +99,7 @@
             var selectedProductViewModel = new ProductViewModel(this.SelectedProduct.DeepClone());
             var viewModel = new ProductInformationViewModel(productInAllServers, selectedProductViewModel);
             var dialog = new ProductInformation(viewModel);
-            
+
             var result = await DialogHost.Show(dialog, "RootDialog");
 
             if ((bool)result)

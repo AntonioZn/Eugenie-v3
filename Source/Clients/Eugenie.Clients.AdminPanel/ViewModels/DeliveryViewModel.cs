@@ -33,6 +33,7 @@
         {
             this.manager = manager;
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
+            this.manager.ProductsCacheChanged += this.OnServerTestingFinished;
 
             this.MainProductViewModel = new ProductViewModel(new Product());
 
@@ -205,6 +206,11 @@
             {
                 pair.Value.MapProperties(this.MainProductViewModel);
                 this.manager.AddOrUpdate(pair.Key, pair.Value.GetModel());
+
+                if (!this.AddingType.Contains("наличност"))
+                {
+                    this.manager.AddProductToCache(pair.Value.Product);
+                }
             }
 
             this.Name = string.Empty;

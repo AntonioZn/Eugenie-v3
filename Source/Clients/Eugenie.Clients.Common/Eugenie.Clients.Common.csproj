@@ -108,7 +108,7 @@
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Helpers\WebApiClient.cs" />
     <Compile Include="Models\ActiveServer.cs" />
-    <Compile Include="Models\ProductsCache.cs" />
+    <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\ServerAddProductPair.cs" />
     <Compile Include="WebApiModels\AddProductModel.cs" />
     <Compile Include="Models\Barcode.cs" />

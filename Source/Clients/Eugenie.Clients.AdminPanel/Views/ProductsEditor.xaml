@@ -31,7 +31,7 @@
                       FontSize="25"
                       ItemsSource="{Binding Products}"
                       SelectedItem="{Binding SelectedProduct}"
-                      SelectedIndex="0"
+                      SelectedIndex="{Binding SelectedIndex}"
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"

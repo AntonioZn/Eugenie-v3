@@ -26,17 +26,16 @@
                                                       };
             this.apiClient = apiClient;
             this.queueManager = queueManager;
-            this.Cache = new ProductsCache();
+            this.Cache = new Cache();
 
             this.Initialize();
         }
 
-        public ProductsCache Cache { get; }
+        public Cache Cache { get; }
 
         public void AddOrUpdate(ServerInformation server, AddProductModel model)
         {
             var pair = new ServerAddProductPair(server, model);
-            this.queueManager.MessageQueue.Label = server.Name;
             this.queueManager.MessageQueue.Send(pair);
         }
 
@@ -71,6 +70,7 @@
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());
                                                                           this.Cache.ReportsPerServer.Add(server, new List<Report>());
                                                                           this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
+                                                                          this.Cache.SellersPerServer.Add(server, new List<Seller>());
 
                                                                           if (server.Client != null)
                                                                           {
@@ -84,6 +84,18 @@
 
             this.SetSelectedServer("");
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler ProductsCacheChanged;
+
+        public void AddProductToCache(Product product)
+        {
+            foreach (var pair in this.Cache.ProductsPerServer)
+            {
+                pair.Value.Add(product);
+            }
+
+            this.ProductsCacheChanged?.Invoke(this.Cache, EventArgs.Empty);
         }
     }
 }

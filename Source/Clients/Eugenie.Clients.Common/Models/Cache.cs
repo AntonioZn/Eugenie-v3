@@ -5,9 +5,9 @@
 
     using WebApiModels;
 
-    public class ProductsCache
+    public class Cache
     {
-        public ProductsCache()
+        public Cache()
         {
             this.ProductsPerServer = new ConcurrentDictionary<ServerInformation, ICollection<Product>>();
             this.ReportsPerServer = new ConcurrentDictionary<ServerInformation, IEnumerable<Report>>();
