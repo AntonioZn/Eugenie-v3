@@ -23,6 +23,10 @@
                   SelectedItem="{Binding SelectedReport}"
                   ItemsSource="{Binding Reports}"
                   FontSize="25">
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick"
+                              Command="{Binding HandleEnterCommand}" />
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Дата"
                                     Width="1*"

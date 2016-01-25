@@ -73,14 +73,14 @@
             <dragablz:TabablzControl Grid.Row="1"
                                      Margin="0,20,0,0"
                                      Width="800">
-                <TabItem Header="Брак"
-                         IsTabStop="False">
-                    <controls:DealsPresenter DataContext="{Binding Waste}" />
-                </TabItem>
                 <TabItem Header="Продажби"
                          IsSelected="True"
                          IsTabStop="False">
                     <controls:DealsPresenter DataContext="{Binding Sells}" />
+                </TabItem>
+                <TabItem Header="Брак"
+                         IsTabStop="False">
+                    <controls:DealsPresenter DataContext="{Binding Waste}" />
                 </TabItem>
             </dragablz:TabablzControl>
         </Grid>

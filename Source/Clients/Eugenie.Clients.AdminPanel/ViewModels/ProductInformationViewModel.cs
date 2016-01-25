@@ -4,8 +4,10 @@
     using System.Linq;
     using System.Windows.Input;
 
+    using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
+    using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -14,18 +16,29 @@
 
     public class ProductInformationViewModel : ViewModelBase
     {
-        public ProductInformationViewModel(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainMainProductViewModel)
-        {
-            this.ProductInAllServers = productInAllServers;
-            this.MainProductViewModel = mainMainProductViewModel;
+        private readonly IServerManager manager;
 
-            this.SaveCommand = new RelayCommand(this.HandleSaveCommand, this.CanSave);
-            this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
+        public ProductInformationViewModel(IServerManager manager, Product selectedProduct)
+        {
+            this.manager = manager;
+
+            this.MainProductViewModel = new ProductViewModel(selectedProduct.DeepClone());
+
+            this.Save = new RelayCommand(this.HandleSave, this.CanSave);
+            this.Cancel = new RelayCommand(this.HandleCancel);
+
+            this.ProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            {
+                var product = pair.Value.FirstOrDefault(x => x.Name == selectedProduct.Name);
+                var productViewModel = new ProductViewModel(product ?? new Product());
+                this.ProductInAllServers.Add(pair.Key, productViewModel);
+            }
         }
 
-        public ICommand CancelCommand { get; set; }
+        public ICommand Cancel { get; set; }
 
-        public ICommand SaveCommand { get; set; }
+        public ICommand Save { get; set; }
 
         public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
 
@@ -33,21 +46,30 @@
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
-        private void HandleCancelCommand()
+        private void HandleCancel()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
         }
 
-        private void HandleSaveCommand()
+        private void HandleSave()
         {
+            foreach (var pair in this.ProductInAllServers)
+            {
+                pair.Value.MapProperties(this.MainProductViewModel);
+                this.manager.AddOrUpdate(pair.Key, pair.Value.GetModel());
+            }
             DialogHost.CloseDialogCommand.Execute(true, null);
         }
 
         private bool CanSave()
         {
+            var exists = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value
+                .Any(y => y.Name.ToLower() == this.MainProductViewModel.Product.Name.ToLower() && y.Name.ToLower() != this.MainProductViewModel.OldName.ToLower());
+
             return this.MainProductViewModel.Product.HasNoValidationErrors()
                 && this.MainProductViewModel.HasNoValidationErrors()
-                && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
+                && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
+                && !exists;
         }
     }
 }

@@ -57,14 +57,6 @@
                                             <DataGridTextColumn Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
                                             <DataGridTextColumn Binding="{Binding Batch}" />
                                             <DataGridTemplateColumn>
-                                                <DataGridTemplateColumn.CellStyle>
-                                                    <Style TargetType="DataGridCell">
-                                                        <Setter Property="Focusable"
-                                                                Value="False" />
-                                                        <Setter Property="IsHitTestVisible"
-                                                                Value="True" />
-                                                    </Style>
-                                                </DataGridTemplateColumn.CellStyle>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"

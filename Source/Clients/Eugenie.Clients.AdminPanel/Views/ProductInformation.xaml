@@ -105,12 +105,12 @@
                     Margin="8 0 0 0"
                     Content="Назад"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{Binding CancelCommand}">
+                    Command="{Binding Cancel}">
             </Button>
             <Button IsDefault="True"
                     IsTabStop="False"
                     Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding Save}"
                     Content="Запази">
             </Button>
         </StackPanel>

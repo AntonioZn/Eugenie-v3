@@ -26,12 +26,6 @@
                                 Width="1*"
                                 Binding="{Binding Total}" />
             <DataGridTemplateColumn>
-                <DataGridTemplateColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="IsHitTestVisible"
-                                Value="True" />
-                    </Style>
-                </DataGridTemplateColumn.CellStyle>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <materialDesign:PopupBox ToolTipService.Placement="Right"

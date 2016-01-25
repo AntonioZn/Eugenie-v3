@@ -20,14 +20,6 @@
             <DataGridTextColumn Width="*"
                                 Binding="{Binding Value}"/>
             <DataGridTemplateColumn>
-                <DataGridTemplateColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Focusable"
-                                Value="False" />
-                        <Setter Property="IsHitTestVisible"
-                                Value="True" />
-                    </Style>
-                </DataGridTemplateColumn.CellStyle>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"

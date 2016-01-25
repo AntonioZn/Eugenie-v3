@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Windows.Input;
 
     using Autofac;
 
@@ -12,6 +13,7 @@
     using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
 
     using MaterialDesignThemes.Wpf;
 
@@ -27,7 +29,11 @@
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
 
             this.MissingProducts = new ObservableCollection<MissingProduct>();
+
+            this.HandleEnterCommand = new RelayCommand(this.HandleEnter);
         }
+
+        public ICommand HandleEnterCommand { get; }
 
         public MissingProduct SelectedProduct { get; set; }
 
@@ -35,12 +41,18 @@
         
         public async void HandleEnter()
         {
+            if (this.SelectedProduct == null)
+            {
+                return;
+            }
+
             var viewModel = ViewModelLocator.container.Resolve<DeliveryViewModel>();
             viewModel.Name = this.SelectedProduct.Name;
             viewModel.MainProductViewModel.Product.Barcodes.Add(new Barcode(this.SelectedProduct.Barcode));
             var dialog = new Delivery(true);
             await DialogHost.Show(dialog, "RootDialog");
         }
+
 
         private void OnServerTestingFinished(object sender, EventArgs e)
         {

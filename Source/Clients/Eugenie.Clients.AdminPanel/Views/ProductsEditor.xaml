@@ -22,6 +22,10 @@
             <DataGrid x:Name="dataGrid"
                       ItemsSource="{Binding Products}"
                       SelectedItem="{Binding SelectedProduct}">
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding HandleEnterCommand}" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Име"
                                         Binding="{Binding Name}"

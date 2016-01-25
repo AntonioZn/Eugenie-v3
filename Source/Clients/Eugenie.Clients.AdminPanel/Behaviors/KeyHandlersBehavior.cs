@@ -27,7 +27,7 @@
         {
             var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
 
-            if (!dialogHost.IsOpen && (e.Key == Key.Enter || e.Key == Key.Delete))
+            if (!dialogHost.IsOpen && (e.Key == Key.Enter || e.Key == Key.Delete || e.Key == Key.Escape))
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
                 var userControl = contentControl.Content as UserControl;
@@ -40,10 +40,14 @@
                         ((IEnterHandler)dataContext).HandleEnter();
                         e.Handled = true;
                     }
-
-                    if (e.Key == Key.Delete && dataContext is IDeleteHandler)
+                    else if (e.Key == Key.Delete && dataContext is IDeleteHandler)
                     {
                         ((IDeleteHandler)dataContext).HandleDelete();
+                        e.Handled = true;
+                    }
+                    else if (e.Key == Key.Escape && dataContext is IEscapeHandler)
+                    {
+                        ((IEscapeHandler)dataContext).HandleEscape();
                         e.Handled = true;
                     }
                 }
