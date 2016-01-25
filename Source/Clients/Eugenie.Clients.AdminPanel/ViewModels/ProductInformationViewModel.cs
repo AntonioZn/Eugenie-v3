@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Input;
@@ -14,7 +15,7 @@
 
     using MaterialDesignThemes.Wpf;
 
-    public class ProductInformationViewModel : ViewModelBase
+    public class ProductInformationViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
 
@@ -70,6 +71,11 @@
                 && this.MainProductViewModel.HasNoValidationErrors()
                 && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
                 && !exists.GetValueOrDefault();
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
         }
     }
 }

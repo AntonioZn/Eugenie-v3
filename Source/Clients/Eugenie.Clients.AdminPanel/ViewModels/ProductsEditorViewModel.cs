@@ -4,11 +4,11 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
-    using System.Security.Permissions;
     using System.Windows.Data;
     using System.Windows.Input;
 
     using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
     using Common.Еxtensions;
 
@@ -17,6 +17,8 @@
 
     using MaterialDesignThemes.Wpf;
 
+    using Notifications;
+
     using Views;
 
     public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IEnterHandler, IEscapeHandler
@@ -24,6 +26,7 @@
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private string searchValue = string.Empty;
+        private ProductInformationViewModel productInformationViewModel;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -38,6 +41,18 @@
 
         public void HandleBarcode(string barcode)
         {
+            if (this.productInformationViewModel != null)
+            {
+                var existingProduct = ExistingBarcodeChecker.Check(barcode, this.productInformationViewModel.MainProductViewModel.Product, this.products);
+                if (existingProduct != null)
+                {
+                    NotificationsHost.Error("Баркодът съществува", $"\"{existingProduct.Name}\" съдържа този баркод.");
+                    return;
+                }
+                this.productInformationViewModel.HandleBarcode(barcode);
+                return;
+            }
+
             this.SearchValue = string.Empty;
 
             this.Products.Filter = (obj) =>
@@ -89,10 +104,11 @@
                 return;
             }
 
-            var viewModel = new ProductInformationViewModel(this.manager, this.SelectedProduct);
-            var dialog = new ProductInformation(viewModel);
+            this.productInformationViewModel = new ProductInformationViewModel(this.manager, this.SelectedProduct);
+            var dialog = new ProductInformation(this.productInformationViewModel);
 
             var result = await DialogHost.Show(dialog, "RootDialog");
+            this.productInformationViewModel = null;
 
             if ((bool)result)
             {

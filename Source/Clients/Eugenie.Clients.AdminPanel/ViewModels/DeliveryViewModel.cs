@@ -22,7 +22,7 @@
     {
         private readonly IServerManager manager;
 
-        private ObservableCollection<Product> existingProducts; 
+        private ObservableCollection<Product> existingProducts;
         private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
         private ProductViewModel mainMainProductViewModel;
         private string name = string.Empty;
@@ -167,37 +167,29 @@
 
         public async void HandleBarcode(string barcode)
         {
-            var existingProduct = this.ExistingProducts.FirstOrDefault(x => x.Barcodes.Any(y => y.Value == barcode));
-
-            if (existingProduct == null)
-            {
-                if (this.MainProductViewModel.Product.Barcodes.All(x => x.Value != barcode))
-                {
-                    if (this.AutomaticName && string.IsNullOrEmpty(this.Name))
-                    {
-                        this.Name = await NameFromBarcodeGenerator.GetName(barcode);
-                    }
-
-                    this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
-                }
-            }
-            else
+            var existingProduct = ExistingBarcodeChecker.Check(barcode, this.MainProductViewModel.Product, this.ExistingProducts);
+            if (existingProduct != null)
             {
                 if (string.IsNullOrEmpty(this.Name))
                 {
                     this.Name = existingProduct.Name;
-                    if (this.MainProductViewModel.Product.Barcodes.All(x => x.Value != barcode))
-                    {
-                        this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
-                    }
                 }
                 else
                 {
                     NotificationsHost.Error("Баркодът съществува", $"\"{existingProduct.Name}\" съдържа този баркод.");
                 }
             }
+            else
+            {
+                if (this.AutomaticName && string.IsNullOrEmpty(this.Name))
+                {
+                    this.Name = await NameFromBarcodeGenerator.GetName(barcode);
+                }
+
+                this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
+            }
         }
-        
+
         private void HandleSaveCommand()
         {
             DialogHost.CloseDialogCommand.Execute(true, null);

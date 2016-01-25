@@ -98,6 +98,7 @@
     <Compile Include="Contracts\IServerManager.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
+    <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
     <Compile Include="Helpers\IMessageQueueManager.cs" />
     <Compile Include="Helpers\JsonFormatter.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
