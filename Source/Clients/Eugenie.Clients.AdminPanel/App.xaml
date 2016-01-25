@@ -57,6 +57,10 @@
                 <Setter Property="BorderThickness"
                         Value="0" />
             </Style>
+            <Style TargetType="{x:Type materialDesign:Card}">
+                <Setter Property="IsTabStop"
+                        Value="False"></Setter>
+            </Style>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
             <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
             <converters:BoolToUnderlineConverter x:Key="BoolToUnderlineConverter" />

@@ -61,8 +61,13 @@
                                  Margin="0,16,0,16"
                                  SelectedIndex="0"
                                  Focusable="False"
-                                 GotFocus="FlyoutMenuListBox_OnGotFocus"
                                  PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                    <Setter Property="IsTabStop"
+                                            Value="False" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="domain:MenuItem">
                                     <TextBlock Text="{Binding Name}"
@@ -182,6 +187,7 @@
                                         <Button Style="{StaticResource MaterialDesignFlatButton}"
                                                 Padding="0"
                                                 Height="Auto"
+                                                IsTabStop="False"
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.Select}"
                                                 CommandParameter="{Binding}">
                                             <StackPanel Orientation="Vertical">
@@ -193,8 +199,8 @@
                                                 <TextBlock Text="{Binding Name}"
                                                            FontSize="13"
                                                            Foreground="White"
-                                                           HorizontalAlignment="Center" 
-                                                           TextDecorations="{Binding IsSelected, Converter={StaticResource BoolToUnderlineConverter}}"/>
+                                                           HorizontalAlignment="Center"
+                                                           TextDecorations="{Binding IsSelected, Converter={StaticResource BoolToUnderlineConverter}}" />
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>

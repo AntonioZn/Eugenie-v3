@@ -39,10 +39,12 @@
         </materialDesign:ColorZone>
         <dragablz:TabablzControl Grid.Row="1"
                                  IsTabStop="False"
-                                 Focusable="False">
+                                 Focusable="False"
+                                 FocusVisualStyle="{x:Null}">
             <TabItem Header="Продажби"
                      IsSelected="True"
-                     IsTabStop="False">
+                     IsTabStop="False"
+                     FocusVisualStyle="{x:Null}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -62,7 +64,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Брак"
-                     IsTabStop="False">
+                     IsTabStop="False"
+                     FocusVisualStyle="{x:Null}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -82,7 +85,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Доставки"
-                     IsTabStop="False">
+                     IsTabStop="False"
+                     FocusVisualStyle="{x:Null}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />

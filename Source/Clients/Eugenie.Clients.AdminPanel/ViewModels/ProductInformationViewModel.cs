@@ -63,13 +63,13 @@
 
         private bool CanSave()
         {
-            var exists = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value
+            var exists = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value?
                 .Any(y => y.Name.ToLower() == this.MainProductViewModel.Product.Name.ToLower() && y.Name.ToLower() != this.MainProductViewModel.OldName.ToLower());
 
             return this.MainProductViewModel.Product.HasNoValidationErrors()
                 && this.MainProductViewModel.HasNoValidationErrors()
                 && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
-                && !exists;
+                && !exists.GetValueOrDefault();
         }
     }
 }

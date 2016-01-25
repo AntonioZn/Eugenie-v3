@@ -49,6 +49,7 @@
                                                          PlacementMode="BottomAndAlignCentres"
                                                          ToolTip="Срокове на годност"
                                                          Margin="5,0,0,0"
+                                                         IsTabStop="False"
                                                          Focusable="False">
                                     <DataGrid ItemsSource="{Binding Value.Product.ExpirationDates}"
                                               HeadersVisibility="None"
@@ -89,20 +90,19 @@
                                          VerticalAlignment="Bottom"
                                          HorizontalAlignment="Stretch"
                                          materialDesign:TextFieldAssist.Hint="Партиден №"
-                                         Text="{Binding Value.Batch, Mode=TwoWay}"
+                                         Text="{Binding Value.Batch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                          Margin="10,0,0,0" />
                                 <Button Grid.Column="6"
                                         VerticalAlignment="Bottom"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                        IsTabStop="False"
                                         Margin="10,0,0,0"
                                         ToolTip="Добави"
                                         Command="{Binding Value.AddExpirationDateCommand}">
                                     <materialDesign:PackIcon Kind="PlusCircleOutline"
                                                              Width="24"
                                                              Height="24"
-                                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}"/>
+                                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                                 </Button>
                             </Grid>
                         </Border>

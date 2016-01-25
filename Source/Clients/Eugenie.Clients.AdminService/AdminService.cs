@@ -68,10 +68,14 @@
                             {
                                 this.manager.MessageQueue.ReceiveById(pair.Id);
                             }
+                            else if (status == HttpStatusCode.BadRequest)
+                            {
+                                this.manager.MessageQueue.ReceiveById(pair.Id);
+                            }
                         }
                         catch
                         {
-                            
+
                         }
                     }
                     else

@@ -17,8 +17,7 @@
              DataContext="{Binding Path=MissingProductsViewModel, Source={StaticResource ViewModelLocator}}">
     <materialDesign:Card HorizontalAlignment="Center"
                          Margin="20"
-                         Padding="20,0,20,20"
-                         IsTabStop="False">
+                         Padding="20,0,20,20">
         <DataGrid x:Name="dataGrid"
                   SelectedItem="{Binding SelectedProduct}"
                   ItemsSource="{Binding MissingProducts}">

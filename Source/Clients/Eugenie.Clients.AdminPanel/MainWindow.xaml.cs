@@ -20,11 +20,6 @@
             this.MenuToggleButton.IsChecked = false;
         }
 
-        private void FlyoutMenuListBox_OnGotFocus(object sender, RoutedEventArgs e)
-        {
-            //this.txtSearch.Focus();
-        }
-
         private void TxtSearch_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (this.flyoutMenuListBox.SelectedIndex != 0)

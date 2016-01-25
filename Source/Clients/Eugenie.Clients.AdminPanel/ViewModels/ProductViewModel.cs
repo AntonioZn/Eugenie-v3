@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Clients.AdminPanel.ViewModels
 {
     using System;
+    using System.Linq;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -156,7 +157,8 @@
 
         private bool CanAddExpirationDate()
         {
-            return this.Date != null;
+            return this.Date != null
+                && this.Product.ExpirationDates.All(x => x.Date != this.Date || (x.Batch ?? "") != (this.Batch ?? ""));
         }
 
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)

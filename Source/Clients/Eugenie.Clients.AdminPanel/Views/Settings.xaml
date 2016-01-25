@@ -23,8 +23,7 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        <materialDesign:Card Grid.Column="0"
-                             IsTabStop="False">
+        <materialDesign:Card Grid.Column="0">
             <StackPanel Orientation="Vertical">
                 <materialDesign:ColorZone Mode="PrimaryDark"
                                           Padding="16">
