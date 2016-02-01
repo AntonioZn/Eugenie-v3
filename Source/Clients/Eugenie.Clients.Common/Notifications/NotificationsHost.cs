@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.AdminPanel.Notifications
+﻿namespace Eugenie.Clients.Common.Notifications
 {
     using System.Windows;
     using System.Windows.Media;

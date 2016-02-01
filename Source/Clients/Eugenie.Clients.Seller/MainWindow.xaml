@@ -12,6 +12,7 @@
         WindowState="Maximized"
         WindowStyle="None"
         Topmost="True"
+        Loaded="MainWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="20"

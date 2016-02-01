@@ -5,7 +5,7 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
-    using Notifications;
+    using Common.Notifications;
 
     public partial class MainWindow
     {

@@ -1,10 +1,10 @@
-﻿<Window x:Class="Eugenie.Clients.AdminPanel.Notifications.Notifications"
+﻿<Window x:Class="Eugenie.Clients.Common.Notifications.Notifications"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Eugenie.Clients.AdminPanel.Notifications"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:notifications="clr-namespace:Eugenie.Clients.Common.Notifications"
         mc:Ignorable="d"
         Height="Auto"
         Width="400"
@@ -23,7 +23,7 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     <Window.Resources>
         <DataTemplate x:Key="MessageTemplate"
-                      DataType="local:Notification">
+                      DataType="notifications:Notification">
             <materialDesign:Card x:Name="NotificationWindow"
                                  Margin="5"
                                  Padding="10"

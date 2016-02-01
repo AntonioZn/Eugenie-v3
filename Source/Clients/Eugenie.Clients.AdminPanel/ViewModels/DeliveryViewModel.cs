@@ -9,14 +9,13 @@
     using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
+    using Common.Notifications;
     using Common.Еxtensions;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
     using MaterialDesignThemes.Wpf;
-
-    using Notifications;
 
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {

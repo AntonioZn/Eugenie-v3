@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System.Net.Http;
+
     using Autofac;
 
     using Common.Contracts;
@@ -8,6 +10,7 @@
     public class ViewModelLocator
     {
         public static IContainer container;
+        public static HttpClient httpClient;
 
         public ViewModelLocator()
         {
@@ -18,6 +21,8 @@
 
         public LoginViewModel LoginViewModel => container.Resolve<LoginViewModel>();
 
+        public SellViewModel SellViewModel => container.Resolve<SellViewModel>();
+
         private void Register()
         {
             var containerBuilder = new ContainerBuilder();
@@ -27,6 +32,7 @@
 
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LoginViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<SellViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

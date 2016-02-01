@@ -6,7 +6,8 @@
              StartupUri="MainWindow.xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              d1p1:Ignorable="d"
-             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:Eugenie.Clients.Common.Converters;assembly=Eugenie.Clients.Common">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -52,6 +53,7 @@
                 </Setter>
             </Style>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
+            <converters:TotalSellingPriceConverter x:Key="totalSellingPriceConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
