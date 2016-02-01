@@ -16,6 +16,8 @@
 
         public MainWindowViewModel MainWindowViewModel => container.Resolve<MainWindowViewModel>();
 
+        public LoginViewModel LoginViewModel => container.Resolve<LoginViewModel>();
+
         private void Register()
         {
             var containerBuilder = new ContainerBuilder();
@@ -24,6 +26,7 @@
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<LoginViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

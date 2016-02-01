@@ -27,25 +27,9 @@
         <materialDesign:DialogHost x:Name="dialogHost"
                                    Identifier="RootDialog"
                                    IsTabStop="False">
-
-            <ContentControl Content="{Binding MainContent}"
+            <ContentControl Content="{Binding Content}"
                             IsTabStop="False"
                             x:Name="MainFrame" />
-            <!--<materialDesign:DrawerHost IsTabStop="False">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <materialDesign:ColorZone Mode="PrimaryDark"
-                                              Grid.Row="0"
-                                              Panel.ZIndex="1"
-                                              Padding="16"
-                                              IsTabStop="False"
-                                              materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                    </materialDesign:ColorZone>
-                </Grid>
-            </materialDesign:DrawerHost>-->
         </materialDesign:DialogHost>
     </Grid>
 </Window>

@@ -2,10 +2,16 @@
 {
     using GalaSoft.MvvmLight;
 
+    using Views;
+
     public class MainWindowViewModel : ViewModelBase
     {
         private object content;
 
+        public MainWindowViewModel()
+        {
+            this.Content = new Login();
+        }
         public object Content
         {
             get
