@@ -23,7 +23,7 @@
                       SelectedItem="{Binding SelectedProduct}">
                 <DataGrid.InputBindings>
                     <MouseBinding MouseAction="LeftDoubleClick"
-                                  Command="{Binding HandleEnterCommand}" />
+                                  Command="{Binding Enter}" />
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Име"

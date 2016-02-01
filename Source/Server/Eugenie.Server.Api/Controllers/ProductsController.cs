@@ -9,7 +9,7 @@
     using Models.Products;
 
     using Services.Data.Contracts;
-    
+
     [Authorize]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
@@ -27,28 +27,45 @@
         {
             return this.Ok(this.productsService.Count());
         }
-        
+
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var result = this.productsService.All().ToList();
-            return this.Ok(result);
+            return this.Ok(this.productsService.All());
         }
 
         [HttpGet]
-        public IHttpActionResult FindByName(string id)
+        public IHttpActionResult GetByName(string name)
         {
-            return this.Ok(this.productsService.FindByName(id));
+            return this.Ok(this.productsService.GetByName(name).Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.Measure,
+                x.SellingPrice,
+                x.Barcodes
+            }));
         }
-        
-        [HttpGet]
-        public IHttpActionResult FindByQuantity(decimal quantity)
-        {
-            var products = this.productsService.FindByQuantity(quantity).ToList();
 
-            return this.Ok(products);
+        [HttpGet]
+        public IHttpActionResult GetByQuantity(decimal quantity)
+        {
+            return this.Ok(this.productsService.GetByQuantity(quantity).Select(x => x.Name));
         }
-        
+
+        [HttpGet]
+        public IHttpActionResult GetByBarcode(string barcode)
+        {
+            return this.Ok(this.productsService.GetByBarcode(barcode).Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.Measure,
+                x.SellingPrice,
+                x.Barcodes
+            }).FirstOrDefault());
+        }
+
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Delete(string id)
@@ -63,7 +80,7 @@
                 return this.NotFound();
             }
         }
-        
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult AddOrUpdate(AddProductModel model)
@@ -72,11 +89,12 @@
             {
                 return this.BadRequest(this.ModelState);
             }
-            
+
             try
             {
-                return this.Ok(this.productsService.AddOrUpdate(model.Name, model.OldName, model.BuyingPrice, model.SellingPrice, 
-                    model.Measure, model.QuantityToAdd, model.Barcodes ?? Enumerable.Empty<Barcode>().ToList(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>().ToList()));
+                this.productsService.AddOrUpdate(model.Name, model.OldName, model.BuyingPrice, model.SellingPrice,
+                    model.Measure, model.QuantityToAdd, model.Barcodes ?? Enumerable.Empty<Barcode>().ToList(), model.ExpirationDates ?? Enumerable.Empty<ExpirationDate>().ToList());
+                return this.Ok();
             }
             catch (ArgumentException ex)
             {

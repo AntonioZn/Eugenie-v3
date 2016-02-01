@@ -4,8 +4,8 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Interactivity;
-
-    using Common.Contracts;
+    
+    using Common.Contracts.KeyHandlers;
 
     using MaterialDesignThemes.Wpf;
 

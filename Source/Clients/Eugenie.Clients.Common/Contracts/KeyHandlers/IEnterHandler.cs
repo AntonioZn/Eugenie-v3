@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Contracts
+﻿namespace Eugenie.Clients.Common.Contracts.KeyHandlers
 {
     using System.Windows.Input;
 
@@ -6,6 +6,6 @@
     {
         void HandleEnter();
 
-        ICommand HandleEnterCommand { get; }
+        ICommand Enter { get; }
     }
 }

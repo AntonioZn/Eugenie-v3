@@ -8,36 +8,26 @@
              d:DesignWidth="300"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="20"
+             TextElement.FontSize="40"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=SellViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
-        <Label x:Name="lblSellerName"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
                Content="{Binding FullName}"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               HorizontalContentAlignment="Left"
-               Height="60"
-               Width="Auto"
-               FontSize="40" />
-        <TextBox x:Name="txtBarcode"
-                 Visibility="Hidden"
-                 IsReadOnly="True"
-                 IsTabStop="False"
-                 Text="{Binding Path=Barcode, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+               HorizontalAlignment="Left" />
         <DataGrid x:Name="dataGrid"
+                  Grid.Row="1"
                   FontSize="30"
                   ItemsSource="{Binding Products}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  Margin="0,63,0,107"
-                  BorderBrush="AliceBlue"
-                  BorderThickness="2"
-                  CanUserSortColumns="False"
-                  SelectedItem="{Binding SelectedItem}">
+                  SelectedItem="{Binding SelectedProduct}">
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
                                  Color="DeepSkyBlue" />
@@ -45,57 +35,45 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№"
                                     Binding="{Binding Id}"
-                                    Width="Auto">
+                                    Width="0.6*">
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="nameColumn"
-                                    Header="Име"
+                <DataGridTextColumn Header="Име"
                                     Binding="{Binding Name}"
-                                    Width="*">
+                                    Width="6*">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="М-ка"
                                     Binding="{Binding Measure}"
-                                    Width="Auto">
+                                    Width="0.5*">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="К-во"
                                     Binding="{Binding Quantity}"
-                                    Width="Auto">
+                                    Width="2*">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Eд. цена"
                                     Binding="{Binding SellingPrice, StringFormat={}{0:0.00}}"
-                                    Width="Auto">
+                                    Width="2*">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Цена"
                                     Binding="{Binding Converter={StaticResource totalSellingPriceConverter}, StringFormat={}{0:0.00}}"
-                                    Width="Auto">
+                                    Width="2*">
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="lblPrice"
-               Content="Сума:"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Bottom"
-               Height="60"
-               Width="110"
-               FontSize="40"
-               Margin="0,0,180,36" />
-        <TextBlock x:Name="txtPrice"
-                   Focusable="False"
-                   FontSize="40"
-                   Text="{Binding Price, StringFormat={}{0:0.00}}"
-                   Height="60"
-                   Width="160"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   Margin="0,0,10,27" />
-        <Label x:Name="lblInfo"
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <Label Content="Сума:" FontSize="60"/>
+            <TextBlock Focusable="False"
+                       Text="{Binding Price, StringFormat={}{0:0.00}}"
+                       Width="200" 
+                       FontSize="60"/>
+        </StackPanel>
+        <Label Grid.Row="2"
+               FontSize="16"
                Content="Delete - изтрий, F1 - търсене, F10 - бракувай, F11 - касова бележка, F12 - без касова бележка, Alt+F5 - изход"
                HorizontalAlignment="Left"
-               Margin="10,0,0,10"
                VerticalAlignment="Bottom"
-               Width="Auto" />
-        <Label x:Name="lblVersion"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Bottom"
-               Width="Auto" />
+               Margin="10,0,0,10" />
     </Grid>
 </UserControl>

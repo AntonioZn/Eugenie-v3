@@ -40,17 +40,24 @@
             return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates");
         }
 
-        public Product FindByName(string name)
+        //TODO: if not product is found add it to missing products
+        public IQueryable<Product> GetByBarcode(string barcode)
         {
-            return this.productsRepository.All().FirstOrDefault(x => x.Name == name);
+            return this.productsRepository.All().Where(product => product.Barcodes.Any(b => b.Value == barcode));
         }
 
-        public IQueryable<Product> FindByQuantity(decimal quantity)
+        public IQueryable<Product> GetByName(string name)
+        {
+            var nameAsArray = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return this.productsRepository.All().Where(x => nameAsArray.All(n => x.Name.Contains(n)));
+        }
+
+        public IQueryable<Product> GetByQuantity(decimal quantity)
         {
             return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
         }
-        
-        public Product AddOrUpdate(string name, string oldName, decimal? buyingPrice, decimal? sellingPrice, 
+
+        public void AddOrUpdate(string name, string oldName, decimal? buyingPrice, decimal? sellingPrice,
             MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
             if (oldName != name && this.productsRepository.All().Any(x => x.Name == name))
@@ -75,8 +82,6 @@
             }
             this.reportsService.AddStockPrice(stockPrice);
             this.productsRepository.SaveChanges();
-
-            return product;
         }
 
         private decimal CalculateStockPrice(Product product, decimal sellingPrice, decimal quantity)
@@ -114,7 +119,7 @@
                     product.Barcodes.Add(barcode);
                 }
             }
-            
+
             foreach (var expirationDate in expirationDates)
             {
                 if (product.ExpirationDates.All(x => x.Date != expirationDate.Date || x.Batch != expirationDate.Batch))

@@ -11,6 +11,10 @@
         public MainWindowViewModel()
         {
             this.Content = new Login();
+
+#if DEBUG
+            this.Content = new Sell();
+#endif
         }
 
         public object Content

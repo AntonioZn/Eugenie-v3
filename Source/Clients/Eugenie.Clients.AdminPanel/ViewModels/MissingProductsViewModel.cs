@@ -8,6 +8,7 @@
     using Autofac;
 
     using Common.Contracts;
+    using Common.Contracts.KeyHandlers;
     using Common.Models;
     using Common.WebApiModels;
     using Common.Еxtensions;
@@ -30,10 +31,10 @@
 
             this.MissingProducts = new ObservableCollection<MissingProduct>();
 
-            this.HandleEnterCommand = new RelayCommand(this.HandleEnter);
+            this.Enter = new RelayCommand(this.HandleEnter);
         }
 
-        public ICommand HandleEnterCommand { get; }
+        public ICommand Enter { get; }
 
         public MissingProduct SelectedProduct { get; set; }
 

@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Contracts
+﻿namespace Eugenie.Clients.Common.Contracts.KeyHandlers
 {
     public interface IDeleteHandler
     {

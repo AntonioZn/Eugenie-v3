@@ -96,10 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\HandleBarcodeScannerWindowBehavior.cs" />
-    <Compile Include="Contracts\IBarcodeHandler.cs" />
-    <Compile Include="Contracts\IDeleteHandler.cs" />
-    <Compile Include="Contracts\IEnterHandler.cs" />
-    <Compile Include="Contracts\IEscapeHandler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IBarcodeHandler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IDeleteHandler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IEnterHandler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IEscapeHandler.cs" />
     <Compile Include="Contracts\IServerStorage.cs" />
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />

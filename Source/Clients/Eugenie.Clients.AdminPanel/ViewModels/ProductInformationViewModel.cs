@@ -6,6 +6,7 @@
     using System.Windows.Input;
 
     using Common.Contracts;
+    using Common.Contracts.KeyHandlers;
     using Common.Helpers;
     using Common.Models;
     using Common.Еxtensions;

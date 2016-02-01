@@ -28,7 +28,6 @@
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LoginViewModel>().InstancePerLifetimeScope();

@@ -9,6 +9,7 @@
     using Autofac;
 
     using Common.Contracts;
+    using Common.Contracts.KeyHandlers;
     using Common.WebApiModels;
     using Common.Еxtensions;
 
@@ -29,10 +30,10 @@
             this.manager = manager;
             this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
 
-            this.HandleEnterCommand = new RelayCommand(this.HandleEnter);
+            this.Enter = new RelayCommand(this.HandleEnter);
         }
         
-        public ICommand HandleEnterCommand { get; }
+        public ICommand Enter { get; }
 
         public Report SelectedReport { get; set; }
 

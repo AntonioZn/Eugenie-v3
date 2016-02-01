@@ -11,12 +11,14 @@
 
         int Count();
 
-        Product AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates);
+        void AddOrUpdate(string name, string newName, decimal? buyingPrice, decimal? sellingPrice, MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates);
 
         IQueryable<Product> All();
 
-        Product FindByName(string name);
+        IQueryable<Product> GetByBarcode(string barcode);
 
-        IQueryable<Product> FindByQuantity(decimal quantity);
+        IQueryable<Product> GetByQuantity(decimal quantity);
+
+        IQueryable<Product> GetByName(string name);
     }
 }

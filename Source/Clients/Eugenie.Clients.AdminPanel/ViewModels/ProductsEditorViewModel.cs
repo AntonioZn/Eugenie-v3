@@ -8,6 +8,7 @@
     using System.Windows.Input;
 
     using Common.Contracts;
+    using Common.Contracts.KeyHandlers;
     using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
@@ -33,10 +34,10 @@
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
             this.manager.ProductsCacheChanged += this.OnServerTestingFinished;
 
-            this.HandleEnterCommand = new RelayCommand(this.HandleEnter);
+            this.Enter = new RelayCommand(this.HandleEnter);
         }
 
-        public ICommand HandleEnterCommand { get; }
+        public ICommand Enter { get; }
 
         public void HandleBarcode(string barcode)
         {
@@ -74,7 +75,7 @@
             set
             {
                 this.Set(() => this.SearchValue, ref this.searchValue, value);
-                var searchAsArray = value.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var searchAsArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 this.Products.Filter = (obj) =>
                 {
