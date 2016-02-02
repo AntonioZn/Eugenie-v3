@@ -59,17 +59,19 @@
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; }
 
         // GET api/Account/UserInfo
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
-            var externalLogin = ExternalLoginData.FromIdentity(this.User.Identity as ClaimsIdentity);
+            //var externalLogin = ExternalLoginData.FromIdentity(this.User.Identity as ClaimsIdentity);
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
 
             return new UserInfoViewModel
                    {
-                       Email = this.User.Identity.GetUserName(),
-                       HasRegistered = externalLogin == null,
-                       LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                       FirstName = user.FirstName,
+                       LastName = user.LastName
+                       //HasRegistered = externalLogin == null,
+                       //LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
                    };
         }
 
