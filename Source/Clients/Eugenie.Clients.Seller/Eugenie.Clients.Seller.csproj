@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ProductsSearchViewModel.cs" />
+    <Compile Include="ViewModels\QuantityEditorViewModel.cs" />
     <Compile Include="ViewModels\SellViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Login.xaml.cs">
@@ -102,6 +103,9 @@
     </Compile>
     <Compile Include="Views\ProductsSearch.xaml.cs">
       <DependentUpon>ProductsSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuantityEditor.xaml.cs">
+      <DependentUpon>QuantityEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Sell.xaml.cs">
       <DependentUpon>Sell.xaml</DependentUpon>
@@ -123,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductsSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QuantityEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

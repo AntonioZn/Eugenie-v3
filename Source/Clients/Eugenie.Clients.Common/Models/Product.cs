@@ -16,6 +16,7 @@
         private string name;
         private decimal buyingPrice;
         private decimal? sellingPrice;
+        private decimal? quantity;
         private MeasureType measure;
         private ObservableCollection<Barcode> barcodes;
         private ObservableCollection<ExpirationDate> expirationDates;
@@ -82,7 +83,18 @@
             }
         }
 
-        public decimal? Quantity { get; set; }
+        public decimal? Quantity
+        {
+            get
+            {
+                return this.quantity;
+            }
+
+            set
+            {
+                this.Set(() => this.Quantity, ref this.quantity, value);
+            }
+        }
 
         public ICollection<Barcode> Barcodes
         {

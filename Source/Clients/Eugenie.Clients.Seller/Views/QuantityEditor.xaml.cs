@@ -1,10 +1,10 @@
-﻿namespace Eugenie.Clients.AdminPanel.Views
+﻿namespace Eugenie.Clients.Seller.Views
 {
     using GalaSoft.MvvmLight;
 
-    public partial class ReportDetails
+    public partial class QuantityEditor
     {
-        public ReportDetails(ViewModelBase viewModel)
+        public QuantityEditor(ViewModelBase viewModel)
         {
             this.InitializeComponent();
             this.DataContext = viewModel;

@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System.Linq;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -67,15 +68,29 @@
 
         public async void HandleF1()
         {
-            var viewModel = new ProductsSearchViewModel(this.apiClient);
-            var dialog = new ProductsSearch(viewModel);
+            var productsSearchViewModel = new ProductsSearchViewModel(this.apiClient);
+            var productsSearch = new ProductsSearch(productsSearchViewModel);
 
-            var result = await DialogHost.Show(dialog, "RootDialog");
+            var result = await DialogHost.Show(productsSearch, "RootDialog");
             if ((bool)result)
             {
-                var product = viewModel.SelectedProduct;
-                product.Quantity = 1;
-                this.Basket.Add(product);
+                decimal quantity = 1;
+                var existingProduct = this.Basket.Products.FirstOrDefault(x => x.Id == productsSearchViewModel.SelectedProduct.Id);
+                if (existingProduct != null)
+                {
+                    quantity = existingProduct.Quantity.Value + 1;
+                }
+                
+                var quantityEditorViewModel = new QuantityEditorViewModel(quantity, productsSearchViewModel.SelectedProduct.Measure);
+                var quantityEditor = new QuantityEditor(quantityEditorViewModel);
+                result = await DialogHost.Show(quantityEditor, "RootDialog");
+
+                if ((bool)result)
+                {
+                    var product = productsSearchViewModel.SelectedProduct;
+                    product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
+                    this.Basket.Add(product);
+                }
             }
         }
 

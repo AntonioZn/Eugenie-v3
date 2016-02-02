@@ -44,6 +44,12 @@
 
         public void Add(Product product)
         {
+            var existingProduct = this.Products.FirstOrDefault(x => x.Id == product.Id);
+            if (existingProduct != null)
+            {
+                this.Products.Remove(existingProduct);
+            }
+
             this.Products.Add(product);
             this.CalculatePrice();
         }
@@ -51,7 +57,7 @@
         public void Delete(Product product)
         {
             this.Products.Remove(product);
-            this.CalculatePrice();;
+            this.CalculatePrice();
         }
 
         public void CalculatePrice()

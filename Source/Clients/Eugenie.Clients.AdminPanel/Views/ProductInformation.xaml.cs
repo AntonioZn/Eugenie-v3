@@ -1,13 +1,13 @@
 ﻿namespace Eugenie.Clients.AdminPanel.Views
 {
-    using ViewModels;
+    using GalaSoft.MvvmLight;
 
     public partial class ProductInformation
     {
-        public ProductInformation(ProductInformationViewModel model)
+        public ProductInformation(ViewModelBase viewModel)
         {
             this.InitializeComponent();
-            this.DataContext = model;
+            this.DataContext = viewModel;
         }
     }
 }
