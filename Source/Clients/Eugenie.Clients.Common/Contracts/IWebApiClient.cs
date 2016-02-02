@@ -25,5 +25,9 @@
         Task<IEnumerable<Seller>> GetSellersAsync(HttpClient client);
 
         Task<ReportDetailsResponse> GetDealsForSeller(HttpClient client, string username, DateTime start, DateTime end);
+
+        Task<UserInfoResponse> GetUserInfo(HttpClient client);
+
+        Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name);
     }
 }

@@ -24,7 +24,7 @@
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <behaviors:NavigateDataGridWithArrowsBehavior />
-        <behaviors:KeyHandlersBehavior />
+        <commonBehaviors:KeyHandlersBehavior />
         <commonBehaviors:HandleBarcodeScannerWindowBehavior />
     </i:Interaction.Behaviors>
     <Grid>

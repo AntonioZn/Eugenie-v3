@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\HandleBarcodeScannerWindowBehavior.cs" />
+    <Compile Include="Behaviors\KeyHandlersBehavior.cs" />
     <Compile Include="Contracts\KeyHandlers\IBarcodeHandler.cs" />
     <Compile Include="Contracts\KeyHandlers\IDeleteHandler.cs" />
     <Compile Include="Contracts\KeyHandlers\IEnterHandler.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
+    <Compile Include="Contracts\KeyHandlers\IF1Handler.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="WebApiModels\Sell.cs" />
     <Compile Include="WebApiModels\Seller.cs" />
     <Compile Include="WebApiModels\Shipment.cs" />
+    <Compile Include="WebApiModels\UserInfoResponse.cs" />
     <Compile Include="WebApiModels\Waste.cs" />
     <Compile Include="Еxtensions\GenericExtensions.cs" />
     <Compile Include="Еxtensions\EnumerableExtensions.cs" />

@@ -42,8 +42,7 @@
                 x.Id,
                 x.Name,
                 x.Measure,
-                x.SellingPrice,
-                x.Barcodes
+                x.SellingPrice
             }));
         }
 
@@ -61,8 +60,7 @@
                 x.Id,
                 x.Name,
                 x.Measure,
-                x.SellingPrice,
-                x.Barcodes
+                x.SellingPrice
             }).FirstOrDefault());
         }
 

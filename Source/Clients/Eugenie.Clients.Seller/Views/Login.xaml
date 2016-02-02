@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -15,8 +16,10 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=LoginViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid FocusManager.FocusedElement="{Binding ElementName=txtName}">
-        <Grid VerticalAlignment="Center"
-              HorizontalAlignment="Center">
+        <materialDesign:Card VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             Padding="16">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="300" />
@@ -54,6 +57,7 @@
                     Command="{Binding Login}"
                     CommandParameter="{Binding ElementName=txtPassword}">
             </Button>
-        </Grid>
+            </Grid>
+        </materialDesign:Card>
     </Grid>
 </UserControl>

@@ -23,6 +23,7 @@
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <commonBehaviors:HandleBarcodeScannerWindowBehavior />
+        <commonBehaviors:KeyHandlersBehavior />
     </i:Interaction.Behaviors>
     <Grid>
         <materialDesign:DialogHost x:Name="dialogHost"

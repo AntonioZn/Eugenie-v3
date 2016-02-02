@@ -74,5 +74,21 @@
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<MissingProduct>>(result);
         }
+
+        public async Task<UserInfoResponse> GetUserInfo(HttpClient client)
+        {
+            var response = await client.GetAsync($"api/account/userinfo");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<UserInfoResponse>(result);
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name)
+        {
+            var response = await client.GetAsync($"api/products?name={name}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
+        }
     }
 }

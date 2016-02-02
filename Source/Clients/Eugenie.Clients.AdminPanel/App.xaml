@@ -15,8 +15,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                             Opacity="0" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                             Color="DeepSkyBlue" />
             <Style x:Key="NormalTabItemStyle"
                    TargetType="{x:Type dragablz:DragablzItem}"
                    BasedOn="{StaticResource MaterialDesignDragableTabItemStyle}">
