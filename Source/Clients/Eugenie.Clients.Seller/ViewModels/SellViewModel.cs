@@ -95,7 +95,7 @@
                 startingQuantity = existingProduct.Quantity.Value + 1;
             }
 
-            var quantityEditorViewModel = new QuantityEditorViewModel(startingQuantity, product.Measure);
+            var quantityEditorViewModel = new QuantityEditorViewModel(startingQuantity, product.Measure, product.Name);
             var quantityEditor = new QuantityEditor(quantityEditorViewModel);
             var result = await DialogHost.Show(quantityEditor, "RootDialog");
 

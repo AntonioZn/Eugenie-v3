@@ -31,7 +31,7 @@
         <TextBlock Grid.Column="1"
                    Margin="0,0,20,0"
                    Text="Продуктът не е намерен"
-                   FontSize="100"
+                   Style="{StaticResource MaterialDesignDisplay4TextBlock}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
     </Grid>

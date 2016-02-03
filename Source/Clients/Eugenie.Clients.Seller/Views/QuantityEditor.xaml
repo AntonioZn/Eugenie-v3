@@ -25,9 +25,21 @@
         <materialDesign:ColorZone Grid.Row="0"
                                   Mode="PrimaryDark"
                                   Padding="16">
-            <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
-                       Text="Количество"
-                       HorizontalAlignment="Center" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                           Text="Количество"
+                           HorizontalAlignment="Center" />
+                <TextBlock Grid.Row="1"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           FontSize="20"
+                           Text="{Binding Name}"
+                           HorizontalAlignment="Center" />
+            </Grid>
         </materialDesign:ColorZone>
         <models:EugenieTextBox x:Name="txtQuantity"
                                AutoSelect="True"
