@@ -11,11 +11,13 @@
 
     public class QuantityEditorViewModel : ViewModelBase
     {
+        private readonly decimal minimumQuantity;
         private readonly MeasureType measure;
         private string quantity;
 
-        public QuantityEditorViewModel(decimal startingQuantity, MeasureType measure, string name)
+        public QuantityEditorViewModel(decimal startingQuantity, decimal minimumQuantity, MeasureType measure, string name)
         {
+            this.minimumQuantity = minimumQuantity;
             this.measure = measure;
             this.Name = name;
             this.Quantity = startingQuantity.ToString();
@@ -42,13 +44,16 @@
                 this.Set(() => this.Quantity, ref this.quantity, this.RestrictQuantity(value));
             }
         }
-        
+
         private void HandleAdd()
         {
             decimal result;
             if (decimal.TryParse(this.Quantity, out result))
             {
-                DialogHost.CloseDialogCommand.Execute(true, null);
+                if (result >= this.minimumQuantity)
+                {
+                    DialogHost.CloseDialogCommand.Execute(true, null);
+                }
             }
         }
 

@@ -95,7 +95,7 @@
                 startingQuantity = existingProduct.Quantity.Value + 1;
             }
 
-            var quantityEditorViewModel = new QuantityEditorViewModel(startingQuantity, product.Measure, product.Name);
+            var quantityEditorViewModel = new QuantityEditorViewModel(startingQuantity, this.GetMinimumQuantity(product), product.Measure, product.Name);
             var quantityEditor = new QuantityEditor(quantityEditorViewModel);
             var result = await DialogHost.Show(quantityEditor, "RootDialog");
 
@@ -104,6 +104,16 @@
                 product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
                 this.Basket.Add(product);
             }
+        }
+
+        private decimal GetMinimumQuantity(Product product)
+        {
+            if (product.Measure == MeasureType.бр)
+            {
+                return 1;
+            }
+
+            return 0.05M;
         }
 
         private async void Initialize()
