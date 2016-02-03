@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -100,8 +101,10 @@
 
         private void HandleAdd()
         {
-            if (this.SelectedProduct != null)
+            if (this.Products.Any())
             {
+                this.SelectedProduct = this.SelectedProduct ?? this.Products.FirstOrDefault();
+
                 DialogHost.CloseDialogCommand.Execute(true, null);
             }
         }

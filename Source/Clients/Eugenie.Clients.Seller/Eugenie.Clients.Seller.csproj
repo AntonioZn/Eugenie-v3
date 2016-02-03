@@ -94,6 +94,9 @@
     <Compile Include="ViewModels\BasketViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\MissingProduct.xaml.cs">
+      <DependentUpon>MissingProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ProductsSearchViewModel.cs" />
     <Compile Include="ViewModels\QuantityEditorViewModel.cs" />
     <Compile Include="ViewModels\SellViewModel.cs" />
@@ -122,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MissingProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

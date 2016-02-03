@@ -92,7 +92,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
     <Compile Include="ViewModels\NewServerViewModel.cs" />
@@ -253,7 +252,9 @@
       <Name>Eugenie.Clients.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

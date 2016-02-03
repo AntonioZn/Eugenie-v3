@@ -24,6 +24,7 @@
     <i:Interaction.Behaviors>
         <commonBehaviors:HandleBarcodeScannerWindowBehavior />
         <commonBehaviors:KeyHandlersBehavior />
+        <commonBehaviors:NavigateDataGridWithArrowsBehavior />
     </i:Interaction.Behaviors>
     <Grid>
         <materialDesign:DialogHost x:Name="dialogHost"

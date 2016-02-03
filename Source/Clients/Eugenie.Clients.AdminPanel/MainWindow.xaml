@@ -7,7 +7,6 @@
         xmlns:domain="clr-namespace:Eugenie.Clients.AdminPanel.Domain"
         xmlns:views="clr-namespace:Eugenie.Clients.AdminPanel.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Eugenie.Clients.AdminPanel.Behaviors"
         xmlns:commonBehaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
@@ -23,7 +22,7 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
-        <behaviors:NavigateDataGridWithArrowsBehavior />
+        <commonBehaviors:NavigateDataGridWithArrowsBehavior />
         <commonBehaviors:KeyHandlersBehavior />
         <commonBehaviors:HandleBarcodeScannerWindowBehavior />
     </i:Interaction.Behaviors>

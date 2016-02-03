@@ -31,5 +31,7 @@
         Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name);
 
         Task<Product> GetProductById(HttpClient client, int id);
+
+        Task<Product> GetProductByBarcode(HttpClient client, string barcode);
     }
 }

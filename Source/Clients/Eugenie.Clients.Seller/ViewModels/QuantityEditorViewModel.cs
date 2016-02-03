@@ -14,10 +14,10 @@
         private readonly MeasureType measure;
         private string quantity;
 
-        public QuantityEditorViewModel(decimal quantity, MeasureType measure)
+        public QuantityEditorViewModel(decimal startingQuantity, MeasureType measure)
         {
             this.measure = measure;
-            this.Quantity = quantity.ToString();
+            this.Quantity = startingQuantity.ToString();
 
             this.Add = new RelayCommand(this.HandleAdd);
             this.Cancel = new RelayCommand(this.HandleCancel);

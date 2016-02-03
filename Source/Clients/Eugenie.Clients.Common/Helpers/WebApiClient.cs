@@ -98,5 +98,13 @@
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Product>(result);
         }
+
+        public async Task<Product> GetProductByBarcode(HttpClient client, string barcode)
+        {
+            var response = await client.GetAsync($"api/products?barcode={barcode}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Product>(result);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.AdminPanel.Behaviors
+﻿namespace Eugenie.Clients.Common.Behaviors
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -23,14 +23,10 @@
 
         private void PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            var dataGrid = this.GetDataGrid();
 
-            if (!dialogHost.IsOpen && (e.Key == Key.Down || e.Key == Key.Up))
+            if (e.Key == Key.Down || e.Key == Key.Up)
             {
-                var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var userControl = contentControl.Content as UserControl;
-                var dataGrid = userControl.FindName("dataGrid") as DataGrid;
-
                 if (dataGrid?.Items.Count > 0)
                 {
                     if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
@@ -50,6 +46,20 @@
                     e.Handled = true;
                 }
             }
+        }
+
+        private DataGrid GetDataGrid()
+        {
+            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            if (dialogHost.IsOpen)
+            {
+                var dialogContent = dialogHost.DialogContent as UserControl;
+                return dialogContent.FindName("dataGrid") as DataGrid;
+            }
+
+            var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
+            var userControl = contentControl.Content as UserControl;
+            return userControl.FindName("dataGrid") as DataGrid;
         }
     }
 }

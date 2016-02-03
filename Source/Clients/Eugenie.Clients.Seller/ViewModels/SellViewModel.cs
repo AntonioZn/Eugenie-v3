@@ -13,7 +13,7 @@
 
     using Views;
 
-    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IEscapeHandler, IF1Handler
+    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler
     {
         private readonly IWebApiClient apiClient;
         private string fullname;
@@ -46,9 +46,19 @@
 
         public Product SelectedProduct { get; set; }
 
-        public void HandleBarcode(string barcode)
+        public async void HandleBarcode(string barcode)
         {
-            throw new System.NotImplementedException();
+            DialogHost.CloseDialogCommand.Execute(false, null);
+
+            var product = await this.apiClient.GetProductByBarcode(ViewModelLocator.httpClient, barcode);
+            if (product != null)
+            {
+                this.AddToBasket(product);
+            }
+            else
+            {
+                await DialogHost.Show(new MissingProduct(), "RootDialog");
+            }
         }
 
         public void HandleDelete()
@@ -58,12 +68,10 @@
 
         public void HandleEnter()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void HandleEscape()
-        {
-            throw new System.NotImplementedException();
+            if (this.SelectedProduct != null)
+            {
+                this.AddToBasket(this.SelectedProduct);
+            }
         }
 
         public async void HandleF1()
@@ -74,23 +82,27 @@
             var result = await DialogHost.Show(productsSearch, "RootDialog");
             if ((bool)result)
             {
-                decimal quantity = 1;
-                var existingProduct = this.Basket.Products.FirstOrDefault(x => x.Id == productsSearchViewModel.SelectedProduct.Id);
-                if (existingProduct != null)
-                {
-                    quantity = existingProduct.Quantity.Value + 1;
-                }
-                
-                var quantityEditorViewModel = new QuantityEditorViewModel(quantity, productsSearchViewModel.SelectedProduct.Measure);
-                var quantityEditor = new QuantityEditor(quantityEditorViewModel);
-                result = await DialogHost.Show(quantityEditor, "RootDialog");
+                this.AddToBasket(productsSearchViewModel.SelectedProduct);
+            }
+        }
 
-                if ((bool)result)
-                {
-                    var product = productsSearchViewModel.SelectedProduct;
-                    product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
-                    this.Basket.Add(product);
-                }
+        private async void AddToBasket(Product product)
+        {
+            decimal startingQuantity = 1;
+            var existingProduct = this.Basket.Products.FirstOrDefault(x => x.Id == product.Id);
+            if (existingProduct != null)
+            {
+                startingQuantity = existingProduct.Quantity.Value + 1;
+            }
+
+            var quantityEditorViewModel = new QuantityEditorViewModel(startingQuantity, product.Measure);
+            var quantityEditor = new QuantityEditor(quantityEditorViewModel);
+            var result = await DialogHost.Show(quantityEditor, "RootDialog");
+
+            if ((bool)result)
+            {
+                product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
+                this.Basket.Add(product);
             }
         }
 
