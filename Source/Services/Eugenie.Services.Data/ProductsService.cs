@@ -52,6 +52,11 @@
             return this.productsRepository.All().Where(x => nameAsArray.All(n => x.Name.Contains(n)));
         }
 
+        public IQueryable<Product> GetById(int id)
+        {
+            return this.productsRepository.All().Where(x => x.Id == id);
+        }
+
         public IQueryable<Product> GetByQuantity(decimal quantity)
         {
             return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);

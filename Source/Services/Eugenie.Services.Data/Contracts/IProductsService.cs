@@ -20,5 +20,7 @@
         IQueryable<Product> GetByQuantity(decimal quantity);
 
         IQueryable<Product> GetByName(string name);
+
+        IQueryable<Product> GetById(int id);
     }
 }

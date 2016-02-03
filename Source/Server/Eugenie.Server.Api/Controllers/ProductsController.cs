@@ -35,6 +35,18 @@
         }
 
         [HttpGet]
+        public IHttpActionResult GetById(int id)
+        {
+            return this.Ok(this.productsService.GetById(id).Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.Measure,
+                x.SellingPrice
+            }).FirstOrDefault());
+        }
+
+        [HttpGet]
         public IHttpActionResult GetByName(string name)
         {
             return this.Ok(this.productsService.GetByName(name).Select(x => new
