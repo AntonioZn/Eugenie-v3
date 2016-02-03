@@ -64,17 +64,35 @@
                     return;
                 }
 
+                int id;
+                if (int.TryParse(value, out id))
+                {
+                    this.search = value;
+                    this.SearchById(id);
+                    return;
+                }
+
                 if (this.search != value.Trim())
                 {
                     this.search = value.RemoveMultipleWhiteSpaces();
-                    this.HandleSearch();
+                    this.SearchByName();
                 }
 
                 this.search = value.RemoveMultipleWhiteSpaces();
             }
         }
 
-        private async void HandleSearch()
+        private async void SearchById(int id)
+        {
+            var product = await this.apiClient.GetProductById(ViewModelLocator.httpClient, id);
+            this.products.Clear();;
+            if (product != null)
+            {
+                this.products.Add(product);
+            }
+        }
+
+        private async void SearchByName()
         {
             var responseProducts = await this.apiClient.GetProductsByNameAsync(ViewModelLocator.httpClient, this.Search);
             this.Products = responseProducts;

@@ -90,5 +90,13 @@
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
+        
+        public async Task<Product> GetProductById(HttpClient client, int id)
+        {
+            var response = await client.GetAsync($"api/products?id={id}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Product>(result);
+        }
     }
 }

@@ -29,5 +29,7 @@
         Task<UserInfoResponse> GetUserInfo(HttpClient client);
 
         Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name);
+
+        Task<Product> GetProductById(HttpClient client, int id);
     }
 }
