@@ -6,6 +6,7 @@
     using Common.Contracts;
     using Common.Contracts.KeyHandlers;
     using Common.Models;
+    using Common.WebApiModels;
 
     using GalaSoft.MvvmLight;
 
@@ -13,7 +14,9 @@
 
     using Views;
 
-    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler
+    using MissingProduct = Views.MissingProduct;
+
+    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler, IF10Handler, IF11Handler, IF12Handler
     {
         private readonly IWebApiClient apiClient;
         private string fullname;
@@ -84,6 +87,33 @@
             {
                 this.AddToBasket(productsSearchViewModel.SelectedProduct);
             }
+        }
+
+        public void HandleF10()
+        {
+            this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                                                                                                            {
+                                                                                                                Id = x.Id,
+                                                                                                                Quantity = x.Quantity.GetValueOrDefault()
+                                                                                                            }));
+
+            this.Basket.Clear();
+        }
+
+        public void HandleF11()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void HandleF12()
+        {
+            this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+            {
+                Id = x.Id,
+                Quantity = x.Quantity.GetValueOrDefault()
+            }));
+
+            this.Basket.Clear();
         }
 
         private async void AddToBasket(Product product)

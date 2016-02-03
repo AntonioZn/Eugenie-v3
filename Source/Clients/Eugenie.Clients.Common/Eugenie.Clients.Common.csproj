@@ -106,6 +106,9 @@
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Contracts\IServerManager.cs" />
+    <Compile Include="Contracts\KeyHandlers\IF10Handler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IF11Handler.cs" />
+    <Compile Include="Contracts\KeyHandlers\IF12Handler.cs" />
     <Compile Include="Contracts\KeyHandlers\IF1Handler.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="WebApiModels\AddProductModel.cs" />
     <Compile Include="Models\Barcode.cs" />
     <Compile Include="Models\ExpirationDate.cs" />
+    <Compile Include="WebApiModels\IdQuantityPair.cs" />
     <Compile Include="WebApiModels\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
     <Compile Include="WebApiModels\MissingProduct.cs" />

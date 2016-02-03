@@ -20,10 +20,10 @@
         {
             var reports = this.reportsService.GetReports().OrderByDescending(x => x.Date).Select(x => new
             {
-                Date = x.Date,
+                x.Date,
                 Earning = x.Sells.Sum(y => (decimal?)y.Total) ?? 0,
                 Waste = x.Waste.Sum(y => (decimal?)y.Total) ?? 0,
-                StockPrice = x.StockPrice
+                x.StockPrice
             }).ToList();
 
             return this.Ok(reports);
@@ -33,25 +33,25 @@
         {
             var reports = this.reportsService.GetReports().Select(r => new
             {
-                Date = r.Date,
+                r.Date,
                 Waste = r.Waste.Select(w => new
                 {
-                    Date = w.Date,
-                    Total = w.Total,
+                    w.Date,
+                    w.Total,
                     Products = w.Products.Select(pr => new
                     {
-                        Name = pr.Product.Name,
-                        Quantity = pr.Quantity
+                        pr.Product.Name,
+                        pr.Quantity
                     })
                 }),
                 Sells = r.Sells.Select(s => new
                 {
-                    Date = s.Date,
-                    Total = s.Total,
+                    s.Date,
+                    s.Total,
                     Products = s.Products.Select(pr => new
                     {
-                        Name = pr.Product.Name,
-                        Quantity = pr.Quantity
+                        pr.Product.Name,
+                        pr.Quantity
                     })
                 }),
                 Shipments = r.Shipments.Select(sh => new

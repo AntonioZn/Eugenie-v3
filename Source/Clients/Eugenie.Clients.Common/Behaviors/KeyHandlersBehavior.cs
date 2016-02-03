@@ -25,14 +25,10 @@
 
         private void PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            var dataContext = this.GetDataContext();
 
-            if (!dialogHost.IsOpen && (e.Key == Key.Enter || e.Key == Key.Delete || e.Key == Key.Escape || e.Key == Key.F1))
+            if (e.Key == Key.Enter || e.Key == Key.Delete || e.Key == Key.Escape || e.Key == Key.F1 || e.SystemKey == Key.F10 || e.Key == Key.F11 || e.Key == Key.F12)
             {
-                var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var userControl = contentControl.Content as UserControl;
-                var dataContext = userControl?.DataContext;
-
                 if (dataContext != null)
                 {
                     if (e.Key == Key.Enter && dataContext is IEnterHandler)
@@ -55,8 +51,37 @@
                         ((IF1Handler)dataContext).HandleF1();
                         e.Handled = true;
                     }
+                    else if (e.SystemKey == Key.F10 && dataContext is IF10Handler)
+                    {
+                        ((IF10Handler)dataContext).HandleF10();
+                        e.Handled = true;
+                    }
+                    else if (e.Key == Key.F11 && dataContext is IF11Handler)
+                    {
+                        ((IF11Handler)dataContext).HandleF11();
+                        e.Handled = true;
+                    }
+                    else if (e.Key == Key.F12 && dataContext is IF12Handler)
+                    {
+                        ((IF12Handler)dataContext).HandleF12();
+                        e.Handled = true;
+                    }
                 }
             }
+        }
+
+        private object GetDataContext()
+        {
+            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            if (dialogHost.IsOpen)
+            {
+                var dialogContent = dialogHost.DialogContent as UserControl;
+                return dialogContent?.DataContext;
+            }
+
+            var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
+            var userControl = contentControl?.Content as UserControl;
+            return userControl?.DataContext;
         }
     }
 }

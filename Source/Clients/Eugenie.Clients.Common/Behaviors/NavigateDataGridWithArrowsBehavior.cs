@@ -54,12 +54,12 @@
             if (dialogHost.IsOpen)
             {
                 var dialogContent = dialogHost.DialogContent as UserControl;
-                return dialogContent.FindName("dataGrid") as DataGrid;
+                return dialogContent?.FindName("dataGrid") as DataGrid;
             }
 
             var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-            var userControl = contentControl.Content as UserControl;
-            return userControl.FindName("dataGrid") as DataGrid;
+            var userControl = contentControl?.Content as UserControl;
+            return userControl?.FindName("dataGrid") as DataGrid;
         }
     }
 }

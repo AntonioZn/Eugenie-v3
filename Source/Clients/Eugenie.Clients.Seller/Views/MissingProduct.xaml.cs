@@ -12,7 +12,7 @@
         public MissingProduct()
         {
             this.InitializeComponent();
-            this.timer = new Timer(5000);
+            this.timer = new Timer(3000);
             this.timer.Elapsed += this.OnElapsed;
             this.timer.Start();
         }

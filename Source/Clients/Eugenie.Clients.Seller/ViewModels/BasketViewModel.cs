@@ -60,7 +60,13 @@
             this.CalculatePrice();
         }
 
-        public void CalculatePrice()
+        public void Clear()
+        {
+            this.Products.Clear();
+            this.TotalPrice = 0;
+        }
+
+        private void CalculatePrice()
         {
             this.TotalPrice = this.Products.Sum(x => x.SellingPrice * x.Quantity).GetValueOrDefault();
         }

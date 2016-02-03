@@ -106,5 +106,25 @@
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Product>(result);
         }
+
+        public async Task<HttpStatusCode> WasteProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model)
+        {
+            var serialized = JsonConvert.SerializeObject(model);
+            var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync("api/deals/waste", content);
+
+            return response.StatusCode;
+        }
+
+        public async Task<HttpStatusCode> SellProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model)
+        {
+            var serialized = JsonConvert.SerializeObject(model);
+            var content = new StringContent(serialized, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync("api/deals/sell", content);
+
+            return response.StatusCode;
+        }
     }
 }

@@ -23,7 +23,7 @@
                                                                                             Name = x.Name,
                                                                                             Barcode = x.Barcode,
                                                                                             Date = x.Date
-                                                                                        }).ToList());
+                                                                                        }));
         }
     }
 }

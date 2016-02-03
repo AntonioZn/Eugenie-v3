@@ -1,12 +1,13 @@
 ﻿namespace Eugenie.Server.Api.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
 
-    using Microsoft.AspNet.Identity;
+    using Data.Models.DummyModels;
 
-    using Models.Products;
+    using Microsoft.AspNet.Identity;
 
     using Services.Data.Contracts;
 
@@ -27,25 +28,25 @@
         {
             var sells = this.dealsService.GetSells(username, start, end.AddDays(1)).Select(x => new
             {
-                Date = x.Date,
-                Total = x.Total,
+                x.Date,
+                x.Total,
                 Products = x.Products.Select(pr => new
                 {
-                    Name = pr.Product.Name,
-                    Quantity = pr.Quantity,
+                    pr.Product.Name,
+                    pr.Quantity,
                 })
-            });
+            }).OrderByDescending(x => x.Date);
 
             var waste = this.dealsService.GetWaste(username, start, end.AddDays(1)).Select(x => new
             {
-                Date = x.Date,
-                Total = x.Total,
+                x.Date,
+                x.Total,
                 Products = x.Products.Select(pr => new
                 {
-                    Name = pr.Product.Name,
-                    Quantity = pr.Quantity,
+                    pr.Product.Name,
+                    pr.Quantity,
                 })
-            });
+            }).OrderByDescending(x => x.Date);
 
             var result = new
                          {
@@ -57,8 +58,8 @@
         }
 
         [HttpPut]
-        [Route("sells")]
-        public IHttpActionResult Sell(SellProductsModel model)
+        [Route("sell")]
+        public IHttpActionResult Sell(IEnumerable<IdQuantityPair> model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -67,7 +68,7 @@
 
             try
             {
-                this.dealsService.Sell(this.User.Identity.GetUserId(), model.Products);
+                this.dealsService.Sell(this.User.Identity.GetUserId(), model);
             }
             catch (ArgumentException ex)
             {
@@ -79,7 +80,7 @@
 
         [HttpPut]
         [Route("waste")]
-        public IHttpActionResult Waste(SellProductsModel model)
+        public IHttpActionResult Waste(IEnumerable<IdQuantityPair> model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -88,7 +89,7 @@
 
             try
             {
-                this.dealsService.Waste(this.User.Identity.GetUserId(), model.Products);
+                this.dealsService.Waste(this.User.Identity.GetUserId(), model);
             }
             catch (ArgumentException ex)
             {

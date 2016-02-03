@@ -33,5 +33,9 @@
         Task<Product> GetProductById(HttpClient client, int id);
 
         Task<Product> GetProductByBarcode(HttpClient client, string barcode);
+
+        Task<HttpStatusCode> WasteProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model);
+
+        Task<HttpStatusCode> SellProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model);
     }
 }
