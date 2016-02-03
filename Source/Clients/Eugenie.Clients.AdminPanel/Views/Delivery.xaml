@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:Eugenie.Clients.AdminPanel.Views.Controls"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
              Height="Auto"
              Width="Auto"
              IsTabStop="False"
@@ -15,7 +16,7 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=DeliveryViewModel, Source={StaticResource ViewModelLocator}}">
     <materialDesign:Card x:Name="mainCard"
-        HorizontalAlignment="Center"
+                         HorizontalAlignment="Center"
                          Width="800"
                          Margin="0,20,0,0">
         <StackPanel Orientation="Vertical">
@@ -104,13 +105,15 @@
                                              Width="24"
                                              Height="24"
                                              Opacity=".56" />
-                    <TextBox Grid.Row="2"
-                             Grid.Column="1"
-                             HorizontalAlignment="Stretch"
-                             materialDesign:TextFieldAssist.Hint="Доставна цена"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             Margin="10,10,0,0"
-                             Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <models:EugenieTextBox Grid.Row="2"
+                                           AutoSelect="True"
+                                           BlockInvalidNumberCharacters="True"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Stretch"
+                                           materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                           Margin="10,10,0,0"
+                                           Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </Grid>
                 <controls:BarcodePresenter Grid.Column="1"
                                            HorizontalAlignment="Stretch"

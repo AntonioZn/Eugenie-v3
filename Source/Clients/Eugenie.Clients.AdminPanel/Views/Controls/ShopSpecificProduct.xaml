@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Eugenie.Clients.AdminPanel.Views.Controls.ShopSpecificProduct"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common">
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
         <StackPanel>
             <ItemsControl IsTabStop="False"
@@ -22,28 +23,32 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0"
-                                         VerticalAlignment="Bottom"
-                                         HorizontalAlignment="Stretch"
-                                         materialDesign:TextFieldAssist.Hint="Магазин"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         IsTabStop="False"
-                                         Focusable="False"
-                                         IsReadOnly="True"
-                                         Text="{Binding Key.Name}" />
-                                <TextBox Grid.Column="1"
-                                         VerticalAlignment="Bottom"
-                                         HorizontalAlignment="Stretch"
-                                         materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         Margin="10,0,0,0"
-                                         Text="{Binding Value.QuantityToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                                <TextBox Grid.Column="2"
-                                         VerticalAlignment="Bottom"
-                                         HorizontalAlignment="Stretch"
-                                         materialDesign:TextFieldAssist.Hint="Продажна цена"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         Margin="10,0,0,0"
-                                         Text="{Binding Value.SellingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Stretch"
+                                                       materialDesign:TextFieldAssist.Hint="Магазин"
+                                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                       IsTabStop="False"
+                                                       Focusable="False"
+                                                       IsReadOnly="True"
+                                                       Text="{Binding Key.Name}" />
+                                <models:EugenieTextBox Grid.Column="1"
+                                                       AutoSelect="True"
+                                                       BlockInvalidNumberCharacters="True"
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Stretch"
+                                                       materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                       Margin="10,0,0,0"
+                                                       Text="{Binding Value.QuantityToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <models:EugenieTextBox Grid.Column="2"
+                                                       AutoSelect="True"
+                                                       BlockInvalidNumberCharacters="True"
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Stretch"
+                                                       materialDesign:TextFieldAssist.Hint="Продажна цена"
+                                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                       Margin="10,0,0,0"
+                                                       Text="{Binding Value.SellingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                 <materialDesign:PopupBox Grid.Column="3"
                                                          ToolTipService.Placement="Right"
                                                          PlacementMode="BottomAndAlignCentres"
@@ -57,7 +62,7 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
                                             <DataGridTextColumn Binding="{Binding Batch}" />
-                                            <DataGridTemplateColumn>
+                                            <!--<DataGridTemplateColumn>
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
@@ -76,7 +81,7 @@
                                                         </Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                            </DataGridTemplateColumn>-->
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </materialDesign:PopupBox>
@@ -86,13 +91,14 @@
                                             HorizontalAlignment="Stretch"
                                             SelectedDate="{Binding Value.Date, Mode=TwoWay}"
                                             materialDesign:TextFieldAssist.Hint="Избери дата" />
-                                <TextBox Grid.Column="5"
-                                         VerticalAlignment="Bottom"
-                                         HorizontalAlignment="Stretch"
-                                         materialDesign:TextFieldAssist.Hint="Партиден №"
-                                         Text="{Binding Value.Batch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         Margin="10,0,0,0" />
+                                <models:EugenieTextBox Grid.Column="5"
+                                                       AutoSelect="True"
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Stretch"
+                                                       materialDesign:TextFieldAssist.Hint="Партиден №"
+                                                       Text="{Binding Value.Batch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                       Margin="10,0,0,0" />
                                 <Button Grid.Column="6"
                                         VerticalAlignment="Bottom"
                                         Style="{StaticResource MaterialDesignRaisedAccentButton}"

@@ -6,8 +6,8 @@
     {
         public ReportDetails(ViewModelBase viewModel)
         {
-            this.InitializeComponent();
             this.DataContext = viewModel;
+            this.InitializeComponent();
         }
     }
 }

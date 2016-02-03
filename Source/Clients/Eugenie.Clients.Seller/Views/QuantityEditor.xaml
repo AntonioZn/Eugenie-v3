@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -28,10 +29,12 @@
                        Text="Количество"
                        HorizontalAlignment="Center" />
         </materialDesign:ColorZone>
-        <TextBox x:Name="txtQuantity"
-                 Grid.Row="1"
-                 Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                 FontSize="60"/>
+        <models:EugenieTextBox x:Name="txtQuantity"
+                               AutoSelect="True"
+                               BlockInvalidNumberCharacters="True"
+                               Grid.Row="1"
+                               Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               FontSize="60" />
         <Button Grid.Row="0"
                 IsTabStop="False"
                 IsDefault="True"

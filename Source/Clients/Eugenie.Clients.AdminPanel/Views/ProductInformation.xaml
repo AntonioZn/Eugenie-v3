@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:Eugenie.Clients.AdminPanel.Views.Controls"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
              Height="Auto"
              Width="800"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -49,13 +50,14 @@
                                          Width="24"
                                          Height="24"
                                          Opacity=".56" />
-                <TextBox Grid.Row="0"
-                         Grid.Column="1"
-                         Margin="10,0,0,0"
-                         materialDesign:TextFieldAssist.Hint="Име"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         Text="{Binding MainProductViewModel.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <models:EugenieTextBox Grid.Row="0"
+                                       AutoSelect="True"
+                                       Grid.Column="1"
+                                       Margin="10,0,0,0"
+                                       materialDesign:TextFieldAssist.Hint="Име"
+                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                       HorizontalAlignment="Stretch"
+                                       Text="{Binding MainProductViewModel.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 <materialDesign:PackIcon Kind="WeightKilogram"
                                          Grid.Column="0"
                                          Grid.Row="1"
@@ -80,13 +82,15 @@
                                          Width="24"
                                          Height="24"
                                          Opacity=".56" />
-                <TextBox Grid.Row="2"
-                         Grid.Column="1"
-                         materialDesign:TextFieldAssist.Hint="Доставна цена"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Margin="10,10,0,0"
-                         HorizontalAlignment="Stretch"
-                         Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <models:EugenieTextBox Grid.Row="2"
+                                       AutoSelect="True"
+                                       BlockInvalidNumberCharacters="True"
+                                       Grid.Column="1"
+                                       materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                       Margin="10,10,0,0"
+                                       HorizontalAlignment="Stretch"
+                                       Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             </Grid>
             <controls:BarcodePresenter Grid.Column="1"
                                        HorizontalAlignment="Stretch"

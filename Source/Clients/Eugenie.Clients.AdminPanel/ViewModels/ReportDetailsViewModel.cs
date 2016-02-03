@@ -11,11 +11,12 @@
     using Common.WebApiModels;
     using Common.Еxtensions;
 
+    using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
     using MaterialDesignThemes.Wpf;
 
-    public class ReportDetailsViewModel
+    public class ReportDetailsViewModel : ViewModelBase
     {
         private readonly IWebApiClient apiClient;
         private readonly DateTime date;
