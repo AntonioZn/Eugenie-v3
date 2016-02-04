@@ -28,11 +28,8 @@
                                   IsTabStop="False"
                                   materialDesign:ShadowAssist.ShadowDepth="Depth3">
             <Grid>
-                <TextBlock Text="{Binding FullName}"
-                           HorizontalAlignment="Left"
-                           Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
                 <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
+                            HorizontalAlignment="Left">
                     <TextBlock Focusable="False"
                                Text="Сметка: "
                                Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
@@ -41,6 +38,9 @@
                                Width="300"
                                Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
                 </StackPanel>
+                <TextBlock Text="{Binding FullName}"
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
             </Grid>
         </materialDesign:ColorZone>
         <materialDesign:Card Grid.Row="1"

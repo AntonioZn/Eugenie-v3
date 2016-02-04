@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:viewModels="clr-namespace:Eugenie.Clients.Seller.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -14,10 +13,8 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
-    <UserControl.DataContext>
-        <viewModels:LoginViewModel />
-    </UserControl.DataContext>
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             DataContext="{Binding Path=LoginViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid FocusManager.FocusedElement="{Binding ElementName=txtName}">
         <materialDesign:Card VerticalAlignment="Center"
                              HorizontalAlignment="Center"

@@ -35,7 +35,7 @@
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F11)
+            if (e.Key == Key.F20)
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
                 var userControl = contentControl?.Content as UserControl;
@@ -47,7 +47,7 @@
                     e.Handled = true;
                 }
             }
-            else if (this.isScanning && e.Key == Key.F12)
+            else if (this.isScanning && e.Key == Key.F22)
             {
                 if (this.barcodeReader.Length != 0)
                 {
