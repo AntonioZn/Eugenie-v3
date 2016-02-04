@@ -50,12 +50,16 @@
                 this.Products.Remove(existingProduct);
             }
 
+            this.RemoveCoupons(product);
+
             this.Products.Add(product);
             this.CalculatePrice();
         }
 
         public void Delete(Product product)
         {
+            this.RemoveCoupons(product);
+
             this.Products.Remove(product);
             this.CalculatePrice();
         }
@@ -64,6 +68,18 @@
         {
             this.Products.Clear();
             this.TotalPrice = 0;
+        }
+
+        private void RemoveCoupons(Product product)
+        {
+            if (product.Name.Contains("хляб") && !product.Name.Contains("$"))
+            {
+                var coupons = this.Products.Where(x => x.Name.Contains("$")).ToList();
+                foreach (var coupon in coupons)
+                {
+                    this.Products.Remove(coupon);
+                }
+            }
         }
 
         private void CalculatePrice()
