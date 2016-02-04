@@ -13,6 +13,8 @@
 
     using GalaSoft.MvvmLight;
 
+    using Helpers;
+
     using MaterialDesignThemes.Wpf;
 
     using Views;
@@ -127,11 +129,24 @@
             }
         }
 
-        public void HandleF11()
+        public async void HandleF11()
         {
             if (this.Basket.Products.Any())
             {
+                var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
+                var dialog = new ChangeCalulator(viewModel);
+                var result = await DialogHost.Show(dialog, "RootDialog");
+                if ((bool)result)
+                {
+                    await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity.GetValueOrDefault()
+                    }));
 
+                    FiscalPrinterHandler.ExportReceipt(this.Basket.Products);
+                    this.Basket.Clear();
+                }
             }
             else
             {
