@@ -98,6 +98,9 @@
     <Compile Include="Views\ChangeCalculator.xaml.cs">
       <DependentUpon>ChangeCalculator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Confirm.xaml.cs">
+      <DependentUpon>Confirm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MissingProduct.xaml.cs">
       <DependentUpon>MissingProduct.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ChangeCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Confirm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

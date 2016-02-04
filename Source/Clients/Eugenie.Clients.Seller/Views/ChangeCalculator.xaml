@@ -77,6 +77,7 @@
         <models:EugenieTextBox Grid.Row="2"
                                Grid.Column="1"
                                x:Name="txtPayment"
+                               BlockInvalidNumberCharacters="True"
                                FontSize="60"
                                Text="{Binding Payment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                HorizontalAlignment="Stretch"

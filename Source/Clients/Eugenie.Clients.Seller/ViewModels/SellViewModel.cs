@@ -64,9 +64,16 @@
             }
         }
 
-        public void HandleDelete()
+        public async void HandleDelete()
         {
-            this.Basket.Delete(this.SelectedProduct);
+            if (this.SelectedProduct != null)
+            {
+                var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
+                if ((bool)result)
+                {
+                    this.Basket.Delete(this.SelectedProduct);
+                }
+            }
         }
 
         public void HandleEnter()
@@ -89,17 +96,21 @@
             }
         }
 
-        public void HandleF10()
+        public async void HandleF10()
         {
             if (this.Basket.Products.Any())
             {
-                this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
+                if ((bool)result)
                 {
-                    Id = x.Id,
-                    Quantity = x.Quantity.GetValueOrDefault()
-                }));
+                   await this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity.GetValueOrDefault()
+                    }));
 
-                this.Basket.Clear();
+                    this.Basket.Clear();
+                }
             }
         }
 
