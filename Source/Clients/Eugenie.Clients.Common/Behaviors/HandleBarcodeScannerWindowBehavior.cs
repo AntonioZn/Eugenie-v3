@@ -5,8 +5,7 @@
     using System.Windows.Interactivity;
     using System.Text;
     using System.Windows;
-
-    using Contracts;
+    
     using Contracts.KeyHandlers;
 
     public class HandleBarcodeScannerWindowBehavior : Behavior<Window>
@@ -39,8 +38,8 @@
             if (e.Key == Key.F11)
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var userControl = contentControl.Content as UserControl;
-                this.handler = userControl.DataContext as IBarcodeHandler;
+                var userControl = contentControl?.Content as UserControl;
+                this.handler = userControl?.DataContext as IBarcodeHandler;
 
                 if (this.handler != null)
                 {

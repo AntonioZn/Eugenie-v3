@@ -98,6 +98,7 @@
     <Compile Include="Behaviors\HandleBarcodeScannerWindowBehavior.cs" />
     <Compile Include="Behaviors\KeyHandlersBehavior.cs" />
     <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
+    <Compile Include="Contracts\KeyHandlers\IAltF5Handler.cs" />
     <Compile Include="Contracts\KeyHandlers\IBarcodeHandler.cs" />
     <Compile Include="Contracts\KeyHandlers\IDeleteHandler.cs" />
     <Compile Include="Contracts\KeyHandlers\IEnterHandler.cs" />

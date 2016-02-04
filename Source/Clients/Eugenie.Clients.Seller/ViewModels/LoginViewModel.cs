@@ -46,9 +46,7 @@
             else
             {
                 ViewModelLocator.httpClient = client;
-
-                var mainWindowViewModel = ViewModelLocator.container.Resolve<MainWindowViewModel>();
-                mainWindowViewModel.Content = new Sell();
+                ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Sell();
             }
         }
     }

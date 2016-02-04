@@ -27,46 +27,45 @@
         {
             var dataContext = this.GetDataContext();
 
-            if (e.Key == Key.Enter || e.Key == Key.Delete || e.Key == Key.Escape || e.Key == Key.F1 || e.SystemKey == Key.F10 || e.Key == Key.F11 || e.Key == Key.F12)
+            if (e.Key == Key.Enter && dataContext is IEnterHandler)
             {
-                if (dataContext != null)
-                {
-                    if (e.Key == Key.Enter && dataContext is IEnterHandler)
-                    {
-                        ((IEnterHandler)dataContext).HandleEnter();
-                        e.Handled = true;
-                    }
-                    else if (e.Key == Key.Delete && dataContext is IDeleteHandler)
-                    {
-                        ((IDeleteHandler)dataContext).HandleDelete();
-                        e.Handled = true;
-                    }
-                    else if (e.Key == Key.Escape && dataContext is IEscapeHandler)
-                    {
-                        ((IEscapeHandler)dataContext).HandleEscape();
-                        e.Handled = true;
-                    }
-                    else if (e.Key == Key.F1 && dataContext is IF1Handler)
-                    {
-                        ((IF1Handler)dataContext).HandleF1();
-                        e.Handled = true;
-                    }
-                    else if (e.SystemKey == Key.F10 && dataContext is IF10Handler)
-                    {
-                        ((IF10Handler)dataContext).HandleF10();
-                        e.Handled = true;
-                    }
-                    else if (e.Key == Key.F11 && dataContext is IF11Handler)
-                    {
-                        ((IF11Handler)dataContext).HandleF11();
-                        e.Handled = true;
-                    }
-                    else if (e.Key == Key.F12 && dataContext is IF12Handler)
-                    {
-                        ((IF12Handler)dataContext).HandleF12();
-                        e.Handled = true;
-                    }
-                }
+                ((IEnterHandler)dataContext).HandleEnter();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Delete && dataContext is IDeleteHandler)
+            {
+                ((IDeleteHandler)dataContext).HandleDelete();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape && dataContext is IEscapeHandler)
+            {
+                ((IEscapeHandler)dataContext).HandleEscape();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F1 && dataContext is IF1Handler)
+            {
+                ((IF1Handler)dataContext).HandleF1();
+                e.Handled = true;
+            }
+            else if (e.SystemKey == Key.F10 && dataContext is IF10Handler)
+            {
+                ((IF10Handler)dataContext).HandleF10();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F11 && dataContext is IF11Handler)
+            {
+                ((IF11Handler)dataContext).HandleF11();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F12 && dataContext is IF12Handler)
+            {
+                ((IF12Handler)dataContext).HandleF12();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.System && e.SystemKey == Key.F5 && dataContext is IAltF5Handler)
+            {
+                ((IAltF5Handler)dataContext).HandleAltF5();
+                e.Handled = true;
             }
         }
 

@@ -3,6 +3,8 @@
     using System.Linq;
     using System.Windows.Input;
 
+    using Autofac;
+
     using Common.Contracts;
     using Common.Contracts.KeyHandlers;
     using Common.Models;
@@ -16,7 +18,7 @@
 
     using MissingProduct = Views.MissingProduct;
 
-    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler, IF10Handler, IF11Handler, IF12Handler
+    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler, IF10Handler, IF11Handler, IF12Handler, IAltF5Handler
     {
         private readonly IWebApiClient apiClient;
         private string fullname;
@@ -140,6 +142,11 @@
                     this.Basket.Clear();
                 }
             }
+        }
+
+        public void HandleAltF5()
+        {
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Login();
         }
 
         private async void AddToBasket(Product product)

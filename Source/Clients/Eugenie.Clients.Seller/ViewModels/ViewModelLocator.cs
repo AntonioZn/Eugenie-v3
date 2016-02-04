@@ -19,8 +19,6 @@
 
         public MainWindowViewModel MainWindowViewModel => container.Resolve<MainWindowViewModel>();
 
-        public LoginViewModel LoginViewModel => container.Resolve<LoginViewModel>();
-
         public SellViewModel SellViewModel => container.Resolve<SellViewModel>();
 
         private void Register()
@@ -30,7 +28,6 @@
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<LoginViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SellViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
