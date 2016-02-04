@@ -240,7 +240,6 @@
     <Compile Include="Models\Account\UserInfoViewModel.cs" />
     <Compile Include="Models\Account\UserLoginInfoViewModel.cs" />
     <Compile Include="Models\Products\AddProductModel.cs" />
-    <Compile Include="Models\Products\SellProductsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />

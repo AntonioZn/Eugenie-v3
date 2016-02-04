@@ -18,13 +18,13 @@
 
         public IHttpActionResult Get()
         {
-            var reports = this.reportsService.GetReports().OrderByDescending(x => x.Date).Select(x => new
+            var reports = this.reportsService.GetReports().Select(x => new
             {
                 x.Date,
                 Earning = x.Sells.Sum(y => (decimal?)y.Total) ?? 0,
                 Waste = x.Waste.Sum(y => (decimal?)y.Total) ?? 0,
                 x.StockPrice
-            }).ToList();
+            }).OrderByDescending(x => x.Date);
 
             return this.Ok(reports);
         }
@@ -43,7 +43,7 @@
                         pr.Product.Name,
                         pr.Quantity
                     })
-                }),
+                }).OrderByDescending(x => x.Date),
                 Sells = r.Sells.Select(s => new
                 {
                     s.Date,
@@ -53,7 +53,7 @@
                         pr.Product.Name,
                         pr.Quantity
                     })
-                }),
+                }).OrderByDescending(x => x.Date),
                 Shipments = r.Shipments.Select(sh => new
                                                      {
                                                          sh.Product.Name,
@@ -62,14 +62,7 @@
                                                      })
             }).FirstOrDefault(x => x.Date == date);
 
-            if (reports != null)
-            {
-                return this.Ok(reports);
-            }
-            else
-            {
-                return this.NotFound();
-            }
+            return this.Ok(reports);
         }
     }
 }
