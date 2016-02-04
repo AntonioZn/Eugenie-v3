@@ -92,8 +92,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\BasketViewModel.cs" />
+    <Compile Include="ViewModels\ChangeCalculatorViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\ChangeCalculator.xaml.cs">
+      <DependentUpon>ChangeCalculator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MissingProduct.xaml.cs">
       <DependentUpon>MissingProduct.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ChangeCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MissingProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -39,10 +40,6 @@
         <TextBox x:Name="txtSearch"
                  Grid.Row="1"
                  Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <!--<i:Interaction.Behaviors>
-                <coreBehaviors:SelectAllTextBoxBehavior />
-                <coreBehaviors:BlockInvalidNameCharactersBehavior />
-            </i:Interaction.Behaviors>-->
         <DataGrid x:Name="dataGrid"
                   Grid.Row="2"
                   ItemsSource="{Binding Products}"
@@ -66,10 +63,15 @@
                 Height="0"
                 Command="{Binding Add}" />
         <Button Grid.Row="0"
-                IsTabStop="False"
+                Grid.Column="0"
                 IsCancel="True"
                 Width="0"
                 Height="0"
-                Command="{Binding Cancel}" />
+                IsTabStop="False"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+            <Button.CommandParameter>
+                <system:Boolean>False</system:Boolean>
+            </Button.CommandParameter>
+        </Button>
     </Grid>
 </UserControl>

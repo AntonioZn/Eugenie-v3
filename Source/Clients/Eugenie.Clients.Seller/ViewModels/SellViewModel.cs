@@ -91,29 +91,44 @@
 
         public void HandleF10()
         {
-            this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
-                                                                                                            {
-                                                                                                                Id = x.Id,
-                                                                                                                Quantity = x.Quantity.GetValueOrDefault()
-                                                                                                            }));
+            if (this.Basket.Products.Any())
+            {
+                this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                {
+                    Id = x.Id,
+                    Quantity = x.Quantity.GetValueOrDefault()
+                }));
 
-            this.Basket.Clear();
+                this.Basket.Clear();
+            }
         }
 
         public void HandleF11()
         {
-            throw new System.NotImplementedException();
+            if (this.Basket.Products.Any())
+            {
+
+            }
         }
 
-        public void HandleF12()
+        public async void HandleF12()
         {
-            this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+            if (this.Basket.Products.Any())
             {
-                Id = x.Id,
-                Quantity = x.Quantity.GetValueOrDefault()
-            }));
+                var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
+                var dialog = new ChangeCalulator(viewModel);
+                var result = await DialogHost.Show(dialog, "RootDialog");
+                if ((bool)result)
+                {
+                    await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity.GetValueOrDefault()
+                    }));
 
-            this.Basket.Clear();
+                    this.Basket.Clear();
+                }
+            }
         }
 
         private async void AddToBasket(Product product)

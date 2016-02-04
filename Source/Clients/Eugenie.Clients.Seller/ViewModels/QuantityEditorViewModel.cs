@@ -23,14 +23,11 @@
             this.Quantity = startingQuantity.ToString();
 
             this.Add = new RelayCommand(this.HandleAdd);
-            this.Cancel = new RelayCommand(this.HandleCancel);
         }
 
         public string Name { get; set; }
 
         public ICommand Add { get; }
-
-        public ICommand Cancel { get; set; }
 
         public string Quantity
         {
@@ -55,11 +52,6 @@
                     DialogHost.CloseDialogCommand.Execute(true, null);
                 }
             }
-        }
-
-        private void HandleCancel()
-        {
-            DialogHost.CloseDialogCommand.Execute(false, null);
         }
 
         private string RestrictQuantity(string userInput)

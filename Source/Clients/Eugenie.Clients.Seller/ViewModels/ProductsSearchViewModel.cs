@@ -25,12 +25,9 @@
             this.apiClient = apiClient;
 
             this.Add = new RelayCommand(this.HandleAdd);
-            this.Cancel = new RelayCommand(this.HandleCancel);
         }
 
         public ICommand Add { get; }
-
-        public ICommand Cancel { get; }
 
         public Product SelectedProduct { get; set; }
 
@@ -107,11 +104,6 @@
 
                 DialogHost.CloseDialogCommand.Execute(true, null);
             }
-        }
-
-        private void HandleCancel()
-        {
-            DialogHost.CloseDialogCommand.Execute(false, null);
         }
     }
 }

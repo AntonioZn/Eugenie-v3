@@ -34,7 +34,7 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <TextBlock Focusable="False"
-                               Text="Сума: "
+                               Text="Сметка: "
                                Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
                     <TextBlock Focusable="False"
                                Text="{Binding Basket.TotalPrice, StringFormat={}{0:0.00}}"
