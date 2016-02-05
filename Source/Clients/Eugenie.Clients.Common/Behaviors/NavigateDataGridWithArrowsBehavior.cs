@@ -25,26 +25,33 @@
         {
             var dataGrid = this.GetDataGrid();
 
-            if (e.Key == Key.Down || e.Key == Key.Up)
+            if (e.Key == Key.Down)
             {
-                if (dataGrid?.Items.Count > 0)
+                if (dataGrid.SelectedIndex < dataGrid.Items.Count - 1)
                 {
-                    if (e.Key == Key.Down && dataGrid.SelectedIndex < dataGrid.Items.Count)
-                    {
-                        dataGrid.SelectedIndex += 1;
-                    }
-                    else if (e.Key == Key.Up && dataGrid.SelectedIndex > 0)
-                    {
-                        dataGrid.SelectedIndex -= 1;
-                    }
-
-                    if (dataGrid.SelectedItem != null)
-                    {
-                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
-                    }
-
-                    e.Handled = true;
+                    dataGrid.SelectedIndex += 1;
                 }
+                else
+                {
+                    dataGrid.SelectedIndex = 0;
+                }
+
+                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (dataGrid.SelectedIndex > 0)
+                {
+                    dataGrid.SelectedIndex -= 1;
+                }
+                else
+                {
+                    dataGrid.SelectedIndex = dataGrid.Items.Count - 1;
+                }
+
+                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                e.Handled = true;
             }
         }
 
