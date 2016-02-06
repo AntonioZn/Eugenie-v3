@@ -64,6 +64,8 @@
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
             <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
             <converters:BoolToUnderlineConverter x:Key="BoolToUnderlineConverter" />
+            <converters:ExpirationDatesListToSingleDateConverter x:Key="ExpirationDatesListToSingleDateConverter" />
+            <converters:ExpirationDatesListToSingleBatchConverter x:Key="ExpirationDatesListToSingleBatchConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

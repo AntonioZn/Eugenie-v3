@@ -64,7 +64,11 @@
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetByQuantity(decimal quantity)
         {
-            return this.Ok(this.productsService.GetByQuantity(quantity).Select(x => x.Name));
+            return this.Ok(this.productsService.GetByQuantity(quantity).Select(x => new
+                                                                                    {
+                                                                                        x.Name,
+                                                                                        x.Quantity
+                                                                                    }));
         }
 
         [HttpGet]

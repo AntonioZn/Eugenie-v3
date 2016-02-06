@@ -112,6 +112,8 @@
     <Compile Include="Contracts\KeyHandlers\IF12Handler.cs" />
     <Compile Include="Contracts\KeyHandlers\IF1Handler.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
+    <Compile Include="Converters\ExpirationDatesListToSingleBatchConverter.cs" />
+    <Compile Include="Converters\ExpirationDatesListToSingleDateConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
     <Compile Include="Helpers\ExistingBarcodeChecker.cs" />

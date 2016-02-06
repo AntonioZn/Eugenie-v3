@@ -32,6 +32,10 @@
 
         public SellersViewModel SellersViewModel => container.Resolve<SellersViewModel>();
 
+        public LowQuantityProductsViewModel LowQuantityProductsViewModel => container.Resolve<LowQuantityProductsViewModel>();
+
+        public ExpiringProductsViewModel ExpiringProductsViewModel => container.Resolve<ExpiringProductsViewModel>();
+
         private void Register()
         {
             if (Settings.Default.Servers == string.Empty)
@@ -55,6 +59,8 @@
             containerBuilder.RegisterType<PaletteSelectorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ReportsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SellersViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<LowQuantityProductsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ExpiringProductsViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

@@ -94,6 +94,8 @@
     </ApplicationDefinition>
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
+    <Compile Include="ViewModels\ExpiringProductsViewModel.cs" />
+    <Compile Include="ViewModels\LowQuantityProductsViewModel.cs" />
     <Compile Include="ViewModels\NewServerViewModel.cs" />
     <Compile Include="ViewModels\ReportDetailsViewModel.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
@@ -123,6 +125,12 @@
     </Compile>
     <Compile Include="Views\Delivery.xaml.cs">
       <DependentUpon>Delivery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpiringProducts.xaml.cs">
+      <DependentUpon>ExpiringProducts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LowQuantityProducts.xaml.cs">
+      <DependentUpon>LowQuantityProducts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MissingProducts.xaml.cs">
       <DependentUpon>MissingProducts.xaml</DependentUpon>
@@ -182,6 +190,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Delivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExpiringProducts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LowQuantityProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

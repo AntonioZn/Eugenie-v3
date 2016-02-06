@@ -126,5 +126,21 @@
 
             return response.StatusCode;
         }
+
+        public async Task<IEnumerable<Product>> GetExpiringProductsAsync(HttpClient client, int days)
+        {
+            var response = await client.GetAsync($"api/products?days={days}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
+        }
+
+        public async Task<IEnumerable<Product>> GetLowQuantityProducts(HttpClient client, decimal quantity)
+        {
+            var response = await client.GetAsync($"api/products?quantity={quantity}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
+        }
     }
 }

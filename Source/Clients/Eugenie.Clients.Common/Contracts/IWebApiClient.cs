@@ -37,5 +37,9 @@
         Task<HttpStatusCode> WasteProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model);
 
         Task<HttpStatusCode> SellProductsAsync(HttpClient client, IEnumerable<IdQuantityPair> model);
+
+        Task<IEnumerable<Product>> GetExpiringProductsAsync(HttpClient client, int days);
+
+        Task<IEnumerable<Product>> GetLowQuantityProducts(HttpClient client, decimal quantity);
     }
 }

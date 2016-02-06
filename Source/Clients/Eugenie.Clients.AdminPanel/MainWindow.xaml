@@ -98,6 +98,16 @@
                                     <views:MissingProducts />
                                 </domain:MenuItem.Content>
                             </domain:MenuItem>
+                            <domain:MenuItem Name="Продукти с изтичащ срок">
+                                <domain:MenuItem.Content>
+                                    <views:ExpiringProducts />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
+                            <domain:MenuItem Name="Продукти с ниска наличност">
+                                <domain:MenuItem.Content>
+                                    <views:LowQuantityProducts />
+                                </domain:MenuItem.Content>
+                            </domain:MenuItem>
                             <domain:MenuItem Name="Национална лотария">
                                 <domain:MenuItem.Content>
                                     <views:NationalLottery />

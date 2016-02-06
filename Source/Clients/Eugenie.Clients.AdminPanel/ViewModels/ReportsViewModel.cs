@@ -58,8 +58,7 @@
                 this.SelectedReport.Date, this.manager.SelectedServer.Client);
             await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
         }
-
-
+        
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
             this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
