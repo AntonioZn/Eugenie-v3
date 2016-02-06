@@ -4,7 +4,10 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Windows.Controls;
+    using System.Windows.Input;
 
+    using Common.Contracts;
     using Common.Notifications;
 
     using GalaSoft.MvvmLight;
@@ -15,9 +18,9 @@
 
     using Views;
 
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IKeyHandler
     {
-        private object content;
+        private UserControl content;
 
         public MainWindowViewModel()
         {
@@ -35,8 +38,8 @@
                 this.Content = new Login();
             }
         }
-
-        public object Content
+        
+        public UserControl Content
         {
             get
             {
@@ -69,6 +72,11 @@
                     NotificationsHost.Error("Неуспешно", "Портът се използва от друга програма.");
                 }
             }
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            (this.content.DataContext as IKeyHandler)?.HandleKey(e, key);
         }
     }
 }

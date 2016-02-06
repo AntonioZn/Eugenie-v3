@@ -19,7 +19,7 @@
 
     using Views;
 
-    public class SellViewModel : ViewModelBase, IBarcodeHandler, IDeleteHandler, IEnterHandler, IF1Handler, IF10Handler, IF11Handler, IF12Handler, IAltF5Handler
+    public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly IWebApiClient apiClient;
         private string fullname;
@@ -52,6 +52,41 @@
 
         public Product SelectedProduct { get; set; }
 
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Delete:
+                    this.HandleDelete();
+                    e.Handled = true;
+                    break;
+                case Key.Enter:
+                    this.HandleEnter();
+                    e.Handled = true;
+                    break;
+                case Key.F1:
+                    this.HandleF1();
+                    e.Handled = true;
+                    break;
+                case Key.F5:
+                    this.HandleF5();
+                    e.Handled = true;
+                    break;
+                case Key.F10:
+                    this.HandleF10();
+                    e.Handled = true;
+                    break;
+                case Key.F11:
+                    this.HandleF11();
+                    e.Handled = true;
+                    break;
+                case Key.F12:
+                    this.HandleF12();
+                    e.Handled = true;
+                    break;
+            }
+        }
+
         public async void HandleBarcode(string barcode)
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
@@ -71,11 +106,11 @@
         {
             if (this.SelectedProduct != null)
             {
-              var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
-              if ((bool) result)
-              {
-                  this.Basket.Delete(this.SelectedProduct);
-              }
+                var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
+                if ((bool)result)
+                {
+                    this.Basket.Delete(this.SelectedProduct);
+                }
             }
             else
             {
@@ -112,13 +147,13 @@
             if (this.Basket.Products.Any())
             {
                 var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
-                if ((bool) result)
+                if ((bool)result)
                 {
                     await this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
-                                                                                                                          {
-                                                                                                                              Id = x.Id,
-                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
-                                                                                                                          }));
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity.GetValueOrDefault()
+                    }));
 
                     this.Basket.Clear();
                 }
@@ -178,7 +213,7 @@
             }
         }
 
-        public void HandleAltF5()
+        public void HandleF5()
         {
             ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Login();
         }
@@ -204,7 +239,7 @@
                 var quantityEditor = new QuantityEditor(quantityEditorViewModel);
                 var result = await DialogHost.Show(quantityEditor, "RootDialog");
 
-                if ((bool) result)
+                if ((bool)result)
                 {
                     product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
                     this.Basket.Add(product);
@@ -215,7 +250,7 @@
                 NotificationsHost.Error("Забранено", "Продуктът не може да бъде добавен в този момент.");
             }
         }
-        
+
         private async void Initialize()
         {
             var userInfo = await this.apiClient.GetUserInfo(ViewModelLocator.httpClient);

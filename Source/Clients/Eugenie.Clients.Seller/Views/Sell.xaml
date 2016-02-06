@@ -83,7 +83,7 @@
         <TextBlock Grid.Row="2"
                    Style="{StaticResource MaterialDesignDisplay1TextBlock}"
                    FontSize="20"
-                   Text="Delete - изтрий, F1 - търсене, F10 - бракувай, F11 - касова бележка, F12 - без касова бележка, Alt+F5 - изход"
+                   Text="Delete - изтрий, F1 - търсене, F10 - бракувай, F11 - касова бележка, F12 - без касова бележка, F5 - изход"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Bottom"
                    Margin="10,0,0,10" />

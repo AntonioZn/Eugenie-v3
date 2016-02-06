@@ -6,7 +6,7 @@
 
     using Autofac;
 
-    using Common.Contracts.KeyHandlers;
+    using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
@@ -16,7 +16,7 @@
 
     using Views;
 
-    public class LoginViewModel : ViewModelBase, IF1Handler
+    public class LoginViewModel : ViewModelBase, IKeyHandler
     {
         public LoginViewModel()
         {
@@ -33,11 +33,11 @@
             var password = passwordBox.Password;
 
             var server = new ServerInformation
-                         {
-                             Addresses = new List<string> { Properties.Settings.Default.Address },
-                             Password = password,
-                             Username = this.Username
-                         };
+            {
+                Addresses = new List<string> { Properties.Settings.Default.Address },
+                Password = password,
+                Username = this.Username
+            };
 
             var client = await ServerTester.TestServerAsync(server);
             if (client == null)
@@ -51,9 +51,15 @@
             }
         }
 
-        public void HandleF1()
+        public void HandleKey(KeyEventArgs e, Key key)
         {
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Settings();
+            switch (key)
+            {
+                case Key.F1:
+                    ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Settings();
+                    e.Handled = true;
+                    break;
+            }
         }
     }
 }
