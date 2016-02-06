@@ -62,6 +62,12 @@
             return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
         }
 
+        public IQueryable<Product> GetByExpirationDate(int days)
+        {
+            var border = DateTime.Now.Date.AddDays(days * -1);
+            return this.productsRepository.All().Where(x => x.ExpirationDates.Any(date => date.Date <= border));
+        }
+
         public void AddOrUpdate(string name, string oldName, decimal? buyingPrice, decimal? sellingPrice,
             MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {

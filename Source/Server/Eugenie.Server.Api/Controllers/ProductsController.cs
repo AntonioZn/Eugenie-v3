@@ -22,6 +22,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [Route("count")]
         public IHttpActionResult GetCount()
         {
@@ -29,6 +30,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetAll()
         {
             return this.Ok(this.productsService.All());
@@ -59,6 +61,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetByQuantity(decimal quantity)
         {
             return this.Ok(this.productsService.GetByQuantity(quantity).Select(x => x.Name));
@@ -74,6 +77,16 @@
                 x.Measure,
                 x.SellingPrice
             }).FirstOrDefault());
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetByExpirationDate(int days)
+        {
+            return this.Ok(this.productsService.GetByExpirationDate(days).Select(x => new
+                                                                                      {
+                                                                                          x.Name,
+                                                                                          x.ExpirationDates
+                                                                                      }));
         }
 
         [HttpDelete]
