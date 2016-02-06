@@ -26,12 +26,12 @@ namespace Eugenie.Clients.Seller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Server {
+        public string Address {
             get {
-                return ((string)(this["Server"]));
+                return ((string)(this["Address"]));
             }
             set {
-                this["Server"] = value;
+                this["Address"] = value;
             }
         }
         
@@ -56,6 +56,30 @@ namespace Eugenie.Clients.Seller.Properties {
             }
             set {
                 this["ReceiptPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9000")]
+        public int Port {
+            get {
+                return ((int)(this["Port"]));
+            }
+            set {
+                this["Port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsSelfHost {
+            get {
+                return ((bool)(this["IsSelfHost"]));
+            }
+            set {
+                this["IsSelfHost"] = value;
             }
         }
     }

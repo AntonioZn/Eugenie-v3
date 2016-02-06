@@ -61,5 +61,11 @@
                 </Button>
             </Grid>
         </materialDesign:Card>
+        <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                   FontSize="20"
+                   Text="F1 - настройки"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Margin="10,0,0,10" />
     </Grid>
 </UserControl>

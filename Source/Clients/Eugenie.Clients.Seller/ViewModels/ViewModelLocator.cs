@@ -23,6 +23,8 @@
 
         public SellViewModel SellViewModel => container.Resolve<SellViewModel>();
 
+        public SettingsViewModel SettingsViewModel => container.Resolve<SettingsViewModel>();
+
         private void Register()
         {
             var containerBuilder = new ContainerBuilder();
@@ -32,6 +34,7 @@
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LoginViewModel>();
             containerBuilder.RegisterType<SellViewModel>();
+            containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
 
             container = containerBuilder.Build();
         }

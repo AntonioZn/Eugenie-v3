@@ -6,6 +6,7 @@
 
     using Autofac;
 
+    using Common.Contracts.KeyHandlers;
     using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
@@ -15,7 +16,7 @@
 
     using Views;
 
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ViewModelBase, IF1Handler
     {
         public LoginViewModel()
         {
@@ -33,7 +34,7 @@
 
             var server = new ServerInformation
                          {
-                             Addresses = new List<string> { "http://localhost:9000" },
+                             Addresses = new List<string> { Properties.Settings.Default.Address },
                              Password = password,
                              Username = this.Username
                          };
@@ -48,6 +49,11 @@
                 ViewModelLocator.httpClient = client;
                 ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Sell();
             }
+        }
+
+        public void HandleF1()
+        {
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Settings();
         }
     }
 }
