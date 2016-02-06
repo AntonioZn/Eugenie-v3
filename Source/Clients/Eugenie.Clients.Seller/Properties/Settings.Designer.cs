@@ -34,5 +34,29 @@ namespace Eugenie.Clients.Seller.Properties {
                 this["Server"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LogPath {
+            get {
+                return ((string)(this["LogPath"]));
+            }
+            set {
+                this["LogPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReceiptPath {
+            get {
+                return ((string)(this["ReceiptPath"]));
+            }
+            set {
+                this["ReceiptPath"] = value;
+            }
+        }
     }
 }

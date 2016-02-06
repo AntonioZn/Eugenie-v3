@@ -117,6 +117,7 @@
     <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
     <Compile Include="Helpers\IMessageQueueManager.cs" />
     <Compile Include="Helpers\JsonFormatter.cs" />
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\MessageQueueManager.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />

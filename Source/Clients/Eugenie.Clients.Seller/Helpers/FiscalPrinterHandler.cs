@@ -8,9 +8,11 @@
 
     using Common.Models;
 
+    using Properties;
+
     public static class FiscalPrinterHandler
     {
-        const string Path = "C:\\Receipts";
+        private const string ReceiptFilename = "receipt.txt";
 
         public static void ExportReceipt(IEnumerable<Product> input)
         {
@@ -36,7 +38,7 @@
 
             var receiptArray = receipt.ToString().Trim().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            File.WriteAllLines(Path + "\\receipt.txt", receiptArray, Encoding.Default);
+            File.WriteAllLines(Settings.Default.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
         }
 
         private static void PrepareProducts(List<Product> products)
