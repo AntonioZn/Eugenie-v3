@@ -37,7 +37,8 @@ namespace Eugenie.Clients.AdminPanel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/" +
+            "MaterialDesignColor.DeepPurple.xaml")]
         public string PrimaryColorUri {
             get {
                 return ((string)(this["PrimaryColorUri"]));
@@ -49,7 +50,8 @@ namespace Eugenie.Clients.AdminPanel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/M" +
+            "aterialDesignColor.Lime.xaml")]
         public string AccentColorUri {
             get {
                 return ((string)(this["AccentColorUri"]));
@@ -68,6 +70,18 @@ namespace Eugenie.Clients.AdminPanel.Properties {
             }
             set {
                 this["IsDark"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\EugenieLogs")]
+        public string LogPath {
+            get {
+                return ((string)(this["LogPath"]));
+            }
+            set {
+                this["LogPath"] = value;
             }
         }
     }

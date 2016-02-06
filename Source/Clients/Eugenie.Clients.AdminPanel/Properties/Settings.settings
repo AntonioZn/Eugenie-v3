@@ -6,13 +6,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="PrimaryColorUri" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml</Value>
     </Setting>
     <Setting Name="AccentColorUri" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml</Value>
     </Setting>
     <Setting Name="IsDark" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LogPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\EugenieLogs</Value>
     </Setting>
   </Settings>
 </SettingsFile>

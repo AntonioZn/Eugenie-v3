@@ -11,9 +11,8 @@
     {
         public App()
         {
-#if !DEBUG
+            this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
-#endif
             this.InitializeDefaultPaths();
         }
 
@@ -25,18 +24,6 @@
 
         private void InitializeDefaultPaths()
         {
-            if (string.IsNullOrEmpty(Settings.Default.LogPath))
-            {
-                Settings.Default.LogPath = "C:\\EugenieLogs";
-            }
-
-            if (string.IsNullOrEmpty(Settings.Default.ReceiptPath))
-            {
-                Settings.Default.ReceiptPath = "C:\\EugenieReceipts";
-            }
-
-            Settings.Default.Save();
-
             if (!Directory.Exists(Settings.Default.LogPath))
             {
                 Directory.CreateDirectory(Settings.Default.LogPath);

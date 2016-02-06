@@ -71,11 +71,11 @@
         {
             if (this.SelectedProduct != null)
             {
-                var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
-                if ((bool) result)
-                {
-                    this.Basket.Delete(this.SelectedProduct);
-                }
+              var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
+              if ((bool) result)
+              {
+                  this.Basket.Delete(this.SelectedProduct);
+              }
             }
             else
             {

@@ -37,7 +37,7 @@ namespace Eugenie.Clients.Seller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\EugenieLogs")]
         public string LogPath {
             get {
                 return ((string)(this["LogPath"]));
@@ -49,7 +49,7 @@ namespace Eugenie.Clients.Seller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\EugenieReceipts")]
         public string ReceiptPath {
             get {
                 return ((string)(this["ReceiptPath"]));

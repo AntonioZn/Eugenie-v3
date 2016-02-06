@@ -6,10 +6,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="LogPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">C:\EugenieLogs</Value>
     </Setting>
     <Setting Name="ReceiptPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">C:\EugenieReceipts</Value>
     </Setting>
   </Settings>
 </SettingsFile>
