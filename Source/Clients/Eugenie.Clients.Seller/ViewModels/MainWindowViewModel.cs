@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -21,6 +22,7 @@
 
         public MainWindowViewModel()
         {
+            Host.AutoBackupDatabase(18, 1, "C:\\EugenieLogs\\");
             if (Properties.Settings.Default.IsSelfHost)
             {
                 HostServer(Properties.Settings.Default.Port);

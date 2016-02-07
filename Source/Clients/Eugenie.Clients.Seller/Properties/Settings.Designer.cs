@@ -82,5 +82,41 @@ namespace Eugenie.Clients.Seller.Properties {
                 this["IsSelfHost"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BackupDatabase {
+            get {
+                return ((bool)(this["BackupDatabase"]));
+            }
+            set {
+                this["BackupDatabase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int BackupHours {
+            get {
+                return ((int)(this["BackupHours"]));
+            }
+            set {
+                this["BackupHours"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BackupMinutes {
+            get {
+                return ((int)(this["BackupMinutes"]));
+            }
+            set {
+                this["BackupMinutes"] = value;
+            }
+        }
     }
 }

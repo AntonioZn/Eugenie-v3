@@ -5,6 +5,8 @@
 
     using Common.Notifications;
 
+    using Server.Host;
+
     public partial class MainWindow
     {
         public MainWindow()
@@ -26,6 +28,7 @@
         protected override void OnClosed(EventArgs e)
         {
             NotificationsHost.Close();
+            Host.scheduler.Shutdown();
             base.OnClosed(e);
         }
     }

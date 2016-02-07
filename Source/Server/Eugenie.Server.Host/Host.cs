@@ -4,13 +4,19 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.IO;
 
     using Api;
 
     using Microsoft.Owin.Hosting;
 
+    using Quartz;
+    using Quartz.Impl;
+
     public static class Host
     {
+        public static IScheduler scheduler;
+
         public static void HostWebApi(string address)
         {
             try
@@ -34,6 +40,22 @@
             var address = "http://" + localIp + ":" + port;
 
             HostWebApi(address);
+        }
+
+        public static void AutoBackupDatabase(int hours, int minutes, string path)
+        {
+            Directory.CreateDirectory(path);
+
+            var schedFact = new StdSchedulerFactory();
+
+            scheduler = schedFact.GetScheduler();
+            scheduler.Start();
+            
+            var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("path", path).Build();
+            
+            var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
+
+            scheduler.ScheduleJob(job, trigger);
         }
     }
 }
