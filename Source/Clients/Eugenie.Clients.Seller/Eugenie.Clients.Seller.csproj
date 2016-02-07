@@ -237,9 +237,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\Eugenie.Server.Api\Eugenie.Server.Api.csproj">
-      <Project>{43a968b9-aadc-44b6-a2e6-5be6abd9fb4c}</Project>
-      <Name>Eugenie.Server.Api</Name>
+    <ProjectReference Include="..\..\Server\Eugenie.Server.Host\Eugenie.Server.Host.csproj">
+      <Project>{ab9c3880-4c1d-4353-885c-f099b188b568}</Project>
+      <Name>Eugenie.Server.Host</Name>
     </ProjectReference>
     <ProjectReference Include="..\Eugenie.Clients.Common\Eugenie.Clients.Common.csproj">
       <Project>{6ddaa611-7d96-4aae-8a0c-ff6de87784d0}</Project>

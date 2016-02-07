@@ -2,9 +2,7 @@
 {
     using System.Runtime.InteropServices;
 
-    using Api;
-
-    using Microsoft.Owin.Hosting;
+    using Host;
 
     public partial class MainWindow
     {
@@ -15,7 +13,7 @@
         {
             this.InitializeComponent();
             var baseAddress = "http://localhost:9000/";
-            WebApp.Start<Startup>(baseAddress);
+            Host.HostWebApi(baseAddress);
 
             SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_CONTINUOUS);
 

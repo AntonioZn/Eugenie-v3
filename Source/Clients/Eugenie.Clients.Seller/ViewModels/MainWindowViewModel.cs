@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -12,9 +11,7 @@
 
     using GalaSoft.MvvmLight;
 
-    using Microsoft.Owin.Hosting;
-
-    using Server.Api;
+    using Server.Host;
 
     using Views;
 
@@ -38,7 +35,7 @@
                 this.Content = new Login();
             }
         }
-        
+
         public UserControl Content
         {
             get
@@ -55,22 +52,19 @@
         public static void HostServer(int port)
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
-            var selfHostAddress = "http://" + localIp + ":" + port;
+            var address = "http://" + localIp + ":" + port;
             try
             {
-                WebApp.Start<Startup>(selfHostAddress);
+                Host.HostWebApi(address);
                 NotificationsHost.Success("Успешно", "Сървърът беше стартиран успешно.");
             }
-            catch (Exception ex)
+            catch (AccessDeniedException)
             {
-                if (ex.InnerException.ToString().Contains("denied"))
-                {
-                    NotificationsHost.Error("Неуспешно", "Програмата трябва да бъде стартирана като администратор.");
-                }
-                else
-                {
-                    NotificationsHost.Error("Неуспешно", "Портът се използва от друга програма.");
-                }
+                NotificationsHost.Error("Неуспешно стартиране на сървъра", "Програмата трябва да бъде стартирана като администратор.");
+            }
+            catch (PortInUseException)
+            {
+                NotificationsHost.Error("Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
             }
         }
 
