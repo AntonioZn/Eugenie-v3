@@ -13,7 +13,8 @@
         {
             this.InitializeComponent();
             var baseAddress = "http://localhost:9000/";
-            Host.HostWebApi(baseAddress);
+            var host = new WebApiHost();
+            host.HostWebApi(baseAddress);
 
             SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_CONTINUOUS);
 

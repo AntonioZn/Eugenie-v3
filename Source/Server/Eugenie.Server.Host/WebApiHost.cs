@@ -13,11 +13,19 @@
     using Quartz;
     using Quartz.Impl;
 
-    public static class Host
+    public class WebApiHost : IWebApiHost
     {
-        public static IScheduler scheduler;
+        public readonly IScheduler scheduler;
 
-        public static void HostWebApi(string address)
+        public WebApiHost()
+        {
+            var schedulerFactory = new StdSchedulerFactory();
+            this.scheduler = schedulerFactory.GetScheduler();
+        }
+
+        public IScheduler Scheduler => this.scheduler;
+
+        public void HostWebApi(string address)
         {
             try
             {
@@ -34,28 +42,24 @@
             }
         }
 
-        public static void HostWebApi(int port)
+        public void HostWebApi(int port)
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
             var address = "http://" + localIp + ":" + port;
 
-            HostWebApi(address);
+            this.HostWebApi(address);
         }
 
-        public static void AutoBackupDatabase(int hours, int minutes, string path)
+        public void AutoBackupDatabase(int hours, int minutes, string path)
         {
             Directory.CreateDirectory(path);
 
-            var schedFact = new StdSchedulerFactory();
-
-            scheduler = schedFact.GetScheduler();
-            scheduler.Start();
-            
             var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("path", path).Build();
-            
             var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
 
-            scheduler.ScheduleJob(job, trigger);
+            this.Scheduler.DeleteJob(job.Key);
+            this.Scheduler.ScheduleJob(job, trigger);
+            this.Scheduler.Start();
         }
     }
 }

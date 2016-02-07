@@ -7,6 +7,8 @@
     using Common.Contracts;
     using Common.Helpers;
 
+    using Server.Host;
+
     public class ViewModelLocator
     {
         public static IContainer container;
@@ -30,6 +32,7 @@
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<WebApiHost>().As<IWebApiHost>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LoginViewModel>();

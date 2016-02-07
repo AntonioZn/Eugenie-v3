@@ -25,12 +25,9 @@
             this.Address = Settings.Default.Address;
             this.Port = Settings.Default.Port.ToString();
             this.IsSelfHost = Settings.Default.IsSelfHost;
-
-            this.Start = new RelayCommand(this.HandleStart);
+            
             this.Save = new RelayCommand(this.HandleSave);
         }
-
-        public ICommand Start { get; set; }
 
         public ICommand Save { get; set; }
 
@@ -85,11 +82,6 @@
             }
         }
 
-        private void HandleStart()
-        {
-            MainWindowViewModel.HostServer(int.Parse(this.Port));
-        }
-
         private void HandleSave()
         {
             Settings.Default.Address = this.Address;
@@ -97,7 +89,9 @@
             Settings.Default.IsSelfHost = this.IsSelfHost;
             Settings.Default.Save();
 
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Login();
+            var mainWindowViewModel = ViewModelLocator.container.Resolve<MainWindowViewModel>();
+            mainWindowViewModel.Initialize();
+            mainWindowViewModel.Content = new Login();
         }
 
         private string GetAddress()

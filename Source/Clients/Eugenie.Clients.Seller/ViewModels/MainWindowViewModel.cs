@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -18,16 +17,12 @@
 
     public class MainWindowViewModel : ViewModelBase, IKeyHandler
     {
+        private readonly IWebApiHost webApiHost;
         private UserControl content;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IWebApiHost webApiHost)
         {
-            Host.AutoBackupDatabase(18, 1, "C:\\EugenieLogs\\");
-            if (Properties.Settings.Default.IsSelfHost)
-            {
-                HostServer(Properties.Settings.Default.Port);
-            }
-
+            this.webApiHost = webApiHost;
             if (string.IsNullOrEmpty(Properties.Settings.Default.Address))
             {
                 this.Content = new Settings();
@@ -36,6 +31,8 @@
             {
                 this.Content = new Login();
             }
+
+            this.Initialize();
         }
 
         public UserControl Content
@@ -51,13 +48,13 @@
             }
         }
 
-        public static void HostServer(int port)
+        public void HostServer(int port)
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
             var address = "http://" + localIp + ":" + port;
             try
             {
-                Host.HostWebApi(address);
+                this.webApiHost.HostWebApi(address);
                 NotificationsHost.Success("Успешно", "Сървърът беше стартиран успешно.");
             }
             catch (AccessDeniedException)
@@ -73,6 +70,22 @@
         public void HandleKey(KeyEventArgs e, Key key)
         {
             (this.content.DataContext as IKeyHandler)?.HandleKey(e, key);
+        }
+
+        public void Initialize()
+        {
+            if (Properties.Settings.Default.IsSelfHost)
+            {
+                this.HostServer(Properties.Settings.Default.Port);
+            }
+
+            if (Properties.Settings.Default.BackupDatabase)
+            {
+                var hours = Properties.Settings.Default.BackupHours;
+                var minutes = Properties.Settings.Default.BackupMinutes;
+                var path = Properties.Settings.Default.BackupPath;
+                this.webApiHost.AutoBackupDatabase(hours, minutes, path);
+            }
         }
     }
 }

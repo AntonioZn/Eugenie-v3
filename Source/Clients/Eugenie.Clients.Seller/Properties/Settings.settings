@@ -26,5 +26,8 @@
     <Setting Name="BackupMinutes" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="BackupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\EugenieBackups</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

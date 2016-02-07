@@ -3,15 +3,20 @@
     using System;
     using System.IO;
 
+    using Notifications;
+
     public static class Logger
     {
         private const string LogFilename = "log.txt";
 
-        public static void LogToFile(Exception exception, string path)
+        public static void LogToFile(Exception e, string path)
         {
-            var log = DateTime.Now + Environment.NewLine + exception.InnerException + Environment.NewLine + exception.StackTrace + Environment.NewLine + Environment.NewLine;
+            Directory.CreateDirectory(path);
+            var log = $"{DateTime.Now}\n{e.Message}\n{e.InnerException}\n{e.StackTrace}\n\n\n";
 
             File.AppendAllText(path + "\\" + LogFilename, log);
+
+            NotificationsHost.Error("Грешка", "Случи се неочаквана грешка и беше записана в лог файла.");
         }
     }
 }

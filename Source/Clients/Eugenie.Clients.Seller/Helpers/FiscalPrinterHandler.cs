@@ -16,6 +16,8 @@
 
         public static void ExportReceipt(IEnumerable<Product> input)
         {
+            Directory.CreateDirectory(Settings.Default.ReceiptPath);
+
             var products = new List<Product>(input);
             PrepareProducts(products);
 

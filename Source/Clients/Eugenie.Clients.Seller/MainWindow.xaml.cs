@@ -3,9 +3,13 @@
     using System;
     using System.Windows;
 
+    using Autofac;
+
     using Common.Notifications;
 
     using Server.Host;
+
+    using ViewModels;
 
     public partial class MainWindow
     {
@@ -28,7 +32,7 @@
         protected override void OnClosed(EventArgs e)
         {
             NotificationsHost.Close();
-            Host.scheduler.Shutdown();
+            ViewModelLocator.container.Resolve<IWebApiHost>().Scheduler.Shutdown();
             base.OnClosed(e);
         }
     }
