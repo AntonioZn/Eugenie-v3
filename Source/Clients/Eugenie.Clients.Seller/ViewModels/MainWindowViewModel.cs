@@ -42,7 +42,7 @@
                 return this.content;
             }
 
-            set
+            private set
             {
                 this.Set(() => this.Content, ref this.content, value);
             }
@@ -90,6 +90,21 @@
                 var path = Properties.Settings.Default.BackupPath;
                 this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
+        }
+
+        public void ShowLogin()
+        {
+            this.Content = new Login();;
+        }
+
+        public void ShowSell()
+        {
+            this.Content = new Sell();;
+        }
+
+        public void ShowSettings()
+        {
+            this.Content = new Settings();;
         }
     }
 }

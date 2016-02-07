@@ -47,7 +47,7 @@
             else
             {
                 ViewModelLocator.httpClient = client;
-                ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Sell();
+                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSell();
             }
         }
 
@@ -56,7 +56,7 @@
             switch (key)
             {
                 case Key.F1:
-                    ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Settings();
+                    ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSettings();
                     e.Handled = true;
                     break;
             }

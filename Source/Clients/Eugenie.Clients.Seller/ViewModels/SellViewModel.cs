@@ -212,9 +212,13 @@
             }
         }
 
-        public void HandleF5()
+        public async void HandleF5()
         {
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().Content = new Login();
+            var result = await DialogHost.Show(new Confirm("Излизане?"), "RootDialog");
+            if ((bool) result)
+            {
+                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowLogin();
+            }
         }
 
         private async void AddToBasket(Product product)

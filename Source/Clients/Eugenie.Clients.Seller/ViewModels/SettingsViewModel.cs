@@ -91,7 +91,7 @@
 
             var mainWindowViewModel = ViewModelLocator.container.Resolve<MainWindowViewModel>();
             mainWindowViewModel.Initialize();
-            mainWindowViewModel.Content = new Login();
+            mainWindowViewModel.ShowLogin();
         }
 
         private string GetAddress()
