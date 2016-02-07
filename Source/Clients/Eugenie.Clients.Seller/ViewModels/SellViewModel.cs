@@ -6,7 +6,6 @@
     using Autofac;
 
     using Common.Contracts;
-    using Common.Contracts.KeyHandlers;
     using Common.Models;
     using Common.Notifications;
     using Common.WebApiModels;

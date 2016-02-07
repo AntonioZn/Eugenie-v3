@@ -20,7 +20,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        DataContext="{Binding Path=ActiveServersViewModel, Source={StaticResource ViewModelLocator}}">
+        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
         <commonBehaviors:NavigateDataGridWithArrowsBehavior />
         <commonBehaviors:KeyHandlersBehavior />
@@ -60,7 +60,9 @@
                                  Margin="0,16,0,16"
                                  SelectedIndex="0"
                                  Focusable="False"
-                                 PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                                 PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                                 ItemsSource="{Binding Views}"
+                                 SelectedItem="{Binding SelectedMenuItem}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                                     <Setter Property="IsTabStop"
@@ -73,51 +75,6 @@
                                                Margin="60,0,32,0" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                            <domain:MenuItem Name="Продукти">
-                                <domain:MenuItem.Content>
-                                    <views:ProductsEditor />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Доставка">
-                                <domain:MenuItem.Content>
-                                    <views:Delivery />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Отчети">
-                                <domain:MenuItem.Content>
-                                    <views:Reports />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Служители">
-                                <domain:MenuItem.Content>
-                                    <views:Sellers />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Липсващи продукти">
-                                <domain:MenuItem.Content>
-                                    <views:MissingProducts />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Продукти с изтичащ срок">
-                                <domain:MenuItem.Content>
-                                    <views:ExpiringProducts />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Продукти с ниска наличност">
-                                <domain:MenuItem.Content>
-                                    <views:LowQuantityProducts />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Национална лотария">
-                                <domain:MenuItem.Content>
-                                    <views:NationalLottery />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
-                            <domain:MenuItem Name="Настройки">
-                                <domain:MenuItem.Content>
-                                    <views:Settings />
-                                </domain:MenuItem.Content>
-                            </domain:MenuItem>
                         </ListBox>
                     </StackPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
@@ -229,7 +186,7 @@
                         </StackPanel>
                     </materialDesign:ColorZone>
                     <ContentControl Grid.Row="1"
-                                    Content="{Binding ElementName=flyoutMenuListBox, Path=SelectedItem.Content}"
+                                    Content="{Binding SelectedMenuItem.Content}"
                                     IsTabStop="False"
                                     x:Name="MainFrame" />
                 </Grid>

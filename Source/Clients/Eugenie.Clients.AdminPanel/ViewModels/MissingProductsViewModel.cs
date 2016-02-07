@@ -8,7 +8,6 @@
     using Autofac;
 
     using Common.Contracts;
-    using Common.Contracts.KeyHandlers;
     using Common.Models;
     using Common.WebApiModels;
     using Common.Еxtensions;
@@ -20,7 +19,7 @@
 
     using Views;
 
-    public class MissingProductsViewModel : ViewModelBase, IEnterHandler
+    public class MissingProductsViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IServerManager manager;
 
@@ -39,7 +38,7 @@
         public MissingProduct SelectedProduct { get; set; }
 
         public ObservableCollection<MissingProduct> MissingProducts { get; }
-        
+
         public async void HandleEnter()
         {
             if (this.SelectedProduct == null)
@@ -62,6 +61,17 @@
 
             this.MissingProducts.Clear();
             hashset.ForEach(this.MissingProducts.Add);
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Enter:
+                    this.HandleEnter();
+                    e.Handled = true;
+                    break;
+            }
         }
     }
 }

@@ -11,16 +11,21 @@
     using Common.Models;
     using Common.Еxtensions;
 
+    using Domain;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
-    public class ActiveServersViewModel : ViewModelBase
+    using Views;
+
+    public class MainWindowViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
         private ObservableCollection<ActiveServer> servers;
+        private MenuItem selectedMenuItem;
 
-        public ActiveServersViewModel(IServerManager manager)
+        public MainWindowViewModel(IServerManager manager)
         {
             this.manager = manager;
             this.LoadingVisibility = Visibility.Visible;
@@ -29,6 +34,21 @@
 
             this.Refresh = new RelayCommand(this.HandleRefresh);
             this.Select = new RelayCommand<ActiveServer>(this.HandleSelect);
+
+            this.Views = new List<MenuItem>
+                         {
+                             new MenuItem("Продукти", new ProductsEditor()),
+                             new MenuItem("Доставка", new Delivery()),
+                             new MenuItem("Отчети", new Reports()),
+                             new MenuItem("Служители", new Sellers()),
+                             new MenuItem("Липсващи продукти", new MissingProducts()),
+                             new MenuItem("Продукти с изтичащ срок", new ExpiringProducts()),
+                             new MenuItem("Продукти с ниска наличност", new LowQuantityProducts()),
+                             new MenuItem("Национална лотария", new NationalLottery()),
+                             new MenuItem("Настройки", new Settings())
+                         };
+
+            this.SelectedMenuItem = this.Views.First();
         }
 
         public ICommand Refresh { get; }
@@ -62,6 +82,21 @@
             }
         }
 
+        public IEnumerable<Domain.MenuItem> Views { get; }
+
+        public MenuItem SelectedMenuItem
+        {
+            get
+            {
+                return this.selectedMenuItem;
+            }
+
+            set
+            {
+                this.Set(() => this.SelectedMenuItem, ref this.selectedMenuItem, value);
+            }
+        }
+
         private void HandleRefresh()
         {
             this.LoadingVisibility = Visibility.Visible;
@@ -84,6 +119,15 @@
         {
             this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            var keyHandler = this.SelectedMenuItem.Content.DataContext as IKeyHandler;
+            if (keyHandler != null && keyHandler != this)
+            {
+                keyHandler.HandleKey(e, key);
+            }
         }
     }
 }

@@ -5,8 +5,8 @@
     using System.Windows.Interactivity;
     using System.Text;
     using System.Windows;
-    
-    using Contracts.KeyHandlers;
+
+    using Contracts;
 
     public class HandleBarcodeScannerWindowBehavior : Behavior<Window>
     {

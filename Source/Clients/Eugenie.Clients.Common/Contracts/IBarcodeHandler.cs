@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Contracts.KeyHandlers
+﻿namespace Eugenie.Clients.Common.Contracts
 {
     public interface IBarcodeHandler
     {

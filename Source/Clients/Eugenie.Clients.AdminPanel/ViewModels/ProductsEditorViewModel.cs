@@ -8,7 +8,6 @@
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Contracts.KeyHandlers;
     using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
@@ -21,7 +20,7 @@
 
     using Views;
 
-    public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IEnterHandler, IEscapeHandler
+    public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
@@ -121,6 +120,21 @@
         {
             this.products.Clear();
             this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Enter:
+                    this.HandleEnter();
+                    e.Handled = true;
+                    break;
+                case Key.Escape:
+                    this.HandleEscape();
+                    e.Handled = true;
+                    break;
+            }
         }
     }
 }

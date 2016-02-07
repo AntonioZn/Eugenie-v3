@@ -18,7 +18,7 @@
 
         public ProductsEditorViewModel ProductsEditorViewModel => container.Resolve<ProductsEditorViewModel>();
 
-        public ActiveServersViewModel ActiveServersViewModel => container.Resolve<ActiveServersViewModel>();
+        public MainWindowViewModel MainWindowViewModel => container.Resolve<MainWindowViewModel>();
 
         public SettingsViewModel SettingsViewModel => container.Resolve<SettingsViewModel>();
 
@@ -52,7 +52,7 @@
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ActiveServersViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();

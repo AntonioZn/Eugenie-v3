@@ -9,7 +9,6 @@
     using Autofac;
 
     using Common.Contracts;
-    using Common.Contracts.KeyHandlers;
     using Common.WebApiModels;
     using Common.Еxtensions;
 
@@ -20,7 +19,7 @@
 
     using Views;
 
-    public class ReportsViewModel : ViewModelBase, IEnterHandler
+    public class ReportsViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IServerManager manager;
         private ObservableCollection<Report> reports;
@@ -32,7 +31,7 @@
 
             this.Enter = new RelayCommand(this.HandleEnter);
         }
-        
+
         public ICommand Enter { get; }
 
         public Report SelectedReport { get; set; }
@@ -54,14 +53,25 @@
 
         public async void HandleEnter()
         {
-            var viewModel = new ReportDetailsViewModel(ViewModelLocator.container.Resolve<IWebApiClient>(), 
+            var viewModel = new ReportDetailsViewModel(ViewModelLocator.container.Resolve<IWebApiClient>(),
                 this.SelectedReport.Date, this.manager.SelectedServer.Client);
             await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
         }
-        
+
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
             this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Enter:
+                    this.HandleEnter();
+                    e.Handled = true;
+                    break;
+            }
         }
     }
 }

@@ -105,7 +105,7 @@
     <Compile Include="ViewModels\SellersViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\ActiveServersViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
     <Compile Include="Views\Controls\BarcodePresenter.xaml.cs">
