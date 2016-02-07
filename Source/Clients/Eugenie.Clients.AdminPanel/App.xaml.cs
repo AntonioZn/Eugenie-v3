@@ -15,7 +15,6 @@
         {
             this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
-            this.InitializeDefaultPaths();
 
             var isDark = new ResourceDictionary();
             var accent = new ResourceDictionary();
@@ -35,14 +34,6 @@
         {
             Logger.LogToFile(e.Exception, Settings.Default.LogPath);
             e.Handled = true;
-        }
-
-        private void InitializeDefaultPaths()
-        {
-            if (!Directory.Exists(Settings.Default.LogPath))
-            {
-                Directory.CreateDirectory(Settings.Default.LogPath);
-            }
         }
     }
 }
