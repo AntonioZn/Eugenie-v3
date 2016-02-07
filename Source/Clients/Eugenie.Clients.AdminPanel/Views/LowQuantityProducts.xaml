@@ -35,6 +35,7 @@
                                        Width="300"
                                        HorizontalAlignment="Center" />
                 <DataGrid Grid.Row="1"
+                          x:Name="dataGrid"
                           ItemsSource="{Binding Products}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Име"
