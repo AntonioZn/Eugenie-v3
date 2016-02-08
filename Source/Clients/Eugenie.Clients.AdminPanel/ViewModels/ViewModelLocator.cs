@@ -54,6 +54,7 @@
             containerBuilder.RegisterType<Storage>().As<IServerStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<Storage>().As<ITasksStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();

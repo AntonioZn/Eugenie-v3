@@ -18,8 +18,9 @@
     {
         private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
+        private readonly ITaskManager taskManager;
 
-        public ServerManager(IServerStorage storage, IWebApiClient apiClient)
+        public ServerManager(IServerStorage storage, IWebApiClient apiClient, ITaskManager taskManager)
         {
             this.storage = storage;
             this.storage.Servers.CollectionChanged += (s, e) =>
@@ -27,6 +28,7 @@
                                                           this.Initialize();
                                                       };
             this.apiClient = apiClient;
+            this.taskManager = taskManager;
             this.Cache = new Cache();
 
             this.Initialize();
@@ -34,9 +36,10 @@
 
         public Cache Cache { get; }
 
-        public void AddOrUpdate(ServerInformation server, AddProductModel model)
+        public void AddOrUpdate(string serverName, AddProductModel model)
         {
-            var pair = new AddOrUpdateProductTask(server, model);
+            var task = new AddOrUpdateProductTask(serverName, model);
+            this.taskManager.AddTask(task);
         }
 
         public event EventHandler SelectedServerChanged;

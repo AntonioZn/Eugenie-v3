@@ -123,10 +123,12 @@
     <Compile Include="Contracts\IServerStorage.cs" />
     <Compile Include="Contracts\ITasksStorage.cs" />
     <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
+    <Compile Include="Contracts\ITaskManager.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\PdfShipmentInvoiceGenerator.cs" />
     <Compile Include="Helpers\ServerManager.cs" />
+    <Compile Include="Helpers\TaskManager.cs" />
     <Compile Include="Models\ActiveServer.cs" />
     <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\DeleteProductTask.cs" />

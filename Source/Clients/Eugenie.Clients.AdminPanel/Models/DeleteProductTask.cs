@@ -1,16 +1,14 @@
 ﻿namespace Eugenie.Clients.AdminPanel.Models
 {
-    using Common.Models;
-
     public class DeleteProductTask
     {
-        public DeleteProductTask(ServerInformation serverInformation, string productName)
+        public DeleteProductTask(string serverName, string productName)
         {
-            this.ServerInformation = serverInformation;
+            this.ServerName = serverName;
             this.ProductName = productName;
         }
 
-        public ServerInformation ServerInformation { get; set; }
+        public string ServerName { get; set; }
 
         public string ProductName { get; set; }
     }

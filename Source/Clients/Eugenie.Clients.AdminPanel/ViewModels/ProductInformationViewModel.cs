@@ -61,7 +61,7 @@
             foreach (var pair in this.ProductInAllServers)
             {
                 pair.Value.MapProperties(this.MainProductViewModel);
-                this.manager.AddOrUpdate(pair.Key, pair.Value.GetModel());
+                this.manager.AddOrUpdate(pair.Key.Name, pair.Value.GetModel());
             }
             DialogHost.CloseDialogCommand.Execute(true, null);
         }

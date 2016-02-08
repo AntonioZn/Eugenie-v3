@@ -19,7 +19,7 @@
 
         Cache Cache { get; }
 
-        void AddOrUpdate(ServerInformation server, AddProductModel model);
+        void AddOrUpdate(string serverName, AddProductModel model);
 
         void Initialize();
         

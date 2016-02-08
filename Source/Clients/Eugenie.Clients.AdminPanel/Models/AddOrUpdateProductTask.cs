@@ -1,17 +1,16 @@
 ﻿namespace Eugenie.Clients.AdminPanel.Models
 {
-    using Common.Models;
     using Common.WebApiModels;
 
     public class AddOrUpdateProductTask
     {
-        public AddOrUpdateProductTask(ServerInformation serverInformation, AddProductModel model)
+        public AddOrUpdateProductTask(string serverName, AddProductModel model)
         {
-            this.ServerInformation = serverInformation;
+            this.ServerName = serverName;
             this.Model = model;
         }
 
-        public ServerInformation ServerInformation { get; }
+        public string ServerName { get; }
 
         public AddProductModel Model { get; }    
     }
