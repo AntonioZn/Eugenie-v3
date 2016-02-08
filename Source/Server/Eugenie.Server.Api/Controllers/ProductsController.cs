@@ -65,10 +65,10 @@
         public IHttpActionResult GetByQuantity(decimal quantity)
         {
             return this.Ok(this.productsService.GetByQuantity(quantity).Select(x => new
-                                                                                    {
-                                                                                        x.Name,
-                                                                                        x.Quantity
-                                                                                    }));
+            {
+                x.Name,
+                x.Quantity
+            }));
         }
 
         [HttpGet]
@@ -87,26 +87,19 @@
         public IHttpActionResult GetByExpirationDate(int days)
         {
             return this.Ok(this.productsService.GetByExpirationDate(days).Select(x => new
-                                                                                      {
-                                                                                          x.Name,
-                                                                                          x.ExpirationDates
-                                                                                      }));
+            {
+                x.Name,
+                x.ExpirationDates
+            }));
         }
 
-        [HttpDelete]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult Delete(string id)
-        {
-            try
-            {
-                this.productsService.Delete(id);
-                return this.Ok();
-            }
-            catch
-            {
-                return this.NotFound();
-            }
-        }
+        //[HttpDelete]
+        //[Authorize(Roles = "Admin")]
+        //public IHttpActionResult Delete(string name)
+        //{
+        //    this.productsService.Delete(name);
+        //    return this.Ok();
+        //}
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

@@ -26,8 +26,11 @@
         public void Delete(string name)
         {
             var product = this.productsRepository.All().FirstOrDefault(x => x.Name == name);
-            this.productsRepository.Delete(product);
-            this.productsRepository.SaveChanges();
+            if (product != null)
+            {
+                this.productsRepository.Delete(product);
+                this.productsRepository.SaveChanges();
+            }
         }
 
         public int Count()

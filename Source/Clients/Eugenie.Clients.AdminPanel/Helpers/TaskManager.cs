@@ -38,7 +38,7 @@
 
         private void RunAddOrUpdateProductTasks()
         {
-            Task.Run(async () =>
+            Task.Run(() =>
                            {
                 while (true)
                 {
@@ -52,7 +52,7 @@
                             {
                                 try
                                 {
-                                    var status = await this.apiClient.AddOrUpdateAsync(client, task.Model);
+                                    var status = this.apiClient.AddOrUpdateAsync(client, task.Model).Result;
                                     if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                     {
                                         this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
