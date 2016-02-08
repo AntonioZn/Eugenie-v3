@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Models
+﻿namespace Eugenie.Clients.AdminPanel.Models
 {
     using GalaSoft.MvvmLight;
 

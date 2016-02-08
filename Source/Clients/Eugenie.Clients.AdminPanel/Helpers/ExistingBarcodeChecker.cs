@@ -1,9 +1,9 @@
-﻿namespace Eugenie.Clients.Common.Helpers
+﻿namespace Eugenie.Clients.AdminPanel.Helpers
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using Models;
+    using Common.Models;
 
     public static class ExistingBarcodeChecker
     {

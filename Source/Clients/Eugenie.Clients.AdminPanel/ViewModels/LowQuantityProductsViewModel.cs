@@ -9,6 +9,8 @@
     using Common.Models;
     using Common.Еxtensions;
 
+    using Contracts;
+
     using GalaSoft.MvvmLight;
 
     public class LowQuantityProductsViewModel : ViewModelBase

@@ -1,14 +1,14 @@
-﻿namespace Eugenie.Clients.Common.Helpers
+﻿namespace Eugenie.Clients.AdminPanel.Helpers
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    using Common.WebApiModels;
+
     using MigraDoc.DocumentObjectModel;
     using MigraDoc.DocumentObjectModel.Tables;
     using MigraDoc.Rendering;
-
-    using WebApiModels;
 
     public class PdfShipmentInvoiceGenerator
     {
@@ -106,7 +106,7 @@
             var counter = 1;
             foreach (var shipment in shipments)
             {
-                var row = table.AddRow();
+                var row = this.table.AddRow();
 
                 row.Cells[0].AddParagraph(counter.ToString());
                 row.Cells[1].AddParagraph(shipment.Name);

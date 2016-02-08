@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Input;
-
-    using Common.Contracts;
     using Common.Models;
+
+    using Contracts;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;

@@ -12,10 +12,16 @@
     using Common.Notifications;
     using Common.Еxtensions;
 
+    using Contracts;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
+    using Helpers;
+
     using MaterialDesignThemes.Wpf;
+
+    using Models;
 
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {

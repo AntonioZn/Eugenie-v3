@@ -101,5 +101,12 @@
                     IsDefault="True"
                     Command="{Binding Save}" />
         </StackPanel>
+        <TextBlock Grid.Row="1"
+                   Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                   FontSize="20"
+                   Text="{Binding Version}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Margin="10,0,0,10" />
     </Grid>
 </UserControl>

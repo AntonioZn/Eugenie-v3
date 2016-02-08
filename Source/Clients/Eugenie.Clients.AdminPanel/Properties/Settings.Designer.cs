@@ -25,7 +25,7 @@ namespace Eugenie.Clients.AdminPanel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
         public string Servers {
             get {
                 return ((string)(this["Servers"]));
@@ -82,6 +82,30 @@ namespace Eugenie.Clients.AdminPanel.Properties {
             }
             set {
                 this["LogPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        public string DeleteProductTasks {
+            get {
+                return ((string)(this["DeleteProductTasks"]));
+            }
+            set {
+                this["DeleteProductTasks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        public string AddOrUpdateProductTasks {
+            get {
+                return ((string)(this["AddOrUpdateProductTasks"]));
+            }
+            set {
+                this["AddOrUpdateProductTasks"] = value;
             }
         }
     }

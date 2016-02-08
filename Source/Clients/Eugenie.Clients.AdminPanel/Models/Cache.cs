@@ -1,9 +1,10 @@
-﻿namespace Eugenie.Clients.Common.Models
+﻿namespace Eugenie.Clients.AdminPanel.Models
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
-    using WebApiModels;
+    using Common.Models;
+    using Common.WebApiModels;
 
     public class Cache
     {

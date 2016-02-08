@@ -1,11 +1,11 @@
-﻿namespace Eugenie.Clients.Common.Contracts
+﻿namespace Eugenie.Clients.AdminPanel.Contracts
 {
     using System;
-    using System.Threading.Tasks;
+
+    using Common.Models;
+    using Common.WebApiModels;
 
     using Models;
-
-    using WebApiModels;
 
     public interface IServerManager
     {

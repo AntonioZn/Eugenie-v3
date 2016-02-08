@@ -12,6 +12,8 @@
     using Common.WebApiModels;
     using Common.Еxtensions;
 
+    using Contracts;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 

@@ -24,12 +24,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-  <AllowedReferenceRelatedFileExtensions>
+    <AllowedReferenceRelatedFileExtensions>
       <!-- Prevent default XML and PDB files copied to output in RELEASE. 
            Only *.allowedextension files will be included, which doesn't exist in my case.
        -->
       .allowedextension
-    </AllowedReferenceRelatedFileExtensions> 
+    </AllowedReferenceRelatedFileExtensions>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eugenie.Clients.Common\Eugenie.Clients.Common.csproj">
-      <Project>{6DDAA611-7D96-4AAE-8A0C-FF6DE87784D0}</Project>
+      <Project>{6ddaa611-7d96-4aae-8a0c-ff6de87784d0}</Project>
       <Name>Eugenie.Clients.Common</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Contracts
+﻿namespace Eugenie.Clients.AdminPanel.Contracts
 {
     using System.Collections.ObjectModel;
 

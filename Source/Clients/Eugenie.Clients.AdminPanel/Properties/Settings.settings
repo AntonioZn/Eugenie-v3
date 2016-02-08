@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Servers" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">[]</Value>
     </Setting>
     <Setting Name="PrimaryColorUri" Type="System.String" Scope="User">
       <Value Profile="(Default)">pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml</Value>
@@ -16,6 +16,12 @@
     </Setting>
     <Setting Name="LogPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\EugenieLogs</Value>
+    </Setting>
+    <Setting Name="DeleteProductTasks" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[]</Value>
+    </Setting>
+    <Setting Name="AddOrUpdateProductTasks" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[]</Value>
     </Setting>
   </Settings>
 </SettingsFile>

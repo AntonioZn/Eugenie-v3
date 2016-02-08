@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Reflection;
     using System.Windows.Input;
 
     using Autofac;
@@ -81,6 +82,8 @@
                 this.Set(() => this.Address, ref this.address, value);
             }
         }
+
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         private void HandleSave()
         {

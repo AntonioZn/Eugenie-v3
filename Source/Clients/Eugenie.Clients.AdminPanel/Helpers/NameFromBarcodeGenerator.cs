@@ -1,7 +1,7 @@
-﻿namespace Eugenie.Clients.Common.Helpers
+﻿namespace Eugenie.Clients.AdminPanel.Helpers
 {
-    using System.Text;
     using System.Net;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 

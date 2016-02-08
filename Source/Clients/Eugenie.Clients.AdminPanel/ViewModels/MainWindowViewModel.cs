@@ -11,10 +11,14 @@
     using Common.Models;
     using Common.Еxtensions;
 
+    using Contracts;
+
     using Domain;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
+
+    using Models;
 
     using Views;
 

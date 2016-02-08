@@ -54,28 +54,8 @@
       <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MigraDoc.DocumentObjectModel-WPF, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PDFsharp-MigraDoc-WPF.1.32.2608.0\lib\net20\MigraDoc.DocumentObjectModel-WPF.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MigraDoc.Rendering-WPF, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PDFsharp-MigraDoc-WPF.1.32.2608.0\lib\net20\MigraDoc.Rendering-WPF.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MigraDoc.RtfRendering-WPF, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PDFsharp-MigraDoc-WPF.1.32.2608.0\lib\net20\MigraDoc.RtfRendering-WPF.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PdfSharp-WPF, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PDFsharp-MigraDoc-WPF.1.32.2608.0\lib\net20\PdfSharp-WPF.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PdfSharp.Charting-WPF, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PDFsharp-MigraDoc-WPF.1.32.2608.0\lib\net20\PdfSharp.Charting-WPF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -100,31 +80,18 @@
     <Compile Include="Behaviors\NavigateDataGridWithArrowsBehavior.cs" />
     <Compile Include="Contracts\IKeyHandler.cs" />
     <Compile Include="Contracts\IBarcodeHandler.cs" />
-    <Compile Include="Contracts\IServerStorage.cs" />
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
-    <Compile Include="Contracts\IServerManager.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleBatchConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleDateConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
-    <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
-    <Compile Include="Helpers\IMessageQueueManager.cs" />
-    <Compile Include="Helpers\JsonFormatter.cs" />
     <Compile Include="Helpers\Logger.cs" />
-    <Compile Include="Helpers\MeasureTypeMapper.cs" />
-    <Compile Include="Helpers\MessageQueueManager.cs" />
-    <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
-    <Compile Include="Helpers\PdfShipmentInvoiceGenerator.cs" />
-    <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Helpers\ServerTester.cs" />
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Helpers\WebApiClient.cs" />
-    <Compile Include="Models\ActiveServer.cs" />
     <Compile Include="Models\EugenieTextBox.cs" />
-    <Compile Include="Models\Cache.cs" />
-    <Compile Include="Models\ServerAddProductPair.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Notifications\Notifications.xaml.cs">
       <DependentUpon>Notifications.xaml</DependentUpon>
@@ -137,7 +104,6 @@
     <Compile Include="WebApiModels\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
     <Compile Include="WebApiModels\MissingProduct.cs" />
-    <Compile Include="Models\ObservableConcurrentDictionary.cs" />
     <Compile Include="WebApiModels\Report.cs" />
     <Compile Include="WebApiModels\ReportDetailsResponse.cs" />
     <Compile Include="Models\ServerInformation.cs" />

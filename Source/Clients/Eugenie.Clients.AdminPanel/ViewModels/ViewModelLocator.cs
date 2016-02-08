@@ -5,6 +5,10 @@
     using Common.Contracts;
     using Common.Helpers;
 
+    using Contracts;
+
+    using Helpers;
+
     using Properties;
 
     public class ViewModelLocator
@@ -47,8 +51,8 @@
             var containerBuilder = new ContainerBuilder();
             
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<SettingsStorage>().As<IServerStorage>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<MessageQueueManager>().As<IMessageQueueManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<Storage>().As<IServerStorage>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<Storage>().As<ITasksStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();

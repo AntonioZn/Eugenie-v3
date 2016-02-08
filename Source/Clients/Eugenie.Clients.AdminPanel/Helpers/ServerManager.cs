@@ -1,23 +1,25 @@
-﻿namespace Eugenie.Clients.Common.Helpers
+﻿namespace Eugenie.Clients.AdminPanel.Helpers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Common.Contracts;
+    using Common.Helpers;
+    using Common.Models;
+    using Common.WebApiModels;
+
     using Contracts;
 
     using Models;
-
-    using WebApiModels;
 
     public class ServerManager : IServerManager
     {
         private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
-        private readonly IMessageQueueManager queueManager;
 
-        public ServerManager(IServerStorage storage, IWebApiClient apiClient, IMessageQueueManager queueManager)
+        public ServerManager(IServerStorage storage, IWebApiClient apiClient)
         {
             this.storage = storage;
             this.storage.Servers.CollectionChanged += (s, e) =>
@@ -25,7 +27,6 @@
                                                           this.Initialize();
                                                       };
             this.apiClient = apiClient;
-            this.queueManager = queueManager;
             this.Cache = new Cache();
 
             this.Initialize();
@@ -35,8 +36,7 @@
 
         public void AddOrUpdate(ServerInformation server, AddProductModel model)
         {
-            var pair = new ServerAddProductPair(server, model);
-            this.queueManager.MessageQueue.Send(pair);
+            var pair = new AddOrUpdateProductTask(server, model);
         }
 
         public event EventHandler SelectedServerChanged;
@@ -64,7 +64,7 @@
 
             await Task.Run(() =>
             {
-                Parallel.ForEach(this.storage.Servers, (server) =>
+                Parallel.ForEach(this.storage.Servers, server =>
                                                                       {
                                                                           server.Client = ServerTester.TestServerAsync(server).Result;
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());

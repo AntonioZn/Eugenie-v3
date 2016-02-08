@@ -10,8 +10,12 @@
     using Common.Models;
     using Common.Еxtensions;
 
+    using Contracts;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
+
+    using Helpers;
 
     using MaterialDesignThemes.Wpf;
 

@@ -14,6 +14,8 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
+    using Helpers;
+
     using MaterialDesignThemes.Wpf;
 
     public class ReportDetailsViewModel : ViewModelBase
