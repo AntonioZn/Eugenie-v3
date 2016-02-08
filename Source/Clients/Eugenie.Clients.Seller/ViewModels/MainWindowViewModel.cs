@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -12,6 +13,8 @@
     using GalaSoft.MvvmLight;
 
     using Server.Host;
+
+    using Squirrel;
 
     using Views;
 
@@ -31,6 +34,14 @@
             {
                 this.Content = new Login();
             }
+
+            Task.Run(async () =>
+            {
+                using (var mgr = new UpdateManager("https://s3.eu-central-1.amazonaws.com/eugenie95/seller/"))
+                {
+                    await mgr.UpdateApp();
+                }
+            });
 
             this.Initialize();
         }
