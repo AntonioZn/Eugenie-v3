@@ -39,7 +39,7 @@
                     substringLenght = product.Name.Length;
                 }
 
-                product.Name = product.Name.Substring(0, 64);
+                product.Name = product.Name.Substring(0, substringLenght);
                 this.productsRepository.SaveChanges();
             }
         }
