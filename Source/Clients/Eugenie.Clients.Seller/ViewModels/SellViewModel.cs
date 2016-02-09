@@ -18,6 +18,8 @@
 
     using Views;
 
+    using Confirm = Common.Views.Confirm;
+
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly IWebApiClient apiClient;

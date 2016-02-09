@@ -26,5 +26,7 @@
         event EventHandler ProductsCacheChanged;
 
         void AddProductToCache(Product product);
+
+        void Delete(string productName);
     }
 }

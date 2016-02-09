@@ -20,6 +20,8 @@
 
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [Required]
         [Index("Name", IsUnique = true)]
         [MaxLength(ValidationConstants.ProductNameMaxLength)]

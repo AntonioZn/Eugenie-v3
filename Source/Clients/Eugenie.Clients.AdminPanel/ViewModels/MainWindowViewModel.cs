@@ -8,7 +8,6 @@
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Models;
     using Common.Еxtensions;
 
     using Contracts;
@@ -86,7 +85,7 @@
             }
         }
 
-        public IEnumerable<Domain.MenuItem> Views { get; }
+        public IEnumerable<MenuItem> Views { get; }
 
         public MenuItem SelectedMenuItem
         {

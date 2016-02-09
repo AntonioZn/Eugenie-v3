@@ -41,5 +41,7 @@
         Task<IEnumerable<Product>> GetExpiringProductsAsync(HttpClient client, int days);
 
         Task<IEnumerable<Product>> GetLowQuantityProducts(HttpClient client, decimal quantity);
+
+        Task<HttpStatusCode> DeleteProductAsync(HttpClient client, string name);
     }
 }

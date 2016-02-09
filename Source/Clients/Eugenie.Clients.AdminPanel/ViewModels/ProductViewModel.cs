@@ -9,6 +9,8 @@
     using Common.Models;
     using Common.WebApiModels;
 
+    using Eugenie.Common.Helpers;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
@@ -67,7 +69,7 @@
                 this.Set(() => this.Batch, ref this.batch, value);
             }
         }
-        
+
         public string BuyingPrice
         {
             get
@@ -109,7 +111,7 @@
 
         public void MapProperties(ProductViewModel baseProduct)
         {
-            this.Product.Name = baseProduct.Product.Name.Trim();
+            this.Product.Name = ProductNameFixer.Fix(baseProduct.Product.Name);
             this.Product.BuyingPrice = decimal.Parse(baseProduct.BuyingPrice);
             this.Product.SellingPrice = string.IsNullOrEmpty(this.SellingPrice) ? this.Product.SellingPrice : decimal.Parse(this.SellingPrice);
             this.Product.Measure = baseProduct.Product.Measure;
@@ -127,11 +129,11 @@
                             OldName = this.OldName,
                             Measure = this.Product.Measure,
                             ExpirationDates = this.Product.ExpirationDates,
-                            Barcodes = this.Product.Barcodes
+                            Barcodes = this.Product.Barcodes,
+                            SellingPrice = this.Product.SellingPrice,
+                            BuyingPrice = this.Product.BuyingPrice
                         };
 
-            model.SellingPrice = this.Product.SellingPrice;
-            model.BuyingPrice = this.Product.BuyingPrice;
 
             if (!string.IsNullOrEmpty(this.QuantityToAdd))
             {

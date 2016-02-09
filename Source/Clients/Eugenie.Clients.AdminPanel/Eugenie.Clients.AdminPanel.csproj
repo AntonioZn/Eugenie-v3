@@ -305,6 +305,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Eugenie.Common\Eugenie.Common.csproj">
+      <Project>{cb4424bf-729b-437f-a54b-8483fdfa9529}</Project>
+      <Name>Eugenie.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Eugenie.Clients.Common\Eugenie.Clients.Common.csproj">
       <Project>{6ddaa611-7d96-4aae-8a0c-ff6de87784d0}</Project>
       <Name>Eugenie.Clients.Common</Name>

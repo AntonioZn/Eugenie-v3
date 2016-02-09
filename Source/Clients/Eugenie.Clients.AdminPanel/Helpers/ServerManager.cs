@@ -36,12 +36,6 @@
 
         public Cache Cache { get; }
 
-        public void AddOrUpdate(string serverName, AddProductModel model)
-        {
-            var task = new AddOrUpdateProductTask(serverName, model);
-            this.taskManager.AddTask(task);
-        }
-
         public event EventHandler SelectedServerChanged;
 
         public ServerInformation SelectedServer { get; private set; }
@@ -98,7 +92,31 @@
                 pair.Value.Add(product);
             }
 
-            this.ProductsCacheChanged?.Invoke(this.Cache, EventArgs.Empty);
+            this.ProductsCacheChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddOrUpdate(string serverName, AddProductModel model)
+        {
+            var task = new AddOrUpdateProductTask(serverName, model);
+            this.taskManager.AddTask(task);
+        }
+
+        public void Delete(string productName)
+        {
+            foreach (var server in this.storage.Servers)
+            {
+                this.taskManager.AddTask(new DeleteProductTask(server.Name, productName));
+                foreach (var pair in this.Cache.ProductsPerServer)
+                {
+                    var product = pair.Value.FirstOrDefault(x => x.Name == productName);
+                    if (product != null)
+                    {
+                        pair.Value.Remove(product);
+                    }
+                }
+            }
+
+            this.ProductsCacheChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

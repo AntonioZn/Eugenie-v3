@@ -5,6 +5,8 @@
     using System.Data.Entity;
     using System.Linq;
 
+    using Common.Helpers;
+
     using Contracts;
 
     using Eugenie.Data;
@@ -28,53 +30,54 @@
             var product = this.productsRepository.All().FirstOrDefault(x => x.Name == name);
             if (product != null)
             {
-                this.productsRepository.Delete(product);
+                product.IsDeleted = true;
+                product.Name = "[Изтрит]" + product.Name;
                 this.productsRepository.SaveChanges();
             }
         }
 
         public int Count()
         {
-            return this.productsRepository.All().Count();
+            return this.productsRepository.All().Count(x => !x.IsDeleted);
         }
 
         public IQueryable<Product> All()
         {
-            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates");
+            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates").Where(x => !x.IsDeleted);
         }
 
         //TODO: if not product is found add it to missing products
         public IQueryable<Product> GetByBarcode(string barcode)
         {
-            return this.productsRepository.All().Where(product => product.Barcodes.Any(b => b.Value == barcode));
+            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(product => product.Barcodes.Any(b => b.Value == barcode));
         }
 
         public IQueryable<Product> GetByName(string name)
         {
             var nameAsArray = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return this.productsRepository.All().Where(x => nameAsArray.All(n => x.Name.Contains(n)));
+            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(x => nameAsArray.All(n => x.Name.Contains(n)));
         }
 
         public IQueryable<Product> GetById(int id)
         {
-            return this.productsRepository.All().Where(x => x.Id == id);
+            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(x => x.Id == id);
         }
 
         public IQueryable<Product> GetByQuantity(decimal quantity)
         {
-            return this.productsRepository.All().Where(pr => pr.Quantity <= quantity);
+            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(pr => pr.Quantity <= quantity);
         }
 
         public IQueryable<Product> GetByExpirationDate(int days)
         {
             var border = DateTime.Now.Date.AddDays(days * -1);
-            return this.productsRepository.All().Where(x => x.ExpirationDates.Any(date => date.Date <= border));
+            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(x => x.ExpirationDates.Any(date => date.Date <= border));
         }
 
         public void AddOrUpdate(string name, string oldName, decimal? buyingPrice, decimal? sellingPrice,
             MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
-            if (oldName != name && this.productsRepository.All().Any(x => x.Name == name))
+            if (oldName != name && this.productsRepository.All().Where(x => !x.IsDeleted).Any(x => x.Name == name))
             {
                 throw new ArgumentException($"A product with name {name} already exists");
             }
@@ -112,7 +115,7 @@
         private void MapProperties(Product product, string name, decimal? buyingPrice, decimal? sellingPrice,
                                    MeasureType? measure, decimal? quantity, ICollection<Barcode> barcodes, ICollection<ExpirationDate> expirationDates)
         {
-            product.Name = name;
+            product.Name = ProductNameFixer.Fix(name);
             product.BuyingPrice = buyingPrice ?? product.BuyingPrice;
             product.SellingPrice = sellingPrice ?? product.SellingPrice;
             product.Measure = measure ?? product.Measure;

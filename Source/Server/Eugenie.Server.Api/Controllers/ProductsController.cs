@@ -93,13 +93,13 @@
             }));
         }
 
-        //[HttpDelete]
-        //[Authorize(Roles = "Admin")]
-        //public IHttpActionResult Delete(string name)
-        //{
-        //    this.productsService.Delete(name);
-        //    return this.Ok();
-        //}
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult Delete(string name)
+        {
+            this.productsService.Delete(name);
+            return this.Ok();
+        }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

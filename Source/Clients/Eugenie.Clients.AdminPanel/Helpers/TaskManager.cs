@@ -24,6 +24,7 @@
             this.apiClient = apiClient;
 
             this.RunAddOrUpdateProductTasks();
+            this.RunDeleteProductTasks();
         }
 
         public void AddTask(AddOrUpdateProductTask task)
@@ -73,6 +74,45 @@
                                    SpinWait.SpinUntil(() => this.tasksStorage.AddOrUpdateProductTasks.Any());
                                }
                            });
+        }
+
+        private void RunDeleteProductTasks()
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    var groups = this.tasksStorage.DeleteProductTasks.GroupBy(x => x.ServerName);
+                    foreach (var group in groups)
+                    {
+                        foreach (var task in group)
+                        {
+                            var client = this.serversStorage.Servers.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
+                            if (client != null)
+                            {
+                                try
+                                {
+                                    var status = this.apiClient.DeleteProductAsync(client, task.ProductName).Result;
+                                    if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
+                                    {
+                                        this.tasksStorage.DeleteProductTasks.Remove(task);
+                                    }
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    SpinWait.SpinUntil(() => this.tasksStorage.DeleteProductTasks.Any());
+                }
+            });
         }
     }
 }

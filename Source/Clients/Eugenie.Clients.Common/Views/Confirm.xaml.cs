@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Seller.Views
+﻿namespace Eugenie.Clients.Common.Views
 {
     public partial class Confirm
     {

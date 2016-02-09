@@ -142,5 +142,12 @@
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
+
+        public async Task<HttpStatusCode> DeleteProductAsync(HttpClient client, string name)
+        {
+            var response = await client.DeleteAsync($"api/products?name={name}");
+
+            return response.StatusCode;
+        }
     }
 }

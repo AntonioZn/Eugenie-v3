@@ -8,9 +8,9 @@
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
+    using Common.Views;
     using Common.Еxtensions;
 
     using Contracts;
@@ -119,7 +119,6 @@
             }
         }
 
-
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             this.products.Clear();
@@ -138,6 +137,24 @@
                     this.HandleEscape();
                     e.Handled = true;
                     break;
+                case Key.Delete:
+                    this.HandleDelete();
+                    e.Handled = true;
+                    break;
+            }
+        }
+
+        private async void HandleDelete()
+        {
+            if (this.SelectedProduct == null)
+            {
+                return;
+            }
+
+            var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
+            if ((bool) result)
+            {
+                this.manager.Delete(this.SelectedProduct.Name);
             }
         }
     }

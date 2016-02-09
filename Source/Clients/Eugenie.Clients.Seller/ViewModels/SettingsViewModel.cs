@@ -11,9 +11,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
-    using Views;
-
-    using Settings = Properties.Settings;
+    using Properties;
 
     public class SettingsViewModel : ViewModelBase
     {
