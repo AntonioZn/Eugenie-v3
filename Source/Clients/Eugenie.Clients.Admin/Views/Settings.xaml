@@ -172,5 +172,12 @@
                                   IsTabStop="False"
                                   Margin="20,0,0,0"
                                   DataContext="{Binding Path=PaletteSelectorViewModel, Source={StaticResource ViewModelLocator}}" />
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                   FontSize="20"
+                   Text="{Binding Version}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Margin="10,0,0,10" />
     </Grid>
 </UserControl>

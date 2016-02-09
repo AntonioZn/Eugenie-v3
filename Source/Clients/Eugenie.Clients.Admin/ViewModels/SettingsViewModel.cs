@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Windows.Input;
 
     using Common.Models;
@@ -32,6 +33,8 @@
         public ICommand Delete { get; }
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
+
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         private bool CanAdd()
         {
