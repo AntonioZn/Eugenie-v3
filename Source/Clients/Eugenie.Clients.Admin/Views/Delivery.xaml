@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="Eugenie.Clients.Admin.Views.Delivery"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
+             xmlns:controls="clr-namespace:Eugenie.Clients.Admin.Views.Controls"
+             Height="Auto"
+             Width="Auto"
+             IsTabStop="False"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="20"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             DataContext="{Binding Path=DeliveryViewModel, Source={StaticResource ViewModelLocator}}">
+    <materialDesign:Card x:Name="mainCard"
+                         HorizontalAlignment="Center"
+                         Width="800"
+                         Margin="0,20,0,0">
+        <StackPanel Orientation="Vertical">
+            <materialDesign:ColorZone Mode="PrimaryDark"
+                                      Padding="16">
+                <Grid>
+                    <materialDesign:PackIcon Kind="TagTextOutline"
+                                             Width="48"
+                                             Height="48"
+                                             VerticalAlignment="Center"
+                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Foreground}" />
+                    <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                               Text="{Binding AddingType}"
+                               HorizontalAlignment="Center" />
+                </Grid>
+            </materialDesign:ColorZone>
+            <materialDesign:Card Background="{DynamicResource PrimaryHueDarkBrush}"
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 Padding="8"
+                                 Margin="10,10,0,0"
+                                 HorizontalAlignment="Left">
+                <CheckBox Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
+                          Content="Автоматично име"
+                          IsTabStop="False"
+                          VerticalContentAlignment="Center"
+                          IsChecked="{Binding AutomaticName}" />
+            </materialDesign:Card>
+            <Grid Margin="20,20,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1.1*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0"
+                      x:Name="mainInfoGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <materialDesign:PackIcon Kind="Alphabetical"
+                                             Grid.Column="0"
+                                             Grid.Row="0"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
+                    <ComboBox Grid.Row="0"
+                              Grid.Column="1"
+                              Margin="10,0,0,0"
+                              HorizontalAlignment="Stretch"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:TextFieldAssist.Hint="Име"
+                              IsEditable="True"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding ExistingProducts}"
+                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <materialDesign:PackIcon Kind="WeightKilogram"
+                                             Grid.Column="0"
+                                             Grid.Row="1"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
+                    <ComboBox Grid.Row="1"
+                              Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              materialDesign:TextFieldAssist.Hint="Мярка"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              Margin="10,10,0,0"
+                              ItemsSource="{Binding Measures}"
+                              SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <materialDesign:PackIcon Kind="CashUsd"
+                                             Grid.Column="0"
+                                             Grid.Row="2"
+                                             VerticalAlignment="Bottom"
+                                             Width="24"
+                                             Height="24"
+                                             Opacity=".56" />
+                    <models:EugenieTextBox Grid.Row="2"
+                                           AutoSelect="True"
+                                           BlockInvalidNumberCharacters="True"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Stretch"
+                                           materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                           Margin="10,10,0,0"
+                                           Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                </Grid>
+                <controls:BarcodePresenter Grid.Column="1"
+                                           HorizontalAlignment="Stretch"
+                                           Margin="20,0,0,0"
+                                           DataContext="{Binding MainProductViewModel}"
+                                           Height="{Binding ElementName=mainInfoGrid, Path=ActualHeight}" />
+            </Grid>
+            <controls:ShopSpecificProduct Margin="20,20,20,0"
+                                          MaxHeight="400" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="0,20,20,20">
+                <Button IsCancel="True"
+                        IsTabStop="False"
+                        Margin="8 0 0 0"
+                        Content="Назад"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Command="{Binding CancelCommand}">
+                </Button>
+                <Button IsDefault="True"
+                        IsTabStop="False"
+                        Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SaveCommand}"
+                        Content="Запази">
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>
