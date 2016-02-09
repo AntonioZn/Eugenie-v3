@@ -25,13 +25,13 @@
     public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
-
-        private ObservableCollection<Product> existingProducts;
-        private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
-        private ProductViewModel mainMainProductViewModel;
-        private string name = string.Empty;
         private string addingType = "Въведете име";
         private bool automaticName = true;
+
+        private ObservableCollection<Product> existingProducts;
+        private ProductViewModel mainMainProductViewModel;
+        private string name = string.Empty;
+        private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
 
         public DeliveryViewModel(IServerManager manager)
         {
@@ -214,8 +214,8 @@
         private bool CanSave()
         {
             return this.MainProductViewModel.Product.HasNoValidationErrors()
-                && this.MainProductViewModel.HasNoValidationErrors()
-                && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
+                   && this.MainProductViewModel.HasNoValidationErrors()
+                   && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
         }
 
         private void HandleCancelCommand()

@@ -32,11 +32,11 @@
         public ICommand Delete { get; }
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
-        
+
         private bool CanAdd()
         {
             return this.NewServerViewModel.HasNoValidationErrors()
-                && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
+                   && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
         }
 
         public void HandleAdd()

@@ -47,8 +47,8 @@
         public bool HasNoValidationErrors()
         {
             return this[nameof(this.Name)] == null
-                && this[nameof(this.Username)] == null
-                && this[nameof(this.Password)] == null;
+                   && this[nameof(this.Username)] == null
+                   && this[nameof(this.Password)] == null;
         }
     }
 }

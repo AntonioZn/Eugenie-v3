@@ -53,18 +53,6 @@
             }
         }
 
-        public async void HandleEnter()
-        {
-            var viewModel = new ReportDetailsViewModel(ViewModelLocator.container.Resolve<IWebApiClient>(),
-                this.SelectedReport.Date, this.manager.SelectedServer.Client);
-            await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
-        }
-
-        private void OnSelectedServerChanged(object sender, EventArgs e)
-        {
-            this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
-        }
-
         public void HandleKey(KeyEventArgs e, Key key)
         {
             switch (key)
@@ -74,6 +62,18 @@
                     e.Handled = true;
                     break;
             }
+        }
+
+        public async void HandleEnter()
+        {
+            var viewModel = new ReportDetailsViewModel(ViewModelLocator.container.Resolve<IWebApiClient>(),
+                                                       this.SelectedReport.Date, this.manager.SelectedServer.Client);
+            await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
+        }
+
+        private void OnSelectedServerChanged(object sender, EventArgs e)
+        {
+            this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
         }
     }
 }

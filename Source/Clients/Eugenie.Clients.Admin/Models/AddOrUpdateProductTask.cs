@@ -12,6 +12,6 @@
 
         public string ServerName { get; }
 
-        public AddProductModel Model { get; }    
+        public AddProductModel Model { get; }
     }
 }

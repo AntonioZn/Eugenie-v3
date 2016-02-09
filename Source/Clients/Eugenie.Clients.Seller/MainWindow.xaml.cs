@@ -16,7 +16,7 @@
         public MainWindow()
         {
             this.InitializeComponent();
-            #if DEBUG
+#if DEBUG
             {
                 this.WindowStyle = WindowStyle.SingleBorderWindow;
                 this.Topmost = false;

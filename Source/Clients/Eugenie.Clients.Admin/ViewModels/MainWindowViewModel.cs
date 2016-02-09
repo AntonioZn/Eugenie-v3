@@ -25,8 +25,8 @@
     {
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
-        private ObservableCollection<ActiveServer> servers;
         private MenuItem selectedMenuItem;
+        private ObservableCollection<ActiveServer> servers;
 
         public MainWindowViewModel(IServerManager manager)
         {
@@ -100,6 +100,15 @@
             }
         }
 
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            var keyHandler = this.SelectedMenuItem.Content.DataContext as IKeyHandler;
+            if (keyHandler != null && keyHandler != this)
+            {
+                keyHandler.HandleKey(e, key);
+            }
+        }
+
         private void HandleRefresh()
         {
             this.LoadingVisibility = Visibility.Visible;
@@ -122,15 +131,6 @@
         {
             this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
-        }
-
-        public void HandleKey(KeyEventArgs e, Key key)
-        {
-            var keyHandler = this.SelectedMenuItem.Content.DataContext as IKeyHandler;
-            if (keyHandler != null && keyHandler != this)
-            {
-                keyHandler.HandleKey(e, key);
-            }
         }
     }
 }

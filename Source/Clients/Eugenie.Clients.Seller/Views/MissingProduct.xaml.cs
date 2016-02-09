@@ -26,10 +26,7 @@
         private void OnElapsed(object sender, ElapsedEventArgs e)
         {
             this.timer.Stop();
-            Application.Current.Dispatcher.Invoke(() =>
-                                                  {
-                                                      DialogHost.CloseDialogCommand.Execute(false, null);
-                                                  });
+            Application.Current.Dispatcher.Invoke(() => { DialogHost.CloseDialogCommand.Execute(false, null); });
         }
     }
 }

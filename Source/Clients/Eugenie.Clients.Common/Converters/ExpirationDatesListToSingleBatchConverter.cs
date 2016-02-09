@@ -12,7 +12,7 @@
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var dates = ((IList)value).Cast<ExpirationDate>();
+            var dates = ((IList) value).Cast<ExpirationDate>();
 
             return dates.OrderBy(x => x.Date).FirstOrDefault().Batch;
         }

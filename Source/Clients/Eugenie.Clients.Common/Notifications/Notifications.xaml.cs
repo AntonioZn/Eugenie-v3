@@ -28,7 +28,7 @@
             {
                 this.notifications.Add(notification);
             }
-            
+
             if (this.notifications.Count > 0 && !this.IsActive)
             {
                 this.Show();

@@ -49,7 +49,7 @@
             }
 
             var containerBuilder = new ContainerBuilder();
-            
+
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<Storage>().As<IServerStorage>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<Storage>().As<ITasksStorage>().InstancePerLifetimeScope();

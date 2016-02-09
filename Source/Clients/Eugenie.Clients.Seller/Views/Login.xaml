@@ -57,8 +57,7 @@
                         IsDefault="True"
                         Height="Auto"
                         Command="{Binding Login}"
-                        CommandParameter="{Binding ElementName=txtPassword}">
-                </Button>
+                        CommandParameter="{Binding ElementName=txtPassword}" />
             </Grid>
         </materialDesign:Card>
         <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"

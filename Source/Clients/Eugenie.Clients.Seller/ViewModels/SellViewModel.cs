@@ -8,6 +8,7 @@
     using Common.Contracts;
     using Common.Models;
     using Common.Notifications;
+    using Common.Views;
     using Common.WebApiModels;
 
     using GalaSoft.MvvmLight;
@@ -18,7 +19,7 @@
 
     using Views;
 
-    using Confirm = Common.Views.Confirm;
+    using MissingProduct = Views.MissingProduct;
 
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
@@ -52,6 +53,21 @@
         public BasketViewModel Basket { get; }
 
         public Product SelectedProduct { get; set; }
+
+        public async void HandleBarcode(string barcode)
+        {
+            DialogHost.CloseDialogCommand.Execute(false, null);
+
+            var product = await this.apiClient.GetProductByBarcode(ViewModelLocator.httpClient, barcode);
+            if (product != null)
+            {
+                this.AddToBasket(product);
+            }
+            else
+            {
+                await DialogHost.Show(new MissingProduct(), "RootDialog");
+            }
+        }
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
@@ -88,27 +104,12 @@
             }
         }
 
-        public async void HandleBarcode(string barcode)
-        {
-            DialogHost.CloseDialogCommand.Execute(false, null);
-
-            var product = await this.apiClient.GetProductByBarcode(ViewModelLocator.httpClient, barcode);
-            if (product != null)
-            {
-                this.AddToBasket(product);
-            }
-            else
-            {
-                await DialogHost.Show(new Views.MissingProduct(), "RootDialog");
-            }
-        }
-
         public async void HandleDelete()
         {
             if (this.SelectedProduct != null)
             {
                 var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
-                if ((bool)result)
+                if ((bool) result)
                 {
                     this.Basket.Delete(this.SelectedProduct);
                 }
@@ -137,7 +138,7 @@
             var productsSearch = new ProductsSearch(productsSearchViewModel);
 
             var result = await DialogHost.Show(productsSearch, "RootDialog");
-            if ((bool)result)
+            if ((bool) result)
             {
                 this.AddToBasket(productsSearchViewModel.SelectedProduct);
             }
@@ -148,13 +149,13 @@
             if (this.Basket.Products.Any())
             {
                 var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
-                if ((bool)result)
+                if ((bool) result)
                 {
                     await this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
-                    {
-                        Id = x.Id,
-                        Quantity = x.Quantity.GetValueOrDefault()
-                    }));
+                                                                                                                          {
+                                                                                                                              Id = x.Id,
+                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
+                                                                                                                          }));
 
                     this.Basket.Clear();
                 }
@@ -172,13 +173,13 @@
                 var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
                 var dialog = new ChangeCalulator(viewModel);
                 var result = await DialogHost.Show(dialog, "RootDialog");
-                if ((bool)result)
+                if ((bool) result)
                 {
                     await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
-                    {
-                        Id = x.Id,
-                        Quantity = x.Quantity.GetValueOrDefault()
-                    }));
+                                                                                                                         {
+                                                                                                                             Id = x.Id,
+                                                                                                                             Quantity = x.Quantity.GetValueOrDefault()
+                                                                                                                         }));
 
                     FiscalPrinterHandler.ExportReceipt(this.Basket.Products);
                     this.Basket.Clear();
@@ -197,13 +198,13 @@
                 var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
                 var dialog = new ChangeCalulator(viewModel);
                 var result = await DialogHost.Show(dialog, "RootDialog");
-                if ((bool)result)
+                if ((bool) result)
                 {
                     await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
-                    {
-                        Id = x.Id,
-                        Quantity = x.Quantity.GetValueOrDefault()
-                    }));
+                                                                                                                         {
+                                                                                                                             Id = x.Id,
+                                                                                                                             Quantity = x.Quantity.GetValueOrDefault()
+                                                                                                                         }));
 
                     this.Basket.Clear();
                 }
@@ -244,7 +245,7 @@
                 var quantityEditor = new QuantityEditor(quantityEditorViewModel);
                 var result = await DialogHost.Show(quantityEditor, "RootDialog");
 
-                if ((bool)result)
+                if ((bool) result)
                 {
                     product.Quantity = decimal.Parse(quantityEditorViewModel.Quantity);
                     this.Basket.Add(product);

@@ -50,7 +50,7 @@
         private async void Initialize(HttpClient client, DateTime date)
         {
             var details = await this.apiClient.GetReportDetailsAsync(client, date);
-            
+
             this.Waste.Clear();
             details.Waste.ForEach(this.Waste.Add);
 

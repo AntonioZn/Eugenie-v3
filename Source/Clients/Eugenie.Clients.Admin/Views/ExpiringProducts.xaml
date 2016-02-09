@@ -25,10 +25,10 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <DatePicker Grid.Row="0"
-                            SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}" 
+                            SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="20"
                             Width="200"
-                            HorizontalAlignment="Center"/>
+                            HorizontalAlignment="Center" />
                 <DataGrid Grid.Row="1"
                           x:Name="dataGrid"
                           ItemsSource="{Binding Products}">

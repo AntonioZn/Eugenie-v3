@@ -19,7 +19,7 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     <UserControl.Resources>
-        <Style TargetType="models:EugenieTextBox" BasedOn="{StaticResource MaterialDesignTextBox}"></Style>
+        <Style TargetType="models:EugenieTextBox" BasedOn="{StaticResource MaterialDesignTextBox}" />
     </UserControl.Resources>
     <Grid FocusManager.FocusedElement="{Binding ElementName=txtPayment}">
         <Grid.ColumnDefinitions>
@@ -54,15 +54,15 @@
                    Grid.Column="0"
                    Style="{StaticResource MaterialDesignDisplay3TextBlock}"
                    Text="Ресто: "
-                   HorizontalAlignment="Right" 
-                   VerticalAlignment="Bottom"/>
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom" />
         <TextBlock Grid.Row="2"
                    Grid.Column="0"
                    Style="{StaticResource MaterialDesignDisplay3TextBlock}"
                    Text="В брой: "
                    HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom" 
-                   Margin="20,0,0,20"/>
+                   VerticalAlignment="Bottom"
+                   Margin="20,0,0,20" />
         <TextBox Grid.Row="1"
                  Grid.Column="1"
                  IsReadOnly="True"
@@ -72,8 +72,8 @@
                  FontSize="60"
                  Text="{Binding Change, StringFormat={}{0:0.00}}"
                  HorizontalAlignment="Stretch"
-                 VerticalAlignment="Bottom" 
-                 Margin="0,0,20,0"/>
+                 VerticalAlignment="Bottom"
+                 Margin="0,0,20,0" />
         <models:EugenieTextBox Grid.Row="2"
                                Grid.Column="1"
                                x:Name="txtPayment"
@@ -107,6 +107,3 @@
         </Button>
     </Grid>
 </UserControl>
-
-
-

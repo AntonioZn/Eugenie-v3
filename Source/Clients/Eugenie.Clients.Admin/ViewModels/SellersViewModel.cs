@@ -17,11 +17,11 @@
 
     public class SellersViewModel : ViewModelBase
     {
-        private readonly IServerManager manager;
         private readonly IWebApiClient apiClient;
+        private readonly IServerManager manager;
+        private DateTime? end;
         private ObservableCollection<Seller> sellers;
         private DateTime? start;
-        private DateTime? end;
 
         public SellersViewModel(IServerManager manager, IWebApiClient apiClient)
         {
@@ -33,22 +33,6 @@
             this.Sells = new ObservableCollection<Sell>();
 
             this.Search = new RelayCommand(this.HandleSearch, this.CanSearch);
-        }
-
-        private async void HandleSearch()
-        {
-            var deals = await this.apiClient.GetDealsForSeller(this.manager.SelectedServer.Client, this.SelectedSeller.UserName, this.Start.Value, this.End.Value);
-            
-            this.Waste.Clear();
-            deals.Waste.ForEach(this.Waste.Add);
-
-            this.Sells.Clear();
-            deals.Sells.ForEach(this.Sells.Add);
-        }
-
-        private bool CanSearch()
-        {
-            return this.SelectedSeller != null && this.Start != null && this.End != null;
         }
 
         public ICommand Search { get; }
@@ -99,6 +83,22 @@
         public ObservableCollection<Waste> Waste { get; }
 
         public ObservableCollection<Sell> Sells { get; }
+
+        private async void HandleSearch()
+        {
+            var deals = await this.apiClient.GetDealsForSeller(this.manager.SelectedServer.Client, this.SelectedSeller.UserName, this.Start.Value, this.End.Value);
+
+            this.Waste.Clear();
+            deals.Waste.ForEach(this.Waste.Add);
+
+            this.Sells.Clear();
+            deals.Sells.ForEach(this.Sells.Add);
+        }
+
+        private bool CanSearch()
+        {
+            return this.SelectedSeller != null && this.Start != null && this.End != null;
+        }
 
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {

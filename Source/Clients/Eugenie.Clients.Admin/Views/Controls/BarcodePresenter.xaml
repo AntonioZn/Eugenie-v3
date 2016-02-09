@@ -18,7 +18,7 @@
               VerticalScrollBarVisibility="Disabled">
         <DataGrid.Columns>
             <DataGridTextColumn Width="*"
-                                Binding="{Binding Value}"/>
+                                Binding="{Binding Value}" />
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>

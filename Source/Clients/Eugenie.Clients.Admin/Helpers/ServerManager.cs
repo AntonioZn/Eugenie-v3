@@ -16,17 +16,14 @@
 
     public class ServerManager : IServerManager
     {
-        private readonly IServerStorage storage;
         private readonly IWebApiClient apiClient;
+        private readonly IServerStorage storage;
         private readonly ITaskManager taskManager;
 
         public ServerManager(IServerStorage storage, IWebApiClient apiClient, ITaskManager taskManager)
         {
             this.storage = storage;
-            this.storage.Servers.CollectionChanged += (s, e) =>
-                                                      {
-                                                          this.Initialize();
-                                                      };
+            this.storage.Servers.CollectionChanged += (s, e) => { this.Initialize(); };
             this.apiClient = apiClient;
             this.taskManager = taskManager;
             this.Cache = new Cache();
@@ -60,8 +57,8 @@
             this.Cache.SellersPerServer.Clear();
 
             await Task.Run(() =>
-            {
-                Parallel.ForEach(this.storage.Servers, server =>
+                           {
+                               Parallel.ForEach(this.storage.Servers, server =>
                                                                       {
                                                                           server.Client = ServerTester.TestServerAsync(server).Result;
                                                                           this.Cache.ProductsPerServer.Add(server, new List<Product>());
@@ -77,7 +74,7 @@
                                                                               this.Cache.SellersPerServer[server] = this.apiClient.GetSellersAsync(server.Client).Result;
                                                                           }
                                                                       });
-            });
+                           });
 
             this.SetSelectedServer("");
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);

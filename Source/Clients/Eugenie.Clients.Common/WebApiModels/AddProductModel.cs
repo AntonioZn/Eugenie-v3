@@ -7,13 +7,13 @@
     public class AddProductModel
     {
         public string Name { get; set; }
-        
+
         public string OldName { get; set; }
 
         public decimal? BuyingPrice { get; set; }
 
         public decimal? SellingPrice { get; set; }
-        
+
         public MeasureType Measure { get; set; }
 
         public decimal? QuantityToAdd { get; set; }

@@ -16,15 +16,15 @@
     public class SettingsViewModel : ViewModelBase
     {
         private string address;
-        private string port;
         private bool isSelfHost;
+        private string port;
 
         public SettingsViewModel()
         {
             this.Address = Settings.Default.Address;
             this.Port = Settings.Default.Port.ToString();
             this.IsSelfHost = Settings.Default.IsSelfHost;
-            
+
             this.Save = new RelayCommand(this.HandleSave);
         }
 
@@ -98,7 +98,7 @@
         private string GetAddress()
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
-            var selfHostAddress = "http://" + localIp + ":" + port;
+            var selfHostAddress = "http://" + localIp + ":" + this.port;
             return selfHostAddress;
         }
     }

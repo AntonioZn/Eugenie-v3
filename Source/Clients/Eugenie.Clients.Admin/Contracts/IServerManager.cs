@@ -9,20 +9,20 @@
 
     public interface IServerManager
     {
-        event EventHandler SelectedServerChanged;
-
         ServerInformation SelectedServer { get; }
+
+        Cache Cache { get; }
+
+        event EventHandler SelectedServerChanged;
 
         void SetSelectedServer(string name);
 
         event EventHandler ServerTestingFinished;
 
-        Cache Cache { get; }
-
         void AddOrUpdate(string serverName, AddProductModel model);
 
         void Initialize();
-        
+
         event EventHandler ProductsCacheChanged;
 
         void AddProductToCache(Product product);

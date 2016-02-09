@@ -23,14 +23,14 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0"
-                                                       VerticalAlignment="Bottom"
-                                                       HorizontalAlignment="Stretch"
-                                                       materialDesign:TextFieldAssist.Hint="Магазин"
-                                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                       IsTabStop="False"
-                                                       Focusable="False"
-                                                       IsReadOnly="True"
-                                                       Text="{Binding Key.Name}" />
+                                         VerticalAlignment="Bottom"
+                                         HorizontalAlignment="Stretch"
+                                         materialDesign:TextFieldAssist.Hint="Магазин"
+                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                         IsTabStop="False"
+                                         Focusable="False"
+                                         IsReadOnly="True"
+                                         Text="{Binding Key.Name}" />
                                 <models:EugenieTextBox Grid.Column="1"
                                                        AutoSelect="True"
                                                        BlockInvalidNumberCharacters="True"

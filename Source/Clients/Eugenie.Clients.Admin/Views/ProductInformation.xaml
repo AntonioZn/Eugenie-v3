@@ -73,8 +73,7 @@
                           IsTabStop="False"
                           HorizontalAlignment="Stretch"
                           ItemsSource="{Binding Measures}"
-                          SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                </ComboBox>
+                          SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <materialDesign:PackIcon Kind="CashUsd"
                                          Grid.Column="0"
                                          Grid.Row="2"
@@ -109,14 +108,12 @@
                     Margin="8 0 0 0"
                     Content="Назад"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{Binding Cancel}">
-            </Button>
+                    Command="{Binding Cancel}" />
             <Button IsDefault="True"
                     IsTabStop="False"
                     Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding Save}"
-                    Content="Запази">
-            </Button>
+                    Content="Запази" />
         </StackPanel>
     </StackPanel>
 </UserControl>

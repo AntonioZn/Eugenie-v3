@@ -3,13 +3,13 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for ShopSpecificProduct.xaml
+    ///     Interaction logic for ShopSpecificProduct.xaml
     /// </summary>
     public partial class ShopSpecificProduct : UserControl
     {
         public ShopSpecificProduct()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

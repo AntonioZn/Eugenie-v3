@@ -12,7 +12,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
@@ -59,7 +60,7 @@
             </Style>
             <Style TargetType="{x:Type materialDesign:Card}">
                 <Setter Property="IsTabStop"
-                        Value="False"></Setter>
+                        Value="False" />
             </Style>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
             <converters:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />

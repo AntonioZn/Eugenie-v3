@@ -11,12 +11,13 @@
     public partial class MainWindow
     {
         private readonly NotifyIcon icon;
+
         public MainWindow()
         {
             this.InitializeComponent();
             this.txtSearch.Focus();
             this.icon = new NotifyIcon();
-            this.icon.Icon = global::Properties.Resources.Icon;
+            this.icon.Icon = Properties.Resources.Icon;
             this.icon.MouseClick +=
                 delegate
                 {
@@ -25,7 +26,7 @@
                     this.WindowState = WindowState.Normal;
                 };
         }
-        
+
         protected override void OnStateChanged(EventArgs e)
         {
             if (this.WindowState == WindowState.Minimized)

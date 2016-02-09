@@ -49,6 +49,11 @@
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
+        public void HandleBarcode(string barcode)
+        {
+            this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
+        }
+
         private void HandleCancel()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
@@ -67,17 +72,12 @@
         private bool CanSave()
         {
             var exists = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value?
-                .Any(y => y.Name.ToLower() == this.MainProductViewModel.Product.Name.ToLower() && y.Name.ToLower() != this.MainProductViewModel.OldName.ToLower());
+                             .Any(y => y.Name.ToLower() == this.MainProductViewModel.Product.Name.ToLower() && y.Name.ToLower() != this.MainProductViewModel.OldName.ToLower());
 
             return this.MainProductViewModel.Product.HasNoValidationErrors()
-                && this.MainProductViewModel.HasNoValidationErrors()
-                && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
-                && !exists.GetValueOrDefault();
-        }
-
-        public void HandleBarcode(string barcode)
-        {
-            this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
+                   && this.MainProductViewModel.HasNoValidationErrors()
+                   && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
+                   && !exists.GetValueOrDefault();
         }
     }
 }

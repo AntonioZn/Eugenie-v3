@@ -15,7 +15,7 @@
             this.Title = title;
             this.Message = message;
         }
-        
+
         public int Id { get; set; }
 
         public PackIconKind Icon { get; set; }

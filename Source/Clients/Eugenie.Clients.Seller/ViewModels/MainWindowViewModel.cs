@@ -18,6 +18,8 @@
 
     using Views;
 
+    using Settings = Properties.Settings;
+
     public class MainWindowViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IWebApiHost webApiHost;
@@ -26,9 +28,9 @@
         public MainWindowViewModel(IWebApiHost webApiHost)
         {
             this.webApiHost = webApiHost;
-            if (string.IsNullOrEmpty(Properties.Settings.Default.Address))
+            if (string.IsNullOrEmpty(Settings.Default.Address))
             {
-                this.Content = new Settings();
+                this.Content = new Views.Settings();
             }
             else
             {
@@ -36,12 +38,12 @@
             }
 
             Task.Run(async () =>
-            {
-                using (var mgr = new UpdateManager("https://s3.eu-central-1.amazonaws.com/eugenie95/seller/"))
-                {
-                    await mgr.UpdateApp();
-                }
-            });
+                           {
+                               using (var mgr = new UpdateManager("https://s3.eu-central-1.amazonaws.com/eugenie95/seller/"))
+                               {
+                                   await mgr.UpdateApp();
+                               }
+                           });
 
             this.Initialize();
         }
@@ -56,6 +58,15 @@
             private set
             {
                 this.Set(() => this.Content, ref this.content, value);
+            }
+        }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            var keyHandler = this.Content.DataContext as IKeyHandler;
+            if (keyHandler != null && keyHandler != this)
+            {
+                keyHandler.HandleKey(e, key);
             }
         }
 
@@ -78,44 +89,35 @@
             }
         }
 
-        public void HandleKey(KeyEventArgs e, Key key)
-        {
-            var keyHandler = this.Content.DataContext as IKeyHandler;
-            if (keyHandler != null && keyHandler != this)
-            {
-                keyHandler.HandleKey(e, key);
-            }
-        }
-
         public void Initialize()
         {
-            if (Properties.Settings.Default.IsSelfHost)
+            if (Settings.Default.IsSelfHost)
             {
-                this.HostServer(Properties.Settings.Default.Port);
+                this.HostServer(Settings.Default.Port);
             }
 
-            if (Properties.Settings.Default.BackupDatabase)
+            if (Settings.Default.BackupDatabase)
             {
-                var hours = Properties.Settings.Default.BackupHours;
-                var minutes = Properties.Settings.Default.BackupMinutes;
-                var path = Properties.Settings.Default.BackupPath;
+                var hours = Settings.Default.BackupHours;
+                var minutes = Settings.Default.BackupMinutes;
+                var path = Settings.Default.BackupPath;
                 this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }
 
         public void ShowLogin()
         {
-            this.Content = new Login();;
+            this.Content = new Login();
         }
 
         public void ShowSell()
         {
-            this.Content = new Sell();;
+            this.Content = new Sell();
         }
 
         public void ShowSettings()
         {
-            this.Content = new Settings();;
+            this.Content = new Views.Settings();
         }
     }
 }

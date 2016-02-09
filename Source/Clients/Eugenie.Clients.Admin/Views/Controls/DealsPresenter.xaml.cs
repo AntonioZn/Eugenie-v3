@@ -3,13 +3,13 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for DealsPresenter.xaml
+    ///     Interaction logic for DealsPresenter.xaml
     /// </summary>
     public partial class DealsPresenter : UserControl
     {
         public DealsPresenter()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

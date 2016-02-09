@@ -72,7 +72,7 @@
                 userInput = userInput.Replace(",", string.Empty);
 
                 decimal result;
-                if(decimal.TryParse(userInput, out result))
+                if (decimal.TryParse(userInput, out result))
                 {
                     if (result > this.maximumQuantity)
                     {

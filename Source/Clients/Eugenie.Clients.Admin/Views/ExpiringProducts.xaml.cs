@@ -3,13 +3,13 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for ExpiringProducts.xaml
+    ///     Interaction logic for ExpiringProducts.xaml
     /// </summary>
     public partial class ExpiringProducts : UserControl
     {
         public ExpiringProducts()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

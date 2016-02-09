@@ -55,28 +55,22 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="№"
                                         Binding="{Binding Id}"
-                                        Width="0.6*">
-                    </DataGridTextColumn>
+                                        Width="0.6*" />
                     <DataGridTextColumn Header="Име"
                                         Binding="{Binding Name}"
-                                        Width="6*">
-                    </DataGridTextColumn>
+                                        Width="6*" />
                     <DataGridTextColumn Header="М-ка"
                                         Binding="{Binding Measure}"
-                                        Width="0.5*">
-                    </DataGridTextColumn>
+                                        Width="0.5*" />
                     <DataGridTextColumn Header="К-во"
                                         Binding="{Binding Quantity}"
-                                        Width="2*">
-                    </DataGridTextColumn>
+                                        Width="2*" />
                     <DataGridTextColumn Header="Eд. цена"
                                         Binding="{Binding SellingPrice, StringFormat={}{0:0.00}}"
-                                        Width="2*">
-                    </DataGridTextColumn>
+                                        Width="2*" />
                     <DataGridTextColumn Header="Цена"
                                         Binding="{Binding Converter={StaticResource totalSellingPriceConverter}, StringFormat={}{0:0.00}}"
-                                        Width="2*">
-                    </DataGridTextColumn>
+                                        Width="2*" />
                 </DataGrid.Columns>
             </DataGrid>
         </materialDesign:Card>

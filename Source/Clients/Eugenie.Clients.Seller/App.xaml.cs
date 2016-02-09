@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Seller
 {
-    using System.IO;
     using System.Windows.Threading;
 
     using Common.Helpers;

@@ -65,7 +65,7 @@
                     }
                     else
                     {
-                        breadWithCoupon = new Product { Name = breadWithCouponName, SellingPrice = bread.SellingPrice - (coupon.SellingPrice * -1), Quantity = 1 };
+                        breadWithCoupon = new Product { Name = breadWithCouponName, SellingPrice = bread.SellingPrice - coupon.SellingPrice * -1, Quantity = 1 };
                         products.Add(breadWithCoupon);
                     }
                 }

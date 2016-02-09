@@ -119,14 +119,12 @@
                                 Margin="8 0 0 0"
                                 Content="Назад"
                                 Style="{DynamicResource MaterialDesignFlatButton}"
-                                Command="{Binding Cancel}">
-                        </Button>
+                                Command="{Binding Cancel}" />
                         <Button IsDefault="True"
                                 IsTabStop="False"
                                 Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                                 Command="{Binding ShowPdf}"
-                                Content="Отвори PDF">
-                        </Button>
+                                Content="Отвори PDF" />
                     </StackPanel>
                 </Grid>
             </TabItem>

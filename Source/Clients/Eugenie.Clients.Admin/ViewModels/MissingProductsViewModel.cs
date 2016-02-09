@@ -41,6 +41,17 @@
 
         public ObservableCollection<MissingProduct> MissingProducts { get; }
 
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Enter:
+                    this.HandleEnter();
+                    e.Handled = true;
+                    break;
+            }
+        }
+
         public async void HandleEnter()
         {
             if (this.SelectedProduct == null)
@@ -55,7 +66,6 @@
             await DialogHost.Show(dialog, "RootDialog");
         }
 
-
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             var hashset = new HashSet<MissingProduct>();
@@ -63,17 +73,6 @@
 
             this.MissingProducts.Clear();
             hashset.ForEach(this.MissingProducts.Add);
-        }
-
-        public void HandleKey(KeyEventArgs e, Key key)
-        {
-            switch (key)
-            {
-                case Key.Enter:
-                    this.HandleEnter();
-                    e.Handled = true;
-                    break;
-            }
         }
     }
 }

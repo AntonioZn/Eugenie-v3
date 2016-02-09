@@ -62,7 +62,8 @@
                                  ItemsSource="{Binding Views}"
                                  SelectedItem="{Binding SelectedMenuItem}">
                             <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <Style TargetType="{x:Type ListBoxItem}"
+                                       BasedOn="{StaticResource MaterialDesignListBoxItem}">
                                     <Setter Property="IsTabStop"
                                             Value="False" />
                                 </Style>

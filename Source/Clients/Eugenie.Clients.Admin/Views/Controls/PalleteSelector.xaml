@@ -48,8 +48,9 @@
                         <Border.Background>
                             <SolidColorBrush Color="{Binding ExemplarHue.Color, Mode=OneTime}" />
                         </Border.Background>
-                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
-                                CommandParameter="{Binding}">
+                        <Button
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
+                            CommandParameter="{Binding}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Главен" />
                                 <Viewbox Width="16"
@@ -68,8 +69,9 @@
                         <Border.Background>
                             <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}" />
                         </Border.Background>
-                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ApplyAccentCommand, Mode=OneTime}"
-                                CommandParameter="{Binding}">
+                        <Button
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.ApplyAccentCommand, Mode=OneTime}"
+                            CommandParameter="{Binding}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Акцент" />
                                 <Viewbox Width="16"

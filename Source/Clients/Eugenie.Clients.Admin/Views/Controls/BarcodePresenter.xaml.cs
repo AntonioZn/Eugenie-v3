@@ -3,13 +3,13 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for BarcodePresenter.xaml
+    ///     Interaction logic for BarcodePresenter.xaml
     /// </summary>
     public partial class BarcodePresenter : UserControl
     {
         public BarcodePresenter()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

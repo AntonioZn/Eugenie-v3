@@ -17,8 +17,8 @@
     public class ProductsSearchViewModel : ViewModelBase
     {
         private readonly IWebApiClient apiClient;
-        private string search;
         private ObservableCollection<Product> products;
+        private string search;
 
         public ProductsSearchViewModel(IWebApiClient apiClient)
         {
@@ -83,7 +83,8 @@
         private async void SearchById(int id)
         {
             var product = await this.apiClient.GetProductById(ViewModelLocator.httpClient, id);
-            this.products.Clear();;
+            this.products.Clear();
+            ;
             if (product != null)
             {
                 this.products.Add(product);

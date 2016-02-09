@@ -14,7 +14,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
-    using Views;
+    using Properties;
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
     {
@@ -27,17 +27,28 @@
 
         public string Username { get; set; }
 
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.F1:
+                    ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSettings();
+                    e.Handled = true;
+                    break;
+            }
+        }
+
         private async void HandleLogin(object obj)
         {
             var passwordBox = obj as PasswordBox;
             var password = passwordBox.Password;
 
             var server = new ServerInformation
-            {
-                Addresses = new List<string> { Properties.Settings.Default.Address },
-                Password = password,
-                Username = this.Username
-            };
+                         {
+                             Addresses = new List<string> { Settings.Default.Address },
+                             Password = password,
+                             Username = this.Username
+                         };
 
             var client = await ServerTester.TestServerAsync(server);
             if (client == null)
@@ -48,17 +59,6 @@
             {
                 ViewModelLocator.httpClient = client;
                 ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSell();
-            }
-        }
-
-        public void HandleKey(KeyEventArgs e, Key key)
-        {
-            switch (key)
-            {
-                case Key.F1:
-                    ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSettings();
-                    e.Handled = true;
-                    break;
             }
         }
     }

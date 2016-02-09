@@ -16,11 +16,11 @@
 
     public class ProductViewModel : ViewModelBase, IValidatableObject
     {
-        private DateTime? date;
         private string batch;
+        private string buyingPrice;
+        private DateTime? date;
         private string quantityToAdd;
         private string sellingPrice;
-        private string buyingPrice;
 
         public ProductViewModel(Product product)
         {
@@ -109,6 +109,33 @@
             }
         }
 
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case nameof(this.QuantityToAdd):
+                        return Validator.ValidateNullableDecimal(this.QuantityToAdd);
+                    case nameof(this.SellingPrice):
+                        return Validator.ValidateNullableDecimal(this.SellingPrice);
+                    case nameof(this.BuyingPrice):
+                        return Validator.ValidateNotNullableDecimal(this.BuyingPrice);
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        public string Error { get; }
+
+        public bool HasNoValidationErrors()
+        {
+            return this[nameof(this.QuantityToAdd)] == null
+                   && this[nameof(this.SellingPrice)] == null
+                   && this[nameof(this.BuyingPrice)] == null;
+        }
+
         public void MapProperties(ProductViewModel baseProduct)
         {
             this.Product.Name = ProductNameFixer.Fix(baseProduct.Product.Name);
@@ -133,7 +160,6 @@
                             SellingPrice = this.Product.SellingPrice,
                             BuyingPrice = this.Product.BuyingPrice
                         };
-
 
             if (!string.IsNullOrEmpty(this.QuantityToAdd))
             {
@@ -160,39 +186,12 @@
         private bool CanAddExpirationDate()
         {
             return this.Date != null
-                && this.Product.ExpirationDates.All(x => x.Date != this.Date || (x.Batch ?? "") != (this.Batch ?? ""));
+                   && this.Product.ExpirationDates.All(x => x.Date != this.Date || (x.Batch ?? "") != (this.Batch ?? ""));
         }
 
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)
         {
             this.Product.ExpirationDates.Remove(expirationDate);
-        }
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                switch (propertyName)
-                {
-                    case nameof(this.QuantityToAdd):
-                        return Validator.ValidateNullableDecimal(this.QuantityToAdd);
-                    case nameof(this.SellingPrice):
-                        return Validator.ValidateNullableDecimal(this.SellingPrice);
-                    case nameof(this.BuyingPrice):
-                        return Validator.ValidateNotNullableDecimal(this.BuyingPrice);
-                    default:
-                        return null;
-                }
-            }
-        }
-
-        public string Error { get; }
-
-        public bool HasNoValidationErrors()
-        {
-            return this[nameof(this.QuantityToAdd)] == null
-                && this[nameof(this.SellingPrice)] == null
-                && this[nameof(this.BuyingPrice)] == null;
         }
     }
 }

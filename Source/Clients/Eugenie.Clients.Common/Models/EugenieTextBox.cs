@@ -21,9 +21,9 @@
         private void OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (this.AutoSelect
-               && !Mouse.LeftButton.HasFlag(MouseButtonState.Pressed)
-               && !Mouse.RightButton.HasFlag(MouseButtonState.Pressed)
-               && !Mouse.MiddleButton.HasFlag(MouseButtonState.Pressed))
+                && !Mouse.LeftButton.HasFlag(MouseButtonState.Pressed)
+                && !Mouse.RightButton.HasFlag(MouseButtonState.Pressed)
+                && !Mouse.MiddleButton.HasFlag(MouseButtonState.Pressed))
             {
                 this.SelectAll();
             }

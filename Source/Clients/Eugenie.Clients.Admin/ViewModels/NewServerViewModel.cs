@@ -11,14 +11,14 @@
 
     public class NewServerViewModel : ViewModelBase, IValidatableObject
     {
-        private string name;
-        private string username;
-        private string password;
         private string addresses;
+        private string name;
+        private string password;
+        private string username;
 
         public NewServerViewModel()
         {
-           this.AddressesArray = new string[0]; 
+            this.AddressesArray = new string[0];
         }
 
         public string Name
@@ -26,7 +26,6 @@
             get
             {
                 return this.name;
-
             }
             set
             {
@@ -39,7 +38,6 @@
             get
             {
                 return this.username;
-
             }
             set
             {
@@ -52,14 +50,13 @@
             get
             {
                 return this.password;
-
             }
             set
             {
                 this.Set(() => this.Password, ref this.password, value.Trim());
             }
         }
-        
+
         public string Addresses
         {
             get
@@ -75,26 +72,6 @@
         }
 
         public string[] AddressesArray { get; private set; }
-
-        public void Reset()
-        {
-            this.Name = string.Empty;
-            this.Username = string.Empty;
-            this.Password = string.Empty;
-            this.Addresses = string.Empty;
-            this.AddressesArray = new string[0];
-        }
-
-        public ServerInformation GetServer()
-        {
-            return new ServerInformation
-            {
-                Name = this.Name,
-                Username = this.Username,
-                Password = this.Password,
-                Addresses = this.AddressesArray
-            };
-        }
 
         public string this[string propertyName]
         {
@@ -121,9 +98,29 @@
         public bool HasNoValidationErrors()
         {
             return this[nameof(this.Name)] == null
-                && this[nameof(this.Username)] == null
-                && this[nameof(this.Password)] == null
-                && this[nameof(this.Addresses)] == null;
+                   && this[nameof(this.Username)] == null
+                   && this[nameof(this.Password)] == null
+                   && this[nameof(this.Addresses)] == null;
+        }
+
+        public void Reset()
+        {
+            this.Name = string.Empty;
+            this.Username = string.Empty;
+            this.Password = string.Empty;
+            this.Addresses = string.Empty;
+            this.AddressesArray = new string[0];
+        }
+
+        public ServerInformation GetServer()
+        {
+            return new ServerInformation
+                   {
+                       Name = this.Name,
+                       Username = this.Username,
+                       Password = this.Password,
+                       Addresses = this.AddressesArray
+                   };
         }
     }
 }

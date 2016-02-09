@@ -8,7 +8,7 @@
     using System.Threading;
 
     /// <summary>
-    /// Provides a thread-safe dictionary for use with data binding.
+    ///     Provides a thread-safe dictionary for use with data binding.
     /// </summary>
     /// <typeparam name="TKey">Specifies the type of the keys in this collection.</typeparam>
     /// <typeparam name="TValue">Specifies the type of the values in this collection.</typeparam>
@@ -20,7 +20,7 @@
         private readonly ConcurrentDictionary<TKey, TValue> _dictionary;
 
         /// <summary>
-        /// Initializes an instance of the ObservableConcurrentDictionary class.
+        ///     Initializes an instance of the ObservableConcurrentDictionary class.
         /// </summary>
         public ObservableConcurrentDictionary()
         {
@@ -30,11 +30,12 @@
 
         /// <summary>Event raised when the collection changes.</summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
         /// <summary>Event raised when a property on the collection changes.</summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Notifies observers of CollectionChanged or PropertyChanged of an update to the dictionary.
+        ///     Notifies observers of CollectionChanged or PropertyChanged of an update to the dictionary.
         /// </summary>
         private void NotifyObserversOfChange()
         {
@@ -43,18 +44,18 @@
             if (collectionHandler != null || propertyHandler != null)
             {
                 this._context.Post(s =>
-                {
-                    if (collectionHandler != null)
-                    {
-                        collectionHandler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    }
-                    if (propertyHandler != null)
-                    {
-                        propertyHandler(this, new PropertyChangedEventArgs("Count"));
-                        propertyHandler(this, new PropertyChangedEventArgs("Keys"));
-                        propertyHandler(this, new PropertyChangedEventArgs("Values"));
-                    }
-                }, null);
+                                   {
+                                       if (collectionHandler != null)
+                                       {
+                                           collectionHandler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                                       }
+                                       if (propertyHandler != null)
+                                       {
+                                           propertyHandler(this, new PropertyChangedEventArgs("Count"));
+                                           propertyHandler(this, new PropertyChangedEventArgs("Keys"));
+                                           propertyHandler(this, new PropertyChangedEventArgs("Values"));
+                                       }
+                                   }, null);
             }
         }
 
@@ -72,8 +73,11 @@
         /// <returns>Whether the add was successful.</returns>
         private bool TryAddWithNotification(TKey key, TValue value)
         {
-            bool result = this._dictionary.TryAdd(key, value);
-            if (result) this.NotifyObserversOfChange();
+            var result = this._dictionary.TryAdd(key, value);
+            if (result)
+            {
+                this.NotifyObserversOfChange();
+            }
             return result;
         }
 
@@ -83,8 +87,11 @@
         /// <returns>Whether the removal was successful.</returns>
         private bool TryRemoveWithNotification(TKey key, out TValue value)
         {
-            bool result = this._dictionary.TryRemove(key, out value);
-            if (result) this.NotifyObserversOfChange();
+            var result = this._dictionary.TryRemove(key, out value);
+            if (result)
+            {
+                this.NotifyObserversOfChange();
+            }
             return result;
         }
 
@@ -99,6 +106,7 @@
         }
 
         #region ICollection<KeyValuePair<TKey,TValue>> Members
+
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             this.TryAddWithNotification(item);
@@ -106,28 +114,34 @@
 
         void ICollection<KeyValuePair<TKey, TValue>>.Clear()
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).Clear();
+            ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).Clear();
             this.NotifyObserversOfChange();
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).Contains(item);
+            return ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).Contains(item);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).CopyTo(array, arrayIndex);
+            ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).CopyTo(array, arrayIndex);
         }
 
         int ICollection<KeyValuePair<TKey, TValue>>.Count
         {
-            get { return ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).Count; }
+            get
+            {
+                return ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).Count;
+            }
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
         {
-            get { return ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).IsReadOnly; }
+            get
+            {
+                return ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).IsReadOnly;
+            }
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
@@ -135,21 +149,25 @@
             TValue temp;
             return this.TryRemoveWithNotification(item.Key, out temp);
         }
+
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
+
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).GetEnumerator();
+            return ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)this._dictionary).GetEnumerator();
+            return ((ICollection<KeyValuePair<TKey, TValue>>) this._dictionary).GetEnumerator();
         }
+
         #endregion
 
         #region IDictionary<TKey,TValue> Members
+
         public void Add(TKey key, TValue value)
         {
             this.TryAddWithNotification(key, value);
@@ -162,7 +180,10 @@
 
         public ICollection<TKey> Keys
         {
-            get { return this._dictionary.Keys; }
+            get
+            {
+                return this._dictionary.Keys;
+            }
         }
 
         public bool Remove(TKey key)
@@ -178,14 +199,24 @@
 
         public ICollection<TValue> Values
         {
-            get { return this._dictionary.Values; }
+            get
+            {
+                return this._dictionary.Values;
+            }
         }
 
         public TValue this[TKey key]
         {
-            get { return this._dictionary[key]; }
-            set { this.UpdateWithNotification(key, value); }
+            get
+            {
+                return this._dictionary[key];
+            }
+            set
+            {
+                this.UpdateWithNotification(key, value);
+            }
         }
+
         #endregion
     }
 }

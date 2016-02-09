@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Admin
+﻿namespace Eugenie.Clients.Admin.Helpers
 {
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
@@ -25,6 +25,7 @@
             this.AddOrUpdateProductTasks.CollectionChanged += this.OnAddOrUpdateProductTasksChanged;
             this.DeleteProductTasks.CollectionChanged += this.OnDeleteProductTasksChanged;
         }
+
         public ObservableCollection<ServerInformation> Servers { get; }
 
         public ObservableCollection<AddOrUpdateProductTask> AddOrUpdateProductTasks { get; }

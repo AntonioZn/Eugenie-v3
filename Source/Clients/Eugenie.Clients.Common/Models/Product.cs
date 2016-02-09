@@ -13,13 +13,13 @@
 
     public class Product : ViewModelBase, IValidatableObject
     {
-        private string name;
-        private decimal buyingPrice;
-        private decimal? sellingPrice;
-        private decimal? quantity;
-        private MeasureType measure;
         private ObservableCollection<Barcode> barcodes;
+        private decimal buyingPrice;
         private ObservableCollection<ExpirationDate> expirationDates;
+        private MeasureType measure;
+        private string name;
+        private decimal? quantity;
+        private decimal? sellingPrice;
 
         public Product()
         {

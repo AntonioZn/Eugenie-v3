@@ -15,8 +15,8 @@
     public class ExpiringProductsViewModel : ViewModelBase
     {
         private readonly IServerManager manager;
-        private ObservableCollection<Product> products;
         private DateTime date;
+        private ObservableCollection<Product> products;
 
         public ExpiringProductsViewModel(IServerManager manager)
         {
@@ -60,7 +60,7 @@
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
             this.Products = this.manager.SelectedServer == null ? Enumerable.Empty<Product>() :
-                this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date));
+                                this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date));
         }
     }
 }
