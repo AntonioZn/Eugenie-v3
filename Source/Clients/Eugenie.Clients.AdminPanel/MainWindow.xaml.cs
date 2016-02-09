@@ -1,7 +1,7 @@
 ﻿namespace Eugenie.Clients.AdminPanel
 {
     using System;
-    using System.Drawing;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Forms;
@@ -17,7 +17,7 @@
             this.InitializeComponent();
             this.txtSearch.Focus();
             this.icon = new NotifyIcon();
-            this.icon.Icon = new Icon("Icon.ico");
+            this.icon.Icon = Properties.Resources.Icon;
             this.icon.MouseClick +=
                 delegate
                 {
@@ -26,7 +26,7 @@
                     this.WindowState = WindowState.Normal;
                 };
         }
-
+        
         protected override void OnStateChanged(EventArgs e)
         {
             if (this.WindowState == WindowState.Minimized)
