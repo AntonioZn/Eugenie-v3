@@ -5,6 +5,7 @@
     using System.Data.Entity;
     using System.Linq;
 
+    using Common.Constants;
     using Common.Helpers;
 
     using Contracts;
@@ -31,7 +32,14 @@
             if (product != null)
             {
                 product.IsDeleted = true;
-                product.Name = "[Изтрит]" + product.Name;
+                product.Name = $"[Изтрит на {DateTime.Now.ToString("dd-MM-yyyy")}]" + product.Name;
+                var substringLenght = ValidationConstants.ProductNameMaxLength;
+                if (product.Name.Length < substringLenght)
+                {
+                    substringLenght = product.Name.Length;
+                }
+
+                product.Name = product.Name.Substring(0, 64);
                 this.productsRepository.SaveChanges();
             }
         }
