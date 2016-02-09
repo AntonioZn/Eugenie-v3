@@ -40,39 +40,39 @@
         {
             Task.Run(() =>
                            {
-                while (true)
-                {
-                    var groups = this.tasksStorage.AddOrUpdateProductTasks.GroupBy(x => x.ServerName);
-                    foreach (var group in groups)
-                    {
-                        foreach (var task in group)
-                        {
-                            var client = this.serversStorage.Servers.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
-                            if (client != null)
-                            {
-                                try
-                                {
-                                    var status = this.apiClient.AddOrUpdateAsync(client, task.Model).Result;
-                                    if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
-                                    {
-                                        this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
-                                    }
-                                }
-                                catch
-                                {
+                               while (true)
+                               {
+                                   var groups = this.tasksStorage.AddOrUpdateProductTasks.GroupBy(x => x.ServerName);
+                                   foreach (var group in groups)
+                                   {
+                                       foreach (var task in group)
+                                       {
+                                           var client = this.serversStorage.Servers.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
+                                           if (client != null)
+                                           {
+                                               try
+                                               {
+                                                   var status = this.apiClient.AddOrUpdateAsync(client, task.Model).Result;
+                                                   if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
+                                                   {
+                                                       this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
+                                                   }
+                                               }
+                                               catch
+                                               {
 
-                                }
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+                                               }
+                                           }
+                                           else
+                                           {
+                                               break;
+                                           }
+                                       }
+                                   }
 
-                    Thread.Sleep(1000);
-                    }
-                });
+                                   SpinWait.SpinUntil(() => this.tasksStorage.AddOrUpdateProductTasks.Any());
+                               }
+                           });
         }
     }
 }

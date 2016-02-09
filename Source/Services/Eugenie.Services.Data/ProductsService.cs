@@ -118,28 +118,19 @@
             product.Measure = measure ?? product.Measure;
             product.Quantity += quantity ?? 0;
 
-            foreach (var barcode in product.Barcodes.ToList())
+            foreach (var barcode in product.Barcodes.Where(barcode => barcodes.All(x => x.Value != barcode.Value)).ToList())
             {
-                if (barcodes.All(x => x.Value != barcode.Value))
-                {
-                    this.barcodesRepository.Delete(barcode);
-                }
+                this.barcodesRepository.Delete(barcode);
+            }
+            
+            foreach (var barcode in barcodes.Where(barcode => !this.barcodesRepository.All().Any(x => x.Value == barcode.Value)))
+            {
+                product.Barcodes.Add(barcode);
             }
 
-            foreach (var barcode in barcodes)
+            foreach (var expirationDate in expirationDates.Where(expirationDate => product.ExpirationDates.All(x => x.Date != expirationDate.Date || x.Batch != expirationDate.Batch)))
             {
-                if (!this.barcodesRepository.All().Any(x => x.Value == barcode.Value))
-                {
-                    product.Barcodes.Add(barcode);
-                }
-            }
-
-            foreach (var expirationDate in expirationDates)
-            {
-                if (product.ExpirationDates.All(x => x.Date != expirationDate.Date || x.Batch != expirationDate.Batch))
-                {
-                    product.ExpirationDates.Add(expirationDate);
-                }
+                product.ExpirationDates.Add(expirationDate);
             }
         }
     }

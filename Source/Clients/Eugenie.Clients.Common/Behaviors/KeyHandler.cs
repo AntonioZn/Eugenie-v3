@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Common.Behaviors
 {
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -10,7 +9,7 @@
 
     using MaterialDesignThemes.Wpf;
 
-    public class KeyHandlersBehavior : Behavior<Window>
+    public class KeyHandler : Behavior<Window>
     {
         protected override void OnAttached()
         {

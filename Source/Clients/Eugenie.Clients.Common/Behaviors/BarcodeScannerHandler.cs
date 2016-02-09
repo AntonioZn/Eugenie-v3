@@ -8,14 +8,14 @@
 
     using Contracts;
 
-    public class HandleBarcodeScannerWindowBehavior : Behavior<Window>
+    public class BarcodeScannerHandler : Behavior<Window>
     {
         private readonly StringBuilder barcodeReader;
         private readonly KeyConverter keyConverter;
         private IBarcodeHandler handler;
         private bool isScanning;
 
-        public HandleBarcodeScannerWindowBehavior()
+        public BarcodeScannerHandler()
         {
             this.barcodeReader = new StringBuilder();
             this.keyConverter = new KeyConverter();
@@ -35,7 +35,14 @@
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F20)
+            var startKey = Key.F20;
+            var endKey = Key.F22;
+#if DEBUG
+            startKey = Key.F11;
+            endKey = Key.F12;
+#endif
+
+            if (e.Key == startKey)
             {
                 var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
                 var userControl = contentControl?.Content as UserControl;
@@ -47,7 +54,7 @@
                     e.Handled = true;
                 }
             }
-            else if (this.isScanning && e.Key == Key.F22)
+            else if (this.isScanning && e.Key == endKey)
             {
                 if (this.barcodeReader.Length != 0)
                 {

@@ -7,7 +7,7 @@
 
     using MaterialDesignThemes.Wpf;
 
-    public class NavigateDataGridWithArrowsBehavior : Behavior<Window>
+    public class NavigateDataGridWithArrows : Behavior<Window>
     {
         protected override void OnAttached()
         {

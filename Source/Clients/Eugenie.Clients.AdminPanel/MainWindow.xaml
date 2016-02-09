@@ -22,9 +22,9 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource ViewModelLocator}}">
     <i:Interaction.Behaviors>
-        <commonBehaviors:NavigateDataGridWithArrowsBehavior />
-        <commonBehaviors:KeyHandlersBehavior />
-        <commonBehaviors:HandleBarcodeScannerWindowBehavior />
+        <commonBehaviors:NavigateDataGridWithArrows />
+        <commonBehaviors:KeyHandler />
+        <commonBehaviors:BarcodeScannerHandler />
     </i:Interaction.Behaviors>
     <Grid>
         <Grid Panel.ZIndex="1000"
