@@ -15,7 +15,7 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=LoginViewModel, Source={StaticResource ViewModelLocator}}">
-    <Grid FocusManager.FocusedElement="{Binding ElementName=txtName}">
+    <Grid>
         <materialDesign:Card VerticalAlignment="Center"
                              HorizontalAlignment="Center"
                              Padding="16">
