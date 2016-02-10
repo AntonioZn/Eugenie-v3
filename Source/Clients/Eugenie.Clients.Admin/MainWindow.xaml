@@ -18,7 +18,8 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource ViewModelLocator}}">
+        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        materialDesign:TransitionAssist.DisableTransitions="True">
     <i:Interaction.Behaviors>
         <commonBehaviors:NavigateDataGridWithArrows />
         <commonBehaviors:KeyHandler />
