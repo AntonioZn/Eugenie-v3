@@ -60,6 +60,8 @@
 
         // GET api/Account/UserInfo
         //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+
+        [Authorize(Roles = "Seller")]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
