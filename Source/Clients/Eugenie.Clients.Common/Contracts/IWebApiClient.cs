@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Models;
@@ -28,7 +29,7 @@
 
         Task<UserInfoResponse> GetUserInfo(HttpClient client);
 
-        Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name);
+        Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name, CancellationToken token);
 
         Task<Product> GetProductById(HttpClient client, int id);
 

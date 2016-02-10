@@ -12,7 +12,7 @@
         public static void LogToFile(Exception e, string path)
         {
             Directory.CreateDirectory(path);
-            var log = $"{DateTime.Now}\n{e.Message}\n{e.InnerException}\n{e.StackTrace}\n\n\n";
+            var log = $"{DateTime.Now}{Environment.NewLine}{e.Message}{Environment.NewLine}{e.InnerException}{Environment.NewLine}{e.StackTrace}{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
 
             File.AppendAllText(path + "\\" + LogFilename, log);
 

@@ -151,13 +151,12 @@
                 var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
                 if ((bool) result)
                 {
+                    this.Basket.Clear();
                     await this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
                                                                                                                           {
                                                                                                                               Id = x.Id,
                                                                                                                               Quantity = x.Quantity.GetValueOrDefault()
                                                                                                                           }));
-
-                    this.Basket.Clear();
                 }
             }
             else
@@ -175,14 +174,14 @@
                 var result = await DialogHost.Show(dialog, "RootDialog");
                 if ((bool) result)
                 {
+                    FiscalPrinterHandler.ExportReceipt(this.Basket.Products);
+                    this.Basket.Clear();
+
                     await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
                                                                                                                          {
                                                                                                                              Id = x.Id,
                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
                                                                                                                          }));
-
-                    FiscalPrinterHandler.ExportReceipt(this.Basket.Products);
-                    this.Basket.Clear();
                 }
             }
             else
@@ -200,13 +199,12 @@
                 var result = await DialogHost.Show(dialog, "RootDialog");
                 if ((bool) result)
                 {
+                    this.Basket.Clear();
                     await this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
                                                                                                                          {
                                                                                                                              Id = x.Id,
                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
                                                                                                                          }));
-
-                    this.Basket.Clear();
                 }
             }
             else

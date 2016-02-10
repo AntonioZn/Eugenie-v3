@@ -15,13 +15,14 @@
     {
         public App()
         {
+#if !DEBUG
             if (!this.IsRunAsAdministrator())
             {
                 var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
-                
+
                 processInfo.UseShellExecute = true;
                 processInfo.Verb = "runas";
-                
+
                 try
                 {
                     Process.Start(processInfo);
@@ -33,6 +34,7 @@
             }
 
             this.InitializeComponent();
+#endif
             this.DispatcherUnhandledException += this.OnUnhandledException;
 
             Settings.Default.Upgrade();

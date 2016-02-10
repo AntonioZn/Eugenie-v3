@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Contracts;
@@ -83,9 +85,9 @@
             return JsonConvert.DeserializeObject<UserInfoResponse>(result);
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name)
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(HttpClient client, string name, CancellationToken token)
         {
-            var response = await client.GetAsync($"api/products?name={name}");
+            var response = await client.GetAsync($"api/products?name={name}", token);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);

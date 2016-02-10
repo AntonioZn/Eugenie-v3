@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading;
     using System.Windows.Input;
 
     using Common.Contracts;
@@ -19,6 +20,7 @@
         private readonly IWebApiClient apiClient;
         private ObservableCollection<Product> products;
         private string search;
+        private CancellationTokenSource cts = new CancellationTokenSource();
 
         public ProductsSearchViewModel(IWebApiClient apiClient)
         {
@@ -84,7 +86,7 @@
         {
             var product = await this.apiClient.GetProductById(ViewModelLocator.httpClient, id);
             this.products.Clear();
-            ;
+            
             if (product != null)
             {
                 this.products.Add(product);
@@ -93,8 +95,17 @@
 
         private async void SearchByName()
         {
-            var responseProducts = await this.apiClient.GetProductsByNameAsync(ViewModelLocator.httpClient, this.Search);
-            this.Products = responseProducts;
+            try
+            {
+                this.cts.Cancel();
+                this.cts = new CancellationTokenSource();
+                var responseProducts = await this.apiClient.GetProductsByNameAsync(ViewModelLocator.httpClient, this.Search, this.cts.Token);
+                this.Products = responseProducts;
+            }
+            catch
+            {
+                
+            }
         }
 
         private void HandleAdd()
