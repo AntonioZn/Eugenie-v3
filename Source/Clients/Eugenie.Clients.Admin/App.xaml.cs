@@ -15,6 +15,9 @@
             this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
 
+            Settings.Default.Upgrade();
+            Settings.Default.Save();
+
             var isDark = new ResourceDictionary();
             var accent = new ResourceDictionary();
             var primary = new ResourceDictionary();

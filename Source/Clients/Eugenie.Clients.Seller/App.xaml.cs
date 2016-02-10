@@ -12,6 +12,9 @@
         {
             this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
+
+            Settings.Default.Upgrade();
+            Settings.Default.Save();
         }
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
