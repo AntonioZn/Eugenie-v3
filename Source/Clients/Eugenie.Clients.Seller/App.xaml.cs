@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Seller
 {
-    using System;
     using System.Diagnostics;
     using System.Reflection;
     using System.Security.Principal;
@@ -9,7 +8,7 @@
 
     using Common.Helpers;
 
-    using Properties;
+    using Helpers;
 
     public partial class App
     {
@@ -32,18 +31,15 @@
                 {
                 }
             }
+#endif
 
             this.InitializeComponent();
-#endif
             this.DispatcherUnhandledException += this.OnUnhandledException;
-
-            Settings.Default.Upgrade();
-            Settings.Default.Save();
         }
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.LogToFile(e.Exception, Settings.Default.LogPath);
+            Logger.LogToFile(e.Exception, SettingsManager.Default.Settings.LogPath);
             e.Handled = true;
         }
 

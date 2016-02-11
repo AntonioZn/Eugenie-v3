@@ -16,7 +16,7 @@
 
         public static void ExportReceipt(IEnumerable<Product> input)
         {
-            Directory.CreateDirectory(Settings.Default.ReceiptPath);
+            Directory.CreateDirectory(SettingsManager.Default.Settings.ReceiptPath);
 
             var products = new List<Product>(input);
             PrepareProducts(products);
@@ -40,7 +40,7 @@
 
             var receiptArray = receipt.ToString().Trim().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            File.WriteAllLines(Settings.Default.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
+            File.WriteAllLines(SettingsManager.Default.Settings.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
         }
 
         private static void PrepareProducts(List<Product> products)

@@ -51,7 +51,7 @@
 
         public IQueryable<Product> All()
         {
-            return this.productsRepository.All().Include("Barcodes").Include("ExpirationDates").Where(x => !x.IsDeleted);
+            return this.productsRepository.All().Where(x => !x.IsDeleted);//.Include("Barcodes").Include("ExpirationDates").Where(x => !x.IsDeleted);
         }
 
         //TODO: if not product is found add it to missing products

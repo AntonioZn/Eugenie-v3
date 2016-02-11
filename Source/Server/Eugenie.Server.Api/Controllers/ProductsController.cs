@@ -33,7 +33,16 @@
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetAll()
         {
-            return this.Ok(this.productsService.All());
+            return this.Ok(this.productsService.All().Select(x => new
+                                                                  {
+                                                                      x.Name,
+                                                                      x.BuyingPrice,
+                                                                      x.SellingPrice,
+                                                                      x.Measure,
+                                                                      x.Quantity,
+                                                                      x.Barcodes,
+                                                                      x.ExpirationDates
+                                                                  }));
         }
 
         [HttpGet]

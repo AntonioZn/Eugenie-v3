@@ -14,6 +14,8 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
+    using Helpers;
+
     using Properties;
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
@@ -45,7 +47,7 @@
 
             var server = new ServerInformation
                          {
-                             Addresses = new List<string> { Settings.Default.Address },
+                             Addresses = new List<string> { SettingsManager.Default.Settings.Address },
                              Password = password,
                              Username = this.Username
                          };

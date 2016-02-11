@@ -11,11 +11,11 @@
 
     using GalaSoft.MvvmLight;
 
+    using Helpers;
+
     using Server.Host;
 
     using Views;
-
-    using Settings = Properties.Settings;
 
     public class MainWindowViewModel : ViewModelBase, IKeyHandler
     {
@@ -26,7 +26,7 @@
         {
             this.webApiHost = webApiHost;
 
-            if (string.IsNullOrEmpty(Settings.Default.Address))
+            if (string.IsNullOrEmpty(SettingsManager.Default.Settings.Address))
             {
                 this.Content = new Views.Settings();
             }
@@ -81,16 +81,16 @@
 
         public void Initialize()
         {
-            if (Settings.Default.IsSelfHost)
+            if (SettingsManager.Default.Settings.IsSelfHost)
             {
-                this.HostServer(Settings.Default.Port);
+                this.HostServer(SettingsManager.Default.Settings.Port);
             }
 
-            if (Settings.Default.BackupDatabase)
+            if (SettingsManager.Default.Settings.BackupDatabase)
             {
-                var hours = Settings.Default.BackupHours;
-                var minutes = Settings.Default.BackupMinutes;
-                var path = Settings.Default.BackupPath;
+                var hours = SettingsManager.Default.Settings.BackupHours;
+                var minutes = SettingsManager.Default.Settings.BackupMinutes;
+                var path = SettingsManager.Default.Settings.BackupPath;
                 this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }

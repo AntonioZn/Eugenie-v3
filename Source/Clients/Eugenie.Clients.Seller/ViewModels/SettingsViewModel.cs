@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -11,7 +13,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
-    using Properties;
+    using Helpers;
 
     public class SettingsViewModel : ViewModelBase
     {
@@ -21,9 +23,9 @@
 
         public SettingsViewModel()
         {
-            this.Address = Settings.Default.Address;
-            this.Port = Settings.Default.Port.ToString();
-            this.IsSelfHost = Settings.Default.IsSelfHost;
+            this.Address = SettingsManager.Default.Settings.Address;
+            this.Port = SettingsManager.Default.Settings.Port.ToString();
+            this.IsSelfHost = SettingsManager.Default.Settings.IsSelfHost;
 
             this.Save = new RelayCommand(this.HandleSave);
         }
@@ -85,10 +87,10 @@
 
         private void HandleSave()
         {
-            Settings.Default.Address = this.Address;
-            Settings.Default.Port = int.Parse(this.Port);
-            Settings.Default.IsSelfHost = this.IsSelfHost;
-            Settings.Default.Save();
+            SettingsManager.Default.Settings.Address = this.Address;
+            SettingsManager.Default.Settings.Port = int.Parse(this.Port);
+            SettingsManager.Default.Settings.IsSelfHost = this.IsSelfHost;
+            SettingsManager.Default.Save();
 
             var mainWindowViewModel = ViewModelLocator.container.Resolve<MainWindowViewModel>();
             mainWindowViewModel.Initialize();
