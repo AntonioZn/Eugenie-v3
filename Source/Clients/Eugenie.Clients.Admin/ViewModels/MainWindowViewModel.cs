@@ -102,10 +102,15 @@
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
-            var keyHandler = this.SelectedMenuItem.Content.DataContext as IKeyHandler;
-            if (keyHandler != null && keyHandler != this)
+            switch (key)
             {
-                keyHandler.HandleKey(e, key);
+                case Key.F5:
+                    this.HandleRefresh();
+                    e.Handled = true;
+                    break;
+                default:
+                    (this.SelectedMenuItem.Content.DataContext as IKeyHandler)?.HandleKey(e, key);
+                    break;
             }
         }
 
