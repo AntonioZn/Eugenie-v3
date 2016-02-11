@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Windows.Data;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     using Common.Contracts;
     using Common.Models;
@@ -28,8 +29,9 @@
     {
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
+        private readonly DispatcherTimer timer;
         private ProductInformationViewModel productInformationViewModel;
-        private string searchValue = string.Empty;
+        private string search = string.Empty;
 
         public ProductsEditorViewModel(IServerManager manager)
         {
@@ -37,31 +39,42 @@
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
             this.manager.ProductsCacheChanged += this.OnServerTestingFinished;
 
+            this.timer = new DispatcherTimer();
+            this.timer.Interval = TimeSpan.FromSeconds(0.5);
+            this.timer.Tick += this.HandleSearch;
+
             this.Enter = new RelayCommand(this.HandleEnter);
+        }
+
+        private void HandleSearch(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+            var searchAsArray = this.Search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            this.Products.Filter = obj =>
+            {
+                var product = obj as Product;
+
+                return searchAsArray.All(word => product.Name.Contains(word));
+            };
+
+            this.Products.Refresh();
         }
 
         public ICommand Enter { get; }
 
-        public string SearchValue
+        public string Search
         {
             get
             {
-                return this.searchValue;
+                return this.search;
             }
 
             set
             {
-                this.Set(() => this.SearchValue, ref this.searchValue, value);
-                var searchAsArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                this.Products.Filter = obj =>
-                                       {
-                                           var product = obj as Product;
-
-                                           return searchAsArray.All(word => product.Name.Contains(word));
-                                       };
-
-                this.Products.Refresh();
+                this.Set(() => this.Search, ref this.search, value);
+                this.timer.Stop();
+                this.timer.Start();
             }
         }
 
@@ -83,7 +96,7 @@
                 return;
             }
 
-            this.SearchValue = string.Empty;
+            this.Search = string.Empty;
 
             this.Products.Filter = obj =>
                                    {
@@ -116,7 +129,7 @@
 
         public void HandleEscape()
         {
-            this.SearchValue = string.Empty;
+            this.Search = string.Empty;
         }
 
         public async void HandleEnter()
@@ -138,12 +151,6 @@
             }
         }
 
-        private void OnServerTestingFinished(object sender, EventArgs e)
-        {
-            this.products.Clear();
-            this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
-        }
-
         private async void HandleDelete()
         {
             if (this.SelectedProduct == null)
@@ -156,6 +163,12 @@
             {
                 this.manager.Delete(this.SelectedProduct.Name);
             }
+        }
+
+        private void OnServerTestingFinished(object sender, EventArgs e)
+        {
+            this.products.Clear();
+            this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
         }
     }
 }

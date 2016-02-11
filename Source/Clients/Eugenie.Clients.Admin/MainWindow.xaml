@@ -121,7 +121,7 @@
                                              x:Name="txtSearch"
                                              TextChanged="TxtSearch_OnTextChanged"
                                              DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
-                                             Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              materialDesign:TextFieldAssist.Hint="Търсене"
                                              MinWidth="200"
                                              VerticalAlignment="Center" />
@@ -179,7 +179,7 @@
                                     IsTabStop="False"
                                     Padding="15,0,15,0"
                                     Command="{Binding Refresh}"
-                                    ToolTip="Обнови активните компютри">
+                                    ToolTip="Обнови активните компютри (F5)">
                                 <materialDesign:PackIcon Kind="Refresh"
                                                          Width="32"
                                                          Height="32"
