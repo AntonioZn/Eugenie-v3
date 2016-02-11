@@ -18,8 +18,9 @@
 
             var sqlConStrBuilder = new SqlConnectionStringBuilder(connectionString);
 
-            Directory.CreateDirectory(path + "temp");
-            var backupFileName = $"{path}temp\\{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.bak";
+            var tempPath = Path.Combine(path, "temp");
+            Directory.CreateDirectory(tempPath);
+            var backupFileName = Path.Combine(tempPath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.bak");
 
             using (var connection = new SqlConnection(sqlConStrBuilder.ConnectionString))
             {
@@ -32,8 +33,8 @@
                 }
             }
 
-            ZipFile.CreateFromDirectory(path + "temp", path + $"\\{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.zip", CompressionLevel.Optimal, false);
-            Directory.Delete(path + "temp", true);
+            ZipFile.CreateFromDirectory(tempPath, Path.Combine(path, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.zip"), CompressionLevel.Optimal, false);
+            Directory.Delete(tempPath, true);
         }
     }
 }

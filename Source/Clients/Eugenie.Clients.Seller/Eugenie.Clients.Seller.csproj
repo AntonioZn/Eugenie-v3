@@ -31,7 +31,7 @@
     <PublisherName>Svetlozar Stoichkov</PublisherName>
     <SuiteName>Eugenie</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -189,6 +189,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\FiscalPrinterHandler.cs" />
     <Compile Include="Helpers\SettingsManager.cs" />
+    <Compile Include="Helpers\TeamViewerPopupBlocker.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\BasketViewModel.cs" />
     <Compile Include="ViewModels\ChangeCalculatorViewModel.cs" />

@@ -26,9 +26,11 @@
         {
             this.webApiHost = webApiHost;
 
+            TeamViewerPopupBlocker.Start();
+
             if (string.IsNullOrEmpty(SettingsManager.Default.Settings.Address))
             {
-                this.Content = new Views.Settings();
+                this.Content = new Settings();
             }
             else
             {
