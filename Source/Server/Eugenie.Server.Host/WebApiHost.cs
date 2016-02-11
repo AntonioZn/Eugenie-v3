@@ -54,7 +54,7 @@
         {
             Directory.CreateDirectory(path);
 
-            var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("path", path).Build();
+            var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("savePath", path).Build();
             var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
 
             this.Scheduler.DeleteJob(job.Key);

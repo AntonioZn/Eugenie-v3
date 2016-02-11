@@ -12,14 +12,12 @@
     {
         public void Execute(IJobExecutionContext context)
         {
-            var path = context.JobDetail.JobDataMap.GetString("path");
+            var windowsDrive = Path.GetPathRoot(Environment.SystemDirectory);
+            var tempPath = Path.Combine(windowsDrive, "eugenie_temp");
+            Directory.CreateDirectory(tempPath);
 
             var connectionString = ConfigurationManager.ConnectionStrings["Eugenie"].ConnectionString;
-
             var sqlConStrBuilder = new SqlConnectionStringBuilder(connectionString);
-
-            var tempPath = Path.Combine(path, "temp");
-            Directory.CreateDirectory(tempPath);
             var backupFileName = Path.Combine(tempPath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.bak");
 
             using (var connection = new SqlConnection(sqlConStrBuilder.ConnectionString))
@@ -33,7 +31,9 @@
                 }
             }
 
-            ZipFile.CreateFromDirectory(tempPath, Path.Combine(path, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.zip"), CompressionLevel.Optimal, false);
+            var savePath = context.JobDetail.JobDataMap.GetString("savePath");
+            ZipFile.CreateFromDirectory(tempPath, Path.Combine(savePath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.zip"), CompressionLevel.Optimal, false);
+
             Directory.Delete(tempPath, true);
         }
     }
