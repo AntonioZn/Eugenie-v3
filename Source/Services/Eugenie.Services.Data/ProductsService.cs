@@ -17,12 +17,14 @@
     {
         private readonly IRepository<Product> productsRepository;
         private readonly IRepository<Barcode> barcodesRepository;
+        private readonly IRepository<ExpirationDate> expirationDatesRepository;
         private readonly IReportsService reportsService;
 
-        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IReportsService reportsService)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IRepository<ExpirationDate> expirationDatesRepository, IReportsService reportsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
+            this.expirationDatesRepository = expirationDatesRepository;
             this.reportsService = reportsService;
         }
 
@@ -40,6 +42,16 @@
                 }
 
                 product.Name = product.Name.Substring(0, substringLenght);
+                foreach (var barcode in product.Barcodes.ToList())
+                {
+                    this.barcodesRepository.Delete(barcode);
+                }
+
+                foreach (var expirationDate in product.ExpirationDates.ToList())
+                {
+                    this.expirationDatesRepository.Delete(expirationDate);
+                }
+
                 this.productsRepository.SaveChanges();
             }
         }
