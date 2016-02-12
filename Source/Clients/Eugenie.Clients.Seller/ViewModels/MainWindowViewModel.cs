@@ -17,7 +17,7 @@
 
     using Views;
 
-    public class MainWindowViewModel : ViewModelBase, IKeyHandler
+    public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
         private UserControl content;
@@ -60,6 +60,11 @@
             {
                 keyHandler.HandleKey(e, key);
             }
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            (this.Content.DataContext as IBarcodeHandler)?.HandleBarcode(barcode);
         }
 
         public void HostServer(int port)
@@ -109,7 +114,7 @@
 
         public void ShowSettings()
         {
-            this.Content = new Views.Settings();
+            this.Content = new Settings();
         }
     }
 }

@@ -6,6 +6,8 @@
     using System.Threading;
     using System.Windows.Input;
 
+    using Autofac;
+
     using Common.Contracts;
     using Common.Models;
     using Common.Еxtensions;
@@ -15,7 +17,7 @@
 
     using MaterialDesignThemes.Wpf;
 
-    public class ProductsSearchViewModel : ViewModelBase
+    public class ProductsSearchViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IWebApiClient apiClient;
         private ObservableCollection<Product> products;
@@ -46,6 +48,12 @@
                 this.products.Clear();
                 value.ForEach(this.products.Add);
             }
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            DialogHost.CloseDialogCommand.Execute(false, null);
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
         }
 
         public string Search

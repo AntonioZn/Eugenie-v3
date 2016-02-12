@@ -81,9 +81,7 @@
                 return dialogContent?.DataContext as IBarcodeHandler;
             }
 
-            var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-            var userControl = contentControl?.Content as UserControl;
-            return userControl?.DataContext as IBarcodeHandler;
+            return this.AssociatedObject.DataContext as IBarcodeHandler;
         }
     }
 }

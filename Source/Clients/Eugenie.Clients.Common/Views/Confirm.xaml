@@ -38,7 +38,7 @@
                    HorizontalAlignment="Center"
                    x:Name="tbQuestion"
                    Margin="20"
-                   Style="{StaticResource MaterialDesignDisplay3TextBlock}" />
+                   Style="{StaticResource MaterialDesignDisplay2TextBlock}" />
         <Button Grid.Row="0"
                 Grid.Column="0"
                 IsDefault="True"

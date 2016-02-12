@@ -2,6 +2,9 @@
 {
     using System.Windows.Input;
 
+    using Autofac;
+
+    using Common.Contracts;
     using Common.Models;
     using Common.Notifications;
 
@@ -10,7 +13,7 @@
 
     using MaterialDesignThemes.Wpf;
 
-    public class QuantityEditorViewModel : ViewModelBase
+    public class QuantityEditorViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly decimal maximumQuantity;
         private readonly MeasureType measure;
@@ -30,6 +33,20 @@
 
         public ICommand Add { get; }
 
+        public void HandleBarcode(string barcode)
+        {
+            if (this.ValidateQuantity())
+            {
+                DialogHost.CloseDialogCommand.Execute(true, null);
+            }
+            else
+            {
+                DialogHost.CloseDialogCommand.Execute(false, null);
+            }
+
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
+        }
+
         public string Quantity
         {
             get
@@ -45,22 +62,30 @@
 
         private void HandleAdd()
         {
+            if (this.ValidateQuantity())
+            {
+                DialogHost.CloseDialogCommand.Execute(true, null);
+            }
+        }
+
+        private bool ValidateQuantity()
+        {
             decimal result;
             if (decimal.TryParse(this.Quantity, out result))
             {
                 if (result >= this.GetMinimumQuantity())
                 {
-                    DialogHost.CloseDialogCommand.Execute(true, null);
+                    return true;
                 }
-                else
-                {
-                    NotificationsHost.Error("Невалидно количество", this.measure == MeasureType.бр ? "Минималната позволена стойност е 1." : "Минималната позволена стойност е 0,01.");
-                }
+
+                NotificationsHost.Error("Невалидно количество", this.measure == MeasureType.бр ? "Минималната позволена стойност е 1." : "Минималната позволена стойност е 0,01.");
             }
             else
             {
                 NotificationsHost.Error("Невалидно количество", "Въведената стойност е невалидна.");
             }
+
+            return false;
         }
 
         private string RestrictQuantity(string userInput)

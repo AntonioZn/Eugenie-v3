@@ -1,8 +1,14 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using Autofac;
+
+    using Common.Contracts;
+
     using GalaSoft.MvvmLight;
 
-    public class ChangeCalculatorViewModel : ViewModelBase
+    using MaterialDesignThemes.Wpf;
+
+    public class ChangeCalculatorViewModel : ViewModelBase, IBarcodeHandler
     {
         private decimal change;
         private string payment;
@@ -41,6 +47,12 @@
                 decimal.TryParse(value, out result);
                 this.Change = result - this.TotalPrice;
             }
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            DialogHost.CloseDialogCommand.Execute(false, null);
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
         }
     }
 }

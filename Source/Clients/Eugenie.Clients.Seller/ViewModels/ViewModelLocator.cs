@@ -31,13 +31,13 @@
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<WebApiHost>().As<IWebApiHost>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().SingleInstance();
+            containerBuilder.RegisterType<WebApiHost>().As<IWebApiHost>().SingleInstance();
 
-            containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<MainWindowViewModel>().SingleInstance();
             containerBuilder.RegisterType<LoginViewModel>();
             containerBuilder.RegisterType<SellViewModel>();
-            containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
 
             container = containerBuilder.Build();
         }

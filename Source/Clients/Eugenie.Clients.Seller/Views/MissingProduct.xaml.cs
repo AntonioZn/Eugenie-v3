@@ -1,32 +1,34 @@
 ﻿namespace Eugenie.Clients.Seller.Views
 {
-    using System.Timers;
+    using System;
     using System.Windows;
+    using System.Windows.Threading;
 
     using MaterialDesignThemes.Wpf;
 
     public partial class MissingProduct
     {
-        private readonly Timer timer;
+        private readonly DispatcherTimer timer;
 
         public MissingProduct()
         {
             this.InitializeComponent();
             this.Unloaded += this.OnUnloaded;
-            this.timer = new Timer(3000);
-            this.timer.Elapsed += this.OnElapsed;
+            this.timer = new DispatcherTimer();
+            this.timer.Interval = TimeSpan.FromSeconds(3);
+            this.timer.Tick += this.OnElapsed;
             this.timer.Start();
+        }
+
+        private void OnElapsed(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+            DialogHost.CloseDialogCommand.Execute(false, null);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             this.timer.Stop();
-        }
-
-        private void OnElapsed(object sender, ElapsedEventArgs e)
-        {
-            this.timer.Stop();
-            Application.Current.Dispatcher.Invoke(() => { DialogHost.CloseDialogCommand.Execute(false, null); });
         }
     }
 }

@@ -26,12 +26,12 @@
         private void PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
-            var keyHandler = this.GetKeyHandler();
+            var keyHandler = this.GetHandler();
 
             keyHandler?.HandleKey(e, key);
         }
 
-        private IKeyHandler GetKeyHandler()
+        private IKeyHandler GetHandler()
         {
             var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
             if (dialogHost.IsOpen)
