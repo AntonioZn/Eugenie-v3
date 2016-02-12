@@ -6,6 +6,8 @@
     using System.Linq;
     using System.Windows.Input;
 
+    using Autofac;
+
     using Common.Contracts;
     using Common.Models;
     using Common.Notifications;
@@ -221,7 +223,14 @@
         private void HandleCancelCommand()
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
-            this.Name = string.Empty;
+            if (!string.IsNullOrWhiteSpace(this.Name))
+            {
+                this.Name = string.Empty;
+            }
+            else
+            {
+                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowProductsEditor();
+            }
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)

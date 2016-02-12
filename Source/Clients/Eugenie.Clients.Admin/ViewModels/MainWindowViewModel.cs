@@ -41,7 +41,7 @@
             this.Views = new List<MenuItem>
                          {
                              new MenuItem("Продукти", new ProductsEditor()),
-                             new MenuItem("Доставка", new Delivery()),
+                             new MenuItem("Доставка (F1)", new Delivery()),
                              new MenuItem("Отчети", new Reports()),
                              new MenuItem("Служители", new Sellers()),
                              new MenuItem("Липсващи продукти", new MissingProducts()),
@@ -85,7 +85,7 @@
             }
         }
 
-        public IEnumerable<MenuItem> Views { get; }
+        public IList<MenuItem> Views { get; }
 
         public MenuItem SelectedMenuItem
         {
@@ -100,10 +100,24 @@
             }
         }
 
+        public void ShowProductsEditor()
+        {
+            this.SelectedMenuItem = this.Views[0];
+        }
+
+        public void ShowDelivery()
+        {
+            this.SelectedMenuItem = this.Views[1];
+        }
+
         public void HandleKey(KeyEventArgs e, Key key)
         {
             switch (key)
             {
+                case Key.F1:
+                    this.ShowDelivery();
+                    e.Handled = true;
+                    break;
                 case Key.F5:
                     this.HandleRefresh();
                     e.Handled = true;
