@@ -46,6 +46,8 @@
             this.Enter = new RelayCommand(this.HandleEnter);
         }
 
+        public ICommand Enter { get; }
+
         private void HandleSearch(object sender, EventArgs e)
         {
             this.timer.Stop();
@@ -61,8 +63,6 @@
             this.Products.Refresh();
         }
 
-        public ICommand Enter { get; }
-
         public string Search
         {
             get
@@ -73,8 +73,11 @@
             set
             {
                 this.Set(() => this.Search, ref this.search, value);
-                this.timer.Stop();
-                this.timer.Start();
+                if (this.Search != null)
+                {
+                    this.timer.Stop();
+                    this.timer.Start();
+                }
             }
         }
 
@@ -96,7 +99,7 @@
                 return;
             }
 
-            this.Search = string.Empty;
+            this.Search = null;
 
             this.Products.Filter = obj =>
                                    {
