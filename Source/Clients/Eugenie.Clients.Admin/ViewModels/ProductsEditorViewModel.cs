@@ -39,7 +39,7 @@
             this.timer.Interval = TimeSpan.FromSeconds(0.5);
             this.timer.Tick += this.HandleSearch;
 
-            this.Enter = new RelayCommand(this.HandleEnter);
+            this.Enter = new RelayCommand(this.OpenInformation);
         }
 
         public ICommand Enter { get; }
@@ -53,11 +53,11 @@
             switch (key)
             {
                 case Key.Enter:
-                    this.HandleEnter();
+                    this.OpenInformation();
                     e.Handled = true;
                     break;
                 case Key.Escape:
-                    this.HandleEscape();
+                    this.ClearSearch();
                     e.Handled = true;
                     break;
                 case Key.Delete:
@@ -117,16 +117,16 @@
             if (productWithBarcode != null)
             {
                 this.SelectedProduct = productWithBarcode;
-                this.HandleEnter();
+                this.OpenInformation();
             }
         }
 
-        public void HandleEscape()
+        public void ClearSearch()
         {
             this.Search = string.Empty;
         }
 
-        public async void HandleEnter()
+        public async void OpenInformation()
         {
             if (this.SelectedProduct == null)
             {
