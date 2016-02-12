@@ -1,11 +1,13 @@
 ﻿namespace Eugenie.Clients.Admin.Contracts
 {
     using System;
+    using System.Collections.Generic;
 
     using Common.Models;
-    using Common.WebApiModels;
 
     using Models;
+
+    using ViewModels;
 
     public interface IServerManager
     {
@@ -17,15 +19,13 @@
 
         void SetSelectedServer(string name);
 
-        event EventHandler ServerTestingFinished;
-
-        void AddOrUpdate(string serverName, AddProductModel model);
-
-        void Initialize();
-
         event EventHandler ProductsCacheChanged;
 
-        void AddProductToCache(Product product);
+        void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel);
+
+        event EventHandler ServerTestingFinished;
+
+        void Initialize();
 
         void Delete(string productName);
     }

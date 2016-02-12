@@ -14,6 +14,8 @@
 
     using Models;
 
+    using ViewModels;
+
     public class ServerManager : IServerManager
     {
         private readonly IWebApiClient apiClient;
@@ -82,20 +84,29 @@
 
         public event EventHandler ProductsCacheChanged;
 
-        public void AddProductToCache(Product product)
+        public void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel)
         {
-            foreach (var pair in this.Cache.ProductsPerServer)
+            var cacheChanged = false;
+            foreach (var pair in productInAllServers)
             {
-                pair.Value.Add(product);
+                pair.Value.MapProperties(mainProductViewModel);
+
+                var serverName = pair.Key.Name;
+                var model = pair.Value.GetModel();
+                var task = new AddOrUpdateProductTask(serverName, model);
+                this.taskManager.AddTask(task);
+
+                if (this.Cache.ProductsPerServer[pair.Key].All(x => x.Name != pair.Value.Product.Name))
+                {
+                    cacheChanged = true;
+                    this.Cache.ProductsPerServer[pair.Key].Add(pair.Value.Product);
+                }
             }
 
-            this.ProductsCacheChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void AddOrUpdate(string serverName, AddProductModel model)
-        {
-            var task = new AddOrUpdateProductTask(serverName, model);
-            this.taskManager.AddTask(task);
+            if (cacheChanged)
+            {
+                this.ProductsCacheChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public void Delete(string productName)

@@ -241,18 +241,8 @@
 
         private void HandleSave()
         {
-            foreach (var pair in this.ProductInAllServers)
-            {
-                pair.Value.MapProperties(this.MainProductViewModel);
-                this.manager.AddOrUpdate(pair.Key.Name, pair.Value.GetModel());
-
-                if (!this.AddingType.Contains("наличност"))
-                {
-                    this.manager.AddProductToCache(pair.Value.Product);
-                }
-            }
-
-            this.Name = string.Empty;
+            this.manager.AddOrUpdate(this.ProductInAllServers, this.MainProductViewModel);
+            this.Reset();
         }
 
         private bool CanSave()
@@ -267,15 +257,20 @@
         {
             if (!string.IsNullOrWhiteSpace(this.Name))
             {
-                this.Set(() => this.Name, ref this.name, null);
-                this.AddingType = "Въведете име";
-                this.GetNewProduct("");
-                this.RemoveFilter();
+                this.Reset();
             }
             else
             {
                 ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowProductsEditor();
             }
+        }
+
+        private void Reset()
+        {
+            this.Set(() => this.Name, ref this.name, null);
+            this.AddingType = "Въведете име";
+            this.GetNewProduct("");
+            this.RemoveFilter();
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)
