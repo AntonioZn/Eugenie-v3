@@ -8,16 +8,18 @@
              xmlns:converters="clr-namespace:Eugenie.Clients.Common.Converters;assembly=Eugenie.Clients.Common"
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:viewModels="clr-namespace:Eugenie.Clients.Admin.ViewModels">
+             xmlns:viewModels="clr-namespace:Eugenie.Clients.Admin.ViewModels"
+             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
                              Color="DeepSkyBlue" />
+            <Style TargetType="{x:Type models:EugenieTextBox}"
+                   BasedOn="{StaticResource MaterialDesignTextBox}" />
             <Style x:Key="NormalTabItemStyle"
                    TargetType="{x:Type dragablz:DragablzItem}"
                    BasedOn="{StaticResource MaterialDesignDragableTabItemStyle}">

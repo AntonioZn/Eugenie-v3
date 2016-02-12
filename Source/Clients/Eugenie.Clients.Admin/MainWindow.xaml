@@ -7,6 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:commonBehaviors="clr-namespace:Eugenie.Clients.Common.Behaviors;assembly=Eugenie.Clients.Common"
         xmlns:domain="clr-namespace:Eugenie.Clients.Admin.Domain"
+        xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
         IsTabStop="False"
@@ -116,15 +117,16 @@
                                                                  Opacity=".56"
                                                                  Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                                     </Label>
-                                    <TextBox Grid.Column="1"
-                                             Margin="8 0 0 0"
-                                             x:Name="txtSearch"
-                                             TextChanged="TxtSearch_OnTextChanged"
-                                             DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
-                                             Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             materialDesign:TextFieldAssist.Hint="Търсене"
-                                             MinWidth="200"
-                                             VerticalAlignment="Center" />
+                                    <models:EugenieTextBox Grid.Column="1"
+                                                           Margin="8 0 0 0"
+                                                           AutoSelect="True"
+                                                           x:Name="txtSearch"
+                                                           TextChanged="TxtSearch_OnTextChanged"
+                                                           DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
+                                                           Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           materialDesign:TextFieldAssist.Hint="Търсене"
+                                                           MinWidth="200"
+                                                           VerticalAlignment="Center" />
                                 </Grid>
                             </materialDesign:ColorZone>
                             <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"

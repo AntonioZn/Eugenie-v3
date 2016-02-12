@@ -6,6 +6,7 @@
 
     using Common.Contracts;
     using Common.Models;
+    using Common.Notifications;
     using Common.Еxtensions;
 
     using Contracts;
@@ -20,10 +21,12 @@
     public class ProductInformationViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
+        private readonly IEnumerable<Product> products;
 
-        public ProductInformationViewModel(IServerManager manager, Product selectedProduct)
+        public ProductInformationViewModel(IServerManager manager, Product selectedProduct, IEnumerable<Product> products)
         {
             this.manager = manager;
+            this.products = products;
 
             this.MainProductViewModel = new ProductViewModel(selectedProduct.DeepClone());
 
@@ -51,7 +54,15 @@
 
         public void HandleBarcode(string barcode)
         {
-            this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
+            var existingProduct = ExistingBarcodeChecker.Check(barcode, this.MainProductViewModel.Product, this.products);
+            if (existingProduct != null)
+            {
+                NotificationsHost.Error("Баркодът съществува", $"\"{existingProduct.Name}\" съдържа този баркод.");
+            }
+            else
+            {
+                this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
+            }
         }
 
         private void HandleCancel()

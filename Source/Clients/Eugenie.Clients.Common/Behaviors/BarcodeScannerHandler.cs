@@ -8,11 +8,12 @@
 
     using Contracts;
 
+    using MaterialDesignThemes.Wpf;
+
     public class BarcodeScannerHandler : Behavior<Window>
     {
         private readonly StringBuilder barcodeReader;
         private readonly KeyConverter keyConverter;
-        private IBarcodeHandler handler;
         private bool isScanning;
 
         public BarcodeScannerHandler()
@@ -42,13 +43,11 @@
             endKey = Key.F12;
 #endif
 
+            var handler = this.GetHandler();
+
             if (e.Key == startKey)
             {
-                var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
-                var userControl = contentControl?.Content as UserControl;
-                this.handler = userControl?.DataContext as IBarcodeHandler;
-
-                if (this.handler != null)
+                if (handler != null)
                 {
                     this.isScanning = true;
                     e.Handled = true;
@@ -58,7 +57,7 @@
             {
                 if (this.barcodeReader.Length != 0)
                 {
-                    this.handler.HandleBarcode(this.barcodeReader.ToString());
+                    handler.HandleBarcode(this.barcodeReader.ToString());
                     this.barcodeReader.Clear();
                 }
 
@@ -71,6 +70,20 @@
                 var xChar = this.keyConverter.ConvertToString(e.Key);
                 this.barcodeReader.Append(xChar);
             }
+        }
+
+        private IBarcodeHandler GetHandler()
+        {
+            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            if (dialogHost.IsOpen)
+            {
+                var dialogContent = dialogHost.DialogContent as UserControl;
+                return dialogContent?.DataContext as IBarcodeHandler;
+            }
+
+            var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
+            var userControl = contentControl?.Content as UserControl;
+            return userControl?.DataContext as IBarcodeHandler;
         }
     }
 }

@@ -10,7 +10,6 @@
 
     using Common.Contracts;
     using Common.Models;
-    using Common.Notifications;
     using Common.Views;
     using Common.Еxtensions;
 
@@ -18,8 +17,6 @@
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-
-    using Helpers;
 
     using MaterialDesignThemes.Wpf;
 
@@ -30,7 +27,6 @@
         private readonly IServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private readonly DispatcherTimer timer;
-        private ProductInformationViewModel productInformationViewModel;
         private string search = string.Empty;
 
         public ProductsEditorViewModel(IServerManager manager)
@@ -48,68 +44,9 @@
 
         public ICommand Enter { get; }
 
-        private void HandleSearch(object sender, EventArgs e)
-        {
-            this.timer.Stop();
-            var searchAsArray = this.Search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            this.Products.Filter = obj =>
-            {
-                var product = obj as Product;
-
-                return searchAsArray.All(word => product.Name.Contains(word));
-            };
-
-            this.Products.Refresh();
-        }
-
-        public string Search
-        {
-            get
-            {
-                return this.search;
-            }
-
-            set
-            {
-                this.Set(() => this.Search, ref this.search, value);
-                if (this.Search != null)
-                {
-                    this.timer.Stop();
-                    this.timer.Start();
-                }
-            }
-        }
-
         public ICollectionView Products => CollectionViewSource.GetDefaultView(this.products);
 
         public Product SelectedProduct { get; set; }
-
-        public void HandleBarcode(string barcode)
-        {
-            if (this.productInformationViewModel != null)
-            {
-                var existingProduct = ExistingBarcodeChecker.Check(barcode, this.productInformationViewModel.MainProductViewModel.Product, this.products);
-                if (existingProduct != null)
-                {
-                    NotificationsHost.Error("Баркодът съществува", $"\"{existingProduct.Name}\" съдържа този баркод.");
-                    return;
-                }
-                this.productInformationViewModel.HandleBarcode(barcode);
-                return;
-            }
-
-            this.Search = null;
-
-            this.Products.Filter = obj =>
-                                   {
-                                       var product = obj as Product;
-
-                                       return product.Barcodes.Any(x => x.Value == barcode);
-                                   };
-
-            this.Products.Refresh();
-        }
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
@@ -130,6 +67,60 @@
             }
         }
 
+        public string Search
+        {
+            get
+            {
+                return this.search;
+            }
+
+            set
+            {
+                this.Set(() => this.Search, ref this.search, value);
+                if (this.Search != null)
+                {
+                    this.timer.Stop();
+                    this.timer.Start();
+                }
+            }
+        }
+
+        private void HandleSearch(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+            var searchAsArray = this.Search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            this.Products.Filter = obj =>
+            {
+                var product = obj as Product;
+
+                return searchAsArray.All(word => product.Name.Contains(word));
+            };
+
+            this.Products.Refresh();
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            this.Search = null;
+
+            this.Products.Filter = obj =>
+                                   {
+                                       var product = obj as Product;
+            
+                                       return product.Barcodes.Any(x => x.Value == barcode);
+                                   };
+            
+            this.Products.Refresh();
+
+            var productWithBarcode = this.products.FirstOrDefault(x => x.Barcodes.Any(y => y.Value == barcode));
+            if (productWithBarcode != null)
+            {
+                this.SelectedProduct = productWithBarcode;
+                this.HandleEnter();
+            }
+        }
+
         public void HandleEscape()
         {
             this.Search = string.Empty;
@@ -142,11 +133,10 @@
                 return;
             }
 
-            this.productInformationViewModel = new ProductInformationViewModel(this.manager, this.SelectedProduct);
-            var dialog = new ProductInformation(this.productInformationViewModel);
+            var productInformationViewModel = new ProductInformationViewModel(this.manager, this.SelectedProduct, this.products);
+            var dialog = new ProductInformation(productInformationViewModel);
 
             var result = await DialogHost.Show(dialog, "RootDialog");
-            this.productInformationViewModel = null;
 
             if ((bool) result)
             {
