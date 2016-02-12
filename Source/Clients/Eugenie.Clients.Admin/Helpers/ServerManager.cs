@@ -111,16 +111,13 @@
 
         public void Delete(string productName)
         {
-            foreach (var server in this.storage.Servers)
+            foreach (var pair in this.Cache.ProductsPerServer)
             {
-                this.taskManager.AddTask(new DeleteProductTask(server.Name, productName));
-                foreach (var pair in this.Cache.ProductsPerServer)
+                this.taskManager.AddTask(new DeleteProductTask(pair.Key.Name, productName));
+                var product = pair.Value.FirstOrDefault(x => x.Name == productName);
+                if (product != null)
                 {
-                    var product = pair.Value.FirstOrDefault(x => x.Name == productName);
-                    if (product != null)
-                    {
-                        pair.Value.Remove(product);
-                    }
+                    pair.Value.Remove(product);
                 }
             }
 
