@@ -8,6 +8,8 @@
     using System.Windows.Input;
     using System.Windows.Threading;
 
+    using Autofac;
+
     using Common.Contracts;
     using Common.Models;
     using Common.Views;
@@ -118,6 +120,11 @@
             {
                 this.SelectedProduct = productWithBarcode;
                 this.OpenInformation();
+            }
+            else
+            {
+                ViewModelLocator.container.Resolve<DeliveryViewModel>().ImportMissingProduct("", barcode);
+                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowDelivery();
             }
         }
 

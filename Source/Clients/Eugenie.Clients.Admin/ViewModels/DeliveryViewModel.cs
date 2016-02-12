@@ -47,7 +47,7 @@
 
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromSeconds(0.5);
-            this.timer.Tick += this.HandleSearch;
+            this.timer.Tick += this.OnTick;
 
             this.MainProductViewModel = new ProductViewModel(new Product());
 
@@ -140,7 +140,7 @@
 
             set
             {
-                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
+                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces().ToLower());
                 if (this.Name != null)
                 {
                     this.timer.Stop();
@@ -149,11 +149,10 @@
             }
         }
 
-        private void HandleSearch(object sender, EventArgs e)
+        public void HandleSearch(string name)
         {
-           this.timer.Stop();
-
-            if (string.IsNullOrWhiteSpace(this.Name))
+            name = name.ToLower();
+            if (string.IsNullOrWhiteSpace(name))
             {
                 this.AddingType = "Въведете име";
                 this.GetNewProduct("");
@@ -163,7 +162,7 @@
             {
                 this.FilterProducts();
 
-                var existingProduct = this.products.FirstOrDefault(x => x.Name == this.Name);
+                var existingProduct = this.products.FirstOrDefault(x => x.Name == name);
                 if (existingProduct != null)
                 {
                     this.AddingType = "Добавяне на наличност";
@@ -173,12 +172,12 @@
                 else
                 {
                     this.AddingType = "Добавяне на нов продукт";
-                    this.MainProductViewModel.Product.Name = this.Name;
+                    this.MainProductViewModel.Product.Name = name;
 
                     if (this.lastProductIsExisting)
                     {
                         this.lastProductIsExisting = false;
-                        this.GetNewProduct(this.Name);
+                        this.GetNewProduct(name);
                     }
                 }
             }
@@ -212,9 +211,9 @@
 
         public void ImportMissingProduct(string name, string barcode)
         {
-            this.GetNewProduct(name);
-            this.lastProductIsExisting = false;
-            this.Name = name;
+            name = name.ToLower();
+            this.Set(() => this.Name, ref this.name, name);
+            this.HandleSearch(name);
             this.HandleBarcode(barcode);
         }
 
@@ -238,6 +237,13 @@
         }
 
         public string Error { get; }
+
+        private void OnTick(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+
+            this.HandleSearch(this.Name);
+        }
 
         private void HandleSave()
         {
