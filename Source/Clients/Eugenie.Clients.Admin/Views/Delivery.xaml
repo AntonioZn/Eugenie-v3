@@ -15,130 +15,142 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              DataContext="{Binding Path=DeliveryViewModel, Source={StaticResource ViewModelLocator}}">
-    <materialDesign:Card x:Name="mainCard"
-                         HorizontalAlignment="Center"
-                         Width="800"
-                         Margin="0,20,0,0">
-        <StackPanel Orientation="Vertical">
-            <materialDesign:ColorZone Mode="PrimaryDark"
-                                      Padding="16">
-                <Grid>
-                    <materialDesign:PackIcon Kind="TagTextOutline"
-                                             Width="48"
-                                             Height="48"
-                                             VerticalAlignment="Center"
-                                             Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Foreground}" />
-                    <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
-                               Text="{Binding AddingType}"
-                               HorizontalAlignment="Center" />
-                </Grid>
-            </materialDesign:ColorZone>
-            <materialDesign:Card Background="{DynamicResource PrimaryHueDarkBrush}"
-                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                 Padding="8"
-                                 Margin="10,10,0,0"
-                                 HorizontalAlignment="Left">
-                <CheckBox Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
-                          Content="Автоматично име"
-                          IsTabStop="False"
-                          VerticalContentAlignment="Center"
-                          IsChecked="{Binding AutomaticName}" />
-            </materialDesign:Card>
-            <Grid Margin="20,20,20,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="1.1*" />
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0"
-                      x:Name="mainInfoGrid">
+    <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                Margin="40">
+        <materialDesign:Card x:Name="mainCard"
+                             Width="800">
+            <StackPanel Orientation="Vertical">
+                <materialDesign:ColorZone Mode="PrimaryDark"
+                                          Padding="16">
+                    <Grid>
+                        <materialDesign:PackIcon Kind="TagTextOutline"
+                                                 Width="48"
+                                                 Height="48"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Foreground}" />
+                        <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                                   Text="{Binding AddingType}"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </materialDesign:ColorZone>
+                <materialDesign:Card Background="{DynamicResource PrimaryHueDarkBrush}"
+                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                     Padding="8"
+                                     Margin="10,10,0,0"
+                                     HorizontalAlignment="Left">
+                    <CheckBox Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
+                              Content="Автоматично име"
+                              IsTabStop="False"
+                              VerticalContentAlignment="Center"
+                              IsChecked="{Binding AutomaticName}" />
+                </materialDesign:Card>
+                <Grid Margin="20,20,20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1.1*" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <materialDesign:PackIcon Kind="Alphabetical"
-                                             Grid.Column="0"
-                                             Grid.Row="0"
-                                             VerticalAlignment="Bottom"
-                                             Width="24"
-                                             Height="24"
-                                             Opacity=".56" />
-                    <ComboBox Grid.Row="0"
-                              Grid.Column="1"
-                              Margin="10,0,0,0"
-                              HorizontalAlignment="Stretch"
-                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              materialDesign:TextFieldAssist.Hint="Име"
-                              IsEditable="True"
-                              DisplayMemberPath="Name"
-                              ItemsSource="{Binding ExistingProducts}"
-                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                        <ComboBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel />
-                            </ItemsPanelTemplate>
-                        </ComboBox.ItemsPanel>
-                    </ComboBox>
-                    <materialDesign:PackIcon Kind="WeightKilogram"
-                                             Grid.Column="0"
-                                             Grid.Row="1"
-                                             VerticalAlignment="Bottom"
-                                             Width="24"
-                                             Height="24"
-                                             Opacity=".56" />
-                    <ComboBox Grid.Row="1"
-                              Grid.Column="1"
-                              HorizontalAlignment="Stretch"
-                              materialDesign:TextFieldAssist.Hint="Мярка"
-                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              Margin="10,10,0,0"
-                              ItemsSource="{Binding Measures}"
-                              SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <materialDesign:PackIcon Kind="CashUsd"
-                                             Grid.Column="0"
-                                             Grid.Row="2"
-                                             VerticalAlignment="Bottom"
-                                             Width="24"
-                                             Height="24"
-                                             Opacity=".56" />
-                    <models:EugenieTextBox Grid.Row="2"
-                                           AutoSelect="True"
-                                           BlockInvalidNumberCharacters="True"
-                                           Grid.Column="1"
-                                           HorizontalAlignment="Stretch"
-                                           materialDesign:TextFieldAssist.Hint="Доставна цена"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                           Margin="10,10,0,0"
-                                           Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <Grid Grid.Column="0"
+                          x:Name="mainInfoGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon Kind="Alphabetical"
+                                                 Grid.Column="0"
+                                                 Grid.Row="0"
+                                                 VerticalAlignment="Bottom"
+                                                 Width="24"
+                                                 Height="24"
+                                                 Opacity=".56" />
+                        <models:EugenieTextBox Grid.Row="0"
+                                               Grid.Column="1"
+                                               Margin="10,0,0,0"
+                                               AutoSelect="True"
+                                               HorizontalAlignment="Stretch"
+                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                               materialDesign:TextFieldAssist.Hint="Име"
+                                               Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        <materialDesign:PackIcon Kind="WeightKilogram"
+                                                 Grid.Column="0"
+                                                 Grid.Row="1"
+                                                 VerticalAlignment="Bottom"
+                                                 Width="24"
+                                                 Height="24"
+                                                 Opacity=".56" />
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  HorizontalAlignment="Stretch"
+                                  materialDesign:TextFieldAssist.Hint="Мярка"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  Margin="10,10,0,0"
+                                  ItemsSource="{Binding Measures}"
+                                  SelectedItem="{Binding MainProductViewModel.Product.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <materialDesign:PackIcon Kind="CashUsd"
+                                                 Grid.Column="0"
+                                                 Grid.Row="2"
+                                                 VerticalAlignment="Bottom"
+                                                 Width="24"
+                                                 Height="24"
+                                                 Opacity=".56" />
+                        <models:EugenieTextBox Grid.Row="2"
+                                               AutoSelect="True"
+                                               BlockInvalidNumberCharacters="True"
+                                               Grid.Column="1"
+                                               HorizontalAlignment="Stretch"
+                                               materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                               Margin="10,10,0,0"
+                                               Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </Grid>
+                    <controls:BarcodePresenter Grid.Column="1"
+                                               HorizontalAlignment="Stretch"
+                                               Margin="20,0,0,0"
+                                               DataContext="{Binding MainProductViewModel}"
+                                               Height="{Binding ElementName=mainInfoGrid, Path=ActualHeight}" />
                 </Grid>
-                <controls:BarcodePresenter Grid.Column="1"
-                                           HorizontalAlignment="Stretch"
-                                           Margin="20,0,0,0"
-                                           DataContext="{Binding MainProductViewModel}"
-                                           Height="{Binding ElementName=mainInfoGrid, Path=ActualHeight}" />
-            </Grid>
-            <controls:ShopSpecificProduct Margin="20,20,20,0"
-                                          MaxHeight="400" />
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Margin="0,20,20,20">
-                <Button IsCancel="True"
-                        IsTabStop="False"
-                        Margin="8 0 0 0"
-                        Content="Назад"
-                        Style="{DynamicResource MaterialDesignFlatButton}"
-                        Command="{Binding CancelCommand}" />
-                <Button IsDefault="True"
-                        IsTabStop="False"
-                        Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                        Command="{Binding SaveCommand}"
-                        Content="Запази" />
+                <controls:ShopSpecificProduct Margin="20,20,20,0"
+                                              MaxHeight="400" />
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0,20,20,20">
+                    <Button IsCancel="True"
+                            IsTabStop="False"
+                            Margin="8 0 0 0"
+                            Content="Назад"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{Binding Cancel}" />
+                    <Button IsDefault="True"
+                            IsTabStop="False"
+                            Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            Command="{Binding Save}"
+                            Content="Запази" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </materialDesign:Card>
+        </materialDesign:Card>
+        <materialDesign:Card Margin="20,0,0,0"
+                             Width="400"
+                             Height="{Binding ElementName=mainCard, Path=ActualHeight}"
+                             Padding="20,0,20,20">
+            <DataGrid x:Name="dataGrid"
+                      ItemsSource="{Binding Products}"
+                      SelectedItem="{Binding SelectedProduct}">
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding Enter}" />
+                </DataGrid.InputBindings>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Име"
+                                        Binding="{Binding Name}"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
+    </StackPanel>
 </UserControl>

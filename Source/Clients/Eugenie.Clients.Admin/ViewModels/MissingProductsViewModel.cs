@@ -8,7 +8,6 @@
     using Autofac;
 
     using Common.Contracts;
-    using Common.Models;
     using Common.WebApiModels;
     using Common.Еxtensions;
 
@@ -16,10 +15,6 @@
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
-    using MaterialDesignThemes.Wpf;
-
-    using Views;
 
     public class MissingProductsViewModel : ViewModelBase, IKeyHandler
     {
@@ -52,7 +47,7 @@
             }
         }
 
-        public async void HandleEnter()
+        public void HandleEnter()
         {
             if (this.SelectedProduct == null)
             {
@@ -60,10 +55,8 @@
             }
 
             var viewModel = ViewModelLocator.container.Resolve<DeliveryViewModel>();
-            viewModel.Name = this.SelectedProduct.Name;
-            viewModel.MainProductViewModel.Product.Barcodes.Add(new Barcode(this.SelectedProduct.Barcode));
-            var dialog = new Delivery(true);
-            await DialogHost.Show(dialog, "RootDialog");
+            viewModel.ImportMissingProduct(this.SelectedProduct.Name, this.SelectedProduct.Barcode);
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowDelivery();
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)

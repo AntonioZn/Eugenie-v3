@@ -3,12 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Windows.Data;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     using Autofac;
 
     using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
     using Common.Notifications;
     using Common.Еxtensions;
@@ -20,20 +24,20 @@
 
     using Helpers;
 
-    using MaterialDesignThemes.Wpf;
-
     using Models;
 
-    public class DeliveryViewModel : ViewModelBase, IBarcodeHandler
+    public class DeliveryViewModel : ViewModelBase, IValidatableObject, IBarcodeHandler
     {
         private readonly IServerManager manager;
-        private string addingType = "Въведете име";
-        private bool automaticName = true;
+        private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
+        private readonly DispatcherTimer timer;
 
-        private ObservableCollection<Product> existingProducts;
         private ProductViewModel mainMainProductViewModel;
-        private string name = string.Empty;
         private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
+        private string name = string.Empty;
+        private string addingType = "Въведете име";
+        private Product selectedProduct;
+        private bool lastProductIsExisting;
 
         public DeliveryViewModel(IServerManager manager)
         {
@@ -41,15 +45,21 @@
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
             this.manager.ProductsCacheChanged += this.OnServerTestingFinished;
 
+            this.timer = new DispatcherTimer();
+            this.timer.Interval = TimeSpan.FromSeconds(0.5);
+            this.timer.Tick += this.HandleSearch;
+
             this.MainProductViewModel = new ProductViewModel(new Product());
 
-            this.SaveCommand = new RelayCommand(this.HandleSaveCommand, this.CanSave);
-            this.CancelCommand = new RelayCommand(this.HandleCancelCommand);
+            this.Save = new RelayCommand(this.HandleSave, this.CanSave);
+            this.Cancel = new RelayCommand(this.HandleCancel);
+
+            this.GetNewProduct("");
         }
 
-        public ICommand SaveCommand { get; }
+        public ICommand Save { get; }
 
-        public ICommand CancelCommand { get; }
+        public ICommand Cancel { get; }
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
@@ -71,33 +81,9 @@
             }
         }
 
-        public IEnumerable<Product> ExistingProducts
-        {
-            get
-            {
-                return this.existingProducts ?? (this.existingProducts = new ObservableCollection<Product>());
-            }
+        public ICollectionView Products => CollectionViewSource.GetDefaultView(this.products);
 
-            set
-            {
-                this.existingProducts = this.existingProducts ?? new ObservableCollection<Product>();
-                this.existingProducts.Clear();
-                value.ForEach(this.existingProducts.Add);
-            }
-        }
-
-        public bool AutomaticName
-        {
-            get
-            {
-                return this.automaticName;
-            }
-
-            set
-            {
-                this.Set(() => this.AutomaticName, ref this.automaticName, value);
-            }
-        }
+        public bool AutomaticName { get; set; } = true;
 
         public string AddingType
         {
@@ -125,6 +111,26 @@
             }
         }
 
+        public Product SelectedProduct
+        {
+            get
+            {
+                return this.selectedProduct;
+            }
+
+            set
+            {
+                this.Set(() => this.SelectedProduct, ref this.selectedProduct, value);
+                if (value != null)
+                {
+                    this.Set(() => this.Name, ref this.name, value.Name);
+                    this.lastProductIsExisting = true;
+                    this.GetExistingProduct(value);
+                    this.AddingType = "Добавяне на наличност";
+                }
+            }
+        }
+
         public string Name
         {
             get
@@ -134,51 +140,58 @@
 
             set
             {
-                var existingProduct = this.ExistingProducts.FirstOrDefault(x => x.Name == value);
+                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
+                if (this.Name != null)
+                {
+                    this.timer.Stop();
+                    this.timer.Start();
+                }
+            }
+        }
+
+        private void HandleSearch(object sender, EventArgs e)
+        {
+           this.timer.Stop();
+
+            if (string.IsNullOrWhiteSpace(this.Name))
+            {
+                this.AddingType = "Въведете име";
+                this.GetNewProduct("");
+                this.RemoveFilter();
+            }
+            else
+            {
+                this.FilterProducts();
+
+                var existingProduct = this.products.FirstOrDefault(x => x.Name == this.Name);
                 if (existingProduct != null)
                 {
                     this.AddingType = "Добавяне на наличност";
-
-                    this.MainProductViewModel = new ProductViewModel(existingProduct.DeepClone());
-
-                    var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
-                    foreach (var pair in this.manager.Cache.ProductsPerServer)
-                    {
-                        var product = pair.Value.FirstOrDefault(x => x.Name == value);
-                        var productViewModel = new ProductViewModel(product ?? new Product());
-                        tempProductInAllServers.Add(pair.Key, productViewModel);
-                    }
-
-                    this.ProductInAllServers = tempProductInAllServers;
+                    this.lastProductIsExisting = true;
+                    this.GetExistingProduct(existingProduct);
                 }
                 else
                 {
-                    this.AddingType = string.IsNullOrEmpty(value) ? "Въведете име" : "Добавяне на нов продукт";
+                    this.AddingType = "Добавяне на нов продукт";
+                    this.MainProductViewModel.Product.Name = this.Name;
 
-                    this.MainProductViewModel = new ProductViewModel(new Product { Name = value });
-
-                    var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
-                    foreach (var pair in this.manager.Cache.ProductsPerServer)
+                    if (this.lastProductIsExisting)
                     {
-                        var productViewModel = new ProductViewModel(new Product());
-                        tempProductInAllServers.Add(pair.Key, productViewModel);
+                        this.lastProductIsExisting = false;
+                        this.GetNewProduct(this.Name);
                     }
-
-                    this.ProductInAllServers = tempProductInAllServers;
                 }
-
-                this.Set(() => this.Name, ref this.name, value);
             }
         }
 
         public async void HandleBarcode(string barcode)
         {
-            var existingProduct = ExistingBarcodeChecker.Check(barcode, this.MainProductViewModel.Product, this.ExistingProducts);
+            var existingProduct = ExistingBarcodeChecker.Check(barcode, this.MainProductViewModel.Product, this.products);
             if (existingProduct != null)
             {
                 if (string.IsNullOrEmpty(this.Name))
                 {
-                    this.Name = existingProduct.Name;
+                    this.SelectedProduct = existingProduct;
                 }
                 else
                 {
@@ -189,16 +202,45 @@
             {
                 if (this.AutomaticName && string.IsNullOrEmpty(this.Name))
                 {
-                    this.Name = await NameFromBarcodeGenerator.GetName(barcode);
+                    var name = await NameFromBarcodeGenerator.GetName(barcode);
+                    this.Set(() => this.Name, ref this.name, name);
                 }
 
                 this.MainProductViewModel.Product.Barcodes.Add(new Barcode(barcode));
             }
         }
 
-        private void HandleSaveCommand()
+        public void ImportMissingProduct(string name, string barcode)
         {
-            DialogHost.CloseDialogCommand.Execute(true, null);
+            this.GetNewProduct(name);
+            this.lastProductIsExisting = false;
+            this.Name = name;
+            this.HandleBarcode(barcode);
+        }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case nameof(this.Name):
+                        return Validator.ValidateProductName(this.Name);
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        public bool HasNoValidationErrors()
+        {
+            return this[nameof(this.Name)] == null;
+        }
+
+        public string Error { get; }
+
+        private void HandleSave()
+        {
             foreach (var pair in this.ProductInAllServers)
             {
                 pair.Value.MapProperties(this.MainProductViewModel);
@@ -215,17 +257,20 @@
 
         private bool CanSave()
         {
-            return this.MainProductViewModel.Product.HasNoValidationErrors()
+            return this.HasNoValidationErrors()
+                   && this.MainProductViewModel.Product.HasNoValidationErrors()
                    && this.MainProductViewModel.HasNoValidationErrors()
                    && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors());
         }
 
-        private void HandleCancelCommand()
+        private void HandleCancel()
         {
-            DialogHost.CloseDialogCommand.Execute(false, null);
             if (!string.IsNullOrWhiteSpace(this.Name))
             {
-                this.Name = string.Empty;
+                this.Set(() => this.Name, ref this.name, null);
+                this.AddingType = "Въведете име";
+                this.GetNewProduct("");
+                this.RemoveFilter();
             }
             else
             {
@@ -235,7 +280,55 @@
 
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
-            this.ExistingProducts = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value;
+            this.products.Clear();
+            this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
+        }
+
+        private void FilterProducts()
+        {
+            var searchAsArray = this.Name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            this.Products.Filter = obj =>
+            {
+                var product = obj as Product;
+
+                return searchAsArray.All(word => product.Name.Contains(word));
+            };
+        }
+
+        private void RemoveFilter()
+        {
+            this.Products.Filter = null;
+            this.Products.Refresh();
+        }
+
+        private void GetNewProduct(string name)
+        {
+            this.MainProductViewModel = new ProductViewModel(new Product { Name = name });
+
+            var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            {
+                var productViewModel = new ProductViewModel(new Product());
+                tempProductInAllServers.Add(pair.Key, productViewModel);
+            }
+
+            this.ProductInAllServers = tempProductInAllServers;
+        }
+
+        private void GetExistingProduct(Product existingProduct)
+        {
+            this.MainProductViewModel = new ProductViewModel(existingProduct.DeepClone());
+
+            var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            {
+                var product = pair.Value.FirstOrDefault(x => x.Name == this.Name);
+                var productViewModel = new ProductViewModel(product ?? new Product());
+                tempProductInAllServers.Add(pair.Key, productViewModel);
+            }
+
+            this.ProductInAllServers = tempProductInAllServers;
         }
     }
 }
