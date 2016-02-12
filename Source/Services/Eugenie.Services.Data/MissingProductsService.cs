@@ -1,6 +1,7 @@
 ﻿namespace Eugenie.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Common.Helpers;
@@ -35,6 +36,16 @@
                 this.missingProductsRepository.Add(missingProduct);
                 this.missingProductsRepository.SaveChanges();
             }
+        }
+
+        public void RemoveMissingProducts(IEnumerable<string> barcodes)
+        {
+            var missingProducts = this.missingProductsRepository.All().Where(x => barcodes.All(y => x.Barcode == y)).ToList();
+            foreach (var missingProduct in missingProducts)
+            {
+                this.missingProductsRepository.Delete(missingProduct);
+            }
+            this.missingProductsRepository.SaveChanges();
         }
     }
 }

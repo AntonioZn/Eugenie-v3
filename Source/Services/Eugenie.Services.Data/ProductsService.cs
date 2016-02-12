@@ -110,6 +110,8 @@
                 throw new ArgumentException($"A product with name {name} already exists");
             }
 
+            this.missingProductsService.RemoveMissingProducts(barcodes.Select(x => x.Value));
+
             var product = this.productsRepository.All().FirstOrDefault(x => x.Name == oldName);
             if (product == null)
             {
