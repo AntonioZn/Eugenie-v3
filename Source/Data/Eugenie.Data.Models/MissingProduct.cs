@@ -17,8 +17,7 @@
 
         [JsonIgnore]
         public int Id { get; set; }
-
-        [Required]
+        
         [MaxLength(ValidationConstants.MissingProductMaxNameLength)]
         public string Name { get; set; }
 

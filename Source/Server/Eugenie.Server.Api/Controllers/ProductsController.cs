@@ -83,13 +83,18 @@
         [HttpGet]
         public IHttpActionResult GetByBarcode(string barcode)
         {
-            return this.Ok(this.productsService.GetByBarcode(barcode).Select(x => new
+            var product = this.productsService.GetByBarcode(barcode);
+            if (product != null)
             {
-                x.Id,
-                x.Name,
-                x.Measure,
-                x.SellingPrice
-            }).FirstOrDefault());
+                return this.Ok(new
+                               {
+                                   product.Id,
+                                   product.Name,
+                                   product.Measure,
+                                   product.SellingPrice
+                               });
+            }
+            return this.Ok("");
         }
 
         [HttpGet]

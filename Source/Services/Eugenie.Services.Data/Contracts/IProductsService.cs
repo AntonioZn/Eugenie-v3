@@ -15,7 +15,7 @@
 
         IQueryable<Product> All();
 
-        IQueryable<Product> GetByBarcode(string barcode);
+        Product GetByBarcode(string barcode);
 
         IQueryable<Product> GetByQuantity(decimal quantity);
 

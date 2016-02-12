@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\ValidationConstants.cs" />
+    <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\ProductNameFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -19,13 +19,16 @@
         private readonly IRepository<Barcode> barcodesRepository;
         private readonly IRepository<ExpirationDate> expirationDatesRepository;
         private readonly IReportsService reportsService;
+        private readonly IMissingProductsService missingProductsService;
 
-        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, IRepository<ExpirationDate> expirationDatesRepository, IReportsService reportsService)
+        public ProductsService(IRepository<Product> productsRepository, IRepository<Barcode> barcodesRepository, 
+            IRepository<ExpirationDate> expirationDatesRepository, IReportsService reportsService, IMissingProductsService missingProductsService)
         {
             this.productsRepository = productsRepository;
             this.barcodesRepository = barcodesRepository;
             this.expirationDatesRepository = expirationDatesRepository;
             this.reportsService = reportsService;
+            this.missingProductsService = missingProductsService;
         }
 
         public void Delete(string name)
@@ -63,13 +66,18 @@
 
         public IQueryable<Product> All()
         {
-            return this.productsRepository.All().Where(x => !x.IsDeleted);//.Include("Barcodes").Include("ExpirationDates").Where(x => !x.IsDeleted);
+            return this.productsRepository.All().Where(x => !x.IsDeleted);
         }
-
-        //TODO: if not product is found add it to missing products
-        public IQueryable<Product> GetByBarcode(string barcode)
+        
+        public Product GetByBarcode(string barcode)
         {
-            return this.productsRepository.All().Where(x => !x.IsDeleted).Where(product => product.Barcodes.Any(b => b.Value == barcode));
+            var product = this.productsRepository.All().Where(x => !x.IsDeleted).FirstOrDefault(x => x.Barcodes.Any(b => b.Value == barcode));
+            if (product == null)
+            {
+                this.missingProductsService.AddMissingProduct(barcode);
+            }
+
+            return product;
         }
 
         public IQueryable<Product> GetByName(string name)

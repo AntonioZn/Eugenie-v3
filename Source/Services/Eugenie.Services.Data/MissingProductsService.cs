@@ -1,6 +1,9 @@
 ﻿namespace Eugenie.Services.Data
 {
+    using System;
     using System.Linq;
+
+    using Common.Helpers;
 
     using Contracts;
 
@@ -19,6 +22,19 @@
         public IQueryable<MissingProduct> GetMissingProducts()
         {
             return this.missingProductsRepository.All();
+        }
+
+        public void AddMissingProduct(string barcode)
+        {
+            if (this.missingProductsRepository.All().All(x => x.Barcode != barcode))
+            {
+                var missingProduct = new MissingProduct();
+                missingProduct.Barcode = barcode;
+                missingProduct.Date = DateTime.Now;
+                missingProduct.Name = NameFromBarcodeGenerator.GetNameAsync(barcode).Result;
+                this.missingProductsRepository.Add(missingProduct);
+                this.missingProductsRepository.SaveChanges();
+            }
         }
     }
 }

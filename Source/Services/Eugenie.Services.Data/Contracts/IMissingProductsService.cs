@@ -7,5 +7,7 @@
     public interface IMissingProductsService
     {
         IQueryable<MissingProduct> GetMissingProducts();
+
+        void AddMissingProduct(string barcode);
     }
 }
