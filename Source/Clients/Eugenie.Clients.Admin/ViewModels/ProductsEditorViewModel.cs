@@ -123,7 +123,9 @@
 
         public void ClearSearch()
         {
-            this.Search = string.Empty;
+            this.Search = null;
+            this.Products.Filter = null;
+            this.Products.Refresh();
         }
 
         public async void OpenInformation()

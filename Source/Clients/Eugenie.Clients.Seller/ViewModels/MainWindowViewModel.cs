@@ -55,11 +55,7 @@
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
-            var keyHandler = this.Content.DataContext as IKeyHandler;
-            if (keyHandler != null && keyHandler != this)
-            {
-                keyHandler.HandleKey(e, key);
-            }
+            (this.Content.DataContext as IKeyHandler)?.HandleKey(e, key);
         }
 
         public void HandleBarcode(string barcode)

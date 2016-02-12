@@ -21,7 +21,7 @@
 
     using Views;
 
-    public class MainWindowViewModel : ViewModelBase, IKeyHandler
+    public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IServerManager manager;
         private Visibility loadingVisibility;
@@ -150,6 +150,11 @@
         {
             this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
+        }
+
+        public void HandleBarcode(string barcode)
+        {
+            (this.SelectedMenuItem.Content.DataContext as IBarcodeHandler)?.HandleBarcode(barcode);
         }
     }
 }
