@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="AccessDeniedException.cs" />
     <Compile Include="BackupDatabaseJob.cs" />
+    <Compile Include="BackupDatabaseService.cs" />
     <Compile Include="IWebApiHost.cs" />
     <Compile Include="WebApiHost.cs" />
     <Compile Include="PortInUseException.cs" />

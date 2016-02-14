@@ -1,7 +1,5 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System;
-    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -14,6 +12,8 @@
     using GalaSoft.MvvmLight.Command;
 
     using Helpers;
+
+    using Server.Host;
 
     public class SettingsViewModel : ViewModelBase
     {
@@ -28,9 +28,12 @@
             this.IsSelfHost = SettingsManager.Default.Settings.IsSelfHost;
 
             this.Save = new RelayCommand(this.HandleSave);
+            this.Backup = new RelayCommand(this.HandleBackup);
         }
 
-        public ICommand Save { get; set; }
+        public ICommand Save { get; }
+
+        public ICommand Backup { get; }
 
         public string Port
         {
@@ -102,6 +105,11 @@
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
             var selfHostAddress = "http://" + localIp + ":" + this.port;
             return selfHostAddress;
+        }
+
+        private void HandleBackup()
+        {
+            BackupDatabaseService.Backup(SettingsManager.Default.Settings.BackupPath);
         }
     }
 }

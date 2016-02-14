@@ -52,8 +52,6 @@
 
         public void AutoBackupDatabase(int hours, int minutes, string path)
         {
-            Directory.CreateDirectory(path);
-
             var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("savePath", path).Build();
             var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
 
