@@ -38,6 +38,7 @@
             this.Refresh = new RelayCommand(this.HandleRefresh);
             this.Select = new RelayCommand<ActiveServer>(this.HandleSelect);
 
+            //TODO: Дневник за входящ контрол
             this.Views = new List<MenuItem>
                          {
                              new MenuItem("Продукти", new ProductsEditor()),

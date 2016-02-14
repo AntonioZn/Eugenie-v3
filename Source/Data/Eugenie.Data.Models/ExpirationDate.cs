@@ -17,5 +17,7 @@
         public string Batch { get; set; }
 
         public DateTime Date { get; set; }
+
+        public decimal Quantity { get; set; }
     }
 }

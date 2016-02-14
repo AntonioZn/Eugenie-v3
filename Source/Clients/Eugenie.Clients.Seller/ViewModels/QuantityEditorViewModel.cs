@@ -78,7 +78,7 @@
                     return true;
                 }
 
-                NotificationsHost.Error("Невалидно количество", this.measure == MeasureType.бр ? "Минималната позволена стойност е 1." : "Минималната позволена стойност е 0,01.");
+                NotificationsHost.Error("Невалидно количество", $"Минималната позволена стойност е {this.GetMinimumQuantity()}.");
             }
             else
             {

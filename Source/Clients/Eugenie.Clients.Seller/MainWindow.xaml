@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="ЙОЖЕНИ 95 ЕООД"
         WindowState="Maximized"
+        ResizeMode="NoResize"
         IsTabStop="False"
         WindowStyle="None"
         Topmost="True"
