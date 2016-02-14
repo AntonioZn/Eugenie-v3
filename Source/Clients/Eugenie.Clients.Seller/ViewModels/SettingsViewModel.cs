@@ -29,11 +29,14 @@
 
             this.Save = new RelayCommand(this.HandleSave);
             this.Backup = new RelayCommand(this.HandleBackup);
+            this.Cancel = new RelayCommand(this.HandleCancel);
         }
 
         public ICommand Save { get; }
 
         public ICommand Backup { get; }
+
+        public ICommand Cancel { get; }
 
         public string Port
         {
@@ -110,6 +113,11 @@
         private void HandleBackup()
         {
             BackupDatabaseService.Backup(SettingsManager.Default.Settings.BackupPath);
+        }
+
+        private void HandleCancel()
+        {
+            ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowLogin();
         }
     }
 }
