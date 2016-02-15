@@ -10,33 +10,33 @@
 
     public partial class MainWindow
     {
-        private readonly NotifyIcon icon;
+        //private readonly NotifyIcon icon;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.txtSearch.Focus();
-            this.icon = new NotifyIcon();
-            this.icon.Icon = Properties.Resources.Icon;
-            this.icon.MouseClick +=
-                delegate
-                {
-                    this.Show();
-                    this.icon.Visible = false;
-                    this.WindowState = WindowState.Normal;
-                };
+            //this.icon = new NotifyIcon();
+            //this.icon.Icon = Properties.Resources.Icon;
+            //this.icon.MouseClick +=
+            //    delegate
+            //    {
+            //        this.Show();
+            //        this.icon.Visible = false;
+            //        this.WindowState = WindowState.Normal;
+            //    };
         }
 
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (this.WindowState == WindowState.Minimized)
-            {
-                this.icon.Visible = true;
-                this.Hide();
-            }
-
-            base.OnStateChanged(e);
-        }
+        //protected override void OnStateChanged(EventArgs e)
+        //{
+        //    if (this.WindowState == WindowState.Minimized)
+        //    {
+        //        this.icon.Visible = true;
+        //        this.Hide();
+        //    }
+        //
+        //    base.OnStateChanged(e);
+        //}
 
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
