@@ -19,9 +19,9 @@
     {
         private readonly IWebApiClient apiClient;
         private readonly IServerManager manager;
-        private DateTime? end;
         private ObservableCollection<Seller> sellers;
-        private DateTime? start;
+        private decimal sellsTotal;
+        private decimal wasteTotal;
 
         public SellersViewModel(IServerManager manager, IWebApiClient apiClient)
         {
@@ -54,50 +54,54 @@
             }
         }
 
-        public DateTime? Start
-        {
-            get
-            {
-                return this.start;
-            }
+        public DateTime Start { get; set; } = DateTime.Now;
 
-            set
-            {
-                this.Set(() => this.Start, ref this.start, value);
-            }
-        }
-
-        public DateTime? End
-        {
-            get
-            {
-                return this.end;
-            }
-
-            set
-            {
-                this.Set(() => this.End, ref this.end, value);
-            }
-        }
+        public DateTime End { get; set; } = DateTime.Now;
 
         public ObservableCollection<Waste> Waste { get; }
 
         public ObservableCollection<Sell> Sells { get; }
 
+        public decimal SellsTotal
+        {
+            get
+            {
+                return this.sellsTotal;
+            }
+            set
+            {
+                this.Set(() => this.SellsTotal, ref this.sellsTotal, value);
+            }
+        }
+
+        public decimal WasteTotal
+        {
+            get
+            {
+                return this.wasteTotal;
+            }
+            set
+            {
+                this.Set(() => this.WasteTotal, ref this.wasteTotal, value);
+            }
+        }
+
         private async void HandleSearch()
         {
-            var deals = await this.apiClient.GetDealsForSeller(this.manager.SelectedServer.Client, this.SelectedSeller.UserName, this.Start.Value, this.End.Value);
+            var deals = await this.apiClient.GetDealsForSeller(this.manager.SelectedServer.Client, this.SelectedSeller.UserName, this.Start, this.End);
 
             this.Waste.Clear();
             deals.Waste.ForEach(this.Waste.Add);
+            this.WasteTotal = deals.Waste.Sum(x => x.Total);
 
             this.Sells.Clear();
             deals.Sells.ForEach(this.Sells.Add);
+            this.SellsTotal = deals.Sells.Sum(x => x.Total);
         }
 
         private bool CanSearch()
         {
-            return this.SelectedSeller != null && this.Start != null && this.End != null;
+            return this.SelectedSeller != null;
         }
 
         private void OnSelectedServerChanged(object sender, EventArgs e)

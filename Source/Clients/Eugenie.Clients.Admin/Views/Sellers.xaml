@@ -7,8 +7,8 @@
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:controls="clr-namespace:Eugenie.Clients.Admin.Views.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignHeight="1000"
+             d:DesignWidth="1000"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="20"
@@ -22,6 +22,7 @@
                          Margin="20">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -70,8 +71,24 @@
                                              Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
                 </Button>
             </Grid>
-            <dragablz:TabablzControl Grid.Row="1"
-                                     Margin="0,20,0,0"
+            <StackPanel Grid.Row="1"
+                        Margin="0,20,0,0"
+                        Orientation="Horizontal">
+                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           FontSize="20"
+                           Text="Оборот: " />
+                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           FontSize="20"
+                           Text="{Binding SellsTotal}" />
+                <TextBlock Margin="10,0,0,0"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           FontSize="20"
+                           Text="Брак: " />
+                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           FontSize="20"
+                           Text="{Binding WasteTotal}" />
+            </StackPanel>
+            <dragablz:TabablzControl Grid.Row="2"
                                      Width="800">
                 <TabItem Header="Продажби"
                          IsSelected="True"
