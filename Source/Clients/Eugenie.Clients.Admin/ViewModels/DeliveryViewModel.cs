@@ -282,7 +282,7 @@
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             this.products.Clear();
-            this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value.ForEach(this.products.Add);
+            this.manager.Cache.ProductsPerServer.OrderByDescending(x => x.Value.Count).FirstOrDefault().Value.ForEach(this.products.Add);
         }
 
         private void FilterProducts()

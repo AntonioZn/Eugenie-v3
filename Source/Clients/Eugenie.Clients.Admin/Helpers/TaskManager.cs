@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Admin.Helpers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -58,14 +59,14 @@
                                              var status = this.apiClient.AddOrUpdateAsync(client, task.Model).Result;
                                              if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                              {
-                                                 this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
                                                  Application.Current.Dispatcher.Invoke(() =>
                                                  {
+                                                     this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
                                                      NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
                                                  });
                                              }
                                          }
-                                         catch
+                                         catch (Exception ex)
                                          {
                                          }
                                      }
