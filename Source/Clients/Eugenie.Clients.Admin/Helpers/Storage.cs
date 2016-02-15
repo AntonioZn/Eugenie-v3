@@ -1,14 +1,9 @@
 ﻿namespace Eugenie.Clients.Admin.Helpers
 {
-    using System;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Threading;
 
     using Common.Models;
-    using Common.Notifications;
 
     using Contracts;
 
@@ -47,15 +42,6 @@
         {
             Settings.Default.AddOrUpdateProductTasks = JsonConvert.SerializeObject(this.AddOrUpdateProductTasks);
             Settings.Default.Save();
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                var task = e.OldItems.Cast<AddOrUpdateProductTask>().First();
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
-                });
-            }
         }
 
         private void OnDeleteProductTasksChanged(object sender, NotifyCollectionChangedEventArgs e)

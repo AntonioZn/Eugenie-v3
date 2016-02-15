@@ -5,20 +5,26 @@
     using System.Reflection;
     using System.Windows.Input;
 
+    using Common.Contracts;
     using Common.Models;
+    using Common.Notifications;
 
     using Contracts;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    public class SettingsViewModel : ViewModelBase
+    using Models;
+
+    public class SettingsViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IServerStorage storage;
+        private readonly ITasksStorage tasksStorage;
 
-        public SettingsViewModel(IServerStorage storage)
+        public SettingsViewModel(IServerStorage storage, ITasksStorage tasksStorage)
         {
             this.storage = storage;
+            this.tasksStorage = tasksStorage;
 
             this.NewServerViewModel = new NewServerViewModel();
 
@@ -31,6 +37,33 @@
         public ICommand Add { get; }
 
         public ICommand Delete { get; }
+
+        public ICollection<AddOrUpdateProductTask> AddOrUpdateProductTasks => this.tasksStorage.AddOrUpdateProductTasks;
+
+        public AddOrUpdateProductTask SelectedTask { get; set; }
+
+        public void HandleKey(KeyEventArgs e, Key key)
+        {
+            switch (key)
+            {
+                case Key.Delete:
+                    this.DeleteTask();
+                    e.Handled = true;
+                    break;
+            }
+        }
+
+        private void DeleteTask()
+        {
+            if (this.SelectedTask != null)
+            {
+                this.AddOrUpdateProductTasks.Remove(this.SelectedTask);
+            }
+            else
+            {
+                NotificationsHost.Error("Неуспешно", "Трябва да има избрана заявка.");
+            }
+        }
 
         public ICollection<ServerInformation> Servers => this.storage.Servers;
 

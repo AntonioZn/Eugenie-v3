@@ -50,22 +50,22 @@
 
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<Storage>().As<IServerStorage>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<Storage>().As<ITasksStorage>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ServerManager>().As<IServerManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().SingleInstance();
+            containerBuilder.RegisterType<Storage>().As<IServerStorage>().SingleInstance();
+            containerBuilder.RegisterType<Storage>().As<ITasksStorage>().SingleInstance();
+            containerBuilder.RegisterType<ServerManager>().As<IServerManager>().SingleInstance();
             containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().InstancePerLifetimeScope();
 
-            containerBuilder.RegisterType<ProductsEditorViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<MainWindowViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<SettingsViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<DeliveryViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<MissingProductsViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<PaletteSelectorViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ReportsViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<SellersViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<LowQuantityProductsViewModel>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ExpiringProductsViewModel>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ProductsEditorViewModel>().SingleInstance();
+            containerBuilder.RegisterType<MainWindowViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<DeliveryViewModel>().SingleInstance();
+            containerBuilder.RegisterType<MissingProductsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<PaletteSelectorViewModel>().SingleInstance();
+            containerBuilder.RegisterType<ReportsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SellersViewModel>().SingleInstance();
+            containerBuilder.RegisterType<LowQuantityProductsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<ExpiringProductsViewModel>().SingleInstance();
 
             container = containerBuilder.Build();
         }

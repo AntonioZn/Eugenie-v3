@@ -1,12 +1,10 @@
 ﻿namespace Eugenie.Clients.Admin.Helpers
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Threading;
 
     using Common.Contracts;
     using Common.Notifications;
@@ -61,6 +59,10 @@
                                              if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                              {
                                                  this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
+                                                 Application.Current.Dispatcher.Invoke(() =>
+                                                 {
+                                                     NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
+                                                 });
                                              }
                                          }
                                          catch
@@ -74,7 +76,7 @@
                                  }
                              }
 
-                             SpinWait.SpinUntil(() => this.tasksStorage.AddOrUpdateProductTasks.Any());
+                             Thread.Sleep(2000);
                          }
                      });
         }
