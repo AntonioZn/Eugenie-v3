@@ -4,6 +4,7 @@
     using System.Reflection;
     using System.Security.Principal;
     using System.Windows;
+    using System.Windows.Input;
     using System.Windows.Threading;
 
     using Common.Helpers;
@@ -32,7 +33,7 @@
                 }
             }
 #endif
-
+            Mouse.OverrideCursor = Cursors.None;
             this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
         }
