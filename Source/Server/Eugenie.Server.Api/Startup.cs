@@ -42,7 +42,7 @@ namespace Eugenie.Server.Api
 
         private void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<EugenieDbContext>().As<IEugenieDbContext>().InstancePerLifetimeScope();
+            builder.RegisterType<EugenieDbContext>().As<IEugenieDbContext>().InstancePerRequest();
             builder.RegisterGeneric(typeof (EfGenericRepository<>)).As(typeof (IRepository<>));
             builder.RegisterType<ProductsService>().As<IProductsService>();
             builder.RegisterType<DealsService>().As<IDealsService>();

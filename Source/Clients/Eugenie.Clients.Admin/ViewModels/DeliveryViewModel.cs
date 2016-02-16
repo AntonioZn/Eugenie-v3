@@ -209,6 +209,7 @@
         {
             name = name.ToLower();
             this.Set(() => this.Name, ref this.name, name);
+            this.GetNewProduct("");
             this.HandleSearch(name);
             this.HandleBarcode(barcode);
         }

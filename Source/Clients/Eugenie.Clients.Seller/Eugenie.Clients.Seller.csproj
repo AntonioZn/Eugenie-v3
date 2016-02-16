@@ -68,10 +68,11 @@
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>114D1D6B9E86323B112B65AF280A5366A2E1C875</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B467A046F0F5AABA630A8BD0AE798066C7BCFB37</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Eugenie.Clients.Seller_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -276,7 +277,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Eugenie.Clients.Seller_TemporaryKey.pfx" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
