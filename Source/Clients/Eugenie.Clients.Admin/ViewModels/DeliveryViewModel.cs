@@ -145,13 +145,29 @@
             }
         }
 
+        public string Error { get; }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                switch (propertyName)
+                {
+                    case nameof(this.Name):
+                        return Validator.ValidateProductName(this.Name);
+                    default:
+                        return null;
+                }
+            }
+        }
+
         public void HandleSearch(string name)
         {
             name = name.ToLower();
             if (string.IsNullOrWhiteSpace(name))
             {
                 this.AddingType = "Въведете име";
-                this.GetNewProduct("");
+                this.GetNewProduct(string.Empty);
                 this.RemoveFilter();
             }
             else
@@ -209,31 +225,15 @@
         {
             name = name.ToLower();
             this.Set(() => this.Name, ref this.name, name);
-            this.GetNewProduct("");
+            this.GetNewProduct(string.Empty);
             this.HandleSearch(name);
             this.HandleBarcode(barcode);
-        }
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                switch (propertyName)
-                {
-                    case nameof(this.Name):
-                        return Validator.ValidateProductName(this.Name);
-                    default:
-                        return null;
-                }
-            }
         }
 
         public bool HasNoValidationErrors()
         {
             return this[nameof(this.Name)] == null;
         }
-
-        public string Error { get; }
 
         private void OnTick(object sender, EventArgs e)
         {
@@ -264,7 +264,7 @@
             }
             else
             {
-                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowProductsEditor();
+                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowProductsEditor();
             }
         }
 
@@ -272,7 +272,7 @@
         {
             this.Set(() => this.Name, ref this.name, null);
             this.AddingType = "Въведете име";
-            this.GetNewProduct("");
+            this.GetNewProduct(string.Empty);
             this.RemoveFilter();
         }
 
@@ -280,7 +280,7 @@
         {
             this.products.Clear();
             this.manager.Cache.ProductsPerServer.OrderByDescending(x => x.Value.Count).FirstOrDefault().Value.ForEach(this.products.Add);
-            this.GetNewProduct("");
+            this.GetNewProduct(string.Empty);
         }
 
         private void FilterProducts()

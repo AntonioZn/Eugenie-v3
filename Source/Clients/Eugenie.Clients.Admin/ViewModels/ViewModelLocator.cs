@@ -13,41 +13,35 @@
 
     public class ViewModelLocator
     {
-        public static IContainer container;
-
         public ViewModelLocator()
         {
             this.Register();
         }
 
-        public ProductsEditorViewModel ProductsEditorViewModel => container.Resolve<ProductsEditorViewModel>();
+        public static IContainer Container { get; private set}
 
-        public MainWindowViewModel MainWindowViewModel => container.Resolve<MainWindowViewModel>();
+        public ProductsEditorViewModel ProductsEditorViewModel => Container.Resolve<ProductsEditorViewModel>();
 
-        public SettingsViewModel SettingsViewModel => container.Resolve<SettingsViewModel>();
+        public MainWindowViewModel MainWindowViewModel => Container.Resolve<MainWindowViewModel>();
 
-        public DeliveryViewModel DeliveryViewModel => container.Resolve<DeliveryViewModel>();
+        public SettingsViewModel SettingsViewModel => Container.Resolve<SettingsViewModel>();
 
-        public MissingProductsViewModel MissingProductsViewModel => container.Resolve<MissingProductsViewModel>();
+        public DeliveryViewModel DeliveryViewModel => Container.Resolve<DeliveryViewModel>();
 
-        public PaletteSelectorViewModel PaletteSelectorViewModel => container.Resolve<PaletteSelectorViewModel>();
+        public MissingProductsViewModel MissingProductsViewModel => Container.Resolve<MissingProductsViewModel>();
 
-        public ReportsViewModel ReportsViewModel => container.Resolve<ReportsViewModel>();
+        public PaletteSelectorViewModel PaletteSelectorViewModel => Container.Resolve<PaletteSelectorViewModel>();
 
-        public SellersViewModel SellersViewModel => container.Resolve<SellersViewModel>();
+        public ReportsViewModel ReportsViewModel => Container.Resolve<ReportsViewModel>();
 
-        public LowQuantityProductsViewModel LowQuantityProductsViewModel => container.Resolve<LowQuantityProductsViewModel>();
+        public SellersViewModel SellersViewModel => Container.Resolve<SellersViewModel>();
 
-        public ExpiringProductsViewModel ExpiringProductsViewModel => container.Resolve<ExpiringProductsViewModel>();
+        public LowQuantityProductsViewModel LowQuantityProductsViewModel => Container.Resolve<LowQuantityProductsViewModel>();
+
+        public ExpiringProductsViewModel ExpiringProductsViewModel => Container.Resolve<ExpiringProductsViewModel>();
 
         private void Register()
         {
-            if (Settings.Default.Servers == string.Empty)
-            {
-                Settings.Default.Servers = "[]";
-                Settings.Default.Save();
-            }
-
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().SingleInstance();
@@ -67,7 +61,7 @@
             containerBuilder.RegisterType<LowQuantityProductsViewModel>().SingleInstance();
             containerBuilder.RegisterType<ExpiringProductsViewModel>().SingleInstance();
 
-            container = containerBuilder.Build();
+            Container = containerBuilder.Build();
         }
     }
 }

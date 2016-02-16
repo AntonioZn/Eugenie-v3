@@ -109,6 +109,8 @@
             }
         }
 
+        public string Error { get; }
+
         public string this[string propertyName]
         {
             get
@@ -126,8 +128,6 @@
                 }
             }
         }
-
-        public string Error { get; }
 
         public bool HasNoValidationErrors()
         {

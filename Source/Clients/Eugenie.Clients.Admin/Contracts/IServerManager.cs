@@ -11,19 +11,19 @@
 
     public interface IServerManager
     {
+        event EventHandler SelectedServerChanged;
+
+        event EventHandler ProductsCacheChanged;
+
+        event EventHandler ServerTestingFinished;
+
         ServerInformation SelectedServer { get; }
 
         Cache Cache { get; }
 
-        event EventHandler SelectedServerChanged;
-
         void SetSelectedServer(string name);
 
-        event EventHandler ProductsCacheChanged;
-
         void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel);
-
-        event EventHandler ServerTestingFinished;
 
         void Initialize();
 

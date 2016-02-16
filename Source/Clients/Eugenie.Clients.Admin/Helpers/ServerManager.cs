@@ -33,9 +33,13 @@
             this.Initialize();
         }
 
-        public Cache Cache { get; }
-
         public event EventHandler SelectedServerChanged;
+
+        public event EventHandler ServerTestingFinished;
+
+        public event EventHandler ProductsCacheChanged;
+
+        public Cache Cache { get; }
 
         public ServerInformation SelectedServer { get; private set; }
 
@@ -48,9 +52,7 @@
             }
         }
 
-        public event EventHandler ServerTestingFinished;
-
-        //TODO: add a way to cancel
+        // TODO: add a way to cancel
         public async void Initialize()
         {
             this.Cache.ProductsPerServer.Clear();
@@ -78,11 +80,9 @@
                                                                       });
                            });
 
-            this.SetSelectedServer("");
+            this.SetSelectedServer(string.Empty);
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
-
-        public event EventHandler ProductsCacheChanged;
 
         public void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel)
         {

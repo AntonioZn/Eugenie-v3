@@ -27,17 +27,6 @@
             //    };
         }
 
-        //protected override void OnStateChanged(EventArgs e)
-        //{
-        //    if (this.WindowState == WindowState.Minimized)
-        //    {
-        //        this.icon.Visible = true;
-        //        this.Hide();
-        //    }
-        //
-        //    base.OnStateChanged(e);
-        //}
-
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             this.MenuToggleButton.IsChecked = false;
@@ -55,6 +44,17 @@
         {
             NotificationsHost.SetOwner(this);
         }
+
+        //protected override void OnStateChanged(EventArgs e)
+        //{
+        //    if (this.WindowState == WindowState.Minimized)
+        //    {
+        //        this.icon.Visible = true;
+        //        this.Hide();
+        //    }
+        //
+        //    base.OnStateChanged(e);
+        //}
 
         protected override void OnClosed(EventArgs e)
         {

@@ -66,8 +66,7 @@
 
         public async void HandleEnter()
         {
-            var viewModel = new ReportDetailsViewModel(ViewModelLocator.container.Resolve<IWebApiClient>(),
-                                                       this.SelectedReport.Date, this.manager.SelectedServer.Client);
+            var viewModel = new ReportDetailsViewModel(ViewModelLocator.Container.Resolve<IWebApiClient>(), this.SelectedReport.Date, this.manager.SelectedServer.Client);
             await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
         }
 

@@ -54,9 +54,9 @@
                 return;
             }
 
-            var viewModel = ViewModelLocator.container.Resolve<DeliveryViewModel>();
+            var viewModel = ViewModelLocator.Container.Resolve<DeliveryViewModel>();
             viewModel.ImportMissingProduct(this.SelectedProduct.Name, this.SelectedProduct.Barcode);
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowDelivery();
+            ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowDelivery();
         }
 
         private void OnServerTestingFinished(object sender, EventArgs e)

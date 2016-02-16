@@ -50,6 +50,24 @@
 
         public Product SelectedProduct { get; set; }
 
+        public string Search
+        {
+            get
+            {
+                return this.search;
+            }
+
+            set
+            {
+                this.Set(() => this.Search, ref this.search, value);
+                if (this.Search != null)
+                {
+                    this.timer.Stop();
+                    this.timer.Start();
+                }
+            }
+        }
+
         public void HandleKey(KeyEventArgs e, Key key)
         {
             switch (key)
@@ -69,50 +87,17 @@
             }
         }
 
-        public string Search
-        {
-            get
-            {
-                return this.search;
-            }
-
-            set
-            {
-                this.Set(() => this.Search, ref this.search, value);
-                if (this.Search != null)
-                {
-                    this.timer.Stop();
-                    this.timer.Start();
-                }
-            }
-        }
-
-        private void HandleSearch(object sender, EventArgs e)
-        {
-            this.timer.Stop();
-            var searchAsArray = this.Search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            this.Products.Filter = obj =>
-            {
-                var product = obj as Product;
-
-                return searchAsArray.All(word => product.Name.Contains(word));
-            };
-
-            this.Products.Refresh();
-        }
-
         public void HandleBarcode(string barcode)
         {
             this.Search = null;
 
             this.Products.Filter = obj =>
-                                   {
-                                       var product = obj as Product;
-            
-                                       return product.Barcodes.Any(x => x.Value == barcode);
-                                   };
-            
+            {
+                var product = obj as Product;
+
+                return product.Barcodes.Any(x => x.Value == barcode);
+            };
+
             this.Products.Refresh();
 
             var productWithBarcode = this.products.FirstOrDefault(x => x.Barcodes.Any(y => y.Value == barcode));
@@ -123,8 +108,8 @@
             }
             else
             {
-                ViewModelLocator.container.Resolve<DeliveryViewModel>().ImportMissingProduct("", barcode);
-                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowDelivery();
+                ViewModelLocator.Container.Resolve<DeliveryViewModel>().ImportMissingProduct(string.Empty, barcode);
+                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowDelivery();
             }
         }
 
@@ -147,10 +132,25 @@
 
             var result = await DialogHost.Show(dialog, "RootDialog");
 
-            if ((bool) result)
+            if ((bool)result)
             {
                 this.Products.Refresh();
             }
+        }
+
+        private void HandleSearch(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+            var searchAsArray = this.Search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            this.Products.Filter = obj =>
+            {
+                var product = obj as Product;
+
+                return searchAsArray.All(word => product.Name.Contains(word));
+            };
+
+            this.Products.Refresh();
         }
 
         private async void HandleDelete()

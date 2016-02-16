@@ -27,6 +27,7 @@
             {
                 return this.name;
             }
+
             set
             {
                 this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
@@ -39,6 +40,7 @@
             {
                 return this.username;
             }
+
             set
             {
                 this.Set(() => this.Username, ref this.username, value.Trim());
@@ -51,6 +53,7 @@
             {
                 return this.password;
             }
+
             set
             {
                 this.Set(() => this.Password, ref this.password, value.Trim());
@@ -73,6 +76,8 @@
 
         public string[] AddressesArray { get; private set; }
 
+        public string Error { get; }
+
         public string this[string propertyName]
         {
             get
@@ -92,8 +97,6 @@
                 }
             }
         }
-
-        public string Error { get; }
 
         public bool HasNoValidationErrors()
         {

@@ -42,6 +42,10 @@
 
         public AddOrUpdateProductTask SelectedTask { get; set; }
 
+        public ICollection<ServerInformation> Servers => this.storage.Servers;
+
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
         public void HandleKey(KeyEventArgs e, Key key)
         {
             switch (key)
@@ -51,6 +55,18 @@
                     e.Handled = true;
                     break;
             }
+        }
+
+        public void HandleAdd()
+        {
+            this.storage.Servers.Add(this.NewServerViewModel.GetServer());
+            this.NewServerViewModel.Reset();
+        }
+
+        private bool CanAdd()
+        {
+            return this.NewServerViewModel.HasNoValidationErrors()
+                   && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
         }
 
         private void DeleteTask()
@@ -63,22 +79,6 @@
             {
                 NotificationsHost.Error("Неуспешно", "Трябва да има избрана заявка.");
             }
-        }
-
-        public ICollection<ServerInformation> Servers => this.storage.Servers;
-
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-        private bool CanAdd()
-        {
-            return this.NewServerViewModel.HasNoValidationErrors()
-                   && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
-        }
-
-        public void HandleAdd()
-        {
-            this.storage.Servers.Add(this.NewServerViewModel.GetServer());
-            this.NewServerViewModel.Reset();
         }
 
         private void HandleDelete(ServerInformation server)
