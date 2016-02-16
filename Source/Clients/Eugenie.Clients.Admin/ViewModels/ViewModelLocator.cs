@@ -9,8 +9,6 @@
 
     using Helpers;
 
-    using Properties;
-
     public class ViewModelLocator
     {
         public ViewModelLocator()
@@ -18,7 +16,7 @@
             this.Register();
         }
 
-        public static IContainer Container { get; private set}
+        public static IContainer Container { get; private set; }
 
         public ProductsEditorViewModel ProductsEditorViewModel => Container.Resolve<ProductsEditorViewModel>();
 

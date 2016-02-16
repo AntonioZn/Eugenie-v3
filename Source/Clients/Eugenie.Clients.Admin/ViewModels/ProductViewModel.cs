@@ -186,7 +186,7 @@
         private bool CanAddExpirationDate()
         {
             return this.Date != null
-                   && this.Product.ExpirationDates.All(x => x.Date != this.Date || (x.Batch ?? "") != (this.Batch ?? ""));
+                   && this.Product.ExpirationDates.All(x => x.Date != this.Date || (x.Batch ?? string.Empty) != (this.Batch ?? string.Empty));
         }
 
         private void HandleDeleteExpirationDateCommand(ExpirationDate expirationDate)

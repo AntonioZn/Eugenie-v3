@@ -68,6 +68,7 @@
             {
                 return this.sellsTotal;
             }
+
             set
             {
                 this.Set(() => this.SellsTotal, ref this.sellsTotal, value);
@@ -80,6 +81,7 @@
             {
                 return this.wasteTotal;
             }
+
             set
             {
                 this.Set(() => this.WasteTotal, ref this.wasteTotal, value);
