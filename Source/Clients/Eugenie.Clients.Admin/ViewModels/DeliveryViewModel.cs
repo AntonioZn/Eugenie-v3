@@ -49,12 +49,8 @@
             this.timer.Interval = TimeSpan.FromSeconds(0.5);
             this.timer.Tick += this.OnTick;
 
-            this.MainProductViewModel = new ProductViewModel(new Product());
-
             this.Save = new RelayCommand(this.HandleSave, this.CanSave);
             this.Cancel = new RelayCommand(this.HandleCancel);
-
-            this.GetNewProduct("");
         }
 
         public ICommand Save { get; }
@@ -283,6 +279,7 @@
         {
             this.products.Clear();
             this.manager.Cache.ProductsPerServer.OrderByDescending(x => x.Value.Count).FirstOrDefault().Value.ForEach(this.products.Add);
+            this.GetNewProduct("");
         }
 
         private void FilterProducts()
