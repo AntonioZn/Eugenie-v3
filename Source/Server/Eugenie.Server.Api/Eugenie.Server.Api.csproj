@@ -168,6 +168,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\DatabaseConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
