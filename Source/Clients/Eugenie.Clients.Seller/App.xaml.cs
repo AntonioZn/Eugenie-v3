@@ -32,8 +32,9 @@
                 {
                 }
             }
-#endif
+
             Mouse.OverrideCursor = Cursors.None;
+#endif
             this.InitializeComponent();
             this.DispatcherUnhandledException += this.OnUnhandledException;
         }

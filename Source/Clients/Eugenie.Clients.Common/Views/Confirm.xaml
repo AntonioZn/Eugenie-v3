@@ -20,7 +20,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0"
-                                  Grid.ColumnSpan="2"
                                   Mode="PrimaryDark"
                                   Padding="16">
             <Grid>
@@ -34,6 +33,8 @@
                            HorizontalAlignment="Center" />
             </Grid>
         </materialDesign:ColorZone>
+        <TextBox Width="0"
+                 Height="0" />
         <TextBlock Grid.Row="1"
                    HorizontalAlignment="Center"
                    x:Name="tbQuestion"
