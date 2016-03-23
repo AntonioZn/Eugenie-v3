@@ -1,4 +1,7 @@
 # Eugenie-v3
+## Point of sale application
+
+Eugenie-v3 is a fully functional POS application which has the unique ability to control multiple stores without the need of permanent internet connection.
 
 ![products list](http://i.imgur.com/qgH9uEx.png)
 ![editing an exisiting product](http://i.imgur.com/6wamRsV.png)
