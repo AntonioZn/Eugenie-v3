@@ -25,6 +25,7 @@
     {
         private readonly IServerManager manager;
         private ObservableCollection<Report> reports;
+        private decimal? currentStock;
 
         public ReportsViewModel(IServerManager manager)
         {
@@ -53,6 +54,18 @@
             }
         }
 
+        public decimal? CurrentStock
+        {
+            get
+            {
+                return this.currentStock;
+            }
+            set
+            {
+                this.Set(() => this.CurrentStock, ref this.currentStock, value);
+            }
+        }
+
         public void HandleKey(KeyEventArgs e, Key key)
         {
             switch (key)
@@ -73,6 +86,7 @@
         private void OnSelectedServerChanged(object sender, EventArgs e)
         {
             this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
+            this.CurrentStock = this.manager.SelectedServer == null ? 0 : this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Sum(x => x.Quantity * x.SellingPrice);
         }
     }
 }

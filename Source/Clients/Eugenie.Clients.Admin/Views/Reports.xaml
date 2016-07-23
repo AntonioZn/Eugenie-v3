@@ -18,28 +18,41 @@
     <materialDesign:Card HorizontalAlignment="Center"
                          Margin="20"
                          Padding="20,0,20,20">
-        <DataGrid x:Name="dataGrid"
-                  SelectedItem="{Binding SelectedReport}"
-                  ItemsSource="{Binding Reports}"
-                  FontSize="25">
-            <DataGrid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick"
-                              Command="{Binding Enter}" />
-            </DataGrid.InputBindings>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата"
-                                    Width="1*"
-                                    Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
-                <DataGridTextColumn Header="Стокооборот"
-                                    Width="1*"
-                                    Binding="{Binding StockPrice}" />
-                <DataGridTextColumn Header="Оборот"
-                                    Width="1*"
-                                    Binding="{Binding Earning}" />
-                <DataGridTextColumn Header="Брак"
-                                    Width="1*"
-                                    Binding="{Binding Waste}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        Margin="20">
+                <TextBlock Text="Момента наличност:" />
+                <TextBlock Text="{Binding CurrentStock}" 
+                         Margin="10,0,0,0" />
+            </StackPanel>
+            <DataGrid x:Name="dataGrid"
+                      Grid.Row="1"
+                      SelectedItem="{Binding SelectedReport}"
+                      ItemsSource="{Binding Reports}"
+                      FontSize="25">
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding Enter}" />
+                </DataGrid.InputBindings>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата"
+                                        Width="1*"
+                                        Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                    <DataGridTextColumn Header="Стокооборот"
+                                        Width="1*"
+                                        Binding="{Binding StockPrice}" />
+                    <DataGridTextColumn Header="Оборот"
+                                        Width="1*"
+                                        Binding="{Binding Earning}" />
+                    <DataGridTextColumn Header="Брак"
+                                        Width="1*"
+                                        Binding="{Binding Waste}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </materialDesign:Card>
 </UserControl>
