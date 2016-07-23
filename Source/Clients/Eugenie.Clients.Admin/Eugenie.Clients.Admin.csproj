@@ -67,10 +67,11 @@
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>894353B2C01BBD8A63B7991BF298CBB576E778D0</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C5F5A17BB234AA1862879E60229768FF3DF8D5F3</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Eugenie.Clients.Admin_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -166,7 +167,6 @@
     <Compile Include="Contracts\ITasksStorage.cs" />
     <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
     <Compile Include="Contracts\ITaskManager.cs" />
-    <Compile Include="Helpers\LotteryTicketCherker.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\PdfShipmentInvoiceGenerator.cs" />
@@ -193,8 +193,6 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ProductInformationViewModel.cs" />
     <Compile Include="ViewModels\ProductsEditorViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\Controls\BarcodePresenter.xaml.cs">
       <DependentUpon>BarcodePresenter.xaml</DependentUpon>
     </Compile>
@@ -339,7 +337,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Eugenie.Clients.Admin_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

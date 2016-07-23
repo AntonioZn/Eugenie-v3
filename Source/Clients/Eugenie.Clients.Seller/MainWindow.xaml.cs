@@ -32,7 +32,7 @@
         protected override void OnClosed(EventArgs e)
         {
             NotificationsHost.Close();
-            ViewModelLocator.container.Resolve<IWebApiHost>().Scheduler.Shutdown();
+            ViewModelLocator.Container.Resolve<IWebApiHost>().Scheduler.Shutdown();
             base.OnClosed(e);
         }
     }

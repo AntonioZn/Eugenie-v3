@@ -7,11 +7,12 @@
     using Common.Contracts;
     using Common.Helpers;
 
+    using Helpers;
+
     using Server.Host;
 
     public class ViewModelLocator
     {
-        public static IContainer container;
         public static HttpClient httpClient;
 
         public ViewModelLocator()
@@ -19,13 +20,17 @@
             this.Register();
         }
 
-        public MainWindowViewModel MainWindowViewModel => container.Resolve<MainWindowViewModel>();
+        public static IContainer Container { get; private set; }
 
-        public LoginViewModel LoginViewModel => container.Resolve<LoginViewModel>();
+        public MainWindowViewModel MainWindowViewModel => Container.Resolve<MainWindowViewModel>();
 
-        public SellViewModel SellViewModel => container.Resolve<SellViewModel>();
+        public LoginViewModel LoginViewModel => Container.Resolve<LoginViewModel>();
 
-        public SettingsViewModel SettingsViewModel => container.Resolve<SettingsViewModel>();
+        public SellViewModel SellViewModel => Container.Resolve<SellViewModel>();
+
+        public SettingsViewModel SettingsViewModel => Container.Resolve<SettingsViewModel>();
+
+        public SettingsManager SettingsManager => Container.Resolve<SettingsManager>();
 
         private void Register()
         {
@@ -38,8 +43,10 @@
             containerBuilder.RegisterType<LoginViewModel>();
             containerBuilder.RegisterType<SellViewModel>();
             containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SettingsManager>().SingleInstance();
+            containerBuilder.RegisterType<FiscalPrinterHandler>().SingleInstance();
 
-            container = containerBuilder.Build();
+            Container = containerBuilder.Build();
         }
     }
 }

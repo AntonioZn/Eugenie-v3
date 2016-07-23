@@ -8,18 +8,22 @@
 
     using Common.Models;
 
-    using Properties;
-
-    public static class FiscalPrinterHandler
+    public class FiscalPrinterHandler
     {
+        private readonly SettingsManager settingsManager;
         private const string ReceiptFilename = "receipt.txt";
 
-        public static void ExportReceipt(IEnumerable<Product> input)
+        public FiscalPrinterHandler(SettingsManager settingsManager)
         {
-            Directory.CreateDirectory(SettingsManager.Default.Settings.ReceiptPath);
+            this.settingsManager = settingsManager;
 
+            Directory.CreateDirectory(this.settingsManager.Settings.ReceiptPath);
+        }
+
+        public void ExportReceipt(IEnumerable<Product> input)
+        {
             var products = new List<Product>(input);
-            PrepareProducts(products);
+            this.PrepareProducts(products);
 
             var receipt = new StringBuilder();
 
@@ -40,10 +44,10 @@
 
             var receiptArray = receipt.ToString().Trim().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            File.WriteAllLines(SettingsManager.Default.Settings.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
+            File.WriteAllLines(this.settingsManager.Settings.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
         }
 
-        private static void PrepareProducts(List<Product> products)
+        private void PrepareProducts(List<Product> products)
         {
             products.RemoveAll(x => x.Name.Contains("*"));
 

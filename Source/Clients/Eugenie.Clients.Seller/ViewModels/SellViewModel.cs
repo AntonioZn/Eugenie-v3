@@ -24,11 +24,13 @@
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly IWebApiClient apiClient;
+        private readonly FiscalPrinterHandler fiscalPrinterHandler;
         private string fullname;
 
-        public SellViewModel(IWebApiClient apiClient)
+        public SellViewModel(IWebApiClient apiClient, FiscalPrinterHandler fiscalPrinterHandler)
         {
             this.apiClient = apiClient;
+            this.fiscalPrinterHandler = fiscalPrinterHandler;
 
             this.Basket = new BasketViewModel();
 
@@ -183,7 +185,7 @@
                                                                                                                              Id = x.Id,
                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
                                                                                                                          }));
-                    FiscalPrinterHandler.ExportReceipt(this.Basket.Products);
+                    this.fiscalPrinterHandler.ExportReceipt(this.Basket.Products);
                     this.Basket.Clear();
                 }
             }
@@ -223,7 +225,7 @@
             var result = await DialogHost.Show(new Confirm("Излизане?"), "RootDialog");
             if ((bool) result)
             {
-                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowLogin();
+                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowLogin();
             }
         }
 

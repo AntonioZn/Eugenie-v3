@@ -20,8 +20,11 @@
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
     {
-        public LoginViewModel()
+        private readonly SettingsManager settingsManager;
+
+        public LoginViewModel(SettingsManager settingsManager)
         {
+            this.settingsManager = settingsManager;
             this.Login = new RelayCommand<object>(this.HandleLogin);
         }
 
@@ -34,7 +37,7 @@
             switch (key)
             {
                 case Key.F1:
-                    ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSettings();
+                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSettings();
                     e.Handled = true;
                     break;
             }
@@ -47,7 +50,7 @@
 
             var server = new ServerInformation
                          {
-                             Addresses = new List<string> { SettingsManager.Default.Settings.Address },
+                             Addresses = new List<string> { this.settingsManager.Settings.Address },
                              Password = password,
                              Username = this.Username
                          };
@@ -60,7 +63,7 @@
             else
             {
                 ViewModelLocator.httpClient = client;
-                ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowSell();
+                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSell();
             }
         }
     }

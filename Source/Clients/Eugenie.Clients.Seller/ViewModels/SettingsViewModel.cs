@@ -17,15 +17,17 @@
 
     public class SettingsViewModel : ViewModelBase
     {
+        private readonly SettingsManager settingsManager;
         private string address;
         private bool isSelfHost;
         private string port;
 
-        public SettingsViewModel()
+        public SettingsViewModel(SettingsManager settingsManager)
         {
-            this.Address = SettingsManager.Default.Settings.Address;
-            this.Port = SettingsManager.Default.Settings.Port.ToString();
-            this.IsSelfHost = SettingsManager.Default.Settings.IsSelfHost;
+            this.settingsManager = settingsManager;
+            this.Address = this.settingsManager.Settings.Address;
+            this.Port = this.settingsManager.Settings.Port.ToString();
+            this.IsSelfHost = this.settingsManager.Settings.IsSelfHost;
 
             this.Save = new RelayCommand(this.HandleSave);
             this.Backup = new RelayCommand(this.HandleBackup);
@@ -93,12 +95,12 @@
 
         private void HandleSave()
         {
-            SettingsManager.Default.Settings.Address = this.Address;
-            SettingsManager.Default.Settings.Port = int.Parse(this.Port);
-            SettingsManager.Default.Settings.IsSelfHost = this.IsSelfHost;
-            SettingsManager.Default.Save();
+            this.settingsManager.Settings.Address = this.Address;
+            this.settingsManager.Settings.Port = int.Parse(this.Port);
+            this.settingsManager.Settings.IsSelfHost = this.IsSelfHost;
+            this.settingsManager.Save();
 
-            var mainWindowViewModel = ViewModelLocator.container.Resolve<MainWindowViewModel>();
+            var mainWindowViewModel = ViewModelLocator.Container.Resolve<MainWindowViewModel>();
             mainWindowViewModel.Initialize();
             mainWindowViewModel.ShowLogin();
         }
@@ -112,12 +114,12 @@
 
         private void HandleBackup()
         {
-            BackupDatabaseService.Backup(SettingsManager.Default.Settings.BackupPath);
+            BackupDatabaseService.Backup(this.settingsManager.Settings.BackupPath);
         }
 
         private void HandleCancel()
         {
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().ShowLogin();
+            ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowLogin();
         }
     }
 }

@@ -11,8 +11,6 @@
     {
         private readonly string settingsFile;
 
-        public static SettingsManager Default { get; } = new SettingsManager();
-
         public SettingsManager()
         {
             var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

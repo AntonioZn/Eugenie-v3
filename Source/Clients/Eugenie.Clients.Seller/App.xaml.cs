@@ -7,9 +7,13 @@
     using System.Windows.Input;
     using System.Windows.Threading;
 
+    using Autofac;
+
     using Common.Helpers;
 
     using Helpers;
+
+    using ViewModels;
 
     public partial class App
     {
@@ -41,7 +45,7 @@
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.LogToFile(e.Exception, SettingsManager.Default.Settings.LogPath);
+            Logger.LogToFile(e.Exception, ViewModelLocator.Container.Resolve<SettingsManager>().Settings.LogPath);
             e.Handled = true;
         }
 

@@ -52,7 +52,7 @@
         public void HandleBarcode(string barcode)
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
-            ViewModelLocator.container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
+            ViewModelLocator.Container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
         }
     }
 }

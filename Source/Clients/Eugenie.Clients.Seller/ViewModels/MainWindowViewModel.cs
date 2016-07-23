@@ -20,15 +20,17 @@
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
+        private readonly SettingsManager settingsManager;
         private UserControl content;
 
-        public MainWindowViewModel(IWebApiHost webApiHost)
+        public MainWindowViewModel(IWebApiHost webApiHost, SettingsManager settingsManager)
         {
             this.webApiHost = webApiHost;
+            this.settingsManager = settingsManager;
 
             TeamViewerPopupBlocker.Start();
 
-            if (string.IsNullOrEmpty(SettingsManager.Default.Settings.Address))
+            if (string.IsNullOrEmpty(this.settingsManager.Settings.Address))
             {
                 this.Content = new Settings();
             }
@@ -84,16 +86,16 @@
 
         public void Initialize()
         {
-            if (SettingsManager.Default.Settings.IsSelfHost)
+            if (this.settingsManager.Settings.IsSelfHost)
             {
-                this.HostServer(SettingsManager.Default.Settings.Port);
+                this.HostServer(this.settingsManager.Settings.Port);
             }
 
-            if (SettingsManager.Default.Settings.BackupDatabase)
+            if (this.settingsManager.Settings.BackupDatabase)
             {
-                var hours = SettingsManager.Default.Settings.BackupHours;
-                var minutes = SettingsManager.Default.Settings.BackupMinutes;
-                var path = SettingsManager.Default.Settings.BackupPath;
+                var hours = this.settingsManager.Settings.BackupHours;
+                var minutes = this.settingsManager.Settings.BackupMinutes;
+                var path = this.settingsManager.Settings.BackupPath;
                 this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }
