@@ -6,8 +6,11 @@
 
     using Common.Contracts;
     using Common.Helpers;
+    using Common.Notifications;
 
     using Helpers;
+
+    using Models;
 
     using Server.Host;
 
@@ -18,6 +21,9 @@
         public ViewModelLocator()
         {
             this.Register();
+            
+            new TeamViewerPopupBlocker().Start();
+            this.LotteryTicketCheckerLogin();
         }
 
         public static IContainer Container { get; private set; }
@@ -30,7 +36,7 @@
 
         public SettingsViewModel SettingsViewModel => Container.Resolve<SettingsViewModel>();
 
-        public SettingsManager SettingsManager => Container.Resolve<SettingsManager>();
+        public Settings Settings => Container.Resolve<Settings>();
 
         private void Register()
         {
@@ -43,10 +49,32 @@
             containerBuilder.RegisterType<LoginViewModel>();
             containerBuilder.RegisterType<SellViewModel>();
             containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
-            containerBuilder.RegisterType<SettingsManager>().SingleInstance();
             containerBuilder.RegisterType<FiscalPrinterHandler>().SingleInstance();
+            containerBuilder.RegisterType<LotteryTicketChecker>().SingleInstance();
+
+            var settings = new Settings();
+            settings.Load();
+            containerBuilder.RegisterInstance(settings).SingleInstance();
 
             Container = containerBuilder.Build();
+        }
+
+        private async void LotteryTicketCheckerLogin()
+        {
+            var settings = Container.Resolve<Settings>();
+            if (!string.IsNullOrWhiteSpace(settings.LotteryUsername) && !string.IsNullOrWhiteSpace(settings.LotteryPassword))
+            {
+                var checker = Container.Resolve<LotteryTicketChecker>();
+                var result = await checker.Login(settings.LotteryUsername, settings.LotteryPassword);
+                if (result)
+                {
+                    NotificationsHost.Success("Успешно", "Успешен вход в националната лотария");
+                }
+                else
+                {
+                    NotificationsHost.Error("Грешка", "Грешно име или парола за националната лотария");
+                }
+            }
         }
     }
 }

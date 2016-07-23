@@ -13,6 +13,8 @@
 
     using Helpers;
 
+    using Models;
+
     using ViewModels;
 
     public partial class App
@@ -45,7 +47,7 @@
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.LogToFile(e.Exception, ViewModelLocator.Container.Resolve<SettingsManager>().Settings.LogPath);
+            Logger.LogToFile(e.Exception, ViewModelLocator.Container.Resolve<Settings>().LogPath);
             e.Handled = true;
         }
 

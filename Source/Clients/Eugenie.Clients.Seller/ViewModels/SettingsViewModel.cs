@@ -3,35 +3,42 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using System.Reflection;
     using System.Windows.Input;
 
-    using Autofac;
+    using Common.Notifications;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
     using Helpers;
 
+    using Models;
+
     using Server.Host;
 
     public class SettingsViewModel : ViewModelBase
     {
-        private readonly SettingsManager settingsManager;
+        private readonly Settings settings;
+        private readonly MainWindowViewModel mainWindowViewModel;
+        private readonly LotteryTicketChecker lotteryTicketChecker;
         private string address;
         private bool isSelfHost;
         private string port;
 
-        public SettingsViewModel(SettingsManager settingsManager)
+        public SettingsViewModel(Settings settings, MainWindowViewModel mainWindowViewModel, LotteryTicketChecker lotteryTicketChecker)
         {
-            this.settingsManager = settingsManager;
-            this.Address = this.settingsManager.Settings.Address;
-            this.Port = this.settingsManager.Settings.Port.ToString();
-            this.IsSelfHost = this.settingsManager.Settings.IsSelfHost;
+            this.settings = settings;
+            this.mainWindowViewModel = mainWindowViewModel;
+            this.lotteryTicketChecker = lotteryTicketChecker;
+
+            this.Address = this.settings.Address;
+            this.Port = this.settings.Port.ToString();
+            this.IsSelfHost = this.settings.IsSelfHost;
 
             this.Save = new RelayCommand(this.HandleSave);
-            this.Backup = new RelayCommand(this.HandleBackup);
-            this.Cancel = new RelayCommand(this.HandleCancel);
+            this.Backup = new RelayCommand(() => BackupDatabaseService.Backup(this.settings.BackupPath));
+            this.Cancel = new RelayCommand(() => this.mainWindowViewModel.ShowLogin());
+            this.LotteryLogin = new RelayCommand(this.HandleLotteryLogin);
         }
 
         public ICommand Save { get; }
@@ -39,6 +46,8 @@
         public ICommand Backup { get; }
 
         public ICommand Cancel { get; }
+
+        public ICommand LotteryLogin { get; }
 
         public string Port
         {
@@ -91,18 +100,15 @@
             }
         }
 
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
         private void HandleSave()
         {
-            this.settingsManager.Settings.Address = this.Address;
-            this.settingsManager.Settings.Port = int.Parse(this.Port);
-            this.settingsManager.Settings.IsSelfHost = this.IsSelfHost;
-            this.settingsManager.Save();
-
-            var mainWindowViewModel = ViewModelLocator.Container.Resolve<MainWindowViewModel>();
-            mainWindowViewModel.Initialize();
-            mainWindowViewModel.ShowLogin();
+            this.settings.Address = this.Address;
+            this.settings.Port = int.Parse(this.Port);
+            this.settings.IsSelfHost = this.IsSelfHost;
+            this.settings.Save();
+            
+            this.mainWindowViewModel.Initialize();
+            this.mainWindowViewModel.ShowLogin();
         }
 
         private string GetAddress()
@@ -112,14 +118,17 @@
             return selfHostAddress;
         }
 
-        private void HandleBackup()
+        private async void HandleLotteryLogin()
         {
-            BackupDatabaseService.Backup(this.settingsManager.Settings.BackupPath);
-        }
-
-        private void HandleCancel()
-        {
-            ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowLogin();
+            var result = await this.lotteryTicketChecker.Login(this.settings.LotteryUsername, this.settings.LotteryPassword);
+            if (result)
+            {
+                NotificationsHost.Success("Успешно", "Името и паролата са валидни");
+            }
+            else
+            {
+                NotificationsHost.Error("Грешка", "Грешно име или парола");
+            }
         }
     }
 }

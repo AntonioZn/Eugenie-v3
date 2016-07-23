@@ -16,15 +16,17 @@
 
     using Helpers;
 
+    using Models;
+
     using Properties;
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
     {
-        private readonly SettingsManager settingsManager;
+        private readonly Settings settings;
 
-        public LoginViewModel(SettingsManager settingsManager)
+        public LoginViewModel(Settings settings)
         {
-            this.settingsManager = settingsManager;
+            this.settings = settings;
             this.Login = new RelayCommand<object>(this.HandleLogin);
         }
 
@@ -50,7 +52,7 @@
 
             var server = new ServerInformation
                          {
-                             Addresses = new List<string> { this.settingsManager.Settings.Address },
+                             Addresses = new List<string> { this.settings.Address },
                              Password = password,
                              Username = this.Username
                          };

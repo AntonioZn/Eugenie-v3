@@ -86,6 +86,7 @@
     <Compile Include="Contracts\IValidatableObject.cs" />
     <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleBatchConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleDateConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />

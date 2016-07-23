@@ -1,24 +1,24 @@
 ﻿<UserControl x:Class="Eugenie.Clients.Seller.Views.MissingProduct"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:Eugenie.Clients.Seller.ViewModels"
-             mc:Ignorable="d"
-             d:DesignHeight="400"
-             d:DesignWidth="600"
-             MinWidth="800"
              Width="Auto"
              Height="Auto"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
+             MinWidth="800"
+             d:DesignHeight="400"
+             d:DesignWidth="600"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              TextElement.FontSize="20"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+             mc:Ignorable="d">
     <UserControl.DataContext>
         <viewModels:MissingProductViewModel />
     </UserControl.DataContext>
@@ -27,28 +27,27 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBox Width="0"
-                 Height="0" />
+        <TextBox Width="0" Height="0" />
         <materialDesign:PackIcon Grid.Column="0"
-                                 Kind="CloseCircleOutline"
-                                 Foreground="OrangeRed"
-                                 Height="250"
                                  Width="250"
+                                 Height="250"
                                  HorizontalAlignment="Left"
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Center"
+                                 Foreground="OrangeRed"
+                                 Kind="CloseCircleOutline" />
         <TextBlock Grid.Column="1"
                    Margin="0,0,20,0"
-                   Text="Продуктът не е намерен"
-                   TextWrapping="WrapWithOverflow"
-                   Style="{StaticResource MaterialDesignDisplay3TextBlock}"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+                   VerticalAlignment="Center"
+                   Style="{StaticResource MaterialDesignDisplay3TextBlock}"
+                   Text="Продуктът не е намерен"
+                   TextWrapping="WrapWithOverflow" />
         <Button Grid.Row="0"
                 Grid.Column="0"
-                IsCancel="True"
                 Width="0"
                 Height="0"
-                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                IsCancel="True">
             <Button.CommandParameter>
                 <system:Boolean>False</system:Boolean>
             </Button.CommandParameter>

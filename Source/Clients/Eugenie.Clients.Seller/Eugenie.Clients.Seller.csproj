@@ -82,6 +82,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.9.7.21214, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AngleSharp.0.9.7\lib\net45\AngleSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
@@ -190,17 +194,21 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\FiscalPrinterHandler.cs" />
     <Compile Include="Helpers\LotteryTicketChecker.cs" />
-    <Compile Include="Helpers\SettingsManager.cs" />
     <Compile Include="Helpers\TeamViewerPopupBlocker.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\BasketViewModel.cs" />
     <Compile Include="ViewModels\ChangeCalculatorViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\LotteryTicketCheckerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MissingProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\ChangeCalculator.xaml.cs">
       <DependentUpon>ChangeCalculator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LotteryTicketChecker.xaml.cs">
+      <DependentUpon>LotteryTicketChecker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MissingProduct.xaml.cs">
       <DependentUpon>MissingProduct.xaml</DependentUpon>
@@ -237,6 +245,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ChangeCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LotteryTicketChecker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

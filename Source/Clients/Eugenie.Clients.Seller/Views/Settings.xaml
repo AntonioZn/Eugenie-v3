@@ -1,12 +1,8 @@
 ﻿<UserControl x:Class="Eugenie.Clients.Seller.Views.Settings"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
              Background="{DynamicResource MaterialDesignPaper}"
              DataContext="{Binding Path=SettingsViewModel,
                                    Source={StaticResource ViewModelLocator}}"
@@ -15,8 +11,7 @@
              TextElement.FontWeight="Medium"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             mc:Ignorable="d">
+             TextOptions.TextRenderingMode="Auto">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -30,110 +25,156 @@
                                   Padding="10">
             <TextBlock Style="{StaticResource MaterialDesignDisplay3TextBlock}" Text="Настройки" />
         </materialDesign:ColorZone>
-        <StackPanel Grid.Row="1"
-                    Width="450"
-                    Margin="20,0,0,0"
-                    HorizontalAlignment="Left">
-            <TextBlock Margin="20,0,0,0"
-                       Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-                       Text="Самостоятелно хостване" />
-            <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
-                    BorderThickness="1,1,1,1"
-                    Padding="8">
-                <StackPanel>
-                    <models:EugenieTextBox materialDesign:HintAssist.Hint="Порт"
-                                           AutoSelect="True"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                           Text="{Binding Port,
-                                                          UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox VerticalContentAlignment="Center"
-                              Content="Автоматичен старт"
-                              IsChecked="{Binding IsSelfHost}" />
-                    <CheckBox Margin="0,10,0,0"
-                              VerticalContentAlignment="Center"
-                              Content="Автоматичен бекъп на базата данни"
-                              IsChecked="{Binding Source={StaticResource ViewModelLocator},
-                                                  Path=SettingsManager.Settings.BackupDatabase,
-                                                  UpdateSourceTrigger=PropertyChanged}" />
-                    <models:EugenieTextBox Margin="0,10,0,0"
-                                           materialDesign:HintAssist.Hint="Път до папка за бекъп"
-                                           AutoSelect="True"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                           Text="{Binding Source={StaticResource ViewModelLocator},
-                                                          Path=SettingsManager.Settings.BackupPath,
-                                                          UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel Margin="0,10,0,0"
-                                HorizontalAlignment="Stretch"
-                                Orientation="Horizontal">
-                        <models:EugenieTextBox Margin="0,0,10,0"
-                                               materialDesign:HintAssist.Hint="Час"
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Margin="20,0,0,0"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           Text="Самостоятелно хостване" />
+                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="1,1,1,1"
+                        Padding="8">
+                    <StackPanel>
+                        <models:EugenieTextBox materialDesign:HintAssist.Hint="Порт"
                                                AutoSelect="True"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                               Text="{Binding Source={StaticResource ViewModelLocator},
-                                                              Path=SettingsManager.Settings.BackupHours,
+                                               Text="{Binding Port,
                                                               UpdateSourceTrigger=PropertyChanged}" />
-                        <models:EugenieTextBox Margin="10,0,0,0"
-                                               materialDesign:HintAssist.Hint="Минути"
+                        <CheckBox VerticalContentAlignment="Center"
+                                  Content="Автоматичен старт"
+                                  IsChecked="{Binding IsSelfHost}" />
+                        <CheckBox Margin="0,10,0,0"
+                                  VerticalContentAlignment="Center"
+                                  Content="Автоматичен бекъп на базата данни"
+                                  IsChecked="{Binding Source={StaticResource ViewModelLocator},
+                                                      Path=Settings.BackupDatabase,
+                                                      UpdateSourceTrigger=PropertyChanged}" />
+                        <models:EugenieTextBox Margin="0,10,0,0"
+                                               materialDesign:HintAssist.Hint="Път до папка за бекъп"
                                                AutoSelect="True"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                Text="{Binding Source={StaticResource ViewModelLocator},
-                                                              Path=SettingsManager.Settings.BackupMinutes,
+                                                              Path=Settings.BackupPath,
+                                                              UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Margin="0,10,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    Orientation="Horizontal">
+                            <models:EugenieTextBox Margin="0,0,10,0"
+                                                   materialDesign:HintAssist.Hint="Час"
+                                                   AutoSelect="True"
+                                                   BlockInvalidNumberCharacters="True"
+                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                   Text="{Binding Source={StaticResource ViewModelLocator},
+                                                                  Path=Settings.BackupHours,
+                                                                  UpdateSourceTrigger=PropertyChanged}" />
+                            <models:EugenieTextBox Margin="10,0,0,0"
+                                                   materialDesign:HintAssist.Hint="Минути"
+                                                   AutoSelect="True"
+                                                   BlockInvalidNumberCharacters="True"
+                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                   Text="{Binding Source={StaticResource ViewModelLocator},
+                                                                  Path=Settings.BackupMinutes,
+                                                                  UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <Button Margin="0,10,0,0"
+                                Command="{Binding Backup}"
+                                Content="Направи бекъп сега" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Margin="20,10,0,0"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           Text="Връзка" />
+                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="1,1,1,1"
+                        Padding="8">
+                    <models:EugenieTextBox materialDesign:HintAssist.Hint="Адрес"
+                                           AutoSelect="True"
+                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                           Text="{Binding Address,
+                                                          UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+                <TextBlock Margin="20,10,0,0"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           Text="Папки" />
+                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="1,1,1,1"
+                        Padding="8">
+                    <StackPanel>
+                        <models:EugenieTextBox materialDesign:HintAssist.Hint="Път до папка на лог файла"
+                                               AutoSelect="True"
+                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                               Text="{Binding Source={StaticResource ViewModelLocator},
+                                                              Path=Settings.LogPath,
+                                                              UpdateSourceTrigger=PropertyChanged}" />
+                        <models:EugenieTextBox Margin="0,10,0,0"
+                                               materialDesign:HintAssist.Hint="Път до папка на касова бележка"
+                                               AutoSelect="True"
+                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                               Text="{Binding Source={StaticResource ViewModelLocator},
+                                                              Path=Settings.ReceiptPath,
                                                               UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
-                    <Button Margin="0,10,0,0"
-                            Command="{Binding Backup}"
-                            Content="Направи бекъп сега" />
-                </StackPanel>
-            </Border>
-            <TextBlock Margin="20,10,0,0"
-                       Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-                       Text="Връзка" />
-            <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
-                    BorderThickness="1,1,1,1"
-                    Padding="8">
-                <models:EugenieTextBox materialDesign:HintAssist.Hint="Адрес"
-                                       AutoSelect="True"
-                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                       Text="{Binding Address,
-                                                      UpdateSourceTrigger=PropertyChanged}" />
-            </Border>
-            <TextBlock Margin="20,10,0,0"
-                       Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-                       Text="Папки" />
-            <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
-                    BorderThickness="1,1,1,1"
-                    Padding="8">
-                <StackPanel>
-                    <models:EugenieTextBox materialDesign:HintAssist.Hint="Път до папка на лог файла"
-                                           AutoSelect="True"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                           Text="{Binding Source={StaticResource ViewModelLocator},
-                                                          Path=SettingsManager.Settings.LogPath,
-                                                          UpdateSourceTrigger=PropertyChanged}" />
-                    <models:EugenieTextBox Margin="0,10,0,0"
-                                           materialDesign:HintAssist.Hint="Път до папка на касова бележка"
-                                           AutoSelect="True"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                           Text="{Binding Source={StaticResource ViewModelLocator},
-                                                          Path=SettingsManager.Settings.ReceiptPath,
-                                                          UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-            </Border>
-            <Button Margin="0,10,0,0"
+                </Border>
+            </StackPanel>
+            <Grid Grid.Column="1" Margin="20,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Margin="20,0,0,0"
+                           Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                           Text="Национална лотария" />
+                <Border Grid.Row="1"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="1,1,1,1"
+                        Padding="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <models:EugenieTextBox Grid.Row="0"
+                                               materialDesign:HintAssist.Hint="Име"
+                                               AutoSelect="True"
+                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                               Text="{Binding Source={StaticResource ViewModelLocator},
+                                                              Path=Settings.LotteryUsername,
+                                                              UpdateSourceTrigger=PropertyChanged}" />
+                        <PasswordBox x:Name="passwordBox"
+                                     Grid.Row="1"
+                                     Margin="0,10,0,0"
+                                     materialDesign:HintAssist.Hint="Парола"
+                                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                                     Visibility="{Binding ElementName=cbShowPassword,
+                                                          Path=IsChecked,
+                                                          Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <Button Grid.Row="2"
+                                Margin="0,10,0,0"
+                                Command="{Binding LotteryLogin}"
+                                Content="Вход" />
+                    </Grid>
+                </Border>
+            </Grid>
+            <Button Grid.Column="2"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Command="{Binding Save}"
                     Content="Запази"
                     IsDefault="True" />
-            <Button Width="0"
+            <Button Grid.Column="2"
+                    Width="0"
                     Height="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Command="{Binding Cancel}"
                     IsCancel="True" />
-        </StackPanel>
-        <TextBlock Grid.Row="1"
-                   Margin="10,0,0,10"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   FontSize="20"
-                   Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-                   Text="{Binding Version}" />
+        </Grid>
     </Grid>
 </UserControl>

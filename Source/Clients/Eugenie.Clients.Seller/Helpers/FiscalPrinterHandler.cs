@@ -8,16 +8,18 @@
 
     using Common.Models;
 
+    using Models;
+
     public class FiscalPrinterHandler
     {
-        private readonly SettingsManager settingsManager;
+        private readonly Settings settings;
         private const string ReceiptFilename = "receipt.txt";
 
-        public FiscalPrinterHandler(SettingsManager settingsManager)
+        public FiscalPrinterHandler(Settings settings)
         {
-            this.settingsManager = settingsManager;
+            this.settings = settings;
 
-            Directory.CreateDirectory(this.settingsManager.Settings.ReceiptPath);
+            Directory.CreateDirectory(this.settings.ReceiptPath);
         }
 
         public void ExportReceipt(IEnumerable<Product> input)
@@ -44,7 +46,7 @@
 
             var receiptArray = receipt.ToString().Trim().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            File.WriteAllLines(this.settingsManager.Settings.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
+            File.WriteAllLines(this.settings.ReceiptPath + "\\" + ReceiptFilename, receiptArray, Encoding.Default);
         }
 
         private void PrepareProducts(List<Product> products)

@@ -11,28 +11,26 @@
 
     using GalaSoft.MvvmLight;
 
-    using Helpers;
-
     using Server.Host;
 
     using Views;
 
+    using Settings = Models.Settings;
+
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
-        private readonly SettingsManager settingsManager;
+        private readonly Settings settings;
         private UserControl content;
 
-        public MainWindowViewModel(IWebApiHost webApiHost, SettingsManager settingsManager)
+        public MainWindowViewModel(IWebApiHost webApiHost, Settings settings)
         {
             this.webApiHost = webApiHost;
-            this.settingsManager = settingsManager;
+            this.settings = settings;
 
-            TeamViewerPopupBlocker.Start();
-
-            if (string.IsNullOrEmpty(this.settingsManager.Settings.Address))
+            if (string.IsNullOrEmpty(this.settings.Address))
             {
-                this.Content = new Settings();
+                this.Content = new Views.Settings();
             }
             else
             {
@@ -86,16 +84,16 @@
 
         public void Initialize()
         {
-            if (this.settingsManager.Settings.IsSelfHost)
+            if (this.settings.IsSelfHost)
             {
-                this.HostServer(this.settingsManager.Settings.Port);
+                this.HostServer(this.settings.Port);
             }
 
-            if (this.settingsManager.Settings.BackupDatabase)
+            if (this.settings.BackupDatabase)
             {
-                var hours = this.settingsManager.Settings.BackupHours;
-                var minutes = this.settingsManager.Settings.BackupMinutes;
-                var path = this.settingsManager.Settings.BackupPath;
+                var hours = this.settings.BackupHours;
+                var minutes = this.settings.BackupMinutes;
+                var path = this.settings.BackupPath;
                 this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }
@@ -112,7 +110,7 @@
 
         public void ShowSettings()
         {
-            this.Content = new Settings();
+            this.Content = new Views.Settings();
         }
     }
 }

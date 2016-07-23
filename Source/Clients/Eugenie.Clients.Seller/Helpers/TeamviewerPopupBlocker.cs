@@ -7,45 +7,46 @@
     using System.Runtime.InteropServices;
     using System.Timers;
 
-    public static class TeamViewerPopupBlocker
+    public class TeamViewerPopupBlocker
     {
         private const int BN_CLICKED = 245;
         private const int WM_CLOSE = 0x0010;
 
-        private static readonly Timer timer;
-        private static readonly List<string> windowNames = new List<string>
-                                                           {
-                                                               "Спонсорирана сесия",
-                                                               "Commercial use",
-                                                               "Sponsored session",
-                                                               "Commercial use suspected",
-                                                               "Commercial use detected",
-                                                               "Unable to connect"
-                                                           };
+        private readonly Timer timer;
 
-        static TeamViewerPopupBlocker()
+        private readonly List<string> windowNames = new List<string>
+                                                    {
+                                                        "Спонсорирана сесия",
+                                                        "Commercial use",
+                                                        "Sponsored session",
+                                                        "Commercial use suspected",
+                                                        "Commercial use detected",
+                                                        "Unable to connect"
+                                                    };
+
+        public TeamViewerPopupBlocker()
         {
-            timer = new Timer();
-            timer.Interval = 2000;
-            timer.Elapsed += OnTimer;
+            this.timer = new Timer();
+            this.timer.Interval = 2000;
+            this.timer.Elapsed += this.OnTimer;
         }
 
-        public static void Start()
+        public void Start()
         {
-            timer.Start();
+            this.timer.Start();
         }
 
-        public static void Stop()
+        public void Stop()
         {
-            timer.Stop();
+            this.timer.Stop();
         }
 
-        private static void OnTimer(object sender, ElapsedEventArgs e)
+        private void OnTimer(object sender, ElapsedEventArgs e)
         {
-            CheckTeamViewerMainWindowTitle();
+            this.CheckTeamViewerMainWindowTitle();
         }
 
-        private static void CheckTeamViewerMainWindowTitle()
+        private void CheckTeamViewerMainWindowTitle()
         {
             var processes = Process.GetProcessesByName("TeamViewer");
 
@@ -61,13 +62,13 @@
                 return;
             }
 
-            foreach (var windowName in windowNames.Where(x => x == currentMainWindowTitle))
+            foreach (var windowName in this.windowNames.Where(x => x == currentMainWindowTitle))
             {
-                CloseWindowByName(windowName);
+                this.CloseWindowByName(windowName);
             }
         }
 
-        private static void CloseWindowByName(string windowName)
+        private void CloseWindowByName(string windowName)
         {
             if (string.IsNullOrEmpty(windowName))
             {
@@ -83,7 +84,7 @@
 
             var sendMsgPtr = SendMessage(windowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
 
-            if (sendMsgPtr == (IntPtr)1)
+            if (sendMsgPtr == (IntPtr) 1)
             {
                 return;
             }

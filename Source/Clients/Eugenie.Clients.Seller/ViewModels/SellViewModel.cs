@@ -19,25 +19,26 @@
 
     using Views;
 
+    using LotteryTicketChecker = Helpers.LotteryTicketChecker;
     using MissingProduct = Views.MissingProduct;
 
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly IWebApiClient apiClient;
         private readonly FiscalPrinterHandler fiscalPrinterHandler;
+        private readonly LotteryTicketChecker lotteryTicketChecker;
         private string fullname;
 
-        public SellViewModel(IWebApiClient apiClient, FiscalPrinterHandler fiscalPrinterHandler)
+        public SellViewModel(IWebApiClient apiClient, FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
         {
             this.apiClient = apiClient;
             this.fiscalPrinterHandler = fiscalPrinterHandler;
+            this.lotteryTicketChecker = lotteryTicketChecker;
 
             this.Basket = new BasketViewModel();
 
             this.Initialize();
         }
-
-        public ICommand Enter { get; }
 
         public string FullName
         {
@@ -87,6 +88,10 @@
                     this.HandleF1();
                     e.Handled = true;
                     break;
+                case Key.F3:
+                    this.HandleCheckTicket();
+                    e.Handled = true;
+                    break;
                 case Key.F5:
                     this.HandleF5();
                     e.Handled = true;
@@ -103,6 +108,21 @@
                     this.HandleF12();
                     e.Handled = true;
                     break;
+            }
+        }
+
+        private async void HandleCheckTicket()
+        {
+            if (this.lotteryTicketChecker.IsLoggedIn)
+            {
+                var viewModel = new LotteryTicketCheckerViewModel(this.lotteryTicketChecker);
+                var view = new Views.LotteryTicketChecker(viewModel);
+
+                var result = await DialogHost.Show(view, "RootDialog");
+                if ((bool) result)
+                {
+                    
+                }
             }
         }
 
