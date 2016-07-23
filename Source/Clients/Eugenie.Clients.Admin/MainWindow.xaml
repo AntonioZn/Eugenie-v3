@@ -124,7 +124,7 @@
                                                            TextChanged="TxtSearch_OnTextChanged"
                                                            DataContext="{Binding Path=ProductsEditorViewModel, Source={StaticResource ViewModelLocator}}"
                                                            Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                           materialDesign:TextFieldAssist.Hint="Търсене"
+                                                           materialDesign:HintAssist.Hint="Търсене"
                                                            MinWidth="200"
                                                            VerticalAlignment="Center" />
                                 </Grid>

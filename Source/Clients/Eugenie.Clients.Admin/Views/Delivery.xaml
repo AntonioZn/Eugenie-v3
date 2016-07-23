@@ -74,7 +74,7 @@
                                                AutoSelect="True"
                                                HorizontalAlignment="Stretch"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                               materialDesign:TextFieldAssist.Hint="Име"
+                                               materialDesign:HintAssist.Hint="Име"
                                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <materialDesign:PackIcon Kind="WeightKilogram"
                                                  Grid.Column="0"
@@ -86,7 +86,7 @@
                         <ComboBox Grid.Row="1"
                                   Grid.Column="1"
                                   HorizontalAlignment="Stretch"
-                                  materialDesign:TextFieldAssist.Hint="Мярка"
+                                  materialDesign:HintAssist.Hint="Мярка"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   Margin="10,10,0,0"
                                   ItemsSource="{Binding Measures}"
@@ -103,7 +103,7 @@
                                                BlockInvalidNumberCharacters="True"
                                                Grid.Column="1"
                                                HorizontalAlignment="Stretch"
-                                               materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                               materialDesign:HintAssist.Hint="Доставна цена"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                Margin="10,10,0,0"
                                                Text="{Binding MainProductViewModel.BuyingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />

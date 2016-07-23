@@ -28,7 +28,7 @@
                 <models:EugenieTextBox Grid.Row="0"
                                        AutoSelect="True"
                                        BlockInvalidNumberCharacters="True"
-                                       materialDesign:TextFieldAssist.Hint="Наличност по - малка от"
+                                       materialDesign:HintAssist.Hint="Наличност по - малка от"
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                        Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
                                        FontSize="20"

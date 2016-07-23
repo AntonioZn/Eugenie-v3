@@ -25,7 +25,7 @@
                                 <TextBox Grid.Column="0"
                                          VerticalAlignment="Bottom"
                                          HorizontalAlignment="Stretch"
-                                         materialDesign:TextFieldAssist.Hint="Магазин"
+                                         materialDesign:HintAssist.Hint="Магазин"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                          IsTabStop="False"
                                          Focusable="False"
@@ -36,7 +36,7 @@
                                                        BlockInvalidNumberCharacters="True"
                                                        VerticalAlignment="Bottom"
                                                        HorizontalAlignment="Stretch"
-                                                       materialDesign:TextFieldAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                       materialDesign:HintAssist.Hint="{Binding Value.Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                        Margin="10,0,0,0"
                                                        Text="{Binding Value.QuantityToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
@@ -45,7 +45,7 @@
                                                        BlockInvalidNumberCharacters="True"
                                                        VerticalAlignment="Bottom"
                                                        HorizontalAlignment="Stretch"
-                                                       materialDesign:TextFieldAssist.Hint="Продажна цена"
+                                                       materialDesign:HintAssist.Hint="Продажна цена"
                                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                        Margin="10,0,0,0"
                                                        Text="{Binding Value.SellingPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
@@ -90,12 +90,12 @@
                                             VerticalAlignment="Bottom"
                                             HorizontalAlignment="Stretch"
                                             SelectedDate="{Binding Value.Date, Mode=TwoWay}"
-                                            materialDesign:TextFieldAssist.Hint="Избери дата" />
+                                            materialDesign:HintAssist.Hint="Избери дата" />
                                 <models:EugenieTextBox Grid.Column="5"
                                                        AutoSelect="True"
                                                        VerticalAlignment="Bottom"
                                                        HorizontalAlignment="Stretch"
-                                                       materialDesign:TextFieldAssist.Hint="Партиден №"
+                                                       materialDesign:HintAssist.Hint="Партиден №"
                                                        Text="{Binding Value.Batch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                        Margin="10,0,0,0" />

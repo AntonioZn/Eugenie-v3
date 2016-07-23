@@ -43,7 +43,7 @@
                     BorderBrush="{DynamicResource MaterialDesignDivider}">
                 <StackPanel>
                     <models:EugenieTextBox AutoSelect="True"
-                                           materialDesign:TextFieldAssist.Hint="Порт"
+                                           materialDesign:HintAssist.Hint="Порт"
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                            Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
                     <CheckBox Content="Автоматичен старт"
@@ -54,19 +54,19 @@
                               VerticalContentAlignment="Center"
                               Margin="0,10,0,0" />
                     <models:EugenieTextBox AutoSelect="True"
-                                           materialDesign:TextFieldAssist.Hint="Път до папка за бекъп"
+                                           materialDesign:HintAssist.Hint="Път до папка за бекъп"
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                            Text="{Binding Source={x:Static helpers:SettingsManager.Default}, Path=Settings.BackupPath, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="0,10,0,0" />
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Stretch"
                                 Margin="0,10,0,0">
-                        <models:EugenieTextBox materialDesign:TextFieldAssist.Hint="Час"
+                        <models:EugenieTextBox materialDesign:HintAssist.Hint="Час"
                                                AutoSelect="True"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                Text="{Binding Source={x:Static helpers:SettingsManager.Default}, Path=Settings.BackupHours, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="0,0,10,0" />
-                        <models:EugenieTextBox materialDesign:TextFieldAssist.Hint="Минути"
+                        <models:EugenieTextBox materialDesign:HintAssist.Hint="Минути"
                                                AutoSelect="True"
                                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                Text="{Binding Source={x:Static helpers:SettingsManager.Default}, Path=Settings.BackupMinutes, UpdateSourceTrigger=PropertyChanged}"
@@ -84,7 +84,7 @@
                     BorderThickness="1,1,1,1"
                     BorderBrush="{DynamicResource MaterialDesignDivider}">
                 <models:EugenieTextBox AutoSelect="True"
-                                       materialDesign:TextFieldAssist.Hint="Адрес"
+                                       materialDesign:HintAssist.Hint="Адрес"
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                        Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
             </Border>
@@ -96,12 +96,12 @@
                     BorderBrush="{DynamicResource MaterialDesignDivider}">
                 <StackPanel>
                     <models:EugenieTextBox AutoSelect="True"
-                                           materialDesign:TextFieldAssist.Hint="Път до папка на лог файла"
+                                           materialDesign:HintAssist.Hint="Път до папка на лог файла"
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                            Text="{Binding Source={x:Static helpers:SettingsManager.Default}, Path=Settings.LogPath, UpdateSourceTrigger=PropertyChanged}" />
                     <models:EugenieTextBox AutoSelect="True"
                                            Margin="0,10,0,0"
-                                           materialDesign:TextFieldAssist.Hint="Път до папка на касова бележка"
+                                           materialDesign:HintAssist.Hint="Път до папка на касова бележка"
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                            Text="{Binding Source={x:Static helpers:SettingsManager.Default}, Path=Settings.ReceiptPath, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>

@@ -53,7 +53,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBox Grid.Column="0"
-                                                     materialDesign:TextFieldAssist.Hint="Магазин"
+                                                     materialDesign:HintAssist.Hint="Магазин"
                                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                      VerticalAlignment="Bottom"
                                                      HorizontalAlignment="Stretch"
@@ -61,7 +61,7 @@
                                                      IsTabStop="False"
                                                      IsHitTestVisible="False" />
                                             <TextBox Grid.Column="1"
-                                                     materialDesign:TextFieldAssist.Hint="Акаунт"
+                                                     materialDesign:HintAssist.Hint="Акаунт"
                                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                      VerticalAlignment="Bottom"
                                                      Margin="20,0,0,0"
@@ -70,7 +70,7 @@
                                                      IsTabStop="False"
                                                      IsHitTestVisible="False" />
                                             <TextBox Grid.Column="2"
-                                                     materialDesign:TextFieldAssist.Hint="Парола"
+                                                     materialDesign:HintAssist.Hint="Парола"
                                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                      VerticalAlignment="Bottom"
                                                      Margin="20,0,0,0"
@@ -125,14 +125,14 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0"
-                                     materialDesign:TextFieldAssist.Hint="Магазин"
+                                     materialDesign:HintAssist.Hint="Магазин"
                                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Bottom"
                                      HorizontalAlignment="Stretch"
                                      Text="{Binding NewServerViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <TextBox Grid.Column="1"
-                                     materialDesign:TextFieldAssist.Hint="Акаунт"
+                                     materialDesign:HintAssist.Hint="Акаунт"
                                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Bottom"
@@ -140,7 +140,7 @@
                                      HorizontalAlignment="Stretch"
                                      Text="{Binding NewServerViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <TextBox Grid.Column="2"
-                                     materialDesign:TextFieldAssist.Hint="Парола"
+                                     materialDesign:HintAssist.Hint="Парола"
                                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Bottom"
@@ -148,7 +148,7 @@
                                      HorizontalAlignment="Stretch"
                                      Text="{Binding NewServerViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <TextBox Grid.Column="3"
-                                     materialDesign:TextFieldAssist.Hint="Адреси"
+                                     materialDesign:HintAssist.Hint="Адреси"
                                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      VerticalAlignment="Bottom"
@@ -205,10 +205,4 @@
                                       DataContext="{Binding Path=PaletteSelectorViewModel, Source={StaticResource ViewModelLocator}}" />
         </TabItem>
     </dragablz:TabablzControl>
-    <!--<TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-               FontSize="20"
-               Text="{Binding Version}"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Bottom"
-               Margin="10,0,0,10" />-->
 </UserControl>

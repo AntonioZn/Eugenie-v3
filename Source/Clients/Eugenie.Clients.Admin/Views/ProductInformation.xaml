@@ -54,7 +54,7 @@
                                        AutoSelect="True"
                                        Grid.Column="1"
                                        Margin="10,0,0,0"
-                                       materialDesign:TextFieldAssist.Hint="Име"
+                                       materialDesign:HintAssist.Hint="Име"
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                        HorizontalAlignment="Stretch"
                                        Text="{Binding MainProductViewModel.Product.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
@@ -67,7 +67,7 @@
                                          Opacity=".56" />
                 <ComboBox Grid.Row="1"
                           Grid.Column="1"
-                          materialDesign:TextFieldAssist.Hint="Мярка"
+                          materialDesign:HintAssist.Hint="Мярка"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                           Margin="10,10,0,0"
                           IsTabStop="False"
@@ -85,7 +85,7 @@
                                        AutoSelect="True"
                                        BlockInvalidNumberCharacters="True"
                                        Grid.Column="1"
-                                       materialDesign:TextFieldAssist.Hint="Доставна цена"
+                                       materialDesign:HintAssist.Hint="Доставна цена"
                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                        Margin="10,10,0,0"
                                        HorizontalAlignment="Stretch"

@@ -40,7 +40,7 @@
                           SelectedItem="{Binding SelectedSeller}"
                           SelectedIndex="0"
                           Width="300"
-                          materialDesign:TextFieldAssist.Hint="Име"
+                          materialDesign:HintAssist.Hint="Име"
                           DisplayMemberPath="Fullname">
                     <ComboBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -51,12 +51,12 @@
                 <DatePicker Grid.Column="1"
                             Margin="10,0,0,0"
                             SelectedDate="{Binding Start, Mode=TwoWay}"
-                            materialDesign:TextFieldAssist.Hint="Начална дата"
+                            materialDesign:HintAssist.Hint="Начална дата"
                             VerticalAlignment="Bottom" />
                 <DatePicker Grid.Column="2"
                             Margin="10,0,0,0"
                             SelectedDate="{Binding End, Mode=TwoWay}"
-                            materialDesign:TextFieldAssist.Hint="Крайна дата"
+                            materialDesign:HintAssist.Hint="Крайна дата"
                             VerticalAlignment="Bottom" />
                 <Button Grid.Column="3"
                         Padding="0"
