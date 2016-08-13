@@ -59,12 +59,14 @@
                          Style="{StaticResource MaterialDesignCircularProgressBar}"
                          Value="20" />
         </materialDesign:Card>
-        <TextBlock Grid.Row="1"
-                   Margin="20"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource MaterialDesignDisplay4TextBlock}"
-                   Text="{Binding Winning}"
-                   TextWrapping="Wrap" />
+        <Viewbox Grid.Row="1"
+                 Margin="20"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center">
+            <TextBlock Style="{StaticResource MaterialDesignDisplay4TextBlock}"
+                       Text="{Binding Winning}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+        </Viewbox>
     </Grid>
 </UserControl>

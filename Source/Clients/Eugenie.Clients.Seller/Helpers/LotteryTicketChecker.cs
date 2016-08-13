@@ -7,6 +7,7 @@
     using System.Net.Http;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using System.Timers;
 
     using AngleSharp.Parser.Html;
 
@@ -17,6 +18,17 @@
         private readonly HtmlParser parser = new HtmlParser();
         private CookieContainer cookieContainer = new CookieContainer();
         private bool isLoggedIn;
+        private Timer timer;
+        private string passwordCache;
+        private string usernameCache;
+
+        public LotteryTicketChecker()
+        {
+            this.timer = new Timer();
+            this.timer.Interval = 360000;
+            this.timer.Elapsed += this.OnTimer;
+            this.timer.Start();
+        }
 
         public bool IsLoggedIn
         {
@@ -31,8 +43,16 @@
             }
         }
 
+        private void OnTimer(object sender, ElapsedEventArgs e)
+        {
+            this.Login(this.usernameCache, this.passwordCache);
+        }
+
         public async Task<bool> Login(string username, string password)
         {
+            this.usernameCache = username;
+            this.passwordCache = password;
+
             this.cookieContainer = new CookieContainer();
 
             var handler = new HttpClientHandler();
