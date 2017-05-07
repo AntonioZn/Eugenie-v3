@@ -2,13 +2,13 @@
 {
     public class DeleteProductTask
     {
-        public DeleteProductTask(string serverName, string productName)
+        public DeleteProductTask(string serverId, string productName)
         {
-            this.ServerName = serverName;
+            this.ServerId = serverId;
             this.ProductName = productName;
         }
 
-        public string ServerName { get; set; }
+        public string ServerId { get; set; }
 
         public string ProductName { get; set; }
     }

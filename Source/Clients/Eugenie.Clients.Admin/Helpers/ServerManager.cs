@@ -35,8 +35,7 @@
                                                  settings.Save();
                                                  this.Initialize();
                                              };
-
-            this.Initialize();
+            
             this.taskManager.Start(this.Stores);
         }
 

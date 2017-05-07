@@ -4,13 +4,13 @@
 
     public class AddOrUpdateProductTask
     {
-        public AddOrUpdateProductTask(string serverName, AddProductModel model)
+        public AddOrUpdateProductTask(string serverId, AddProductModel model)
         {
-            this.ServerName = serverName;
+            this.ServerId = serverId;
             this.Model = model;
         }
 
-        public string ServerName { get; }
+        public string ServerId { get; }
 
         public AddProductModel Model { get; }
     }

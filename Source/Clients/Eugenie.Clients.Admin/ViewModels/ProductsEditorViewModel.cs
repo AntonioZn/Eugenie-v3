@@ -15,10 +15,10 @@
     using Common.Views;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
+
+    using Helpers;
 
     using MaterialDesignThemes.Wpf;
 
@@ -26,12 +26,12 @@
 
     public class ProductsEditorViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private readonly DispatcherTimer timer;
         private string search = string.Empty;
 
-        public ProductsEditorViewModel(IServerManager manager)
+        public ProductsEditorViewModel(ServerManager manager)
         {
             this.manager = manager;
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
@@ -52,11 +52,7 @@
 
         public string Search
         {
-            get
-            {
-                return this.search;
-            }
-
+            get => this.search;
             set
             {
                 this.Set(() => this.Search, ref this.search, value);
@@ -170,7 +166,7 @@
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             this.products.Clear();
-            this.manager.Cache.ProductsPerServer.OrderByDescending(x => x.Value.Count).FirstOrDefault().Value.ForEach(this.products.Add);
+            this.manager.Stores.OrderByDescending(x => x.Products.Count).FirstOrDefault()?.Products.ForEach(this.products.Add);
         }
     }
 }

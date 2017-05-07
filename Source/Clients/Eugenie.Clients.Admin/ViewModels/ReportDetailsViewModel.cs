@@ -3,10 +3,8 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Net.Http;
     using System.Windows.Input;
-
-    using Common.Contracts;
+    
     using Common.WebApiModels;
     using Common.Еxtensions;
 
@@ -17,14 +15,16 @@
 
     using MaterialDesignThemes.Wpf;
 
+    using Models;
+
     public class ReportDetailsViewModel : ViewModelBase
     {
-        private readonly IWebApiClient apiClient;
+        private readonly Store store;
         private readonly DateTime date;
 
-        public ReportDetailsViewModel(IWebApiClient apiClient, DateTime date, HttpClient client)
+        public ReportDetailsViewModel(Store store, DateTime date)
         {
-            this.apiClient = apiClient;
+            this.store = store;
             this.date = date;
 
             this.Waste = new ObservableCollection<Waste>();
@@ -34,7 +34,7 @@
             this.Cancel = new RelayCommand(this.HandleCancel);
             this.ShowPdf = new RelayCommand(this.HandleShowPdf, this.CanShowPdf);
 
-            this.Initialize(client, date);
+            this.Initialize();
         }
 
         public ICommand Cancel { get; set; }
@@ -47,9 +47,9 @@
 
         public ObservableCollection<Shipment> Shipments { get; }
 
-        private async void Initialize(HttpClient client, DateTime date)
+        private async void Initialize()
         {
-            var details = await this.apiClient.GetReportDetailsAsync(client, date);
+            var details = await this.store.Client.GetReportDetailsAsync(this.date);
 
             this.Waste.Clear();
             details.Waste.ForEach(this.Waste.Add);

@@ -5,50 +5,40 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-
-    using Common.Contracts;
+    
     using Common.WebApiModels;
     using Common.Еxtensions;
-
-    using Contracts;
-
+    
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
+    using Helpers;
+
     public class SellersViewModel : ViewModelBase
     {
-        private readonly IWebApiClient apiClient;
-        private readonly IServerManager manager;
-        private ObservableCollection<Seller> sellers;
+        private readonly ServerManager manager;
+        private readonly ObservableCollection<Seller> sellers = new ObservableCollection<Seller>();
         private decimal sellsTotal;
         private decimal wasteTotal;
 
-        public SellersViewModel(IServerManager manager, IWebApiClient apiClient)
+        public SellersViewModel(ServerManager manager)
         {
             this.manager = manager;
-            this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
-            this.apiClient = apiClient;
+            this.manager.SelectedStoreChanged += this.OnSelectedStoreChanged;
 
             this.Waste = new ObservableCollection<Waste>();
             this.Sells = new ObservableCollection<Sell>();
-
-            this.Search = new RelayCommand(this.HandleSearch, this.CanSearch);
         }
 
-        public ICommand Search { get; }
+        public ICommand SearchCommand => new RelayCommand(this.Search, this.CanSearch);
 
         public Seller SelectedSeller { get; set; }
 
         public IEnumerable<Seller> Sellers
         {
-            get
-            {
-                return this.sellers ?? (this.sellers = new ObservableCollection<Seller>());
-            }
-
+            get => this.sellers;
             set
             {
-                this.sellers = this.sellers ?? new ObservableCollection<Seller>();
                 this.sellers.Clear();
                 value.ForEach(this.sellers.Add);
             }
@@ -64,11 +54,7 @@
 
         public decimal SellsTotal
         {
-            get
-            {
-                return this.sellsTotal;
-            }
-
+            get => this.sellsTotal;
             set
             {
                 this.Set(() => this.SellsTotal, ref this.sellsTotal, value);
@@ -77,20 +63,16 @@
 
         public decimal WasteTotal
         {
-            get
-            {
-                return this.wasteTotal;
-            }
-
+            get => this.wasteTotal;
             set
             {
                 this.Set(() => this.WasteTotal, ref this.wasteTotal, value);
             }
         }
 
-        private async void HandleSearch()
+        private async void Search()
         {
-            var deals = await this.apiClient.GetDealsForSeller(this.manager.SelectedServer.Client, this.SelectedSeller.UserName, this.Start, this.End);
+            var deals = await this.manager.SelectedStore.Client.GetDealsForSeller(this.SelectedSeller.Username, this.Start, this.End);
 
             this.Waste.Clear();
             deals.Waste.ForEach(this.Waste.Add);
@@ -106,9 +88,9 @@
             return this.SelectedSeller != null;
         }
 
-        private void OnSelectedServerChanged(object sender, EventArgs e)
+        private void OnSelectedStoreChanged(object sender, EventArgs e)
         {
-            this.Sellers = this.manager.SelectedServer == null ? Enumerable.Empty<Seller>() : this.manager.Cache.SellersPerServer[this.manager.SelectedServer];
+            this.Sellers = this.manager.SelectedStore?.Sellers ?? Enumerable.Empty<Seller>();
         }
     }
 }

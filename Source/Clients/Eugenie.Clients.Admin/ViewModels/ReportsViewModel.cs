@@ -6,16 +6,14 @@
     using System.Linq;
     using System.Windows.Input;
 
-    using Autofac;
-
     using Common.Contracts;
     using Common.WebApiModels;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
+
+    using Helpers;
 
     using MaterialDesignThemes.Wpf;
 
@@ -23,32 +21,25 @@
 
     public class ReportsViewModel : ViewModelBase, IKeyHandler
     {
-        private readonly IServerManager manager;
-        private ObservableCollection<Report> reports;
+        private readonly ServerManager manager;
+        private readonly ObservableCollection<Report> reports = new ObservableCollection<Report>();
         private decimal? currentStock;
 
-        public ReportsViewModel(IServerManager manager)
+        public ReportsViewModel(ServerManager manager)
         {
             this.manager = manager;
-            this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
-
-            this.Enter = new RelayCommand(this.HandleEnter);
+            this.manager.SelectedStoreChanged += this.OnSelectedStoreChanged;
         }
 
-        public ICommand Enter { get; }
+        public ICommand OpenDetailsCommand => new RelayCommand(this.OpenDetails);
 
         public Report SelectedReport { get; set; }
 
         public IEnumerable<Report> Reports
         {
-            get
-            {
-                return this.reports ?? (this.reports = new ObservableCollection<Report>());
-            }
-
+            get => this.reports;
             set
             {
-                this.reports = this.reports ?? new ObservableCollection<Report>();
                 this.reports.Clear();
                 value.ForEach(this.reports.Add);
             }
@@ -56,10 +47,7 @@
 
         public decimal? CurrentStock
         {
-            get
-            {
-                return this.currentStock;
-            }
+            get => this.currentStock;
             set
             {
                 this.Set(() => this.CurrentStock, ref this.currentStock, value);
@@ -71,22 +59,22 @@
             switch (key)
             {
                 case Key.Enter:
-                    this.HandleEnter();
+                    this.OpenDetails();
                     e.Handled = true;
                     break;
             }
         }
 
-        public async void HandleEnter()
+        public async void OpenDetails()
         {
-            var viewModel = new ReportDetailsViewModel(ViewModelLocator.Container.Resolve<IWebApiClient>(), this.SelectedReport.Date, this.manager.SelectedServer.Client);
+            var viewModel = new ReportDetailsViewModel(this.manager.SelectedStore, this.SelectedReport.Date);
             await DialogHost.Show(new ReportDetails(viewModel), "RootDialog");
         }
 
-        private void OnSelectedServerChanged(object sender, EventArgs e)
+        private void OnSelectedStoreChanged(object sender, EventArgs e)
         {
-            this.Reports = this.manager.SelectedServer == null ? Enumerable.Empty<Report>() : this.manager.Cache.ReportsPerServer[this.manager.SelectedServer];
-            this.CurrentStock = this.manager.SelectedServer == null ? 0 : this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Sum(x => x.Quantity * x.SellingPrice);
+            this.Reports = this.manager.SelectedStore?.Reports ?? Enumerable.Empty<Report>();
+            this.CurrentStock = this.manager.SelectedStore?.Products.Sum(x => x.Quantity * x.SellingPrice) ?? 0;
         }
     }
 }

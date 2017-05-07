@@ -61,11 +61,7 @@
 
         public IDictionary<Store, ProductViewModel> ProductInAllServers
         {
-            get
-            {
-                return this.productInAllServers ?? (this.productInAllServers = new ObservableConcurrentDictionary<Store, ProductViewModel>());
-            }
-
+            get => this.productInAllServers ?? (this.productInAllServers = new ObservableConcurrentDictionary<Store, ProductViewModel>());
             set
             {
                 this.productInAllServers = this.productInAllServers ?? new ObservableConcurrentDictionary<Store, ProductViewModel>();
@@ -83,11 +79,7 @@
 
         public string AddingType
         {
-            get
-            {
-                return this.addingType;
-            }
-
+            get => this.addingType;
             set
             {
                 this.Set(() => this.AddingType, ref this.addingType, value);
@@ -96,11 +88,7 @@
 
         public ProductViewModel MainProductViewModel
         {
-            get
-            {
-                return this.mainMainProductViewModel;
-            }
-
+            get => this.mainMainProductViewModel;
             set
             {
                 this.Set(() => this.MainProductViewModel, ref this.mainMainProductViewModel, value);
@@ -109,11 +97,7 @@
 
         public Product SelectedProduct
         {
-            get
-            {
-                return this.selectedProduct;
-            }
-
+            get => this.selectedProduct;
             set
             {
                 this.Set(() => this.SelectedProduct, ref this.selectedProduct, value);
@@ -129,11 +113,7 @@
 
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-
+            get => this.name;
             set
             {
                 this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces().ToLower());
@@ -238,7 +218,6 @@
         private void OnTick(object sender, EventArgs e)
         {
             this.timer.Stop();
-
             this.HandleSearch(this.Name);
         }
 
@@ -279,7 +258,7 @@
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             this.products.Clear();
-            this.manager.Cache.ProductsPerServer.OrderByDescending(x => x.Value.Count).FirstOrDefault().Value.ForEach(this.products.Add);
+            this.manager.Stores.OrderByDescending(x => x.Products.Count).FirstOrDefault()?.Products.ForEach(this.products.Add);
             this.GetNewProduct(string.Empty);
         }
 

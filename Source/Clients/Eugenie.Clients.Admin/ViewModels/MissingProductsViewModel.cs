@@ -11,22 +11,20 @@
     using Common.WebApiModels;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
+    using Helpers;
+
     public class MissingProductsViewModel : ViewModelBase, IKeyHandler
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
 
-        public MissingProductsViewModel(IServerManager manager)
+        public MissingProductsViewModel(ServerManager manager)
         {
             this.manager = manager;
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
-
-            this.MissingProducts = new ObservableCollection<MissingProduct>();
-
+            
             this.Enter = new RelayCommand(this.HandleEnter);
         }
 
@@ -34,7 +32,7 @@
 
         public MissingProduct SelectedProduct { get; set; }
 
-        public ObservableCollection<MissingProduct> MissingProducts { get; }
+        public ObservableCollection<MissingProduct> MissingProducts { get; } = new ObservableCollection<MissingProduct>();
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
@@ -62,7 +60,7 @@
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
             var hashset = new HashSet<MissingProduct>();
-            this.manager.Cache.MissingProductsPerServer.Values.ForEach(hashset.UnionWith);
+            this.manager.Stores.ForEach(x => hashset.UnionWith(x.MissingProducts));
 
             this.MissingProducts.Clear();
             hashset.ForEach(this.MissingProducts.Add);

@@ -1,6 +1,5 @@
 ﻿namespace Eugenie.Clients.Admin.ViewModels
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -8,29 +7,25 @@
     using Common.Models;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using GalaSoft.MvvmLight;
+
+    using Helpers;
 
     public class LowQuantityProductsViewModel : ViewModelBase
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private ObservableCollection<Product> products;
         private string quantity;
 
-        public LowQuantityProductsViewModel(IServerManager manager)
+        public LowQuantityProductsViewModel(ServerManager manager)
         {
             this.manager = manager;
-            this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
+            this.manager.SelectedStoreChanged += (s, e) => this.GetProducts();
         }
 
         public IEnumerable<Product> Products
         {
-            get
-            {
-                return this.products ?? (this.products = new ObservableCollection<Product>());
-            }
-
+            get => this.products ?? (this.products = new ObservableCollection<Product>());
             set
             {
                 this.products = this.products ?? new ObservableCollection<Product>();
@@ -41,11 +36,7 @@
 
         public string Quantity
         {
-            get
-            {
-                return this.quantity;
-            }
-
+            get => this.quantity;
             set
             {
                 this.Set(() => this.Quantity, ref this.quantity, value);
@@ -53,23 +44,17 @@
             }
         }
 
-        private void OnSelectedServerChanged(object sender, EventArgs e)
-        {
-            this.GetProducts();
-        }
-
         private void GetProducts()
         {
-            if (this.manager.SelectedServer == null)
+            if (this.manager.SelectedStore == null)
             {
                 this.products.Clear();
                 return;
             }
-
-            decimal parsedQuantity;
-            if (decimal.TryParse(this.Quantity, out parsedQuantity))
+            
+            if (decimal.TryParse(this.Quantity, out var parsedQuantity))
             {
-                this.Products = this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Where(x => x.Quantity <= parsedQuantity).OrderByDescending(x => x.Quantity);
+                this.Products = this.manager.SelectedStore.Products.Where(x => x.Quantity <= parsedQuantity).OrderByDescending(x => x.Quantity);
             }
         }
     }

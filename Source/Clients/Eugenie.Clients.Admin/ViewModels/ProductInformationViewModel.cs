@@ -9,8 +9,6 @@
     using Common.Models;
     using Common.Notifications;
     using Common.Еxtensions;
-
-    using Contracts;
     
     using GalaSoft.MvvmLight.CommandWpf;
 

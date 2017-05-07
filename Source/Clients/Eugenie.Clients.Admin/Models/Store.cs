@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Admin.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -17,6 +18,8 @@
         private readonly ObservableCollection<Report> reports = new ObservableCollection<Report>();
         private readonly ObservableCollection<MissingProduct> missingProducts = new ObservableCollection<MissingProduct>();
         private readonly ObservableCollection<Seller> sellers = new ObservableCollection<Seller>();
+
+        public string Id { get; } = Guid.NewGuid().ToString();
 
         public string Name { get; set; }
 

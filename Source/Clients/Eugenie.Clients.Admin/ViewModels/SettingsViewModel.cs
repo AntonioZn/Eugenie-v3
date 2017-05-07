@@ -6,45 +6,45 @@
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Models;
     using Common.Notifications;
-
-    using Contracts;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    using Models;
+    using Helpers;
 
-    using Store = Models.Store;
+    using Models;
 
     public class SettingsViewModel : ViewModelBase, IKeyHandler
     {
-        private readonly IServerStorage storage;
-        private readonly ITasksStorage tasksStorage;
+        private readonly ServerManager serverManager;
+        private readonly TaskManager taskManager;
+        private Store newStore = new Store();
 
-        public SettingsViewModel(IServerStorage storage, ITasksStorage tasksStorage)
+        public SettingsViewModel(ServerManager serverManager, TaskManager taskManager)
         {
-            this.storage = storage;
-            this.tasksStorage = tasksStorage;
-
-            this.NewServerViewModel = new NewServerViewModel();
-
-            this.Add = new RelayCommand(this.HandleAdd, this.CanAdd);
-            this.Delete = new RelayCommand<Store>(this.HandleDelete);
+            this.serverManager = serverManager;
+            this.taskManager = taskManager;
         }
 
-        public NewServerViewModel NewServerViewModel { get; set; }
+        public Store NewStore
+        {
+            get => this.newStore;
+            set
+            {
+                this.Set(() => this.NewStore, ref this.newStore, value);
+            }
+        }
 
-        public ICommand Add { get; }
+        public ICommand AddCommand => new RelayCommand(this.Add, this.CanAdd);
 
-        public ICommand Delete { get; }
+        public ICommand DeleteCommand => new RelayCommand<Store>(this.Delete);
 
-        public ICollection<AddOrUpdateProductTask> AddOrUpdateProductTasks => this.tasksStorage.AddOrUpdateProductTasks;
+        public ICollection<AddOrUpdateProductTask> AddOrUpdateProductTasks => this.taskManager.AddOrUpdateProductTasks;
 
         public AddOrUpdateProductTask SelectedTask { get; set; }
 
-        public ICollection<Store> Servers => this.storage.Servers;
+        public ICollection<Store> Stores => this.serverManager.Stores;
 
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
@@ -59,18 +59,25 @@
             }
         }
 
-        public void HandleAdd()
-        {
-            this.storage.Servers.Add(this.NewServerViewModel.GetServer());
-            this.NewServerViewModel.Reset();
-        }
-
         private bool CanAdd()
         {
-            return this.NewServerViewModel.HasNoValidationErrors()
-                   && this.storage.Servers.All(x => x.Name != this.NewServerViewModel.Name && x.Addresses.All(y => this.NewServerViewModel.AddressesArray.All(t => t != y)));
+            return this.NewStore.HasNoValidationErrors()
+                   && this.serverManager.Stores.All(x => x.Name != this.NewStore.Name && x.Address != this.NewStore.Address);
         }
 
+        private void Add()
+        {
+            this.serverManager.Stores.Add(this.NewStore);
+            this.NewStore = new Store();
+        }
+
+        //TODO: delete all tasks
+        private void Delete(Store server)
+        {
+            this.serverManager.Stores.Remove(server);
+        }
+
+        //TODO: Handle collection changed exception
         private void DeleteTask()
         {
             if (this.SelectedTask != null)
@@ -81,11 +88,6 @@
             {
                 NotificationsHost.Error("Неуспешно", "Трябва да има избрана заявка.");
             }
-        }
-
-        private void HandleDelete(Store server)
-        {
-            this.storage.Servers.Remove(server);
         }
     }
 }

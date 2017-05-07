@@ -56,13 +56,15 @@
                      {
                          while (true)
                          {
-                             var groups = this.AddOrUpdateProductTasks.GroupBy(x => x.ServerName);
+                             var groups = this.AddOrUpdateProductTasks.GroupBy(x => x.ServerId);
                              foreach (var group in groups)
                              {
-                                 foreach (var task in group)
+                                 var store = this.stores.FirstOrDefault(x => x.Id == group.Key);
+                                 var client = store?.Client;
+
+                                 if (client != null)
                                  {
-                                     var client = this.stores.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
-                                     if (client != null)
+                                     foreach (var task in group)
                                      {
                                          try
                                          {
@@ -72,17 +74,14 @@
                                                  Application.Current.Dispatcher.Invoke(() =>
                                                                                        {
                                                                                            this.AddOrUpdateProductTasks.Remove(task);
-                                                                                           NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
+                                                                                           NotificationsHost.Success(store.Name, $"{task.Model.Name} е записан успешно.");
                                                                                        });
                                              }
                                          }
                                          catch
                                          {
+                                             break;
                                          }
-                                     }
-                                     else
-                                     {
-                                         break;
                                      }
                                  }
                              }
@@ -98,13 +97,15 @@
                      {
                          while (true)
                          {
-                             var groups = this.DeleteProductTasks.GroupBy(x => x.ServerName);
+                             var groups = this.DeleteProductTasks.GroupBy(x => x.ServerId);
                              foreach (var group in groups)
                              {
-                                 foreach (var task in group)
+                                 var store = this.stores.FirstOrDefault(x => x.Id == group.Key);
+                                 var client = store?.Client;
+
+                                 if (client != null)
                                  {
-                                     var client = this.stores.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
-                                     if (client != null)
+                                     foreach (var task in group)
                                      {
                                          try
                                          {
@@ -114,17 +115,14 @@
                                                  Application.Current.Dispatcher.Invoke(() =>
                                                                                        {
                                                                                            this.DeleteProductTasks.Remove(task);
-                                                                                           NotificationsHost.Success(task.ServerName, $"{task.ProductName} е изтрит успешно.");
+                                                                                           NotificationsHost.Success(store.Name, $"{task.ProductName} е изтрит успешно.");
                                                                                        });
                                              }
                                          }
                                          catch
                                          {
+                                             break;
                                          }
-                                     }
-                                     else
-                                     {
-                                         break;
                                      }
                                  }
                              }

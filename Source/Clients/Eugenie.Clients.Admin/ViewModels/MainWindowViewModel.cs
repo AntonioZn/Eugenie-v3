@@ -10,12 +10,12 @@
     using Common.Contracts;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using Domain;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
+
+    using Helpers;
 
     using Models;
 
@@ -23,12 +23,12 @@
 
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private Visibility loadingVisibility;
         private MenuItem selectedMenuItem;
         private ObservableCollection<ActiveServer> servers;
 
-        public MainWindowViewModel(IServerManager manager)
+        public MainWindowViewModel(ServerManager manager)
         {
             this.manager = manager;
             this.LoadingVisibility = Visibility.Visible;
@@ -53,6 +53,7 @@
                          };
 
             this.SelectedMenuItem = this.Views.First();
+            this.manager.Initialize();
         }
 
         public ICommand Refresh { get; }
@@ -143,7 +144,7 @@
 
         private void OnServerTestingFinished(object sender, EventArgs e)
         {
-            this.Servers = this.manager.Cache.ProductsPerServer.Keys.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
+            this.Servers = this.manager.Stores.Where(x => x.Client != null).Select(x => new ActiveServer(x.Name)).ToList();
             this.LoadingVisibility = Visibility.Collapsed;
         }
     }

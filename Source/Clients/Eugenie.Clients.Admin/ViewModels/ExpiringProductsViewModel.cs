@@ -15,22 +15,20 @@
     public class ExpiringProductsViewModel : ViewModelBase
     {
         private readonly ServerManager manager;
-        private DateTime date;
-        private ObservableCollection<Product> products;
+        private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
+        private DateTime date = DateTime.Now;
 
         public ExpiringProductsViewModel(ServerManager manager)
         {
             this.manager = manager;
-            this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
-            this.Date = DateTime.Today;
+            this.manager.SelectedStoreChanged += this.OnSelectedStoreChanged;
         }
 
         public IEnumerable<Product> Products
         {
-            get => this.products ?? (this.products = new ObservableCollection<Product>());
+            get => this.products;
             set
             {
-                this.products = this.products ?? new ObservableCollection<Product>();
                 this.products.Clear();
                 value.ForEach(this.products.Add);
             }
@@ -38,25 +36,17 @@
 
         public DateTime Date
         {
-            get
-            {
-                return this.date;
-            }
-
+            get => this.date;
             set
             {
                 this.Set(() => this.Date, ref this.date, value);
-                if (this.manager.SelectedServer != null)
-                {
-                    this.Products = this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date));
-                }
+                this.Products = this.manager.SelectedStore?.Products.Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date)) ?? Enumerable.Empty<Product>();
             }
         }
 
-        private void OnSelectedServerChanged(object sender, EventArgs e)
+        private void OnSelectedStoreChanged(object sender, EventArgs e)
         {
-            this.Products = this.manager.SelectedServer == null ? Enumerable.Empty<Product>() :
-                                this.manager.Cache.ProductsPerServer[this.manager.SelectedServer].Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date));
+            this.Products = this.manager.SelectedStore?.Products.Where(x => x.ExpirationDates.Any(y => y.Date <= this.Date)) ?? Enumerable.Empty<Product>();
         }
     }
 }

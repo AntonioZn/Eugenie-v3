@@ -10,6 +10,7 @@
     using MigraDoc.DocumentObjectModel.Tables;
     using MigraDoc.Rendering;
 
+    //TODO: refactor
     public class PdfShipmentInvoiceGenerator
     {
         private readonly Document document = new Document();
