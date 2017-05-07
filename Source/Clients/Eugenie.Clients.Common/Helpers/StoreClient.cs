@@ -18,11 +18,11 @@
 
     public class StoreClient : IDisposable
     {
-        private readonly HttpClient client;
+        private readonly ResilientHttpClient client;
 
         public StoreClient(string address)
         {
-            this.client = new HttpClient();
+            this.client = new ResilientHttpClient();
             this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             this.client.BaseAddress = new Uri(address);
 

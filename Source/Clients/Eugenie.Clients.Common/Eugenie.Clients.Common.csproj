@@ -58,6 +58,9 @@
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Polly, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Polly.5.1.0\lib\net45\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -90,6 +93,8 @@
     <Compile Include="Converters\ExpirationDatesListToSingleDateConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
+    <Compile Include="Exceptions\HttpClientTimeoutException.cs" />
+    <Compile Include="Helpers\ResilientHttpClient.cs" />
     <Compile Include="Еxtensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\StoreClient.cs" />
