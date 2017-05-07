@@ -1,9 +1,7 @@
 ﻿namespace Eugenie.Clients.Admin.Helpers
 {
-    using System;
     using System.Linq;
     using System.Net;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
 
@@ -42,7 +40,7 @@
 
         private void RunAddOrUpdateProductTasks()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
                      {
                          while (true)
                          {
@@ -56,52 +54,14 @@
                                      {
                                          try
                                          {
-                                             var status = this.apiClient.AddOrUpdateAsync(client, task.Model).Result;
+                                             var status = await this.apiClient.AddOrUpdateAsync(client, task.Model);
                                              if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                              {
                                                  Application.Current.Dispatcher.Invoke(() =>
-                                                 {
-                                                     this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
-                                                     NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
-                                                 });
-                                             }
-                                         }
-                                         catch (Exception ex)
-                                         {
-                                         }
-                                     }
-                                     else
-                                     {
-                                         break;
-                                     }
-                                 }
-                             }
-
-                             Thread.Sleep(2000);
-                         }
-                     });
-        }
-
-        private void RunDeleteProductTasks()
-        {
-            Task.Run(() =>
-                     {
-                         while (true)
-                         {
-                             var groups = this.tasksStorage.DeleteProductTasks.GroupBy(x => x.ServerName);
-                             foreach (var group in groups)
-                             {
-                                 foreach (var task in group)
-                                 {
-                                     var client = this.serversStorage.Servers.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
-                                     if (client != null)
-                                     {
-                                         try
-                                         {
-                                             var status = this.apiClient.DeleteProductAsync(client, task.ProductName).Result;
-                                             if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
-                                             {
-                                                 this.tasksStorage.DeleteProductTasks.Remove(task);
+                                                                                       {
+                                                                                           this.tasksStorage.AddOrUpdateProductTasks.Remove(task);
+                                                                                           NotificationsHost.Success(task.ServerName, $"{task.Model.Name} е записан успешно.");
+                                                                                       });
                                              }
                                          }
                                          catch
@@ -115,7 +75,49 @@
                                  }
                              }
 
-                             SpinWait.SpinUntil(() => this.tasksStorage.DeleteProductTasks.Any());
+                             await Task.Delay(2000);
+                         }
+                     });
+        }
+
+        private void RunDeleteProductTasks()
+        {
+            Task.Run(async () =>
+                     {
+                         while (true)
+                         {
+                             var groups = this.tasksStorage.DeleteProductTasks.GroupBy(x => x.ServerName);
+                             foreach (var group in groups)
+                             {
+                                 foreach (var task in group)
+                                 {
+                                     var client = this.serversStorage.Servers.FirstOrDefault(x => x.Name == task.ServerName)?.Client;
+                                     if (client != null)
+                                     {
+                                         try
+                                         {
+                                             var status = await this.apiClient.DeleteProductAsync(client, task.ProductName);
+                                             if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
+                                             {
+                                                 Application.Current.Dispatcher.Invoke(() =>
+                                                 {
+                                                     this.tasksStorage.DeleteProductTasks.Remove(task);
+                                                     NotificationsHost.Success(task.ServerName, $"{task.ProductName} е изтрит успешно.");
+                                                 });
+                                             }
+                                         }
+                                         catch
+                                         {
+                                         }
+                                     }
+                                     else
+                                     {
+                                         break;
+                                     }
+                                 }
+                             }
+
+                             await Task.Delay(2000);
                          }
                      });
         }
