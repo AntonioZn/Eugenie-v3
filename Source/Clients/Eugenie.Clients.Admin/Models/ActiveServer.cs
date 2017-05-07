@@ -15,11 +15,7 @@
 
         public bool IsSelected
         {
-            get
-            {
-                return this.isSelected;
-            }
-
+            get => this.isSelected;
             set
             {
                 this.Set(() => this.IsSelected, ref this.isSelected, value);

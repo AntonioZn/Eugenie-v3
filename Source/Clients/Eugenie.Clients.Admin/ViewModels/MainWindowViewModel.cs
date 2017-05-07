@@ -61,11 +61,7 @@
 
         public Visibility LoadingVisibility
         {
-            get
-            {
-                return this.loadingVisibility;
-            }
-
+            get => this.loadingVisibility;
             set
             {
                 this.Set(() => this.LoadingVisibility, ref this.loadingVisibility, value);
@@ -74,11 +70,7 @@
 
         public ICollection<ActiveServer> Servers
         {
-            get
-            {
-                return this.servers ?? (this.servers = new ObservableCollection<ActiveServer>());
-            }
-
+            get => this.servers ?? (this.servers = new ObservableCollection<ActiveServer>());
             set
             {
                 this.servers = this.servers ?? new ObservableCollection<ActiveServer>();
@@ -91,11 +83,7 @@
 
         public MenuItem SelectedMenuItem
         {
-            get
-            {
-                return this.selectedMenuItem;
-            }
-
+            get => this.selectedMenuItem;
             set
             {
                 this.Set(() => this.SelectedMenuItem, ref this.selectedMenuItem, value);

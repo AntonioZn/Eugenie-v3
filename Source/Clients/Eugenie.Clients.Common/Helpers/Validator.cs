@@ -5,6 +5,7 @@
 
     using Eugenie.Common.Constants;
 
+    //TODO: Copy validator from YoutubeBot
     public static class Validator
     {
         public static string ValidateServerName(string argument)
@@ -55,28 +56,6 @@
             return null;
         }
 
-        public static string ValidateAddresses(string[] addresses)
-        {
-            if (!addresses.Any())
-            {
-                return "Невалидни адреси";
-            }
-
-            foreach (var address in addresses)
-            {
-                try
-                {
-                    new Uri(address);
-                }
-                catch
-                {
-                    return "Невалидни адреси";
-                }
-            }
-
-            return null;
-        }
-
         public static string ValidatePassword(string argument)
         {
             var password = argument?.Trim() ?? "";
@@ -99,15 +78,13 @@
             {
                 return null;
             }
-
-            decimal number;
-            return decimal.TryParse(argument, out number) ? null : "Невалидно поле";
+            
+            return decimal.TryParse(argument, out var _) ? null : "Невалидно поле";
         }
 
         public static string ValidateNotNullableDecimal(string argument)
         {
-            decimal number;
-            return decimal.TryParse(argument, out number) ? null : "Невалидно поле";
+            return decimal.TryParse(argument, out var _) ? null : "Невалидно поле";
         }
     }
 }

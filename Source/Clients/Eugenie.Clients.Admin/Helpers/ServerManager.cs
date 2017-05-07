@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
-    using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
-    using Common.WebApiModels;
+    using Common.Еxtensions;
 
     using Contracts;
 
@@ -16,19 +16,18 @@
 
     using ViewModels;
 
+    using Store = Models.Store;
+
     public class ServerManager : IServerManager
     {
-        private readonly IWebApiClient apiClient;
         private readonly IServerStorage storage;
         private readonly ITaskManager taskManager;
 
-        public ServerManager(IServerStorage storage, IWebApiClient apiClient, ITaskManager taskManager)
+        public ServerManager(IServerStorage storage, ITaskManager taskManager)
         {
             this.storage = storage;
-            this.storage.Servers.CollectionChanged += (s, e) => { this.Initialize(); };
-            this.apiClient = apiClient;
+            this.storage.Servers.CollectionChanged += (s, e) => this.Initialize();
             this.taskManager = taskManager;
-            this.Cache = new Cache();
 
             this.Initialize();
         }
@@ -37,11 +36,10 @@
 
         public event EventHandler ServerTestingFinished;
 
+        //TODO: Not necessary??
         public event EventHandler ProductsCacheChanged;
 
-        public Cache Cache { get; }
-
-        public ServerInformation SelectedServer { get; private set; }
+        public Store SelectedServer { get; private set; }
 
         public void SetSelectedServer(string name)
         {
@@ -55,36 +53,30 @@
         // TODO: add a way to cancel
         public async void Initialize()
         {
-            this.Cache.ProductsPerServer.Clear();
-            this.Cache.ReportsPerServer.Clear();
-            this.Cache.MissingProductsPerServer.Clear();
-            this.Cache.SellersPerServer.Clear();
+            await this.storage.Servers.ProcessConcurrently(async (store, token) =>
+                                                           {
+                                                               store.Products.Clear();
+                                                               store.Reports.Clear();
+                                                               store.MissingProducts.Clear();
+                                                               store.Sellers.Clear();
 
-            await Task.Run(() =>
-                           {
-                               Parallel.ForEach(this.storage.Servers, server =>
-                                                                      {
-                                                                          server.Client = ServerTester.TestServerAsync(server).Result;
-                                                                          this.Cache.ProductsPerServer.Add(server, new List<Product>());
-                                                                          this.Cache.ReportsPerServer.Add(server, new List<Report>());
-                                                                          this.Cache.MissingProductsPerServer.Add(server, new List<MissingProduct>());
-                                                                          this.Cache.SellersPerServer.Add(server, new List<Seller>());
+                                                               var client = await this.GetClient(store);
+                                                               store.Client = client;
 
-                                                                          if (server.Client != null)
-                                                                          {
-                                                                              this.Cache.MissingProductsPerServer[server] = this.apiClient.GetMissingProductsAsync(server.Client).Result;
-                                                                              this.Cache.ProductsPerServer[server] = this.apiClient.GetProductsAsync(server.Client).Result;
-                                                                              this.Cache.ReportsPerServer[server] = this.apiClient.GetReportsAsync(server.Client).Result;
-                                                                              this.Cache.SellersPerServer[server] = this.apiClient.GetSellersAsync(server.Client).Result;
-                                                                          }
-                                                                      });
-                           });
+                                                               if (client != null)
+                                                               {
+                                                                   store.Products = await client.GetProductsAsync();
+                                                                   store.Reports = await client.GetReportsAsync();
+                                                                   store.MissingProducts = await client.GetMissingProductsAsync();
+                                                                   store.Sellers = await client.GetSellersAsync();
+                                                               }
+                                                           }, 2, CancellationToken.None);
 
             this.SetSelectedServer(string.Empty);
             this.ServerTestingFinished?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel)
+        public void AddOrUpdate(IDictionary<Store, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel)
         {
             var cacheChanged = false;
             foreach (var pair in productInAllServers)
@@ -111,17 +103,30 @@
 
         public void Delete(string productName)
         {
-            foreach (var pair in this.Cache.ProductsPerServer)
+            foreach (var server in this.storage.Servers)
             {
-                this.taskManager.AddTask(new DeleteProductTask(pair.Key.Name, productName));
-                var product = pair.Value.FirstOrDefault(x => x.Name == productName);
+                this.taskManager.AddTask(new DeleteProductTask(server.Name, productName));
+                var product = server.Products.FirstOrDefault(x => x.Name == productName);
                 if (product != null)
                 {
-                    pair.Value.Remove(product);
+                    server.Products.Remove(product);
                 }
             }
 
             this.ProductsCacheChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private async Task<StoreClient> GetClient(Store server)
+        {
+            var client = new StoreClient(server.Address);
+
+            var isAuthenticated = await client.Authenticate(server.Username, server.Password);
+            if (isAuthenticated)
+            {
+                return client;
+            }
+
+            return null;
         }
     }
 }

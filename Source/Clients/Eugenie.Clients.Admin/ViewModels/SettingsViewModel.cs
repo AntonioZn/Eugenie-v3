@@ -16,6 +16,8 @@
 
     using Models;
 
+    using Store = Models.Store;
+
     public class SettingsViewModel : ViewModelBase, IKeyHandler
     {
         private readonly IServerStorage storage;
@@ -29,7 +31,7 @@
             this.NewServerViewModel = new NewServerViewModel();
 
             this.Add = new RelayCommand(this.HandleAdd, this.CanAdd);
-            this.Delete = new RelayCommand<ServerInformation>(this.HandleDelete);
+            this.Delete = new RelayCommand<Store>(this.HandleDelete);
         }
 
         public NewServerViewModel NewServerViewModel { get; set; }
@@ -42,7 +44,7 @@
 
         public AddOrUpdateProductTask SelectedTask { get; set; }
 
-        public ICollection<ServerInformation> Servers => this.storage.Servers;
+        public ICollection<Store> Servers => this.storage.Servers;
 
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
@@ -81,7 +83,7 @@
             }
         }
 
-        private void HandleDelete(ServerInformation server)
+        private void HandleDelete(Store server)
         {
             this.storage.Servers.Remove(server);
         }

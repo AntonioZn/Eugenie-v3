@@ -173,11 +173,11 @@
     <Compile Include="Helpers\ServerManager.cs" />
     <Compile Include="Helpers\TaskManager.cs" />
     <Compile Include="Models\ActiveServer.cs" />
-    <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\DeleteProductTask.cs" />
     <Compile Include="Models\ObservableConcurrentDictionary.cs" />
     <Compile Include="Models\AddOrUpdateProductTask.cs" />
     <Compile Include="Helpers\Storage.cs" />
+    <Compile Include="Models\Store.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
     <Compile Include="ViewModels\ExpiringProductsViewModel.cs" />
     <Compile Include="ViewModels\LowQuantityProductsViewModel.cs" />

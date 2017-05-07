@@ -4,8 +4,10 @@
 
     using Common.Models;
 
+    using Store = Models.Store;
+
     public interface IServerStorage
     {
-        ObservableCollection<ServerInformation> Servers { get; }
+        ObservableCollection<Store> Servers { get; }
     }
 }

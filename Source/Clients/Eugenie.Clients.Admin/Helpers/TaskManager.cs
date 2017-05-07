@@ -4,8 +4,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using System.Windows;
-
-    using Common.Contracts;
+    
     using Common.Notifications;
 
     using Contracts;
@@ -14,15 +13,13 @@
 
     public class TaskManager : ITaskManager
     {
-        private readonly IWebApiClient apiClient;
         private readonly IServerStorage serversStorage;
         private readonly ITasksStorage tasksStorage;
 
-        public TaskManager(ITasksStorage tasksStorage, IServerStorage serversStorage, IWebApiClient apiClient)
+        public TaskManager(ITasksStorage tasksStorage, IServerStorage serversStorage)
         {
             this.tasksStorage = tasksStorage;
             this.serversStorage = serversStorage;
-            this.apiClient = apiClient;
 
             this.RunAddOrUpdateProductTasks();
             this.RunDeleteProductTasks();
@@ -54,7 +51,7 @@
                                      {
                                          try
                                          {
-                                             var status = await this.apiClient.AddOrUpdateAsync(client, task.Model);
+                                             var status = await client.AddOrUpdateAsync(task.Model);
                                              if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                              {
                                                  Application.Current.Dispatcher.Invoke(() =>
@@ -96,7 +93,7 @@
                                      {
                                          try
                                          {
-                                             var status = await this.apiClient.DeleteProductAsync(client, task.ProductName);
+                                             var status = await client.DeleteProductAsync(task.ProductName);
                                              if (status == HttpStatusCode.OK || status == HttpStatusCode.BadRequest)
                                              {
                                                  Application.Current.Dispatcher.Invoke(() =>

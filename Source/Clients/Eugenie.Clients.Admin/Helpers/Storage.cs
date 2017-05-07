@@ -13,11 +13,13 @@
 
     using Properties;
 
+    using Store = Models.Store;
+
     public class Storage : IServerStorage, ITasksStorage
     {
         public Storage()
         {
-            this.Servers = JsonConvert.DeserializeObject<ObservableCollection<ServerInformation>>(Settings.Default.Servers);
+            this.Servers = JsonConvert.DeserializeObject<ObservableCollection<Store>>(Settings.Default.Servers);
             this.AddOrUpdateProductTasks = JsonConvert.DeserializeObject<ObservableCollection<AddOrUpdateProductTask>>(Settings.Default.AddOrUpdateProductTasks);
             this.DeleteProductTasks = JsonConvert.DeserializeObject<ObservableCollection<DeleteProductTask>>(Settings.Default.DeleteProductTasks);
 
@@ -26,7 +28,7 @@
             this.DeleteProductTasks.CollectionChanged += this.OnDeleteProductTasksChanged;
         }
 
-        public ObservableCollection<ServerInformation> Servers { get; }
+        public ObservableCollection<Store> Servers { get; }
 
         public ObservableCollection<AddOrUpdateProductTask> AddOrUpdateProductTasks { get; }
 

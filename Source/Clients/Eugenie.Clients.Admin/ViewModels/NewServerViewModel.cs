@@ -9,6 +9,8 @@
 
     using GalaSoft.MvvmLight;
 
+    using Store = Models.Store;
+
     public class NewServerViewModel : ViewModelBase, IValidatableObject
     {
         private string addresses;
@@ -115,9 +117,9 @@
             this.AddressesArray = new string[0];
         }
 
-        public ServerInformation GetServer()
+        public Store GetServer()
         {
-            return new ServerInformation
+            return new Store
                    {
                        Name = this.Name,
                        Username = this.Username,

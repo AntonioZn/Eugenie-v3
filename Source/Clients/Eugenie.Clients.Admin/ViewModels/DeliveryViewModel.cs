@@ -26,6 +26,8 @@
 
     using Models;
 
+    using Store = Models.Store;
+
     public class DeliveryViewModel : ViewModelBase, IValidatableObject, IBarcodeHandler
     {
         private readonly IServerManager manager;
@@ -33,7 +35,7 @@
         private readonly DispatcherTimer timer;
 
         private ProductViewModel mainMainProductViewModel;
-        private IDictionary<ServerInformation, ProductViewModel> productInAllServers;
+        private IDictionary<Store, ProductViewModel> productInAllServers;
         private string name = string.Empty;
         private string addingType = "Въведете име";
         private Product selectedProduct;
@@ -59,16 +61,16 @@
 
         public IEnumerable<MeasureType> Measures => MeasureTypeMapper.GetTypes();
 
-        public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers
+        public IDictionary<Store, ProductViewModel> ProductInAllServers
         {
             get
             {
-                return this.productInAllServers ?? (this.productInAllServers = new ObservableConcurrentDictionary<ServerInformation, ProductViewModel>());
+                return this.productInAllServers ?? (this.productInAllServers = new ObservableConcurrentDictionary<Store, ProductViewModel>());
             }
 
             set
             {
-                this.productInAllServers = this.productInAllServers ?? new ObservableConcurrentDictionary<ServerInformation, ProductViewModel>();
+                this.productInAllServers = this.productInAllServers ?? new ObservableConcurrentDictionary<Store, ProductViewModel>();
                 this.productInAllServers.Clear();
                 foreach (var pair in value)
                 {
@@ -305,7 +307,7 @@
         {
             this.MainProductViewModel = new ProductViewModel(new Product { Name = name });
 
-            var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            var tempProductInAllServers = new Dictionary<Store, ProductViewModel>();
             foreach (var pair in this.manager.Cache.ProductsPerServer)
             {
                 var productViewModel = new ProductViewModel(new Product());
@@ -319,7 +321,7 @@
         {
             this.MainProductViewModel = new ProductViewModel(existingProduct.DeepClone());
 
-            var tempProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            var tempProductInAllServers = new Dictionary<Store, ProductViewModel>();
             foreach (var pair in this.manager.Cache.ProductsPerServer)
             {
                 var product = pair.Value.FirstOrDefault(x => x.Name == this.Name);

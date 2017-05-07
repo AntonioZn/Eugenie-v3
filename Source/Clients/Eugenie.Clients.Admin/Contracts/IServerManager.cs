@@ -5,9 +5,9 @@
 
     using Common.Models;
 
-    using Models;
-
     using ViewModels;
+
+    using Store = Models.Store;
 
     public interface IServerManager
     {
@@ -17,13 +17,11 @@
 
         event EventHandler ServerTestingFinished;
 
-        ServerInformation SelectedServer { get; }
-
-        Cache Cache { get; }
+        Store SelectedServer { get; }
 
         void SetSelectedServer(string name);
 
-        void AddOrUpdate(IDictionary<ServerInformation, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel);
+        void AddOrUpdate(IDictionary<Store, ProductViewModel> productInAllServers, ProductViewModel mainProductViewModel);
 
         void Initialize();
 

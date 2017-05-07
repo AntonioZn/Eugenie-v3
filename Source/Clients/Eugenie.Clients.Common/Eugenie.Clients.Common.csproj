@@ -84,17 +84,16 @@
     <Compile Include="Contracts\IKeyHandler.cs" />
     <Compile Include="Contracts\IBarcodeHandler.cs" />
     <Compile Include="Contracts\IValidatableObject.cs" />
-    <Compile Include="Contracts\IWebApiClient.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleBatchConverter.cs" />
     <Compile Include="Converters\ExpirationDatesListToSingleDateConverter.cs" />
     <Compile Include="Converters\TotalSellingPriceConverter.cs" />
     <Compile Include="Converters\UtcToLocalTimeConverter.cs" />
+    <Compile Include="Еxtensions\EnumerableExtensions.cs" />
     <Compile Include="Helpers\Logger.cs" />
-    <Compile Include="Helpers\ServerTester.cs" />
+    <Compile Include="Helpers\StoreClient.cs" />
     <Compile Include="Helpers\Validator.cs" />
-    <Compile Include="Helpers\WebApiClient.cs" />
     <Compile Include="Models\EugenieTextBox.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Notifications\Notifications.xaml.cs">
@@ -108,12 +107,10 @@
     <Compile Include="Models\Barcode.cs" />
     <Compile Include="Models\ExpirationDate.cs" />
     <Compile Include="WebApiModels\IdQuantityPair.cs" />
-    <Compile Include="WebApiModels\LoginTokenResponse.cs" />
     <Compile Include="Models\MeasureType.cs" />
     <Compile Include="WebApiModels\MissingProduct.cs" />
     <Compile Include="WebApiModels\Report.cs" />
     <Compile Include="WebApiModels\ReportDetailsResponse.cs" />
-    <Compile Include="Models\ServerInformation.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,7 +120,6 @@
     <Compile Include="WebApiModels\UserInfoResponse.cs" />
     <Compile Include="WebApiModels\Waste.cs" />
     <Compile Include="Еxtensions\GenericExtensions.cs" />
-    <Compile Include="Еxtensions\EnumerableExtensions.cs" />
     <Compile Include="Еxtensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

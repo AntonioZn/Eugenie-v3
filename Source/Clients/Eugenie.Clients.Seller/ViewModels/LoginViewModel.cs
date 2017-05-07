@@ -50,7 +50,7 @@
             var passwordBox = obj as PasswordBox;
             var password = passwordBox.Password;
 
-            var server = new ServerInformation
+            var server = new Store
                          {
                              Addresses = new List<string> { this.settings.Address },
                              Password = password,

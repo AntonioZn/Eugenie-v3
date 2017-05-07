@@ -18,6 +18,8 @@
 
     using MaterialDesignThemes.Wpf;
 
+    using Store = Models.Store;
+
     public class ProductInformationViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly IServerManager manager;
@@ -33,7 +35,7 @@
             this.Save = new RelayCommand(this.HandleSave, this.CanSave);
             this.Cancel = new RelayCommand(this.HandleCancel);
 
-            this.ProductInAllServers = new Dictionary<ServerInformation, ProductViewModel>();
+            this.ProductInAllServers = new Dictionary<Store, ProductViewModel>();
             foreach (var pair in this.manager.Cache.ProductsPerServer)
             {
                 var product = pair.Value.FirstOrDefault(x => x.Name == selectedProduct.Name);
@@ -46,7 +48,7 @@
 
         public ICommand Save { get; set; }
 
-        public IDictionary<ServerInformation, ProductViewModel> ProductInAllServers { get; set; }
+        public IDictionary<Store, ProductViewModel> ProductInAllServers { get; set; }
 
         public ProductViewModel MainProductViewModel { get; set; }
 
