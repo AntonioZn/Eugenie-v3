@@ -8,17 +8,17 @@
     using Common.Models;
     using Common.Еxtensions;
 
-    using Contracts;
-
     using GalaSoft.MvvmLight;
+
+    using Helpers;
 
     public class ExpiringProductsViewModel : ViewModelBase
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private DateTime date;
         private ObservableCollection<Product> products;
 
-        public ExpiringProductsViewModel(IServerManager manager)
+        public ExpiringProductsViewModel(ServerManager manager)
         {
             this.manager = manager;
             this.manager.SelectedServerChanged += this.OnSelectedServerChanged;
@@ -27,11 +27,7 @@
 
         public IEnumerable<Product> Products
         {
-            get
-            {
-                return this.products ?? (this.products = new ObservableCollection<Product>());
-            }
-
+            get => this.products ?? (this.products = new ObservableCollection<Product>());
             set
             {
                 this.products = this.products ?? new ObservableCollection<Product>();

@@ -144,7 +144,7 @@
             this.Product.Measure = baseProduct.Product.Measure;
             this.Product.Barcodes = baseProduct.Product.Barcodes;
 
-            this.Product.Quantity = this.Product.Quantity ?? 0;
+            this.Product.Quantity = this.Product.Quantity.GetValueOrDefault();
             this.Product.Quantity += string.IsNullOrEmpty(this.QuantityToAdd) ? 0 : decimal.Parse(this.QuantityToAdd);
         }
 

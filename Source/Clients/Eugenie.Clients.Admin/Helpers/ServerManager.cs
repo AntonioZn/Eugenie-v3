@@ -2,58 +2,74 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Common.Helpers;
-    using Common.Models;
     using Common.Еxtensions;
-
-    using Contracts;
 
     using Models;
 
+    using Newtonsoft.Json;
+
+    using Properties;
+
     using ViewModels;
 
-    using Store = Models.Store;
-
-    public class ServerManager : IServerManager
+    public class ServerManager
     {
-        private readonly IServerStorage storage;
-        private readonly ITaskManager taskManager;
+        private readonly Settings settings;
+        private readonly TaskManager taskManager;
 
-        public ServerManager(IServerStorage storage, ITaskManager taskManager)
+        public ServerManager(Settings settings, TaskManager taskManager)
         {
-            this.storage = storage;
-            this.storage.Servers.CollectionChanged += (s, e) => this.Initialize();
+            this.settings = settings;
             this.taskManager = taskManager;
 
+            this.Stores = JsonConvert.DeserializeObject<ObservableCollection<Store>>(settings.Stores);
+            this.Stores.CollectionChanged += (s, e) =>
+                                             {
+                                                 settings.Stores = JsonConvert.SerializeObject(this.Stores);
+                                                 settings.Save();
+                                                 this.Initialize();
+                                             };
+
             this.Initialize();
+            this.taskManager.Start(this.Stores);
         }
 
-        public event EventHandler SelectedServerChanged;
+        public ObservableCollection<Store> Stores { get; }
+
+        public event EventHandler SelectedStoreChanged;
 
         public event EventHandler ServerTestingFinished;
 
         //TODO: Not necessary??
         public event EventHandler ProductsCacheChanged;
 
-        public Store SelectedServer { get; private set; }
+        public Store SelectedStore { get; private set; }
 
         public void SetSelectedServer(string name)
         {
-            if (this.SelectedServer?.Name != name)
+            if (this.SelectedStore?.Name != name)
             {
-                this.SelectedServer = this.storage.Servers.FirstOrDefault(x => x.Name == name);
-                this.SelectedServerChanged?.Invoke(this, EventArgs.Empty);
+                this.SelectedStore = this.Stores.FirstOrDefault(x => x.Name == name);
+                this.SelectedStoreChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
         // TODO: add a way to cancel
         public async void Initialize()
         {
-            await this.storage.Servers.ProcessConcurrently(async (store, token) =>
+            this.Stores.ForEach(x =>
+                                {
+                                    x.Client?.Dispose();
+                                    x.Client = null;
+                                });
+
+            await this.Stores.ProcessConcurrently(async (store, token) =>
                                                            {
                                                                store.Products.Clear();
                                                                store.Reports.Clear();
@@ -86,12 +102,12 @@
                 var serverName = pair.Key.Name;
                 var model = pair.Value.GetModel();
                 var task = new AddOrUpdateProductTask(serverName, model);
-                this.taskManager.AddTask(task);
+                this.taskManager.AddOrUpdateProductTasks.Add(task);
 
-                if (this.Cache.ProductsPerServer[pair.Key].All(x => x.Name != pair.Value.Product.Name))
+                if (pair.Key.Products.All(x => x.Name != pair.Value.Product.Name))
                 {
                     cacheChanged = true;
-                    this.Cache.ProductsPerServer[pair.Key].Add(pair.Value.Product);
+                    pair.Key.Products.Add(pair.Value.Product);
                 }
             }
 
@@ -103,9 +119,9 @@
 
         public void Delete(string productName)
         {
-            foreach (var server in this.storage.Servers)
+            foreach (var server in this.Stores)
             {
-                this.taskManager.AddTask(new DeleteProductTask(server.Name, productName));
+                this.taskManager.DeleteProductTasks.Add(new DeleteProductTask(server.Name, productName));
                 var product = server.Products.FirstOrDefault(x => x.Name == productName);
                 if (product != null)
                 {

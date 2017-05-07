@@ -162,11 +162,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Contracts\IServerManager.cs" />
-    <Compile Include="Contracts\IServerStorage.cs" />
-    <Compile Include="Contracts\ITasksStorage.cs" />
     <Compile Include="Helpers\ExistingBarcodeChecker.cs" />
-    <Compile Include="Contracts\ITaskManager.cs" />
     <Compile Include="Helpers\MeasureTypeMapper.cs" />
     <Compile Include="Helpers\NameFromBarcodeGenerator.cs" />
     <Compile Include="Helpers\PdfShipmentInvoiceGenerator.cs" />
@@ -176,7 +172,6 @@
     <Compile Include="Models\DeleteProductTask.cs" />
     <Compile Include="Models\ObservableConcurrentDictionary.cs" />
     <Compile Include="Models\AddOrUpdateProductTask.cs" />
-    <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="ViewModels\DeliveryViewModel.cs" />
     <Compile Include="ViewModels\ExpiringProductsViewModel.cs" />

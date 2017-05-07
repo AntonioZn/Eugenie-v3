@@ -33,11 +33,7 @@
 
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-
+            get => this.name;
             set
             {
                 this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
@@ -46,11 +42,7 @@
 
         public decimal BuyingPrice
         {
-            get
-            {
-                return this.buyingPrice;
-            }
-
+            get => this.buyingPrice;
             set
             {
                 this.Set(() => this.BuyingPrice, ref this.buyingPrice, value);
@@ -59,11 +51,7 @@
 
         public decimal? SellingPrice
         {
-            get
-            {
-                return this.sellingPrice;
-            }
-
+            get => this.sellingPrice;
             set
             {
                 this.Set(() => this.SellingPrice, ref this.sellingPrice, value);
@@ -72,11 +60,7 @@
 
         public MeasureType Measure
         {
-            get
-            {
-                return this.measure;
-            }
-
+            get => this.measure;
             set
             {
                 this.Set(() => this.Measure, ref this.measure, value);
@@ -85,11 +69,7 @@
 
         public decimal? Quantity
         {
-            get
-            {
-                return this.quantity;
-            }
-
+            get => this.quantity;
             set
             {
                 this.Set(() => this.Quantity, ref this.quantity, value);
@@ -98,11 +78,7 @@
 
         public ICollection<Barcode> Barcodes
         {
-            get
-            {
-                return this.barcodes ?? (this.barcodes = new ObservableCollection<Barcode>());
-            }
-
+            get => this.barcodes ?? (this.barcodes = new ObservableCollection<Barcode>());
             set
             {
                 this.barcodes = this.barcodes ?? new ObservableCollection<Barcode>();
@@ -117,11 +93,7 @@
 
         public ICollection<ExpirationDate> ExpirationDates
         {
-            get
-            {
-                return this.expirationDates ?? (this.expirationDates = new ObservableCollection<ExpirationDate>());
-            }
-
+            get => this.expirationDates ?? (this.expirationDates = new ObservableCollection<ExpirationDate>());
             set
             {
                 this.expirationDates = this.expirationDates ?? new ObservableCollection<ExpirationDate>();

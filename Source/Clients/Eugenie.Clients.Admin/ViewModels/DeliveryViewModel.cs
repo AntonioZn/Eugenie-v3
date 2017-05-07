@@ -16,9 +16,7 @@
     using Common.Models;
     using Common.Notifications;
     using Common.Еxtensions;
-
-    using Contracts;
-
+    
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
 
@@ -30,7 +28,7 @@
 
     public class DeliveryViewModel : ViewModelBase, IValidatableObject, IBarcodeHandler
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private readonly ObservableCollection<Product> products = new ObservableCollection<Product>();
         private readonly DispatcherTimer timer;
 
@@ -41,7 +39,7 @@
         private Product selectedProduct;
         private bool lastProductIsExisting;
 
-        public DeliveryViewModel(IServerManager manager)
+        public DeliveryViewModel(ServerManager manager)
         {
             this.manager = manager;
             this.manager.ServerTestingFinished += this.OnServerTestingFinished;
@@ -308,10 +306,10 @@
             this.MainProductViewModel = new ProductViewModel(new Product { Name = name });
 
             var tempProductInAllServers = new Dictionary<Store, ProductViewModel>();
-            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            foreach (var store in this.manager.Stores)
             {
                 var productViewModel = new ProductViewModel(new Product());
-                tempProductInAllServers.Add(pair.Key, productViewModel);
+                tempProductInAllServers.Add(store, productViewModel);
             }
 
             this.ProductInAllServers = tempProductInAllServers;
@@ -322,11 +320,11 @@
             this.MainProductViewModel = new ProductViewModel(existingProduct.DeepClone());
 
             var tempProductInAllServers = new Dictionary<Store, ProductViewModel>();
-            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            foreach (var store in this.manager.Stores)
             {
-                var product = pair.Value.FirstOrDefault(x => x.Name == this.Name);
+                var product = store.Products.FirstOrDefault(x => x.Name == this.Name);
                 var productViewModel = new ProductViewModel(product ?? new Product());
-                tempProductInAllServers.Add(pair.Key, productViewModel);
+                tempProductInAllServers.Add(store, productViewModel);
             }
 
             this.ProductInAllServers = tempProductInAllServers;

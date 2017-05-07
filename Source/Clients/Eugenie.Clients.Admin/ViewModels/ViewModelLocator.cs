@@ -2,12 +2,9 @@
 {
     using Autofac;
 
-    using Common.Contracts;
-    using Common.Helpers;
-
-    using Contracts;
-
     using Helpers;
+
+    using Properties;
 
     public class ViewModelLocator
     {
@@ -41,12 +38,9 @@
         private void Register()
         {
             var containerBuilder = new ContainerBuilder();
-
-            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().SingleInstance();
-            containerBuilder.RegisterType<Storage>().As<IServerStorage>().SingleInstance();
-            containerBuilder.RegisterType<Storage>().As<ITasksStorage>().SingleInstance();
-            containerBuilder.RegisterType<ServerManager>().As<IServerManager>().SingleInstance();
-            containerBuilder.RegisterType<TaskManager>().As<ITaskManager>().InstancePerLifetimeScope();
+            
+            containerBuilder.RegisterType<ServerManager>().SingleInstance();
+            containerBuilder.RegisterType<TaskManager>().SingleInstance();
 
             containerBuilder.RegisterType<ProductsEditorViewModel>().SingleInstance();
             containerBuilder.RegisterType<MainWindowViewModel>().SingleInstance();
@@ -58,6 +52,8 @@
             containerBuilder.RegisterType<SellersViewModel>().SingleInstance();
             containerBuilder.RegisterType<LowQuantityProductsViewModel>().SingleInstance();
             containerBuilder.RegisterType<ExpiringProductsViewModel>().SingleInstance();
+
+            containerBuilder.RegisterInstance(Settings.Default);
 
             Container = containerBuilder.Build();
         }

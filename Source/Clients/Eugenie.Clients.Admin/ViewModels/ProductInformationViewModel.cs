@@ -1,5 +1,6 @@
 ﻿namespace Eugenie.Clients.Admin.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Input;
@@ -10,37 +11,37 @@
     using Common.Еxtensions;
 
     using Contracts;
-
-    using GalaSoft.MvvmLight;
+    
     using GalaSoft.MvvmLight.CommandWpf;
 
     using Helpers;
 
     using MaterialDesignThemes.Wpf;
 
-    using Store = Models.Store;
+    using Models;
 
-    public class ProductInformationViewModel : ViewModelBase, IBarcodeHandler
+    public class ProductInformationViewModel : IBarcodeHandler
     {
-        private readonly IServerManager manager;
+        private readonly ServerManager manager;
         private readonly IEnumerable<Product> products;
 
-        public ProductInformationViewModel(IServerManager manager, Product selectedProduct, IEnumerable<Product> products)
+        public ProductInformationViewModel(ServerManager manager, Product selectedProduct, IEnumerable<Product> products)
         {
             this.manager = manager;
             this.products = products;
 
+            //TODO: Implement DeepClone method in product
             this.MainProductViewModel = new ProductViewModel(selectedProduct.DeepClone());
 
             this.Save = new RelayCommand(this.HandleSave, this.CanSave);
             this.Cancel = new RelayCommand(this.HandleCancel);
 
             this.ProductInAllServers = new Dictionary<Store, ProductViewModel>();
-            foreach (var pair in this.manager.Cache.ProductsPerServer)
+            foreach (var server in this.manager.Stores)
             {
-                var product = pair.Value.FirstOrDefault(x => x.Name == selectedProduct.Name);
+                var product = server.Products.FirstOrDefault(x => x.Name == selectedProduct.Name);
                 var productViewModel = new ProductViewModel(product ?? new Product());
-                this.ProductInAllServers.Add(pair.Key, productViewModel);
+                this.ProductInAllServers.Add(server, productViewModel);
             }
         }
 
@@ -80,13 +81,13 @@
 
         private bool CanSave()
         {
-            var exists = this.manager.Cache.ProductsPerServer.FirstOrDefault(x => x.Value.Any()).Value?
-                             .Any(y => y.Name.ToLower() == this.MainProductViewModel.Product.Name.ToLower() && y.Name.ToLower() != this.MainProductViewModel.OldName.ToLower());
+            var exists = this.products.Any(y => string.Equals(y.Name, this.MainProductViewModel.Product.Name, StringComparison.CurrentCultureIgnoreCase)
+                                                && !string.Equals(y.Name, this.MainProductViewModel.OldName, StringComparison.CurrentCultureIgnoreCase));
 
             return this.MainProductViewModel.Product.HasNoValidationErrors()
                    && this.MainProductViewModel.HasNoValidationErrors()
                    && this.ProductInAllServers.Values.All(x => x.HasNoValidationErrors())
-                   && !exists.GetValueOrDefault();
+                   && !exists;
         }
     }
 }
