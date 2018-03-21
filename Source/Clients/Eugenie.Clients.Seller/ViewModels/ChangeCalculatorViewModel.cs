@@ -4,9 +4,9 @@
 
     using Common.Contracts;
 
-    using GalaSoft.MvvmLight;
-
     using MaterialDesignThemes.Wpf;
+
+    using Sv.Wpf.Core.Mvvm;
 
     public class ChangeCalculatorViewModel : ViewModelBase, IBarcodeHandler
     {
@@ -22,23 +22,14 @@
 
         public decimal Change
         {
-            get
-            {
-                return this.change;
-            }
+            get => this.change;
 
-            set
-            {
-                this.Set(() => this.Change, ref this.change, value);
-            }
+            set => this.Set(ref this.change, value);
         }
 
         public string Payment
         {
-            get
-            {
-                return this.payment;
-            }
+            get => this.payment;
 
             set
             {

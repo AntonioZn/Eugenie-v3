@@ -6,12 +6,11 @@
 
     using Common.Contracts;
     using Common.Models;
-    using Common.Notifications;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
 
     using MaterialDesignThemes.Wpf;
+
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Mvvm;
 
     public class QuantityEditorViewModel : ViewModelBase, IBarcodeHandler
     {
@@ -49,15 +48,9 @@
 
         public string Quantity
         {
-            get
-            {
-                return this.quantity;
-            }
+            get => this.quantity;
 
-            set
-            {
-                this.Set(() => this.Quantity, ref this.quantity, this.RestrictQuantity(value));
-            }
+            set => this.Set(ref this.quantity, this.RestrictQuantity(value));
         }
 
         private void HandleAdd()
@@ -78,11 +71,11 @@
                     return true;
                 }
 
-                NotificationsHost.Error("Невалидно количество", $"Минималната позволена стойност е {this.GetMinimumQuantity()}.");
+                NotificationsHost.Error("Notifications", "Невалидно количество", $"Минималната позволена стойност е {this.GetMinimumQuantity()}.");
             }
             else
             {
-                NotificationsHost.Error("Невалидно количество", "Въведената стойност е невалидна.");
+                NotificationsHost.Error("Notifications", "Невалидно количество", "Въведената стойност е невалидна.");
             }
 
             return false;
@@ -96,18 +89,17 @@
             {
                 userInput = userInput.Replace(",", string.Empty);
 
-                decimal result;
-                if (decimal.TryParse(userInput, out result))
+                if (decimal.TryParse(userInput, out var result))
                 {
                     if (result > this.maximumQuantity)
                     {
                         userInput = this.maximumQuantity.ToString();
-                        NotificationsHost.Error("Невалидно количество", $"Максималното позволено количество е {this.maximumQuantity}.");
+                        NotificationsHost.Error("Notifications", "Невалидно количество", $"Максималното позволено количество е {this.maximumQuantity}.");
                     }
                     else if (result < this.GetMinimumQuantity())
                     {
                         userInput = this.GetMinimumQuantity().ToString();
-                        NotificationsHost.Error("Невалидно количество", $"Минималното позволено количество е {this.GetMinimumQuantity()}.");
+                        NotificationsHost.Error("Notifications", "Невалидно количество", $"Минималното позволено количество е {this.GetMinimumQuantity()}.");
                     }
                 }
             }

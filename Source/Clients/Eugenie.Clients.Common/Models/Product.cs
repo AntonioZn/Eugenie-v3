@@ -3,13 +3,10 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Contracts;
-
-    using GalaSoft.MvvmLight;
-
     using Helpers;
 
-    using Еxtensions;
+    using Sv.Wpf.Core.Extensions;
+    using Sv.Wpf.Core.Mvvm;
 
     public class Product : ViewModelBase, IValidatableObject
     {
@@ -34,46 +31,31 @@
         public string Name
         {
             get => this.name;
-            set
-            {
-                this.Set(() => this.Name, ref this.name, value.RemoveMultipleWhiteSpaces());
-            }
+            set => this.Set(ref this.name, value.TrimMultipleWhiteSpaces());
         }
 
         public decimal BuyingPrice
         {
             get => this.buyingPrice;
-            set
-            {
-                this.Set(() => this.BuyingPrice, ref this.buyingPrice, value);
-            }
+            set => this.Set(ref this.buyingPrice, value);
         }
 
         public decimal? SellingPrice
         {
             get => this.sellingPrice;
-            set
-            {
-                this.Set(() => this.SellingPrice, ref this.sellingPrice, value);
-            }
+            set => this.Set(ref this.sellingPrice, value);
         }
 
         public MeasureType Measure
         {
             get => this.measure;
-            set
-            {
-                this.Set(() => this.Measure, ref this.measure, value);
-            }
+            set => this.Set(ref this.measure, value);
         }
 
         public decimal? Quantity
         {
             get => this.quantity;
-            set
-            {
-                this.Set(() => this.Quantity, ref this.quantity, value);
-            }
+            set => this.Set(ref this.quantity, value);
         }
 
         public ICollection<Barcode> Barcodes
@@ -106,7 +88,7 @@
             }
         }
 
-        public string this[string propertyName]
+        public new string this[string propertyName]
         {
             get
             {
@@ -118,13 +100,6 @@
                         return null;
                 }
             }
-        }
-
-        public string Error { get; }
-
-        public bool HasNoValidationErrors()
-        {
-            return this[nameof(this.Name)] == null;
         }
     }
 }

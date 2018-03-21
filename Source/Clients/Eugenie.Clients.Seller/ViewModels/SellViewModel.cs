@@ -6,16 +6,17 @@
     using Autofac;
 
     using Common.Contracts;
+    using Common.Helpers;
     using Common.Models;
-    using Common.Notifications;
     using Common.Views;
     using Common.WebApiModels;
-
-    using GalaSoft.MvvmLight;
 
     using Helpers;
 
     using MaterialDesignThemes.Wpf;
+
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Mvvm;
 
     using Views;
 
@@ -24,14 +25,12 @@
 
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
-        private readonly IWebApiClient apiClient;
         private readonly FiscalPrinterHandler fiscalPrinterHandler;
         private readonly LotteryTicketChecker lotteryTicketChecker;
         private string fullname;
 
-        public SellViewModel(IWebApiClient apiClient, FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
+        public SellViewModel(FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
         {
-            this.apiClient = apiClient;
             this.fiscalPrinterHandler = fiscalPrinterHandler;
             this.lotteryTicketChecker = lotteryTicketChecker;
 
@@ -42,16 +41,11 @@
 
         public string FullName
         {
-            get
-            {
-                return this.fullname;
-            }
-
-            set
-            {
-                this.Set(() => this.FullName, ref this.fullname, value);
-            }
+            get => this.fullname;
+            set => this.Set(ref this.fullname, value);
         }
+
+        public StoreClient Client => ViewModelLocator.Container.Resolve<MainWindowViewModel>().Client;
 
         public BasketViewModel Basket { get; }
 
@@ -61,7 +55,7 @@
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
 
-            var product = await this.apiClient.GetProductByBarcode(ViewModelLocator.httpClient, barcode);
+            var product = await this.Client.GetProductByBarcodeAsync(barcode);
             if (product != null)
             {
                 this.AddToBasket(product);
@@ -138,7 +132,7 @@
             }
             else
             {
-                NotificationsHost.Error("Изберете продукт", "Трябва да има маркиран продукт.");
+                NotificationsHost.Error("Notifications", "Изберете продукт", "Трябва да има маркиран продукт.");
             }
         }
 
@@ -150,13 +144,13 @@
             }
             else
             {
-                NotificationsHost.Error("Изберете продукт", "Трябва да има маркиран продукт.");
+                NotificationsHost.Error("Notifications", "Изберете продукт", "Трябва да има маркиран продукт.");
             }
         }
 
         public async void HandleF1()
         {
-            var productsSearchViewModel = new ProductsSearchViewModel(this.apiClient);
+            var productsSearchViewModel = new ProductsSearchViewModel(this.Client);
             var productsSearch = new ProductsSearch(productsSearchViewModel);
 
             var result = await DialogHost.Show(productsSearch, "RootDialog");
@@ -174,7 +168,7 @@
                 if ((bool) result)
                 {
 #pragma warning disable 4014
-                    this.apiClient.WasteProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    this.Client.WasteProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
 #pragma warning restore 4014
                                                                                                                           {
                                                                                                                               Id = x.Id,
@@ -185,7 +179,7 @@
             }
             else
             {
-                NotificationsHost.Error("Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
             }
         }
 
@@ -199,7 +193,7 @@
                 if ((bool) result)
                 {
 #pragma warning disable 4014
-                    this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    this.Client.SellProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
 #pragma warning restore 4014
                                                                                                                          {
                                                                                                                              Id = x.Id,
@@ -211,7 +205,7 @@
             }
             else
             {
-                NotificationsHost.Error("Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
             }
         }
 
@@ -225,7 +219,7 @@
                 if ((bool) result)
                 {
 #pragma warning disable 4014
-                    this.apiClient.SellProductsAsync(ViewModelLocator.httpClient, this.Basket.Products.Select(x => new IdQuantityPair
+                    this.Client.SellProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
 #pragma warning restore 4014
                                                                                                                          {
                                                                                                                              Id = x.Id,
@@ -236,7 +230,7 @@
             }
             else
             {
-                NotificationsHost.Error("Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
             }
         }
 
@@ -278,15 +272,14 @@
             }
             else
             {
-                NotificationsHost.Error("Забранено", "Продуктът не може да бъде добавен в този момент.");
+                NotificationsHost.Error("Notifications", "Забранено", "Продуктът не може да бъде добавен в този момент.");
             }
         }
 
         private async void Initialize()
         {
-            var userInfo = await this.apiClient.GetUserInfo(ViewModelLocator.httpClient);
-
-            this.FullName = userInfo.FirstName + " " + userInfo.LastName;
+            var userInfo = await this.Client.GetUserInfoAsync();
+            this.FullName = $"{userInfo.FirstName} {userInfo.LastName}";
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Eugenie.Clients.Seller.Views
 {
-    using GalaSoft.MvvmLight;
+    using Sv.Wpf.Core.Mvvm;
 
     public partial class ChangeCalulator
     {

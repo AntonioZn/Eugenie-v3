@@ -4,9 +4,9 @@
 
     using Common.Contracts;
 
-    using GalaSoft.MvvmLight;
-
     using MaterialDesignThemes.Wpf;
+
+    using Sv.Wpf.Core.Mvvm;
 
     public class MissingProductViewModel : ViewModelBase, IBarcodeHandler
     {

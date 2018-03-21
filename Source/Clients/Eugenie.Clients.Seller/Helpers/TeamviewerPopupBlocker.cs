@@ -7,14 +7,14 @@
     using System.Runtime.InteropServices;
     using System.Timers;
 
-    public class TeamViewerPopupBlocker
+    public static class TeamViewerPopupBlocker
     {
         private const int BN_CLICKED = 245;
         private const int WM_CLOSE = 0x0010;
 
-        private readonly Timer timer;
+        private static readonly Timer timer;
 
-        private readonly List<string> windowNames = new List<string>
+        private static readonly List<string> windowNames = new List<string>
                                                     {
                                                         "Спонсорирана сесия",
                                                         "Commercial use",
@@ -24,29 +24,24 @@
                                                         "Unable to connect"
                                                     };
 
-        public TeamViewerPopupBlocker()
+        static TeamViewerPopupBlocker()
         {
-            this.timer = new Timer();
-            this.timer.Interval = 2000;
-            this.timer.Elapsed += this.OnTimer;
+            timer = new Timer();
+            timer.Interval = 2000;
+            timer.Elapsed += (sender, args) => CheckTeamViewerMainWindowTitle();
         }
 
-        public void Start()
+        public static void Start()
         {
-            this.timer.Start();
+            timer.Start();
         }
 
-        public void Stop()
+        public static void Stop()
         {
-            this.timer.Stop();
+            timer.Stop();
         }
 
-        private void OnTimer(object sender, ElapsedEventArgs e)
-        {
-            this.CheckTeamViewerMainWindowTitle();
-        }
-
-        private void CheckTeamViewerMainWindowTitle()
+        private static void CheckTeamViewerMainWindowTitle()
         {
             var processes = Process.GetProcessesByName("TeamViewer");
 
@@ -62,13 +57,13 @@
                 return;
             }
 
-            foreach (var windowName in this.windowNames.Where(x => x == currentMainWindowTitle))
+            foreach (var windowName in windowNames.Where(x => x == currentMainWindowTitle))
             {
-                this.CloseWindowByName(windowName);
+                CloseWindowByName(windowName);
             }
         }
 
-        private void CloseWindowByName(string windowName)
+        private static void CloseWindowByName(string windowName)
         {
             if (string.IsNullOrEmpty(windowName))
             {

@@ -2,9 +2,9 @@
 {
     using Common.Contracts;
 
-    using GalaSoft.MvvmLight;
-
     using Helpers;
+
+    using Sv.Wpf.Core.Mvvm;
 
     public class LotteryTicketCheckerViewModel : ViewModelBase, IBarcodeHandler
     {
@@ -19,26 +19,14 @@
 
         public string Winning
         {
-            get
-            {
-                return this.winning;
-            }
-            set
-            {
-                this.Set(() => this.Winning, ref this.winning, value);
-            }
+            get => this.winning;
+            set => this.Set(ref this.winning, value);
         }
 
         public bool IsLoading
         {
-            get
-            {
-                return this.isLoading;
-            }
-            set
-            {
-                this.Set(() => this.IsLoading, ref this.isLoading, value);
-            }
+            get => this.isLoading;
+            set => this.Set(ref this.isLoading, value);
         }
 
         public async void HandleBarcode(string barcode)

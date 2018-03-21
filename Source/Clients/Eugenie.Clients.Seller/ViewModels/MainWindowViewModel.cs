@@ -7,11 +7,14 @@
     using System.Windows.Input;
 
     using Common.Contracts;
-    using Common.Notifications;
+    using Common.Helpers;
 
-    using GalaSoft.MvvmLight;
+    using Helpers;
 
     using Server.Host;
+
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Mvvm;
 
     using Views;
 
@@ -28,30 +31,27 @@
             this.webApiHost = webApiHost;
             this.settings = settings;
 
-            if (string.IsNullOrEmpty(this.settings.Address))
-            {
-                this.Content = new Views.Settings();
-            }
-            else
-            {
+            TeamViewerPopupBlocker.Start();
+
+            //if (string.IsNullOrEmpty(this.settings.Address))
+           // {
+           //     this.Content = new Views.Settings();
+            //}
+            //else
+            //{
                 this.Content = new Login();
-            }
+            //}
 
             this.Initialize();
         }
 
         public UserControl Content
         {
-            get
-            {
-                return this.content;
-            }
-
-            private set
-            {
-                this.Set(() => this.Content, ref this.content, value);
-            }
+            get => this.content;
+            private set => this.Set(ref this.content, value);
         }
+
+        public StoreClient Client { get; set; }
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
@@ -66,19 +66,19 @@
         public void HostServer(int port)
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
-            var address = "http://" + localIp + ":" + port;
+            var address = $"http://{localIp}:{port}";
             try
             {
                 this.webApiHost.HostWebApi(address);
-                NotificationsHost.Success("Успешно", "Сървърът беше стартиран успешно.");
+                NotificationsHost.Success("Notifications", "Успешно", "Сървърът беше стартиран успешно.");
             }
             catch (AccessDeniedException)
             {
-                NotificationsHost.Error("Неуспешно стартиране на сървъра", "Програмата трябва да бъде стартирана като администратор.");
+                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Програмата трябва да бъде стартирана като администратор.");
             }
             catch (PortInUseException)
             {
-                NotificationsHost.Error("Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
+                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
             }
         }
 
@@ -94,7 +94,7 @@
                 var hours = this.settings.BackupHours;
                 var minutes = this.settings.BackupMinutes;
                 var path = this.settings.BackupPath;
-                this.webApiHost.AutoBackupDatabase(hours, minutes, path);
+                //this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }
 

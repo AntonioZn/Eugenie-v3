@@ -9,10 +9,14 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Exceptions;
+
     using Models;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+
+    using Sv.Wpf.Core.Helpers;
 
     using WebApiModels;
 
@@ -26,7 +30,9 @@
             this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             this.client.BaseAddress = new Uri(address);
 
-            this.client.Timeout = TimeSpan.FromSeconds(30);
+            this.client.Timeout = TimeSpan.FromSeconds(5);
+            this.client.RetryAfterTimeout = false;
+            this.client.RetryCount = 0;
         }
 
         public void Dispose()
@@ -34,156 +40,151 @@
             this.client.Dispose();
         }
 
-        public async Task<bool> Authenticate(string username, string password)
+        public async Task AuthenticateAsync(string username, string password, CancellationToken cToken = default(CancellationToken))
         {
-            try
+            var content = new StringContent($"grant_type=password&username={username}&password={password}");
+            var response = await this.client.PostAsync("api/account/token", content, cToken);
+
+            if (!response.IsSuccessStatusCode)
             {
-                var content = new StringContent($"grant_type=password&username={username}&password={password}");
-                var response = await this.client.PostAsync("api/account/token", content);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    var token = JObject.Parse(result)["access_token"].ToString();
-                    this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    return true;
-                }
-            }
-            catch
-            {
+                var text = await response.Content.ReadAsStringAsync();
+                throw new LoginException(text);
             }
 
-            return false;
+            var result = await response.Content.ReadAsStringAsync();
+            var token = JObject.Parse(result)["access_token"].ToString();
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public async Task<ICollection<Report>> GetReportsAsync()
+        public async Task<ICollection<Report>> GetReportsAsync(CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync("api/reports");
+            var response = await this.client.GetAsync("api/reports", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ICollection<Report>>(result);
         }
 
-        public async Task<ReportDetailsResponse> GetReportDetailsAsync(DateTime date)
+        public async Task<ReportDetailsResponse> GetReportDetailsAsync(DateTime date, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/reports?date={date.Year}-{date.Month}-{date.Day}");
+            var response = await this.client.GetAsync($"api/reports?date={date.Year}-{date.Month}-{date.Day}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ReportDetailsResponse>(result);
         }
 
-        public async Task<ICollection<Seller>> GetSellersAsync()
+        public async Task<ICollection<Seller>> GetSellersAsync(CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync("api/sellers");
+            var response = await this.client.GetAsync("api/sellers", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ICollection<Seller>>(result);
         }
 
-        public async Task<ReportDetailsResponse> GetDealsForSeller(string username, DateTime start, DateTime end)
+        public async Task<ReportDetailsResponse> GetDealsForSellerAsync(string username, DateTime start, DateTime end, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/deals?username={username}&start={start.Year}-{start.Month}-{start.Day}&end={end.Year}-{end.Month}-{end.Day}");
+            var response = await this.client.GetAsync($"api/deals?username={username}&start={start.Year}-{start.Month}-{start.Day}&end={end.Year}-{end.Month}-{end.Day}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ReportDetailsResponse>(result);
         }
 
-        public async Task<ICollection<Product>> GetProductsAsync()
+        public async Task<ICollection<Product>> GetProductsAsync(CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync("api/products");
+            var response = await this.client.GetAsync("api/products", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ICollection<Product>>(result);
         }
 
-        public async Task<HttpStatusCode> AddOrUpdateAsync(AddProductModel model)
+        public async Task<HttpStatusCode> AddOrUpdateAsync(AddProductModel model, CancellationToken cToken = default(CancellationToken))
         {
             var serialized = JsonConvert.SerializeObject(model);
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
-            var response = await this.client.PostAsync("api/products", content);
+            var response = await this.client.PostAsync("api/products", content, cToken);
 
             return response.StatusCode;
         }
 
-        public async Task<ICollection<MissingProduct>> GetMissingProductsAsync()
+        public async Task<ICollection<MissingProduct>> GetMissingProductsAsync(CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/missingProducts");
+            var response = await this.client.GetAsync($"api/missingProducts", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ICollection<MissingProduct>>(result);
         }
 
-        public async Task<UserInfoResponse> GetUserInfo()
+        public async Task<UserInfoResponse> GetUserInfoAsync(CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/account/userinfo");
+            var response = await this.client.GetAsync($"api/account/userinfo", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<UserInfoResponse>(result);
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name, CancellationToken token)
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/products?name={name}", token);
+            var response = await this.client.GetAsync($"api/products?name={name}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/products?id={id}");
+            var response = await this.client.GetAsync($"api/products?id={id}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Product>(result);
         }
 
-        public async Task<Product> GetProductByBarcode(string barcode)
+        public async Task<Product> GetProductByBarcodeAsync(string barcode, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/products?barcode={barcode}");
+            var response = await this.client.GetAsync($"api/products?barcode={barcode}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Product>(result);
         }
 
-        public async Task<HttpStatusCode> WasteProductsAsync(IEnumerable<IdQuantityPair> model)
+        public async Task<HttpStatusCode> WasteProductsAsync(IEnumerable<IdQuantityPair> model, CancellationToken cToken = default(CancellationToken))
         {
             var serialized = JsonConvert.SerializeObject(model);
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
-            var response = await this.client.PutAsync("api/deals/waste", content);
+            var response = await this.client.PutAsync("api/deals/waste", content, cToken);
 
             return response.StatusCode;
         }
 
-        public async Task<HttpStatusCode> SellProductsAsync(IEnumerable<IdQuantityPair> model)
+        public async Task<HttpStatusCode> SellProductsAsync(IEnumerable<IdQuantityPair> model, CancellationToken cToken = default(CancellationToken))
         {
             var serialized = JsonConvert.SerializeObject(model);
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
 
-            var response = await this.client.PutAsync("api/deals/sell", content);
+            var response = await this.client.PutAsync("api/deals/sell", content, cToken);
 
             return response.StatusCode;
         }
 
-        public async Task<IEnumerable<Product>> GetExpiringProductsAsync(int days)
+        public async Task<IEnumerable<Product>> GetExpiringProductsAsync(int days, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/products?days={days}");
+            var response = await this.client.GetAsync($"api/products?days={days}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
 
-        public async Task<IEnumerable<Product>> GetLowQuantityProducts(decimal quantity)
+        public async Task<IEnumerable<Product>> GetLowQuantityProductsAsync(decimal quantity, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.GetAsync($"api/products?quantity={quantity}");
+            var response = await this.client.GetAsync($"api/products?quantity={quantity}", cToken);
 
             var result = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
         }
 
-        public async Task<HttpStatusCode> DeleteProductAsync(string name)
+        public async Task<HttpStatusCode> DeleteProductAsync(string name, CancellationToken cToken = default(CancellationToken))
         {
-            var response = await this.client.DeleteAsync($"api/products?name={name}");
+            var response = await this.client.DeleteAsync($"api/products?name={name}", cToken);
             return response.StatusCode;
         }
     }

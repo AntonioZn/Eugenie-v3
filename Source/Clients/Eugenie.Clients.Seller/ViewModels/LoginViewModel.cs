@@ -1,37 +1,38 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
 
     using Autofac;
 
     using Common.Contracts;
+    using Common.Exceptions;
     using Common.Helpers;
-    using Common.Models;
-    using Common.Notifications;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
-
-    using Helpers;
 
     using Models;
 
-    using Properties;
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Helpers;
+    using Sv.Wpf.Core.Mvvm;
+    using Sv.Wpf.Core.Mvvm.ValidationRules;
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
     {
+        private readonly TaskManager taskManager;
         private readonly Settings settings;
 
-        public LoginViewModel(Settings settings)
+        public LoginViewModel(TaskManager taskManager, Settings settings)
         {
+            this.taskManager = taskManager;
             this.settings = settings;
-            this.Login = new RelayCommand<object>(this.HandleLogin);
         }
 
-        public ICommand Login { get; set; }
+        public ICommand LoginCommand => new RelayCommand<PasswordBox>(this.HandleLogin, (pb) => this.taskManager.CanRun() && this.HasNoValidationErrors() && pb.Password.Length >= 4 && pb.Password.Length < 20);
 
+        [ValidateString(3, 20)]
         public string Username { get; set; }
 
         public void HandleKey(KeyEventArgs e, Key key)
@@ -45,28 +46,38 @@
             }
         }
 
-        private async void HandleLogin(object obj)
+        private async void HandleLogin(PasswordBox passwordBox)
         {
-            var passwordBox = obj as PasswordBox;
-            var password = passwordBox.Password;
+            var task = new TaskManager.Task("Влизане", true);
+            task.Function = async (cts, logger) =>
+                            {
+                                var client = new StoreClient(this.settings.Address);
 
-            var server = new Store
-                         {
-                             Addresses = new List<string> { this.settings.Address },
-                             Password = password,
-                             Username = this.Username
-                         };
+                                try
+                                {
+                                    await client.AuthenticateAsync(this.Username, passwordBox.Password, cts.Token);
+                                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().Client = client;
+                                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSell();
+                                    return;
+                                }
+                                catch (LoginException)
+                                {
+                                    NotificationsHost.Error("Notifications", "Грешно име или парола", "Въведените име или парола са невалидни.");
+                                }
+                                catch (HttpRequestException)
+                                {
+                                    NotificationsHost.Error("Notifications", "Грешка", "Няма връзка към сървъра.");
+                                }
+                                catch (TaskCanceledException)
+                                {
+                                    client.Dispose();
+                                    throw;
+                                }
 
-            var client = await ServerTester.TestServerAsync(server);
-            if (client == null)
-            {
-                NotificationsHost.Error("Грешно име или парола", "Въведените парола или име са невалидни.");
-            }
-            else
-            {
-                ViewModelLocator.httpClient = client;
-                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSell();
-            }
+                                client.Dispose();
+                            };
+
+            await this.taskManager.Run(task);
         }
     }
 }

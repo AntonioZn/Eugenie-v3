@@ -15,15 +15,13 @@
 
     public class WebApiHost : IWebApiHost
     {
-        public readonly IScheduler scheduler;
-
         public WebApiHost()
         {
-            var schedulerFactory = new StdSchedulerFactory();
-            this.scheduler = schedulerFactory.GetScheduler();
+            //var schedulerFactory = new StdSchedulerFactory();
+            //this.Scheduler = schedulerFactory.GetScheduler();
         }
 
-        public IScheduler Scheduler => this.scheduler;
+        //public IScheduler Scheduler { get; }
 
         public void HostWebApi(string address)
         {
@@ -50,14 +48,14 @@
             this.HostWebApi(address);
         }
 
-        public void AutoBackupDatabase(int hours, int minutes, string path)
-        {
-            var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("savePath", path).Build();
-            var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
-
-            this.Scheduler.DeleteJob(job.Key);
-            this.Scheduler.ScheduleJob(job, trigger);
-            this.Scheduler.Start();
-        }
+        //public void AutoBackupDatabase(int hours, int minutes, string path)
+        //{
+        //    var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("savePath", path).Build();
+        //    var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
+        //
+        //    this.Scheduler.DeleteJob(job.Key);
+        //    this.Scheduler.ScheduleJob(job, trigger);
+        //    this.Scheduler.Start();
+        //}
     }
 }

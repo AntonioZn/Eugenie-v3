@@ -5,9 +5,9 @@
     using System.Linq;
 
     using Common.Models;
-    using Common.Еxtensions;
 
-    using GalaSoft.MvvmLight;
+    using Sv.Wpf.Core.Extensions;
+    using Sv.Wpf.Core.Mvvm;
 
     public class BasketViewModel : ViewModelBase
     {
@@ -16,10 +16,7 @@
 
         public ICollection<Product> Products
         {
-            get
-            {
-                return this.products ?? (this.products = new ObservableCollection<Product>());
-            }
+            get => this.products ?? (this.products = new ObservableCollection<Product>());
 
             set
             {
@@ -31,15 +28,9 @@
 
         public decimal TotalPrice
         {
-            get
-            {
-                return this.totalPrice;
-            }
+            get => this.totalPrice;
 
-            set
-            {
-                this.Set(() => this.TotalPrice, ref this.totalPrice, value);
-            }
+            set => this.Set(ref this.totalPrice, value);
         }
 
         public void Add(Product product)

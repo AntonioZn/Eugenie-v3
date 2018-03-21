@@ -1,12 +1,6 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System.Net.Http;
-
     using Autofac;
-
-    using Common.Contracts;
-    using Common.Helpers;
-    using Common.Notifications;
 
     using Helpers;
 
@@ -14,15 +8,15 @@
 
     using Server.Host;
 
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Helpers;
+
     public class ViewModelLocator
     {
-        public static HttpClient httpClient;
-
         public ViewModelLocator()
         {
             this.Register();
             
-            new TeamViewerPopupBlocker().Start();
             this.LotteryTicketCheckerLogin();
         }
 
@@ -42,8 +36,9 @@
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterType<WebApiClient>().As<IWebApiClient>().SingleInstance();
             containerBuilder.RegisterType<WebApiHost>().As<IWebApiHost>().SingleInstance();
+
+            containerBuilder.RegisterType<TaskManager>().SingleInstance();
 
             containerBuilder.RegisterType<MainWindowViewModel>().SingleInstance();
             containerBuilder.RegisterType<LoginViewModel>();
@@ -68,11 +63,11 @@
                 var result = await checker.Login(settings.LotteryUsername, settings.LotteryPassword);
                 if (result)
                 {
-                    NotificationsHost.Success("Успешно", "Успешен вход в националната лотария");
+                    NotificationsHost.Success("Notifications", "Успешно", "Успешен вход в националната лотария");
                 }
                 else
                 {
-                    NotificationsHost.Error("Грешка", "Грешно име или парола за националната лотария");
+                    NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола за националната лотария");
                 }
             }
         }

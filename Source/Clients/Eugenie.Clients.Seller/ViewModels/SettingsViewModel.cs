@@ -5,16 +5,14 @@
     using System.Net.Sockets;
     using System.Windows.Input;
 
-    using Common.Notifications;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
-
     using Helpers;
 
     using Models;
 
     using Server.Host;
+
+    using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Mvvm;
 
     public class SettingsViewModel : ViewModelBase
     {
@@ -51,17 +49,14 @@
 
         public string Port
         {
-            get
-            {
-                return this.port;
-            }
+            get => this.port;
 
             set
             {
                 int parsedPort;
                 if (int.TryParse(value, out parsedPort))
                 {
-                    this.Set(() => this.Port, ref this.port, value);
+                    this.Set(ref this.port, value);
                     if (this.IsSelfHost)
                     {
                         this.Address = this.GetAddress();
@@ -72,14 +67,11 @@
 
         public bool IsSelfHost
         {
-            get
-            {
-                return this.isSelfHost;
-            }
+            get => this.isSelfHost;
 
             set
             {
-                this.Set(() => this.IsSelfHost, ref this.isSelfHost, value);
+                this.Set(ref this.isSelfHost, value);
                 if (this.isSelfHost)
                 {
                     this.Address = this.GetAddress();
@@ -89,15 +81,9 @@
 
         public string Address
         {
-            get
-            {
-                return this.address;
-            }
+            get => this.address;
 
-            set
-            {
-                this.Set(() => this.Address, ref this.address, value);
-            }
+            set => this.Set(ref this.address, value);
         }
 
         private void HandleSave()
@@ -118,16 +104,17 @@
             return selfHostAddress;
         }
 
+        //TODO: add better error messages
         private async void HandleLotteryLogin()
         {
             var result = await this.lotteryTicketChecker.Login(this.settings.LotteryUsername, this.settings.LotteryPassword);
             if (result)
             {
-                NotificationsHost.Success("Успешно", "Името и паролата са валидни");
+                NotificationsHost.Success("Notifications", "Успешно", "Името и паролата са валидни");
             }
             else
             {
-                NotificationsHost.Error("Грешка", "Грешно име или парола");
+                NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола");
             }
         }
     }

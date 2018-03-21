@@ -5,17 +5,8 @@
     using System.Security.Principal;
     using System.Windows;
     using System.Windows.Input;
-    using System.Windows.Threading;
 
-    using Autofac;
-
-    using Common.Helpers;
-
-    using Helpers;
-
-    using Models;
-
-    using ViewModels;
+    using Sv.Wpf.Core.Extensions;
 
     public partial class App
     {
@@ -42,13 +33,7 @@
             Mouse.OverrideCursor = Cursors.None;
 #endif
             this.InitializeComponent();
-            this.DispatcherUnhandledException += this.OnUnhandledException;
-        }
-
-        private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            Logger.LogToFile(e.Exception, ViewModelLocator.Container.Resolve<Settings>().LogPath);
-            e.Handled = true;
+            this.LogUnhandledExceptions("Notifications");
         }
 
         private bool IsRunAsAdministrator()

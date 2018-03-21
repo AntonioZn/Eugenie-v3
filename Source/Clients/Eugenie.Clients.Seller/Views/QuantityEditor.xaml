@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Eugenie.Clients.Seller.Views.QuantityEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Sv.Wpf.Core.Controls;assembly=Sv.Wpf.Core"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
@@ -19,8 +20,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryDark"
-                                  Padding="16">
+                                  Padding="16"
+                                  Mode="PrimaryDark">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -54,13 +55,11 @@
                 <system:Boolean>False</system:Boolean>
             </Button.CommandParameter>
         </Button>
-        <models:EugenieTextBox x:Name="txtQuantity"
-                               Grid.Row="1"
-                               AutoSelect="True"
-                               BlockInvalidNumberCharacters="True"
-                               FontSize="60"
-                               Text="{Binding Quantity,
-                                              Mode=TwoWay,
-                                              UpdateSourceTrigger=PropertyChanged}" />
+        <controls:SvTextBox x:Name="txtQuantity"
+                            Grid.Row="1"
+                            AutoSelect="True"
+                            BlockInvalidNumberCharacters="True"
+                            FontSize="60"
+                            Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>
