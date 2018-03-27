@@ -36,10 +36,10 @@
 
             this.checkTicketTask = new TaskManager.Task("check", false);
             this.checkTicketTask.Function = async (cts, logger) =>
-                            {
-                                this.Result = string.Empty;
-                                this.Result = await this.lotteryTicketChecker.CheckAsync(barcode, cts.Token);
-                            };
+                                            {
+                                                this.Result = string.Empty;
+                                                this.Result = await this.lotteryTicketChecker.CheckAsync(barcode, cts.Token);
+                                            };
 
             await this.TaskManager.Run(this.checkTicketTask);
         }

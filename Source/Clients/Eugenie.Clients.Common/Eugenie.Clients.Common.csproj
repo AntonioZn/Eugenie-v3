@@ -78,6 +78,9 @@
     <Compile Include="Exceptions\LoginException.cs" />
     <Compile Include="Helpers\StoreClient.cs" />
     <Compile Include="Helpers\Validator.cs" />
+    <Compile Include="Views\Confirm.xaml.cs">
+      <DependentUpon>Confirm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WebApiModels\AddProductModel.cs" />
     <Compile Include="Models\Barcode.cs" />
     <Compile Include="Models\ExpirationDate.cs" />
@@ -103,6 +106,12 @@
       <Project>{cb4424bf-729b-437f-a54b-8483fdfa9529}</Project>
       <Name>Eugenie.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\Confirm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

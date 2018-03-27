@@ -3,11 +3,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
-    
+
     using Common;
     using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
+    using Common.Views;
     using Common.WebApiModels;
 
     using Helpers;
@@ -15,6 +16,8 @@
     using MaterialDesignThemes.Wpf;
 
     using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Extensions;
+    using Sv.Wpf.Core.Helpers;
     using Sv.Wpf.Core.Mvvm;
 
     using Views;
@@ -24,14 +27,16 @@
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
         private readonly INavigationService navigationService;
+        private readonly TaskManager taskManager;
         private readonly FiscalPrinterHandler fiscalPrinterHandler;
         private readonly LotteryTicketChecker lotteryTicketChecker;
         private string fullname;
         private StoreClient client;
 
-        public SellViewModel(INavigationService navigationService, FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
+        public SellViewModel(INavigationService navigationService, TaskManager taskManager, FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
         {
             this.navigationService = navigationService;
+            this.taskManager = taskManager;
             this.fiscalPrinterHandler = fiscalPrinterHandler;
             this.lotteryTicketChecker = lotteryTicketChecker;
 
@@ -50,6 +55,12 @@
 
         public async void HandleBarcode(string barcode)
         {
+            if (this.taskManager.TaskIsRunning)
+            {
+                NotificationsHost.Error("Notifications", "Изчакайте", "В момента се изпълнява друга операция.");
+                return;
+            }
+
             DialogHost.CloseDialogCommand.Execute(false, null);
 
             var product = await this.client.GetProductByBarcodeAsync(barcode);
@@ -65,6 +76,12 @@
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
+            if (this.taskManager.TaskIsRunning)
+            {
+                NotificationsHost.Error("Notifications", "Изчакайте", "В момента се изпълнява друга операция.");
+                return;
+            }
+
             switch (key)
             {
                 case Key.Delete:
@@ -107,10 +124,7 @@
             if (this.lotteryTicketChecker.IsLoggedIn)
             {
                 var result = await this.navigationService.ShowDialogAsync<LotteryTicketCheckerViewModel, bool>();
-                if (result)
-                {
-                    
-                }
+                this.taskManager.Tasks.ForEach(x => this.taskManager.CancelTask(x));
             }
         }
 
@@ -118,8 +132,8 @@
         {
             if (this.SelectedProduct != null)
             {
-                var result = await ConfirmationsHost.Show("Потвърди", $"Изтриване на {this.SelectedProduct.Name}?", "RootDialog");
-                if (result)
+                var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
+                if ((bool) result)
                 {
                     this.Basket.Delete(this.SelectedProduct);
                 }
@@ -159,16 +173,22 @@
                 return;
             }
 
-            var result = await ConfirmationsHost.Show("Потвърди", "Бракуване?", "RootDialog");
-            if (result)
+            var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
+            if ((bool) result)
             {
                 var pairs = this.Basket.Products.Select(x => new IdQuantityPair
                                                              {
                                                                  Id = x.Id,
                                                                  Quantity = x.Quantity.Value
                                                              });
-                await this.client.WasteProductsAsync(pairs);
-                this.Basket.Clear();
+                var task = new TaskManager.Task("waste", false);
+                task.Function = async (cts, logger) =>
+                                {
+                                    await this.client.WasteProductsAsync(pairs);
+                                    this.Basket.Clear();
+                                };
+
+                await this.taskManager.Run(task);
             }
         }
 
@@ -188,20 +208,27 @@
                                                                  Id = x.Id,
                                                                  Quantity = x.Quantity.Value
                                                              });
-                await this.client.SellProductsAsync(pairs);
-                if (printReceipt)
-                {
-                    this.fiscalPrinterHandler.ExportReceipt(this.Basket.Products);
-                }
 
-                this.Basket.Clear();
+                var task = new TaskManager.Task("sell", false);
+                task.Function = async (cts, logger) =>
+                                {
+                                    await this.client.SellProductsAsync(pairs);
+                                    if (printReceipt)
+                                    {
+                                        this.fiscalPrinterHandler.ExportReceipt(this.Basket.Products);
+                                    }
+
+                                    this.Basket.Clear();
+                                };
+
+                await this.taskManager.Run(task);
             }
         }
 
         private async void Logout()
         {
-            var result = await ConfirmationsHost.Show("Потвърди", "Излизане?", "RootDialog");
-            if (result)
+            var result = await DialogHost.Show(new Confirm("Излизане?"), "RootDialog");
+            if ((bool) result)
             {
                 await this.navigationService.NavigateToAsync<LoginViewModel>();
             }

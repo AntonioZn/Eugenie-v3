@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="Eugenie.Clients.Common.Views.Confirm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             Width="Auto"
+             Height="Auto"
+             MinWidth="400"
+             Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{x:Null}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             TextElement.FontSize="20"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBox Width="0" Height="0" />
+        <materialDesign:ColorZone Grid.Row="0"
+                                  Padding="16"
+                                  Mode="PrimaryDark">
+            <Grid>
+                <materialDesign:PackIcon Width="48"
+                                         Height="48"
+                                         VerticalAlignment="Center"
+                                         Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Foreground}"
+                                         Kind="CommentQuestionOutline" />
+                <TextBlock HorizontalAlignment="Center"
+                           Style="{StaticResource MaterialDesignDisplay2TextBlock}"
+                           Text="Потвърдете" />
+            </Grid>
+        </materialDesign:ColorZone>
+        <Button Grid.Row="0"
+                Grid.Column="0"
+                Width="0"
+                Height="0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                IsDefault="True"
+                IsTabStop="False">
+            <Button.CommandParameter>
+                <system:Boolean>True</system:Boolean>
+            </Button.CommandParameter>
+        </Button>
+        <Button Grid.Row="0"
+                Grid.Column="0"
+                Width="0"
+                Height="0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                IsCancel="True"
+                IsTabStop="False">
+            <Button.CommandParameter>
+                <system:Boolean>False</system:Boolean>
+            </Button.CommandParameter>
+        </Button>
+        <TextBlock x:Name="tbQuestion"
+                   Grid.Row="1"
+                   Margin="20"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource MaterialDesignDisplay2TextBlock}" />
+    </Grid>
+</UserControl>
