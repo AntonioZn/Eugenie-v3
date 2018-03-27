@@ -21,5 +21,17 @@
         public string LotteryUsername { get; set; }
 
         public string LotteryPassword { get; set; }
+
+        public int OpenHours { get; set; } = 7;
+
+        public int OpenMinutes { get; set; } = 30;
+
+        public int CloseHours { get; set; } = 21;
+
+        public int CloseMinutes { get; set; } = 0;
+
+        public bool Shutdown { get; set; }
+
+        public bool Sleep { get; set; }
     }
 }
