@@ -21,7 +21,8 @@
         {
             this.InitializeComponent();
             this.PreviewKeyDown += this.OnKeyDown;
-
+            this.notif.Loaded += (sender, args) => ((MainWindowViewModel) this.DataContext).InitializeAsync(null);
+            
 #if DEBUG
             this.WindowStyle = WindowStyle.SingleBorderWindow;
             this.Topmost = false;

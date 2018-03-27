@@ -1,8 +1,10 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -16,33 +18,23 @@
     using Sv.Wpf.Core.Controls;
     using Sv.Wpf.Core.Mvvm;
 
-    using Views;
-
-    using Settings = Models.Settings;
+    using LotteryTicketChecker = Helpers.LotteryTicketChecker;
 
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
-        private readonly Settings settings;
-        private UserControl content;
+        private readonly LotteryTicketChecker lotteryTicketChecker;
 
-        public MainWindowViewModel(IWebApiHost webApiHost, Settings settings)
+        private Models.Settings settings;
+        private UserControl content;
+        private IDisposable host;
+
+        public MainWindowViewModel(IWebApiHost webApiHost, LotteryTicketChecker lotteryTicketChecker)
         {
             this.webApiHost = webApiHost;
-            this.settings = settings;
+            this.lotteryTicketChecker = lotteryTicketChecker;
 
             TeamViewerPopupBlocker.Start();
-
-            //if (string.IsNullOrEmpty(this.settings.Address))
-           // {
-           //     this.Content = new Views.Settings();
-            //}
-            //else
-            //{
-                this.Content = new Login();
-            //}
-
-            this.Initialize();
         }
 
         public UserControl Content
@@ -63,29 +55,20 @@
             (this.Content.DataContext as IBarcodeHandler)?.HandleBarcode(barcode);
         }
 
-        public void HostServer(int port)
+        public override Task InitializeAsync(object navigationData)
         {
-            var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
-            var address = $"http://{localIp}:{port}";
-            try
+            this.settings = SettingsManager.Get();
+            if (string.IsNullOrEmpty(this.settings.ServerAddress))
             {
-                this.webApiHost.HostWebApi(address);
-                NotificationsHost.Success("Notifications", "Успешно", "Сървърът беше стартиран успешно.");
+                this.Content = new Views.Settings();
+                return Task.CompletedTask;
             }
-            catch (AccessDeniedException)
-            {
-                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Програмата трябва да бъде стартирана като администратор.");
-            }
-            catch (PortInUseException)
-            {
-                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
-            }
-        }
 
-        public void Initialize()
-        {
+            this.Content = new Views.Login();
+
             if (this.settings.IsSelfHost)
             {
+                this.host?.Dispose();
                 this.HostServer(this.settings.Port);
             }
 
@@ -96,21 +79,43 @@
                 var path = this.settings.BackupPath;
                 //this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
+
+            return Task.CompletedTask;
         }
 
         public void ShowLogin()
         {
-            this.Content = new Login();
+            this.Client?.Dispose();
+            this.Content = new Views.Login();
         }
 
         public void ShowSell()
         {
-            this.Content = new Sell();
+            this.Content = new Views.Sell();
         }
 
         public void ShowSettings()
         {
             this.Content = new Views.Settings();
+        }
+
+        private void HostServer(int port)
+        {
+            var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+            var address = $"http://{localIp}:{port}";
+            try
+            {
+                this.host = this.webApiHost.HostWebApi(address);
+                NotificationsHost.Success("Notifications", "Успешно", "Сървърът беше стартиран успешно.");
+            }
+            catch (AccessDeniedException)
+            {
+                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Програмата трябва да бъде стартирана като администратор.");
+            }
+            catch (PortInUseException)
+            {
+                NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
+            }
         }
     }
 }
