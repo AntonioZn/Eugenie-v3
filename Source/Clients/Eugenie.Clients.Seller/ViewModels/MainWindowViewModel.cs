@@ -34,6 +34,7 @@
             this.lotteryTicketChecker = lotteryTicketChecker;
 
             TeamViewerPopupBlocker.Start();
+            new WorkingTimeManager().StartAsync();
         }
 
         public UserControl Content

@@ -173,6 +173,7 @@
     <Compile Include="Helpers\LotteryTicketChecker.cs" />
     <Compile Include="Helpers\SettingsManager.cs" />
     <Compile Include="Helpers\TeamViewerPopupBlocker.cs" />
+    <Compile Include="Helpers\WorkingTimeManager.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\BasketViewModel.cs" />
