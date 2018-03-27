@@ -64,9 +64,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\BarcodeScannerHandler.cs" />
-    <Compile Include="Behaviors\KeyHandler.cs" />
-    <Compile Include="Behaviors\NavigateDataGridWithArrowsHandler.cs" />
+    <Compile Include="Handlers\BarcodeScannerHandler.cs" />
+    <Compile Include="Handlers\KeyHandler.cs" />
+    <Compile Include="Handlers\NavigateDataGridWithArrowsHandler.cs" />
     <Compile Include="Contracts\IKeyHandler.cs" />
     <Compile Include="Contracts\IBarcodeHandler.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />

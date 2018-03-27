@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Behaviors
+﻿namespace Eugenie.Clients.Common.Handlers
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -18,8 +18,9 @@
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var dataGrid = this.GetDataGrid();
+            if (e.Key != Key.Down && e.Key != Key.Up) return;
 
+            var dataGrid = this.GetDataGrid();
             if (dataGrid != null)
             {
                 if (e.Key == Key.Down)
@@ -38,7 +39,7 @@
                 }
                 else if (e.Key == Key.Up)
                 {
-                    if (dataGrid?.SelectedIndex > 0)
+                    if (dataGrid.SelectedIndex > 0)
                     {
                         dataGrid.SelectedIndex -= 1;
                     }

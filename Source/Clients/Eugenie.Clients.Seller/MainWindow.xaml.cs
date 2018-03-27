@@ -3,7 +3,7 @@
     using System;
     using System.Windows;
 
-    using Common.Behaviors;
+    using Common.Handlers;
 
     using ViewModels;
 

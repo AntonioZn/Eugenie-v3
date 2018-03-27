@@ -1,4 +1,4 @@
-﻿namespace Eugenie.Clients.Common.Behaviors
+﻿namespace Eugenie.Clients.Common.Handlers
 {
     using System.Windows;
     using System.Windows.Controls;
