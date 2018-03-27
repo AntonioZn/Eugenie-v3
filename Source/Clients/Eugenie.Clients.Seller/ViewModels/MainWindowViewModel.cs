@@ -24,8 +24,7 @@
     {
         private readonly IWebApiHost webApiHost;
         private readonly LotteryTicketChecker lotteryTicketChecker;
-
-        private Models.Settings settings;
+        
         private UserControl content;
         private IDisposable host;
 
@@ -57,8 +56,10 @@
 
         public override Task InitializeAsync(object navigationData)
         {
-            this.settings = SettingsManager.Get();
-            if (string.IsNullOrEmpty(this.settings.ServerAddress))
+            this.host?.Dispose();
+
+            var settings = SettingsManager.Get();
+            if (string.IsNullOrEmpty(settings.ServerAddress))
             {
                 this.Content = new Views.Settings();
                 return Task.CompletedTask;
@@ -66,17 +67,16 @@
 
             this.Content = new Views.Login();
 
-            if (this.settings.IsSelfHost)
+            if (settings.IsSelfHost)
             {
-                this.host?.Dispose();
-                this.HostServer(this.settings.Port);
+                this.HostServer(settings.Port);
             }
 
-            if (this.settings.BackupDatabase)
+            if (settings.BackupDatabase)
             {
-                var hours = this.settings.BackupHours;
-                var minutes = this.settings.BackupMinutes;
-                var path = this.settings.BackupPath;
+                var hours = settings.BackupHours;
+                var minutes = settings.BackupMinutes;
+                var path = settings.BackupPath;
                 //this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
 
