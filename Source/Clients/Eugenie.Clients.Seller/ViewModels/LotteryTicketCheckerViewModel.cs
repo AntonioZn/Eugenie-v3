@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System.Threading;
+
     using Common.Contracts;
 
     using Helpers;
@@ -35,7 +37,7 @@
             {
                 this.Winning = string.Empty;
                 this.IsLoading = true;
-                this.Winning = await this.lotteryTicketChecker.Check(barcode);
+                this.Winning = await this.lotteryTicketChecker.CheckAsync(barcode, CancellationToken.None);
                 this.IsLoading = false;
             }
         }

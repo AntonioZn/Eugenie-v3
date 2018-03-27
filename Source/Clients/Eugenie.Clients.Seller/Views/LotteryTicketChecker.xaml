@@ -19,8 +19,8 @@
         </Grid.RowDefinitions>
         <TextBox Width="0" Height="0" />
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryDark"
-                                  Padding="16">
+                                  Padding="16"
+                                  Mode="PrimaryDark">
             <TextBlock HorizontalAlignment="Center"
                        Style="{StaticResource MaterialDesignDisplay2TextBlock}"
                        Text="Проверка на билет" />
@@ -47,12 +47,11 @@
             </Button.CommandParameter>
         </Button>
         <materialDesign:Card Grid.Row="1"
+                             Padding="10"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
-                             Padding="10"
                              UniformCornerRadius="100"
-                             Visibility="{Binding IsLoading,
-                                                  Converter={StaticResource BoolToVisibilityConverter}}">
+                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
             <ProgressBar Width="100"
                          Height="100"
                          IsIndeterminate="True"

@@ -1,9 +1,11 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Windows.Input;
 
     using Autofac;
@@ -15,19 +17,22 @@
     using Server.Host;
 
     using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Helpers;
     using Sv.Wpf.Core.Mvvm;
     using Sv.Wpf.Core.Mvvm.ValidationRules;
 
     public class SettingsViewModel : ViewModelBase
     {
         private readonly Settings settings;
+        private readonly TaskManager taskManager;
         private readonly LotteryTicketChecker lotteryTicketChecker;
         private bool isSelfHost;
         private int? port;
         private string serverAddress;
 
-        public SettingsViewModel(LotteryTicketChecker lotteryTicketChecker)
+        public SettingsViewModel(TaskManager taskManager, LotteryTicketChecker lotteryTicketChecker)
         {
+            this.taskManager = taskManager;
             this.lotteryTicketChecker = lotteryTicketChecker;
 
             this.settings = SettingsManager.Get();
@@ -49,7 +54,7 @@
             this.SleepIsChecked = this.settings.Sleep;
         }
 
-        public ICommand SaveCommand => new RelayCommand(this.Save, this.CanSave);
+        public ICommand SaveCommand => new RelayCommand(this.Save, () => this.taskManager.CanRun() && this.CanSave());
 
         private bool CanSave()
         {
@@ -62,7 +67,7 @@
 
         public ICommand BackupCommand => new RelayCommand(() => BackupDatabaseService.Backup(this.BackupPath), () => Directory.Exists(this.BackupPath));
 
-        public ICommand LotteryLoginCommand => new RelayCommand(this.LotteryLogin);
+        public ICommand LotteryLoginCommand => new RelayCommand(this.LotteryLogin, () => this.taskManager.CanRun() && this.HasNoValidationErrors("Lottery"));
 
         public bool IsSelfHost
         {
@@ -110,8 +115,12 @@
 
         public string ReceiptPath { get; set; }
 
+        [ValidationGroup("Lottery")]
+        [ValidateString(9, 30)]
         public string LotteryUsername { get; set; }
 
+        [ValidationGroup("Lottery")]
+        [ValidateString(4, 30)]
         public string LotteryPassword { get; set; }
 
         [ValidateNullableInt(0, 23)]
@@ -160,18 +169,30 @@
             ViewModelLocator.Container.Resolve<MainWindowViewModel>().InitializeAsync(null);
         }
 
-        //TODO: add better error messages
         private async void LotteryLogin()
         {
-            var result = await this.lotteryTicketChecker.Login(this.settings.LotteryUsername, this.settings.LotteryPassword);
-            if (result)
-            {
-                NotificationsHost.Success("Notifications", "Успешно", "Името и паролата са валидни");
-            }
-            else
-            {
-                NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола");
-            }
+            var task = new TaskManager.Task("Вход в националната лотария", false);
+            task.Function = async (cts, logger) =>
+                            {
+                                try
+                                {
+                                    var result = await this.lotteryTicketChecker.LoginAsync(this.LotteryUsername, this.LotteryPassword, CancellationToken.None);
+                                    if (result)
+                                    {
+                                        NotificationsHost.Success("Notifications", "Успешно", "Успешен вход в националната лотария");
+                                    }
+                                    else
+                                    {
+                                        NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    NotificationsHost.Error("Notifications", "Грешка", ex.Message);
+                                }
+                            };
+
+            await this.taskManager.Run(task);
         }
     }
 }

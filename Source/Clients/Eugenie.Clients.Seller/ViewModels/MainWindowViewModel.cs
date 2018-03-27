@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -12,6 +13,8 @@
     using Common.Helpers;
 
     using Helpers;
+
+    using Models;
 
     using Server.Host;
 
@@ -23,18 +26,18 @@
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
-        private readonly LotteryTicketChecker lotteryTicketChecker;
-        
+        private readonly LotteryTicketChecker lotteryChecker;
+
         private UserControl content;
         private IDisposable host;
 
-        public MainWindowViewModel(IWebApiHost webApiHost, LotteryTicketChecker lotteryTicketChecker)
+        public MainWindowViewModel(IWebApiHost webApiHost, LotteryTicketChecker lotteryChecker)
         {
             this.webApiHost = webApiHost;
-            this.lotteryTicketChecker = lotteryTicketChecker;
+            this.lotteryChecker = lotteryChecker;
 
             TeamViewerPopupBlocker.Start();
-            new WorkingTimeManager().StartAsync();
+            new WorkingTimeManager().Start();
         }
 
         public UserControl Content
@@ -60,6 +63,7 @@
             this.host?.Dispose();
 
             var settings = SettingsManager.Get();
+            this.LotteryLogin(settings);
             if (string.IsNullOrEmpty(settings.ServerAddress))
             {
                 this.Content = new Views.Settings();
@@ -116,6 +120,29 @@
             catch (PortInUseException)
             {
                 NotificationsHost.Error("Notifications", "Неуспешно стартиране на сървъра", "Портът се използва от друга програма.");
+            }
+        }
+
+        private async void LotteryLogin(Settings settings)
+        {
+            if (!string.IsNullOrWhiteSpace(settings.LotteryUsername) && !string.IsNullOrWhiteSpace(settings.LotteryPassword))
+            {
+                try
+                {
+                    var result = await this.lotteryChecker.LoginAsync(settings.LotteryUsername, settings.LotteryPassword, CancellationToken.None);
+                    if (result)
+                    {
+                        NotificationsHost.Success("Notifications", "Успешно", "Успешен вход в националната лотария");
+                    }
+                    else
+                    {
+                        NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола за националната лотария");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    NotificationsHost.Error("Notifications", "Грешка (нац. лотария)", ex.Message);
+                }
             }
         }
     }

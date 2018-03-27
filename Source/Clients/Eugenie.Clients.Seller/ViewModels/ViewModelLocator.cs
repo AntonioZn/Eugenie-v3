@@ -16,8 +16,6 @@
         public ViewModelLocator()
         {
             this.Register();
-            
-            //this.LotteryTicketCheckerLogin();
         }
 
         public static IContainer Container { get; private set; }
@@ -47,24 +45,6 @@
             containerBuilder.RegisterType<LotteryTicketChecker>().SingleInstance();
             
             Container = containerBuilder.Build();
-        }
-
-        private async void LotteryTicketCheckerLogin()
-        {
-            var settings = Container.Resolve<Settings>();
-            if (!string.IsNullOrWhiteSpace(settings.LotteryUsername) && !string.IsNullOrWhiteSpace(settings.LotteryPassword))
-            {
-                var checker = Container.Resolve<LotteryTicketChecker>();
-                var result = await checker.Login(settings.LotteryUsername, settings.LotteryPassword);
-                if (result)
-                {
-                    NotificationsHost.Success("Notifications", "Успешно", "Успешен вход в националната лотария");
-                }
-                else
-                {
-                    NotificationsHost.Error("Notifications", "Грешка", "Грешно име или парола за националната лотария");
-                }
-            }
         }
     }
 }
