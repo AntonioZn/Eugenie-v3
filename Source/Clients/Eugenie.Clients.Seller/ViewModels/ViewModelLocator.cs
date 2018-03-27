@@ -17,7 +17,7 @@
         {
             this.Register();
             
-            this.LotteryTicketCheckerLogin();
+            //this.LotteryTicketCheckerLogin();
         }
 
         public static IContainer Container { get; private set; }
@@ -30,8 +30,6 @@
 
         public SettingsViewModel SettingsViewModel => Container.Resolve<SettingsViewModel>();
 
-        public Settings Settings => Container.Resolve<Settings>();
-
         private void Register()
         {
             var containerBuilder = new ContainerBuilder();
@@ -41,16 +39,13 @@
             containerBuilder.RegisterType<TaskManager>().SingleInstance();
 
             containerBuilder.RegisterType<MainWindowViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
             containerBuilder.RegisterType<LoginViewModel>();
             containerBuilder.RegisterType<SellViewModel>();
-            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
+
             containerBuilder.RegisterType<FiscalPrinterHandler>().SingleInstance();
             containerBuilder.RegisterType<LotteryTicketChecker>().SingleInstance();
-
-            var settings = new Settings();
-            settings.Load();
-            containerBuilder.RegisterInstance(settings).SingleInstance();
-
+            
             Container = containerBuilder.Build();
         }
 
