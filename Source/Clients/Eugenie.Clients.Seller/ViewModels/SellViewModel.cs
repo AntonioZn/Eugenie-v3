@@ -1,14 +1,13 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Input;
-
-    using Autofac;
-
+    
+    using Common;
     using Common.Contracts;
     using Common.Helpers;
     using Common.Models;
-    using Common.Views;
     using Common.WebApiModels;
 
     using Helpers;
@@ -21,22 +20,22 @@
     using Views;
 
     using LotteryTicketChecker = Helpers.LotteryTicketChecker;
-    using MissingProduct = Views.MissingProduct;
 
     public class SellViewModel : ViewModelBase, IBarcodeHandler, IKeyHandler
     {
+        private readonly INavigationService navigationService;
         private readonly FiscalPrinterHandler fiscalPrinterHandler;
         private readonly LotteryTicketChecker lotteryTicketChecker;
         private string fullname;
+        private StoreClient client;
 
-        public SellViewModel(FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
+        public SellViewModel(INavigationService navigationService, FiscalPrinterHandler fiscalPrinterHandler, LotteryTicketChecker lotteryTicketChecker)
         {
+            this.navigationService = navigationService;
             this.fiscalPrinterHandler = fiscalPrinterHandler;
             this.lotteryTicketChecker = lotteryTicketChecker;
 
             this.Basket = new BasketViewModel();
-
-            this.Initialize();
         }
 
         public string FullName
@@ -44,8 +43,6 @@
             get => this.fullname;
             set => this.Set(ref this.fullname, value);
         }
-
-        public StoreClient Client => ViewModelLocator.Container.Resolve<MainWindowViewModel>().Client;
 
         public BasketViewModel Basket { get; }
 
@@ -55,14 +52,14 @@
         {
             DialogHost.CloseDialogCommand.Execute(false, null);
 
-            var product = await this.Client.GetProductByBarcodeAsync(barcode);
+            var product = await this.client.GetProductByBarcodeAsync(barcode);
             if (product != null)
             {
                 this.AddToBasket(product);
             }
             else
             {
-                await DialogHost.Show(new MissingProduct(), "RootDialog");
+                await this.navigationService.ShowDialogAsync<MissingProductViewModel>();
             }
         }
 
@@ -71,61 +68,58 @@
             switch (key)
             {
                 case Key.Delete:
-                    this.HandleDelete();
+                    this.RemoveSelectedProductFromBasket();
                     e.Handled = true;
                     break;
                 case Key.Enter:
-                    this.HandleEnter();
+                    this.ChangeProductQuantity();
                     e.Handled = true;
                     break;
                 case Key.F1:
-                    this.HandleF1();
+                    this.SearchProducts();
                     e.Handled = true;
                     break;
                 case Key.F3:
-                    this.HandleCheckTicket();
+                    this.CheckTicket();
                     e.Handled = true;
                     break;
                 case Key.F5:
-                    this.HandleF5();
+                    this.Logout();
                     e.Handled = true;
                     break;
                 case Key.F10:
-                    this.HandleF10();
+                    this.WasteProducts();
                     e.Handled = true;
                     break;
                 case Key.F11:
-                    this.HandleF11();
+                    this.SellProducts(true);
                     e.Handled = true;
                     break;
                 case Key.F12:
-                    this.HandleF12();
+                    this.SellProducts(false);
                     e.Handled = true;
                     break;
             }
         }
 
-        private async void HandleCheckTicket()
+        private async void CheckTicket()
         {
             if (this.lotteryTicketChecker.IsLoggedIn)
             {
-                var viewModel = new LotteryTicketCheckerViewModel(this.lotteryTicketChecker);
-                var view = new Views.LotteryTicketChecker(viewModel);
-
-                var result = await DialogHost.Show(view, "RootDialog");
-                if ((bool) result)
+                var result = await this.navigationService.ShowDialogAsync<LotteryTicketCheckerViewModel, bool>();
+                if (result)
                 {
                     
                 }
             }
         }
 
-        public async void HandleDelete()
+        private async void RemoveSelectedProductFromBasket()
         {
             if (this.SelectedProduct != null)
             {
-                var result = await DialogHost.Show(new Confirm($"Изтриване на {this.SelectedProduct.Name}?"), "RootDialog");
-                if ((bool) result)
+                var result = await ConfirmationsHost.Show("Потвърди", $"Изтриване на {this.SelectedProduct.Name}?", "RootDialog");
+                if (result)
                 {
                     this.Basket.Delete(this.SelectedProduct);
                 }
@@ -136,7 +130,7 @@
             }
         }
 
-        public void HandleEnter()
+        private void ChangeProductQuantity()
         {
             if (this.SelectedProduct != null)
             {
@@ -148,98 +142,68 @@
             }
         }
 
-        public async void HandleF1()
+        private async void SearchProducts()
         {
-            var productsSearchViewModel = new ProductsSearchViewModel(this.Client);
-            var productsSearch = new ProductsSearch(productsSearchViewModel);
-
-            var result = await DialogHost.Show(productsSearch, "RootDialog");
-            if ((bool) result)
+            var result = await this.navigationService.ShowDialogAsync<ProductsSearchViewModel, Product>(this.client);
+            if (result != null)
             {
-                this.AddToBasket(productsSearchViewModel.SelectedProduct);
+                this.AddToBasket(result);
             }
         }
 
-        public async void HandleF10()
+        private async void WasteProducts()
         {
-            if (this.Basket.Products.Any())
-            {
-                var result = await DialogHost.Show(new Confirm("Бракуване?"), "RootDialog");
-                if ((bool) result)
-                {
-#pragma warning disable 4014
-                    this.Client.WasteProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
-#pragma warning restore 4014
-                                                                                                                          {
-                                                                                                                              Id = x.Id,
-                                                                                                                              Quantity = x.Quantity.GetValueOrDefault()
-                                                                                                                          }));
-                    this.Basket.Clear();
-                }
-            }
-            else
+            if (!this.Basket.Products.Any())
             {
                 NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+                return;
+            }
+
+            var result = await ConfirmationsHost.Show("Потвърди", "Бракуване?", "RootDialog");
+            if (result)
+            {
+                var pairs = this.Basket.Products.Select(x => new IdQuantityPair
+                                                             {
+                                                                 Id = x.Id,
+                                                                 Quantity = x.Quantity.Value
+                                                             });
+                await this.client.WasteProductsAsync(pairs);
+                this.Basket.Clear();
             }
         }
 
-        public async void HandleF11()
+        private async void SellProducts(bool printReceipt)
         {
-            if (this.Basket.Products.Any())
+            if (!this.Basket.Products.Any())
             {
-                var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
-                var dialog = new ChangeCalulator(viewModel);
-                var result = await DialogHost.Show(dialog, "RootDialog");
-                if ((bool) result)
+                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+                return;
+            }
+
+            var result = await this.navigationService.ShowDialogAsync<ChangeCalculatorViewModel, bool>(this.Basket.TotalPrice);
+            if (result)
+            {
+                var pairs = this.Basket.Products.Select(x => new IdQuantityPair
+                                                             {
+                                                                 Id = x.Id,
+                                                                 Quantity = x.Quantity.Value
+                                                             });
+                await this.client.SellProductsAsync(pairs);
+                if (printReceipt)
                 {
-#pragma warning disable 4014
-                    this.Client.SellProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
-#pragma warning restore 4014
-                                                                                                                         {
-                                                                                                                             Id = x.Id,
-                                                                                                                             Quantity = x.Quantity.GetValueOrDefault()
-                                                                                                                         }));
                     this.fiscalPrinterHandler.ExportReceipt(this.Basket.Products);
-                    this.Basket.Clear();
                 }
-            }
-            else
-            {
-                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
+
+                this.Basket.Clear();
             }
         }
 
-        public async void HandleF12()
+        private async void Logout()
         {
-            if (this.Basket.Products.Any())
+            var result = await ConfirmationsHost.Show("Потвърди", "Излизане?", "RootDialog");
+            if (result)
             {
-                var viewModel = new ChangeCalculatorViewModel(this.Basket.TotalPrice);
-                var dialog = new ChangeCalulator(viewModel);
-                var result = await DialogHost.Show(dialog, "RootDialog");
-                if ((bool) result)
-                {
-#pragma warning disable 4014
-                    this.Client.SellProductsAsync(this.Basket.Products.Select(x => new IdQuantityPair
-#pragma warning restore 4014
-                                                                                                                         {
-                                                                                                                             Id = x.Id,
-                                                                                                                             Quantity = x.Quantity.GetValueOrDefault()
-                                                                                                                         }));
-                    this.Basket.Clear();
-                }
-            }
-            else
-            {
-                NotificationsHost.Error("Notifications", "Добавете продукт", "В списъка трябва да има поне 1 продукт.");
-            }
-        }
-
-        public async void HandleF5()
-        {
-            var result = await DialogHost.Show(new Confirm("Излизане?"), "RootDialog");
-            if ((bool) result)
-            {
-                ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowLogin();
+                await this.navigationService.NavigateToAsync<LoginViewModel>();
             }
         }
 
@@ -272,13 +236,14 @@
             }
             else
             {
-                NotificationsHost.Error("Notifications", "Забранено", "Продуктът не може да бъде добавен в този момент.");
+                NotificationsHost.Error("Notifications", "Забранено", "Продуктът не може да бъде добавен.");
             }
         }
 
-        private async void Initialize()
+        public override async Task InitializeAsync(object navigationData)
         {
-            var userInfo = await this.Client.GetUserInfoAsync();
+            this.client = (StoreClient) navigationData;
+            var userInfo = await this.client.GetUserInfoAsync();
             this.FullName = $"{userInfo.FirstName} {userInfo.LastName}";
         }
     }

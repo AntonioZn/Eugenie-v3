@@ -1,12 +1,9 @@
 ﻿namespace Eugenie.Clients.Seller.Views
 {
-    using Sv.Wpf.Core.Mvvm;
-
-    public partial class ChangeCalulator
+    public partial class ChangeCalculator
     {
-        public ChangeCalulator(ViewModelBase viewModel)
+        public ChangeCalculator()
         {
-            this.DataContext = viewModel;
             this.InitializeComponent();
         }
     }

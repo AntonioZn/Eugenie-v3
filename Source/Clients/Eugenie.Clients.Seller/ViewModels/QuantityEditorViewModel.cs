@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
+    using System.Globalization;
     using System.Windows.Input;
 
     using Autofac;
@@ -14,6 +16,8 @@
 
     public class QuantityEditorViewModel : ViewModelBase, IBarcodeHandler
     {
+        private static readonly string delimiter = Convert.ToString(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
         private readonly decimal maximumQuantity;
         private readonly MeasureType measure;
         private string quantity;
@@ -24,33 +28,22 @@
             this.measure = measure;
             this.Name = name;
             this.Quantity = startingQuantity.ToString();
-
-            this.Add = new RelayCommand(this.HandleAdd);
         }
 
-        public string Name { get; set; }
+        public ICommand ConfirmCommand => new RelayCommand(this.HandleAdd);
 
-        public ICommand Add { get; }
+        public string Name { get; }
 
         public void HandleBarcode(string barcode)
         {
-            if (this.ValidateQuantity())
-            {
-                DialogHost.CloseDialogCommand.Execute(true, null);
-            }
-            else
-            {
-                DialogHost.CloseDialogCommand.Execute(false, null);
-            }
-
+            DialogHost.CloseDialogCommand.Execute(this.ValidateQuantity(), null);
             ViewModelLocator.Container.Resolve<MainWindowViewModel>().HandleBarcode(barcode);
         }
 
         public string Quantity
         {
             get => this.quantity;
-
-            set => this.Set(ref this.quantity, this.RestrictQuantity(value));
+            set => this.Set(ref this.quantity, this.RestrictQuantity(value?.Replace(",", delimiter).Replace(".", delimiter).Replace($"{delimiter}{delimiter}", delimiter)));
         }
 
         private void HandleAdd()
@@ -63,8 +56,7 @@
 
         private bool ValidateQuantity()
         {
-            decimal result;
-            if (decimal.TryParse(this.Quantity, out result))
+            if (decimal.TryParse(this.Quantity, out var result))
             {
                 if (result >= this.GetMinimumQuantity())
                 {
@@ -83,11 +75,9 @@
 
         private string RestrictQuantity(string userInput)
         {
-            userInput = userInput.Replace("-", string.Empty);
-
             if (this.measure == MeasureType.бр)
             {
-                userInput = userInput.Replace(",", string.Empty);
+                userInput = userInput.Replace(delimiter, string.Empty);
 
                 if (decimal.TryParse(userInput, out var result))
                 {
@@ -102,10 +92,6 @@
                         NotificationsHost.Error("Notifications", "Невалидно количество", $"Минималното позволено количество е {this.GetMinimumQuantity()}.");
                     }
                 }
-            }
-            else
-            {
-                userInput = userInput.Replace(",,", ",");
             }
 
             return userInput;

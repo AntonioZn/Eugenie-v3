@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Sv.Wpf.Core.Controls;assembly=Sv.Wpf.Core"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:models="clr-namespace:Eugenie.Clients.Common.Models;assembly=Eugenie.Clients.Common"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              Width="Auto"
              Height="Auto"
@@ -41,7 +40,7 @@
         <Button Grid.Row="0"
                 Width="0"
                 Height="0"
-                Command="{Binding Add}"
+                Command="{Binding ConfirmCommand}"
                 IsDefault="True"
                 IsTabStop="False" />
         <Button Grid.Row="0"
@@ -57,8 +56,9 @@
         </Button>
         <controls:SvTextBox x:Name="txtQuantity"
                             Grid.Row="1"
+                            Margin="5,0,5,0"
                             AutoSelect="True"
-                            BlockInvalidNumberCharacters="True"
+                            BlockInvalidDecimalCharacters="True"
                             FontSize="60"
                             Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>

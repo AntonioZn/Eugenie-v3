@@ -6,6 +6,7 @@
 
     using Autofac;
 
+    using Common;
     using Common.Contracts;
     using Common.Exceptions;
     using Common.Helpers;
@@ -19,10 +20,12 @@
 
     public class LoginViewModel : ViewModelBase, IKeyHandler
     {
+        private readonly INavigationService navigationService;
         private readonly TaskManager taskManager;
 
-        public LoginViewModel(TaskManager taskManager)
+        public LoginViewModel(INavigationService navigationService, TaskManager taskManager)
         {
+            this.navigationService = navigationService;
             this.taskManager = taskManager;
         }
 
@@ -39,7 +42,7 @@
             switch (key)
             {
                 case Key.F1:
-                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSettings();
+                    this.navigationService.NavigateToAsync<SettingsViewModel>();
                     e.Handled = true;
                     break;
             }
@@ -55,8 +58,7 @@
                                 try
                                 {
                                     await client.AuthenticateAsync(this.Username, this.Password, cts.Token);
-                                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().Client = client;
-                                    ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowSell();
+                                    await this.navigationService.NavigateToAsync<SellViewModel>(client);
                                     return;
                                 }
                                 catch (LoginException)

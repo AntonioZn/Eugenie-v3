@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System.Threading.Tasks;
+
     using Autofac;
 
     using Common.Contracts;
@@ -12,32 +14,41 @@
     {
         private decimal change;
         private string payment;
+        private decimal totalPrice;
 
-        public ChangeCalculatorViewModel(decimal totalPrice)
+        public decimal TotalPrice
         {
-            this.TotalPrice = totalPrice;
+            get => this.totalPrice;
+            set => this.Set(ref this.totalPrice, value);
         }
-
-        public decimal TotalPrice { get; set; }
 
         public decimal Change
         {
             get => this.change;
-
             set => this.Set(ref this.change, value);
         }
 
         public string Payment
         {
             get => this.payment;
-
             set
             {
                 this.payment = value;
-                decimal result;
-                decimal.TryParse(value, out result);
-                this.Change = result - this.TotalPrice;
+                if (decimal.TryParse(value, out var result))
+                {
+                    this.Change = result - this.TotalPrice;
+                }
+                else
+                {
+                    this.Change = 0;
+                }
             }
+        }
+
+        public override Task InitializeAsync(object navigationData)
+        {
+            this.TotalPrice = (decimal) navigationData;
+            return Task.CompletedTask;
         }
 
         public void HandleBarcode(string barcode)

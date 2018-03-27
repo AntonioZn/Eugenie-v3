@@ -2,10 +2,9 @@
 {
     public partial class LotteryTicketChecker
     {
-        public LotteryTicketChecker(object viewModel)
+        public LotteryTicketChecker()
         {
             this.InitializeComponent();
-            this.DataContext = viewModel;
         }
     }
 }

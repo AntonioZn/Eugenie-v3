@@ -27,20 +27,21 @@
         public LotteryTicketChecker()
         {
             this.timer = new Timer();
-            this.timer.Interval = 360000;
+            this.timer.Interval = 300000;
             this.timer.Elapsed += this.OnTimer;
         }
 
         public bool IsLoggedIn { get; private set; }
 
-        private void OnTimer(object sender, ElapsedEventArgs e)
+        private async void OnTimer(object sender, ElapsedEventArgs e)
         {
             try
             {
-                this.LoginAsync(this.usernameCache, this.passwordCache, CancellationToken.None);
+                await this.LoginAsync(this.usernameCache, this.passwordCache, CancellationToken.None);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                this.IsLoggedIn = false;
             }
         }
 

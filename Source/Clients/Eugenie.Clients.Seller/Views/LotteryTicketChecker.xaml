@@ -6,6 +6,7 @@
              Height="500"
              MinWidth="700"
              Background="{DynamicResource MaterialDesignPaper}"
+             DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=LotteryTicketCheckerViewModel}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              TextElement.FontSize="20"
              TextElement.FontWeight="Regular"
@@ -51,7 +52,7 @@
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              UniformCornerRadius="100"
-                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
+                             Visibility="{Binding TaskManager.TaskIsRunning, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
             <ProgressBar Width="100"
                          Height="100"
                          IsIndeterminate="True"
@@ -63,7 +64,7 @@
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center">
             <TextBlock Style="{StaticResource MaterialDesignDisplay4TextBlock}"
-                       Text="{Binding Winning}"
+                       Text="{Binding Result}"
                        TextAlignment="Center"
                        TextWrapping="Wrap" />
         </Viewbox>

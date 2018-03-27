@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="Eugenie.Clients.Seller.Views.Sell"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Sv.Wpf.Core.Controls;assembly=Sv.Wpf.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="clr-namespace:Sv.Wpf.Core.Controls;assembly=Sv.Wpf.Core"
              d:DesignHeight="1000"
              d:DesignWidth="1000"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -44,14 +44,15 @@
             </Grid>
         </materialDesign:ColorZone>
         <materialDesign:Card Grid.Row="1"
-                             Margin="10"
-                             Padding="20,0,20,0"
+                             Margin="5"
+                             Padding="10,0,10,0"
                              HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch">
+                             VerticalAlignment="Stretch"
+                             Background="{DynamicResource MaterialDesignPaper}">
             <controls:SvDataGridMaterial x:Name="dataGrid"
-                                FontSize="28"
-                                ItemsSource="{Binding Basket.Products}"
-                                SelectedItem="{Binding SelectedProduct}">
+                                         FontSize="28"
+                                         ItemsSource="{Binding Basket.Products}"
+                                         SelectedItem="{Binding SelectedProduct}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="1*"
                                         Binding="{Binding Id}"
@@ -80,6 +81,6 @@
                    VerticalAlignment="Bottom"
                    FontSize="18"
                    Style="{StaticResource MaterialDesignDisplay1TextBlock}"
-                   Text="Delete - изтрий, F1 - търсене, F3 - проверка на билет, F10 - бракувай, F11 - касова бележка, F12 - без касова бележка, F5 - изход" />
+                   Text="F1 - търсене, F3 - проверка на билет, F5 - изход, F10 - бракувай, F11/F12 - с/без касова бележка" />
     </Grid>
 </UserControl>

@@ -22,6 +22,15 @@
         WindowStyle="None"
         mc:Ignorable="d">
     <Grid>
+        <materialDesign:Card Margin="0,0,5,5"
+                             Padding="10"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Panel.ZIndex="2"
+                             UniformCornerRadius="20"
+                             Visibility="{Binding TaskManager.TaskIsRunning, Converter={StaticResource BoolToHiddenVisibilityConverter}}">
+            <ProgressBar IsIndeterminate="True" Style="{StaticResource MaterialDesignCircularProgressBar}" />
+        </materialDesign:Card>
         <controls:NotificationsHost x:Name="notif"
                                     Margin="20"
                                     HorizontalAlignment="Right"
@@ -32,7 +41,7 @@
                                    Identifier="RootDialog"
                                    IsTabStop="False">
             <ContentControl x:Name="MainFrame"
-                            Content="{Binding Content}"
+                            Content="{Binding Source={StaticResource ViewModelLocator}, Path=NavigationService.Content}"
                             IsTabStop="False" />
         </materialDesign:DialogHost>
     </Grid>

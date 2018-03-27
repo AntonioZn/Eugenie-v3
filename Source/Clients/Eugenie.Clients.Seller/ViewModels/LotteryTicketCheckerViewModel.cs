@@ -1,45 +1,47 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
-    using System.Threading;
-
     using Common.Contracts;
 
     using Helpers;
 
+    using Sv.Wpf.Core.Helpers;
     using Sv.Wpf.Core.Mvvm;
 
     public class LotteryTicketCheckerViewModel : ViewModelBase, IBarcodeHandler
     {
         private readonly LotteryTicketChecker lotteryTicketChecker;
-        private string winning;
-        private bool isLoading;
+        private string result;
+        private TaskManager.Task checkTicketTask;
 
-        public LotteryTicketCheckerViewModel(LotteryTicketChecker lotteryTicketChecker)
+        public LotteryTicketCheckerViewModel(TaskManager taskManager, LotteryTicketChecker lotteryTicketChecker)
         {
+            this.TaskManager = taskManager;
             this.lotteryTicketChecker = lotteryTicketChecker;
         }
 
-        public string Winning
-        {
-            get => this.winning;
-            set => this.Set(ref this.winning, value);
-        }
+        public TaskManager TaskManager { get; }
 
-        public bool IsLoading
+        public string Result
         {
-            get => this.isLoading;
-            set => this.Set(ref this.isLoading, value);
+            get => this.result;
+            set => this.Set(ref this.result, value);
         }
 
         public async void HandleBarcode(string barcode)
         {
-            if (!this.IsLoading)
+            if (this.checkTicketTask != null)
             {
-                this.Winning = string.Empty;
-                this.IsLoading = true;
-                this.Winning = await this.lotteryTicketChecker.CheckAsync(barcode, CancellationToken.None);
-                this.IsLoading = false;
+                this.TaskManager.CancelTask(this.checkTicketTask);
             }
+
+            this.checkTicketTask = new TaskManager.Task("check", false);
+            this.checkTicketTask.Function = async (cts, logger) =>
+                            {
+                                this.Result = string.Empty;
+                                this.Result = await this.lotteryTicketChecker.CheckAsync(barcode, cts.Token);
+                            };
+
+            await this.TaskManager.Run(this.checkTicketTask);
         }
     }
 }

@@ -9,8 +9,8 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    using Common;
     using Common.Contracts;
-    using Common.Helpers;
 
     using Helpers;
 
@@ -19,6 +19,7 @@
     using Server.Host;
 
     using Sv.Wpf.Core.Controls;
+    using Sv.Wpf.Core.Helpers;
     using Sv.Wpf.Core.Mvvm;
 
     using LotteryTicketChecker = Helpers.LotteryTicketChecker;
@@ -26,39 +27,35 @@
     public class MainWindowViewModel : ViewModelBase, IKeyHandler, IBarcodeHandler
     {
         private readonly IWebApiHost webApiHost;
+        private readonly INavigationService navigationService;
         private readonly LotteryTicketChecker lotteryChecker;
 
-        private UserControl content;
         private IDisposable host;
 
-        public MainWindowViewModel(IWebApiHost webApiHost, LotteryTicketChecker lotteryChecker)
+        public MainWindowViewModel(IWebApiHost webApiHost, INavigationService navigationService, TaskManager taskManager, LotteryTicketChecker lotteryChecker)
         {
+            this.TaskManager = taskManager;
             this.webApiHost = webApiHost;
+            this.navigationService = navigationService;
             this.lotteryChecker = lotteryChecker;
 
             TeamViewerPopupBlocker.Start();
             new WorkingTimeManager().Start();
         }
 
-        public UserControl Content
-        {
-            get => this.content;
-            private set => this.Set(ref this.content, value);
-        }
-
-        public StoreClient Client { get; set; }
+        public TaskManager TaskManager { get; }
 
         public void HandleKey(KeyEventArgs e, Key key)
         {
-            (this.Content.DataContext as IKeyHandler)?.HandleKey(e, key);
+            (this.navigationService.Content.DataContext as IKeyHandler)?.HandleKey(e, key);
         }
 
         public void HandleBarcode(string barcode)
         {
-            (this.Content.DataContext as IBarcodeHandler)?.HandleBarcode(barcode);
+            (this.navigationService.Content.DataContext as IBarcodeHandler)?.HandleBarcode(barcode);
         }
 
-        public override Task InitializeAsync(object navigationData)
+        public override async Task InitializeAsync(object navigationData)
         {
             this.host?.Dispose();
 
@@ -66,11 +63,10 @@
             this.LotteryLogin(settings);
             if (string.IsNullOrEmpty(settings.ServerAddress))
             {
-                this.Content = new Views.Settings();
-                return Task.CompletedTask;
+                await this.navigationService.NavigateToAsync<SettingsViewModel>();
             }
 
-            this.Content = new Views.Login();
+            await this.navigationService.NavigateToAsync<LoginViewModel>();
 
             if (settings.IsSelfHost)
             {
@@ -84,24 +80,6 @@
                 var path = settings.BackupPath;
                 //this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
-
-            return Task.CompletedTask;
-        }
-
-        public void ShowLogin()
-        {
-            this.Client?.Dispose();
-            this.Content = new Views.Login();
-        }
-
-        public void ShowSell()
-        {
-            this.Content = new Views.Sell();
-        }
-
-        public void ShowSettings()
-        {
-            this.Content = new Views.Settings();
         }
 
         private void HostServer(int port)

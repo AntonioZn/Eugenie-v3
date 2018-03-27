@@ -64,6 +64,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INavigationService.cs" />
+    <Compile Include="NavigationService.cs" />
     <Compile Include="Handlers\BarcodeScannerHandler.cs" />
     <Compile Include="Handlers\KeyHandler.cs" />
     <Compile Include="Handlers\NavigateDataGridWithArrowsHandler.cs" />
@@ -76,9 +78,6 @@
     <Compile Include="Exceptions\LoginException.cs" />
     <Compile Include="Helpers\StoreClient.cs" />
     <Compile Include="Helpers\Validator.cs" />
-    <Compile Include="Views\Confirm.xaml.cs">
-      <DependentUpon>Confirm.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WebApiModels\AddProductModel.cs" />
     <Compile Include="Models\Barcode.cs" />
     <Compile Include="Models\ExpirationDate.cs" />
@@ -104,12 +103,6 @@
       <Project>{cb4424bf-729b-437f-a54b-8483fdfa9529}</Project>
       <Name>Eugenie.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\Confirm.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

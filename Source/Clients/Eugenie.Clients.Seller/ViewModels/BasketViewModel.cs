@@ -29,7 +29,6 @@
         public decimal TotalPrice
         {
             get => this.totalPrice;
-
             set => this.Set(ref this.totalPrice, value);
         }
 

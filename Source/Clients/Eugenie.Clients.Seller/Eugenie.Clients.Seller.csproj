@@ -131,7 +131,7 @@
       <HintPath>..\..\packages\Quartz.3.0.4\lib\net452\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="Sv.Wpf.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Sv.Wpf.Core.4.0.0-ci124\lib\net45\Sv.Wpf.Core.dll</HintPath>
+      <HintPath>..\..\packages\Sv.Wpf.Core.4.0.0-ci128\lib\net45\Sv.Wpf.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
