@@ -21,11 +21,6 @@
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
-    <!--<Interaction.Behaviors>
-        <commonBehaviors:BarcodeScannerHandler />
-        <commonBehaviors:KeyHandler />
-        <commonBehaviors:NavigateDataGridWithArrows />
-    </Interaction.Behaviors>-->
     <Grid>
         <controls:NotificationsHost x:Name="notif"
                                     Margin="20"

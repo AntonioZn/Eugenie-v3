@@ -66,7 +66,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\BarcodeScannerHandler.cs" />
     <Compile Include="Behaviors\KeyHandler.cs" />
-    <Compile Include="Behaviors\NavigateDataGridWithArrows.cs" />
+    <Compile Include="Behaviors\NavigateDataGridWithArrowsHandler.cs" />
     <Compile Include="Contracts\IKeyHandler.cs" />
     <Compile Include="Contracts\IBarcodeHandler.cs" />
     <Compile Include="Converters\BoolToUnderlineConverter.cs" />

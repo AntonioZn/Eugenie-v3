@@ -4,34 +4,25 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Interactivity;
 
     using Contracts;
 
     using MaterialDesignThemes.Wpf;
 
-    public class BarcodeScannerHandler : Behavior<Window>
+    public class BarcodeScannerHandler
     {
+        private readonly Window window;
         private readonly StringBuilder barcodeReader;
         private readonly KeyConverter keyConverter;
         private bool isScanning;
 
-        public BarcodeScannerHandler()
+        public BarcodeScannerHandler(Window window)
         {
+            this.window = window;
             this.barcodeReader = new StringBuilder();
             this.keyConverter = new KeyConverter();
-        }
 
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            this.AssociatedObject.PreviewKeyDown += this.OnPreviewKeyDown;
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            this.AssociatedObject.PreviewKeyDown -= this.OnPreviewKeyDown;
+            window.PreviewKeyDown += this.OnPreviewKeyDown;
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -74,14 +65,14 @@
 
         private IBarcodeHandler GetHandler()
         {
-            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            var dialogHost = this.window.FindName("dialogHost") as DialogHost;
             if (dialogHost.IsOpen)
             {
                 var dialogContent = dialogHost.DialogContent as UserControl;
                 return dialogContent?.DataContext as IBarcodeHandler;
             }
 
-            return this.AssociatedObject.DataContext as IBarcodeHandler;
+            return this.window.DataContext as IBarcodeHandler;
         }
     }
 }

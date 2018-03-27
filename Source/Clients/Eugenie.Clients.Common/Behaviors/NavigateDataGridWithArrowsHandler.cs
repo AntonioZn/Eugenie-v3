@@ -3,25 +3,20 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Interactivity;
 
     using MaterialDesignThemes.Wpf;
 
-    public class NavigateDataGridWithArrows : Behavior<Window>
+    public class NavigateDataGridWithArrowsHandler
     {
-        protected override void OnAttached()
+        private readonly Window window;
+
+        public NavigateDataGridWithArrowsHandler(Window window)
         {
-            base.OnAttached();
-            this.AssociatedObject.PreviewKeyDown += this.PreviewKeyDown;
+            this.window = window;
+            window.PreviewKeyDown += this.OnPreviewKeyDown;
         }
 
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            this.AssociatedObject.PreviewKeyDown -= this.PreviewKeyDown;
-        }
-
-        private void PreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             var dataGrid = this.GetDataGrid();
 
@@ -60,14 +55,14 @@
 
         private DataGrid GetDataGrid()
         {
-            var dialogHost = this.AssociatedObject.FindName("dialogHost") as DialogHost;
+            var dialogHost = this.window.FindName("dialogHost") as DialogHost;
             if (dialogHost.IsOpen)
             {
                 var dialogContent = dialogHost.DialogContent as UserControl;
                 return dialogContent?.FindName("dataGrid") as DataGrid;
             }
 
-            var contentControl = this.AssociatedObject.FindName("MainFrame") as ContentControl;
+            var contentControl = this.window.FindName("MainFrame") as ContentControl;
             var userControl = contentControl?.Content as UserControl;
             return userControl?.FindName("dataGrid") as DataGrid;
         }
