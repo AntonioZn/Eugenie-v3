@@ -171,6 +171,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\FiscalPrinterHandler.cs" />
     <Compile Include="Helpers\LotteryTicketChecker.cs" />
+    <Compile Include="Helpers\SettingsManager.cs" />
     <Compile Include="Helpers\TeamViewerPopupBlocker.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\Annotations.cs" />
