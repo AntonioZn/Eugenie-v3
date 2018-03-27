@@ -19,9 +19,9 @@
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Down && e.Key != Key.Up) return;
-
+            
             var dataGrid = this.GetDataGrid();
-            if (dataGrid != null)
+            if (dataGrid != null && dataGrid.Items.Count > 0)
             {
                 if (e.Key == Key.Down)
                 {
