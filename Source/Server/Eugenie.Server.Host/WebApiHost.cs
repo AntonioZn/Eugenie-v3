@@ -23,11 +23,11 @@
 
         //public IScheduler Scheduler { get; }
 
-        public void HostWebApi(string address)
+        public IDisposable HostWebApi(string address)
         {
             try
             {
-                WebApp.Start<Startup>(address);
+                return WebApp.Start<Startup>(address);
             }
             catch (Exception ex)
             {
@@ -40,12 +40,12 @@
             }
         }
 
-        public void HostWebApi(int port)
+        public IDisposable HostWebApi(int port)
         {
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
             var address = "http://" + localIp + ":" + port;
 
-            this.HostWebApi(address);
+             return this.HostWebApi(address);
         }
 
         //public void AutoBackupDatabase(int hours, int minutes, string path)

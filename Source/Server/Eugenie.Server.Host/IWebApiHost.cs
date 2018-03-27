@@ -1,14 +1,16 @@
 ﻿namespace Eugenie.Server.Host
 {
+    using System;
+
     using Quartz;
 
     public interface IWebApiHost
     {
         //void AutoBackupDatabase(int hours, int minutes, string path);
 
-        void HostWebApi(string address);
+        IDisposable HostWebApi(string address);
 
-        void HostWebApi(int port);
+        IDisposable HostWebApi(int port);
 
         //IScheduler Scheduler { get; }
     }
