@@ -1,5 +1,7 @@
 ﻿namespace Eugenie.Clients.Seller.ViewModels
 {
+    using System;
+    using System.Globalization;
     using System.Threading.Tasks;
 
     using Autofac;
@@ -12,6 +14,8 @@
 
     public class ChangeCalculatorViewModel : ViewModelBase, IBarcodeHandler
     {
+        private static readonly string delimiter = Convert.ToString(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
         private decimal change;
         private string payment;
         private decimal totalPrice;
@@ -33,8 +37,8 @@
             get => this.payment;
             set
             {
-                this.payment = value;
-                if (decimal.TryParse(value, out var result))
+                this.payment = value?.Replace(",", delimiter).Replace(".", delimiter).Replace($"{delimiter}{delimiter}", delimiter);
+                if (decimal.TryParse(this.payment, out var result))
                 {
                     this.Change = result - this.TotalPrice;
                 }

@@ -92,13 +92,13 @@
                    Style="{StaticResource MaterialDesignDisplay3TextBlock}"
                    Text="В брой: " />
         <controls:SvTextBox x:Name="txtPayment"
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="0,0,20,20"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Bottom"
-                            BlockInvalidNumberCharacters="True"
-                            FontSize="60"
-                            Text="{Binding Payment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="0,0,20,20"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
+                           BlockInvalidDecimalCharacters="True"
+                           FontSize="60"
+                           Text="{Binding Payment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

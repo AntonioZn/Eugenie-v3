@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             Width="800"
              Height="500"
-             MinWidth="700"
              Background="{DynamicResource MaterialDesignPaper}"
              DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=LotteryTicketCheckerViewModel}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
@@ -62,7 +62,9 @@
         <Viewbox Grid.Row="1"
                  Margin="20"
                  HorizontalAlignment="Center"
-                 VerticalAlignment="Center">
+                 VerticalAlignment="Center"
+                 Stretch="Uniform"
+                 StretchDirection="Both">
             <TextBlock Style="{StaticResource MaterialDesignDisplay4TextBlock}"
                        Text="{Binding Result}"
                        TextAlignment="Center"
