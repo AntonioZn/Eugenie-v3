@@ -21,6 +21,8 @@
         {
             while (true)
             {
+                await Task.Delay(TimeSpan.FromMinutes(2));
+
                 var settings = SettingsManager.Get();
                 if (this.CheckIfOutsiteWorkingTime(settings))
                 {
@@ -36,8 +38,6 @@
                         Process.Start(psi);
                     }
                 }
-
-                await Task.Delay(TimeSpan.FromMinutes(2));
             }
         }
 

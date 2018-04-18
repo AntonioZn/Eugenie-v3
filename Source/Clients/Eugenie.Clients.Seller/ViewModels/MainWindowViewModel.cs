@@ -6,7 +6,6 @@
     using System.Net.Sockets;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Common;
@@ -78,7 +77,8 @@
                 var hours = settings.BackupHours;
                 var minutes = settings.BackupMinutes;
                 var path = settings.BackupPath;
-                //this.webApiHost.AutoBackupDatabase(hours, minutes, path);
+
+                this.webApiHost.AutoBackupDatabase(hours, minutes, path);
             }
         }
 

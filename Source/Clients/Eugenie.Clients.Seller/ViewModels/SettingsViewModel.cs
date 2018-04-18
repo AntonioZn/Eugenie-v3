@@ -58,9 +58,7 @@
 
         private bool CanSave()
         {
-            return this.HasNoValidationErrors()
-                   && (!this.BackupDatabase || Directory.Exists(this.BackupPath))
-                   && Directory.Exists(this.ReceiptPath);
+            return this.HasNoValidationErrors() && Directory.Exists(this.ReceiptPath);
         }
 
         //public ICommand CancelCommand => new RelayCommand(() => ViewModelLocator.Container.Resolve<MainWindowViewModel>().ShowLogin());

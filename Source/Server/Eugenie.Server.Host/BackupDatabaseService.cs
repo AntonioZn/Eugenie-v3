@@ -18,7 +18,7 @@
 
             var connectionString = ConfigurationManager.ConnectionStrings["Eugenie"].ConnectionString;
             var sqlConStrBuilder = new SqlConnectionStringBuilder(connectionString);
-            var backupFileName = Path.Combine(tempPath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.bak");
+            var backupFileName = Path.Combine(tempPath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now:yyyy-MM-dd-HH-mm}.bak");
 
             using (var connection = new SqlConnection(sqlConStrBuilder.ConnectionString))
             {
@@ -31,7 +31,7 @@
                 }
             }
 
-            ZipFile.CreateFromDirectory(tempPath, Path.Combine(savePath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm")}.zip"), CompressionLevel.Optimal, false);
+            ZipFile.CreateFromDirectory(tempPath, Path.Combine(savePath, $"{sqlConStrBuilder.InitialCatalog}-{DateTime.Now:yyyy-MM-dd-HH-mm}.zip"), CompressionLevel.Optimal, false);
 
             Directory.Delete(tempPath, true);
         }

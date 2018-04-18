@@ -6,12 +6,12 @@
 
     public interface IWebApiHost
     {
-        //void AutoBackupDatabase(int hours, int minutes, string path);
+        void AutoBackupDatabase(int hours, int minutes, string path);
 
         IDisposable HostWebApi(string address);
 
         IDisposable HostWebApi(int port);
 
-        //IScheduler Scheduler { get; }
+        IScheduler Scheduler { get; }
     }
 }

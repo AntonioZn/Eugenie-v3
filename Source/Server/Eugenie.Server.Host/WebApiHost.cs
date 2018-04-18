@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using System.IO;
 
     using Api;
 
@@ -17,11 +16,11 @@
     {
         public WebApiHost()
         {
-            //var schedulerFactory = new StdSchedulerFactory();
-            //this.Scheduler = schedulerFactory.GetScheduler();
+            var schedulerFactory = new StdSchedulerFactory();
+            this.Scheduler = schedulerFactory.GetScheduler().Result;
         }
 
-        //public IScheduler Scheduler { get; }
+        public IScheduler Scheduler { get; }
 
         public IDisposable HostWebApi(string address)
         {
@@ -45,17 +44,23 @@
             var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork)?.ToString();
             var address = "http://" + localIp + ":" + port;
 
-             return this.HostWebApi(address);
+            return this.HostWebApi(address);
         }
 
-        //public void AutoBackupDatabase(int hours, int minutes, string path)
-        //{
-        //    var job = JobBuilder.Create<BackupDatabaseJob>().WithIdentity("myJob", "group1").UsingJobData("savePath", path).Build();
-        //    var trigger = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes)).Build();
-        //
-        //    this.Scheduler.DeleteJob(job.Key);
-        //    this.Scheduler.ScheduleJob(job, trigger);
-        //    this.Scheduler.Start();
-        //}
+        public void AutoBackupDatabase(int hours, int minutes, string path)
+        {
+            var job = JobBuilder.Create<BackupDatabaseJob>()
+                                .WithIdentity("myJob", "group1")
+                                .UsingJobData("savePath", path)
+                                .Build();
+
+            var trigger = TriggerBuilder.Create()
+                                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hours, minutes))
+                                        .Build();
+
+            this.Scheduler.DeleteJob(job.Key);
+            this.Scheduler.ScheduleJob(job, trigger);
+            this.Scheduler.Start();
+        }
     }
 }
