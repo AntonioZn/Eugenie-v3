@@ -49,10 +49,10 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              Background="{DynamicResource MaterialDesignPaper}">
-            <controls:SvDataGridMaterial x:Name="dataGrid"
-                                         FontSize="28"
-                                         ItemsSource="{Binding Basket.Products}"
-                                         SelectedItem="{Binding SelectedProduct}">
+            <DataGrid x:Name="dataGrid"
+                      FontSize="28"
+                      ItemsSource="{Binding Basket.Products}"
+                      SelectedItem="{Binding SelectedProduct}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="1*"
                                         Binding="{Binding Id}"
@@ -73,7 +73,7 @@
                                         Binding="{Binding Converter={StaticResource TotalSellingPriceConverter}, StringFormat={}{0:0.00}}"
                                         Header="Цена" />
                 </DataGrid.Columns>
-            </controls:SvDataGridMaterial>
+            </DataGrid>
         </materialDesign:Card>
         <TextBlock Grid.Row="2"
                    Margin="10,0,0,10"
