@@ -126,6 +126,10 @@
                 var result = await this.navigationService.ShowDialogAsync<LotteryTicketCheckerViewModel, bool>();
                 this.taskManager.Tasks.ForEach(x => this.taskManager.CancelTask(x));
             }
+            else
+            {
+                NotificationsHost.Error("Notifications", "Грешка", "Няма връзка към националната лотария");
+            }
         }
 
         private async void RemoveSelectedProductFromBasket()

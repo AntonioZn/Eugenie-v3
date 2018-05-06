@@ -10,6 +10,9 @@
 
     using AngleSharp.Parser.Html;
 
+    using Newtonsoft.Json.Linq;
+
+    using Sv.Wpf.Core.Extensions;
     using Sv.Wpf.Core.Helpers;
 
     using Timer = System.Timers.Timer;
@@ -100,19 +103,30 @@
                 return "Невалиден баркод";
             }
 
-            var response = await this.client.GetAsync($"https://7777.bg/loto_games/check_talon/?talon_id={barcode}", cToken);
-            var result = await response.Content.ReadAsStringAsync();
-            var document = this.parser.Parse(result);
-            var winning = document.GetElementsByClassName("winnig-text").FirstOrDefault();
-            if (winning != null)
+            var request = new FormUrlEncodedContent(new Dictionary<string, string>
+                                                    {
+                                                        {"talon_id_mobile", ""},
+                                                        {"talon_id", barcode},
+                                                        {"environment", "desktop"},
+                                                        {"is_ajax", "1"},
+                                                    });
+
+            var response = await this.client.PostAsync("https://7777.bg/check_winning/", request, cToken);
+            var json = await response.Content.ReadAsStringAsync();
+            var jObject = JObject.Parse(json);
+            var html = jObject["html"]["popup"].ToString();
+            var document = this.parser.Parse(html);
+
+            var errors = document.GetElementsByClassName("popup-error-text");
+            if (errors.Any())
             {
-                return winning.TextContent;
+                return errors.First().TextContent.Trim().TrimMultipleWhiteSpaces();
             }
 
-            var status = document.GetElementsByClassName("bordered").FirstOrDefault()?.GetElementsByTagName("h1").FirstOrDefault();
-            if (status != null)
+            var winning = document.GetElementsByClassName("popup-hdr-winbox flex flow-row flex-wrap");
+            if (winning.Any())
             {
-                return status.TextContent;
+                return winning.First().GetElementsByTagName("p").Last().TextContent.Trim();
             }
 
             return "Грешка";
