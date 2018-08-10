@@ -19,7 +19,12 @@
         private readonly ObservableCollection<MissingProduct> missingProducts = new ObservableCollection<MissingProduct>();
         private readonly ObservableCollection<Seller> sellers = new ObservableCollection<Seller>();
 
-        public string Id { get; } = Guid.NewGuid().ToString();
+        public Store()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
+        public string Id { get; set; }
 
         public string Name { get; set; }
 

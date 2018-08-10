@@ -98,9 +98,9 @@
             {
                 pair.Value.MapProperties(mainProductViewModel);
 
-                var serverName = pair.Key.Name;
+                var serverId = pair.Key.Id;
                 var model = pair.Value.GetModel();
-                var task = new AddOrUpdateProductTask(serverName, model);
+                var task = new AddOrUpdateProductTask(serverId, model);
                 this.taskManager.AddOrUpdateProductTasks.Add(task);
 
                 if (pair.Key.Products.All(x => x.Name != pair.Value.Product.Name))
@@ -120,7 +120,7 @@
         {
             foreach (var server in this.Stores)
             {
-                this.taskManager.DeleteProductTasks.Add(new DeleteProductTask(server.Name, productName));
+                this.taskManager.DeleteProductTasks.Add(new DeleteProductTask(server.Id, productName));
                 var product = server.Products.FirstOrDefault(x => x.Name == productName);
                 if (product != null)
                 {
