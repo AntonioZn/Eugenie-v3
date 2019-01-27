@@ -98,7 +98,7 @@
 
         public async Task<string> CheckAsync(string barcode, CancellationToken cToken)
         {
-            if (barcode.Length != 14 && barcode.Length != 13)
+            if (barcode.Length != 15 && barcode.Length != 14 && barcode.Length != 13)
             {
                 return "Невалиден баркод";
             }
